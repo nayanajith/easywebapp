@@ -157,23 +157,21 @@ include LOGIN;
 
 
 /*--------------------------Check for print request---------------------------*/
-$print=false;
+$GLOBALS['PRINT']=false;
 if (isset($_REQUEST['print']) && $_REQUEST['print']=='true'){
-   $print = true;
-   define('PRINT',true);
+   $GLOBALS['PRINT']== true;
 }
 
 /*-------------------------Check for data/XHR request-------------------------*/
-$data=false;
+$GLOBALS['DATA']=false;
 if(isset($_REQUEST['data']) || (isset($_REQUEST['action']) )){
-   $data = true;
-   define('DATA',true);
+   $GLOBALS['DATA']=true;
 }
 
 
 /*----------------------execute data/print request----------------------------*/
 //CSV generation request sent to particular page and stop further execution in this page
-if($data||$print){
+if($GLOBALS['DATA']||$GLOBALS['PRINT']){
    /*Disable any worning or error messages while providing data*/
    //ini_set('display_errors',0);
    //Special case to retrieve the json for the tree menu
@@ -186,13 +184,10 @@ if($data||$print){
 }
 
 /*---------------------------Check for help request---------------------------*/
+$GLOBALS['HELP']=false;
 if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
-   $help_file=A_MODULES."/".MODULE."/".PAGE."_help.php";
-   if(file_exists($help_file)){
-      include A_MODULES."/".MODULE."/".PAGE."_help.php";
-   }else{
-      echo "Sorry help does not available for this page"; 
-   }
+   $GLOBALS['HELP']=true;
+   include A_CORE."/help_layout.php";
    return;
 }
 

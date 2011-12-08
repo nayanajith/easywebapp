@@ -155,7 +155,7 @@ function gen_visible_module_array(){
          continue;   
       }
 
-      $module_menu_file   =A_MODULES."/".$mod_key."/menu.php";
+      $module_menu_file=A_MODULES."/".$mod_key."/menu.php";
       if(file_exists($module_menu_file)){
          include($module_menu_file);
          foreach($menu_array as $page_key => $page){
@@ -180,7 +180,7 @@ function gen_visible_module_array(){
 
 
 /*Generat JSON for module tree*/
-if($data==true){
+if($GLOBALS['DATA']==true){
    if(isset($_REQUEST['mod_tree'])){
       gen_tree();
    }
