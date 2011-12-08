@@ -1,16 +1,17 @@
 <?php
 include A_CLASSES."/data_entry_class.php";
 $super_table      ='exam';
-$keys               =array('exam_hid');
-$key1               ='exam_hid';
-$grid_array         =array('exam_hid','academic_year');
-$grid_array_long   =array('exam_hid','academic_year');
+$keys             =array('exam_hid');
+$key1             ='exam_hid';
+$grid_array       =array('exam_hid','academic_year');
+$grid_array_long  =array('exam_hid','academic_year');
 
 $table            =$GLOBALS['P_TABLES'][$super_table];
-$formgen          = new Formgenerator($table,$keys,$super_table,null);
-$help_file         =$super_table."_help.php";
-$modif_file         =$super_table."_modif.php";
-$filter_string      ="";
+$file_prefix      ='manage_exam';
+$formgen          = new Formgenerator($table,$keys,$file_prefix,null);
+$help_file        =$file_prefix."_help.php";
+$modif_file       =$file_prefix."_modif.php";
+$filter_string    ="";
 
 /*Extract filter according to the filter_id in request string*/
 if(isset($_REQUEST['filter_name']) && $_REQUEST['filter_name'] != ''){
