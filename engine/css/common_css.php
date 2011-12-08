@@ -462,14 +462,18 @@ img {
    padding:10px;
 }
 
-.help h4{
+.help h3,.help h4{
+   border:1px solid silver;
    background-color:#C9D7F1;
    padding:2px;
-   text-align:center;
+   padding-left:10px;
+   text-align:left;
    background-image:url(<?php echo $backgrounds[$GLOBALS['THEME']][1]; ?>);
    background-repeat:repeat-x;
    background-position:center center;
 }
+
+
 
 .help a{
    color:brown;
@@ -477,7 +481,7 @@ img {
 }
 
 /*------------------------shadow and round corners----------------------------*/
-.round10,#search,.dataAction,.mid ul li{
+.round10,#search,.dataAction,.mid ul li ,.help h3,.help h4{
 <?php 
  if(is_opera()||is_chrome()){
     echo "

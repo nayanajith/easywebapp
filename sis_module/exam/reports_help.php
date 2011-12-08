@@ -1,6 +1,4 @@
-<div class='help' id='help'>
 <h4>Help on generating reports of the previous examinations</h4>
-<div>
 <ul>
 <li>Exam-wise summery report for all the courses of the selected exam in one page-<br/>
 This will report the statistics of the marks and student participation of each course of the selected examination.
@@ -16,5 +14,3 @@ After selecting the exam id, 'Course' drop down box will only list the courses o
 <li>Select report type from the 'Report Type' drop down box-<br/>
 This will generate suitable reports for verification and LMS placing accordingly.
 <ol>
-</div>
-</div>

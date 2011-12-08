@@ -32,6 +32,8 @@ if(isset($_REQUEST['fullscreen']) && $_REQUEST['fullscreen'] == 'true'){
 
 <?php
 }
+echo "<div class='help' id='help'><div>";
+echo "<h2>Help and Guide for the <font color='green' size='15px' >".PAGE."</font> page of the <font color='green'>".MODULE."</font> module</h2>";
 
 $help_file=A_MODULES."/".MODULE."/".PAGE."_help.php";
 if(file_exists($help_file)){
@@ -40,6 +42,7 @@ if(file_exists($help_file)){
    echo "Sorry help does not available for this page"; 
 }
 
+echo "</div></div>";
 
 if(isset($_REQUEST['fullscreen']) && $_REQUEST['fullscreen'] == 'true'){
    echo "</body></html>";
