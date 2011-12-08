@@ -158,9 +158,11 @@ $labeld_types=array(
    'dijit.form.TextBox'
 );
 echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
+//Adding help button to the toolbar
+echo "<div dojoType='dijit.form.Button' label='Help' showLabel='true' iconClass='dijitIcon dijitIconDocuments' onClick='help_dialog()'></div>";
+
 if(!isset($toolbar[PAGE])){
    //toolbar is empty
-   echo "<div dojoType='dijit.form.Button' label='..' disabled='true' ></div>";
 }else{
    foreach($toolbar[PAGE] as $label => $attrib ){
       /*

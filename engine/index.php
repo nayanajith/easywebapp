@@ -41,7 +41,7 @@ if(isset($_REQUEST['test_key']) && $_REQUEST['test_key']=='1400c95dd934343957b52
 */
 /*--------------------------Enable disable Errors ----------------------------*/
 error_reporting(E_ALL|E_STRICT);
-ini_set('display_errors',0);
+ini_set('display_errors',1);
 
 /*-----------------------advanced php configuration---------------------------*/
 ini_set('memory_limit','1024M');
@@ -181,6 +181,17 @@ if($data||$print){
       include A_CORE."/manage_module.php";
    }else{
       include A_MODULES."/".MODULE."/".PAGE.".php";
+   }
+   return;
+}
+
+/*---------------------------Check for help request---------------------------*/
+if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
+   $help_file=A_MODULES."/".MODULE."/".PAGE."_help.php";
+   if(file_exists($help_file)){
+      include A_MODULES."/".MODULE."/".PAGE."_help.php";
+   }else{
+      echo "Sorry help does not available for this page"; 
    }
    return;
 }

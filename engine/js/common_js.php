@@ -5,7 +5,7 @@ header("Content-type: application/javascript");
 header("Content-Disposition: attachment; filename=\"common.js\"");
 ?>
 /*
- * Browser detection
+//Browser detection
 dojo.isIE
 dojo.isMozilla
 dojo.isFF
@@ -35,7 +35,7 @@ dojo.isChrome);
 /*--help viewer--*/
 function help_dialog(){
 	dojo.xhrPost({
-      url 		: '<?php echo gen_url(); ?>&form=main&action=help',
+      url 		: '?module='+get_request_value('module')+'&page='+get_request_value('page')+'&help=true',
   	   handleAs :'text',
   	   load 		: function(response, ioArgs) {	     
          help_Dialog = new dijit.Dialog({
@@ -43,7 +43,7 @@ function help_dialog(){
             style: "width: 800px;"
          });
 
-         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"help_Dialog.hide()\" >OK</button></center>";
+         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"window.open('?module='+get_request_value('module')+'&page='+get_request_value('page')+'&help=true','_blank');help_Dialog.hide()\" >Show in Fullscreen</button><button dojoType='dijit.form.Button' onClick=\"help_Dialog.hide()\" >OK</button></center>";
          help_Dialog.attr("content", response+button);
          help_Dialog.show();
   	   },
