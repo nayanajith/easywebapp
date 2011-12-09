@@ -38,39 +38,43 @@ function gen_registration_form(){
 
    //Get the total course array available for the given year
    $arr=exec_query("SELECT ".implode(',',$display)." FROM ".$GLOBALS['P_TABLES']['course']." WHERE student_year='".$_SESSION[PAGE]['student_year']."'",Q_RET_ARRAY);
+   $curr_reg_arr=exec_query("SELECT course_id,COUNT(*) count FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' GROUP BY course_id",Q_RET_ARRAY,null,'course_id');
 
    //Table of courses to be registred or unregistered 
-   echo "<h4 style='background-color:#C9D7F1;padding:2px;text-align:center' class='bgCenter'>".$_SESSION[PAGE]['index_no']."</h4>";
-   echo "<table style='border-collapse:collapse;border:0px solid #C9D7F1;' border=1>";
-   echo "<tr>";
+   $report= "<h4 style='background-color:#C9D7F1;padding:2px;text-align:center' class='bgCenter'>".$_SESSION[PAGE]['index_no']."</h4>";
+   $report.= "<table style='border-collapse:collapse;border:0px solid #C9D7F1;' border=1>";
+   $report.= "<tr>";
    foreach($display as $value){
-      echo "<th>".style_text($value)."</th>";
+      $report.= "<th>".style_text($value)."</th>";
    }
-   echo "<th>Choose</th>";
-   echo "</tr>";
+   $report.= "<th>Count</th><th>Choose</th>";
+   $report.= "</tr>";
 
    d_r('dijit.form.CheckBox');
    //Print all the courses with details where as compulsory courses will be automatically selected and the previousely registred courses will also be selected 
    //Total of the already selecte and compulsory courses will also be returned
    foreach($arr as $row){
-      echo "<tr><td>";
-      echo implode('</td><td>',array_values($row));
+      $report.= "<tr><td>";
+      $report.= implode('</td><td>',array_values($row));
+      //$report.= "<td>".$curr_reg_arr[$row['course_id']]['count']."</td>";
+      $report.= "<td>".(isset($curr_reg_arr[$row['course_id']]['count'])?$curr_reg_arr[$row['course_id']]['count']:0)."</td>";
       if(strtoupper($row['compulsory'])){
-         echo "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' checked='true' ></input></td></tr>";
+         $report.= "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' checked='true' ></input></td></tr>";
          $compulsory_credits+=$row['lecture_credits']+$row['practical_credits'];
       }else{
          if(in_array($row['course_id'],$reg_arr)){
-            echo "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' checked='true' onClick='count_credits(this.name,this.checked,\"".$row['lecture_credits']."\",\"".$row['practical_credits']."\")'></input></td></tr>";
+            $report.= "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' checked='true' onClick='count_credits(this.name,this.checked,\"".$row['lecture_credits']."\",\"".$row['practical_credits']."\")'></input></td></tr>";
             $registered_credits+=$row['lecture_credits']+$row['practical_credits'];
          }else{
-            echo "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' onClick='count_credits(this.name,this.checked,\"".$row['lecture_credits']."\",\"".$row['practical_credits']."\")'></input></td></tr>";
+            $report.= "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' onClick='count_credits(this.name,this.checked,\"".$row['lecture_credits']."\",\"".$row['practical_credits']."\")'></input></td></tr>";
          }
       }
    }
-   echo "</table>";
+   $report.= "</table>";
 
    //Sum of compulsory and already selected courses will be return in this hidden field
-   echo "<input type='hidden' id='compulsory_credits' value='".($compulsory_credits+$registered_credits)."' />";
+   $report.="<input type='hidden' id='compulsory_credits' value='".($compulsory_credits+$registered_credits)."' />";
+   echo $report;
 }
 
 /*
@@ -99,33 +103,38 @@ function gen_bulk_registration_form(){
    //Get the total course array available for the given year
    $arr=exec_query("SELECT ".implode(',',$display)." FROM ".$GLOBALS['P_TABLES']['course']." WHERE student_year='".$_SESSION[PAGE]['student_year']."' AND semester='".$_SESSION[PAGE]['semester']."'",Q_RET_ARRAY);
 
+   //Get the count of currently registered students
+   $curr_reg_arr=exec_query("SELECT course_id,COUNT(*) count FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' GROUP BY course_id",Q_RET_ARRAY,null,'course_id');
+
    //Table of courses to be registred or unregistered 
-   echo "<h4 style='background-color:#C9D7F1;padding:2px;text-align:center' class='bgCenter'>Bulk course registration for batch-".$_SESSION[PAGE]['batch_id']."</h4>";
-   echo "<table style='border-collapse:collapse;border:0px solid #C9D7F1;' border=1>";
-   echo "<tr>";
+   $report= "<h4 style='background-color:#C9D7F1;padding:2px;text-align:center' class='bgCenter'>Bulk course registration for batch-".$_SESSION[PAGE]['batch_id']."</h4>";
+   $report.= "<table style='border-collapse:collapse;border:0px solid #C9D7F1;' border=1>";
+   $report.= "<tr>";
    foreach($display as $value){
-      echo "<th>".style_text($value)."</th>";
+      $report.= "<th>".style_text($value)."</th>";
    }
-   echo "<th>Choose</th>";
-   echo "</tr>";
+   $report.= "<th>Count</th><th>Choose</th>";
+   $report.= "</tr>";
 
    //Print all the courses with details where as compulsory courses will be automatically selected and the previousely registred courses will also be selected 
    //Total of the already selecte and compulsory courses will also be returned
    foreach($arr as $row){
-      echo "<tr><td>";
-      echo implode('</td><td>',array_values($row));
+      $report.= "<tr><td>";
+      $report.= implode('</td><td>',array_values($row));
+      $report.= "<td>".(isset($curr_reg_arr[$row['course_id']]['count'])?$curr_reg_arr[$row['course_id']]['count']:0)."</td>";
       if(strtoupper($row['compulsory'])){
-         echo "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' checked='true' ></input></td></tr>";
+         $report.= "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' checked='true' ></input></td></tr>";
          $compulsory_credits+=$row['lecture_credits']+$row['practical_credits'];
       }else{
-         echo "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' onClick='count_credits(this.name,this.checked,\"".$row['lecture_credits']."\",\"".$row['practical_credits']."\")'></input></td></tr>";
+         $report.= "</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='".$row['course_id']."' onClick='count_credits(this.name,this.checked,\"".$row['lecture_credits']."\",\"".$row['practical_credits']."\")'></input></td></tr>";
       }
    }
-   echo "</table>";
+   $report.= "</table>";
 
    //Sum of compulsory and already selected courses will be return in this hidden field
-   echo "<input type='hidden' id='compulsory_credits' value='".($compulsory_credits+$registered_credits)."' />";
-   echo "<input type='hidden' name='bulk' value='true' />";
+   $report.= "<input type='hidden' id='compulsory_credits' value='".($compulsory_credits+$registered_credits)."' />";
+   $report.= "<input type='hidden' name='bulk' value='true' />";
+   echo  $report;
 }
 
 
@@ -304,12 +313,6 @@ if(isset($_REQUEST['action'])){
       $xhr_combobox->gen_xhr_combobox('exam_hid',"Exam",$xhr_combobox->get_val('exam_hid'),110,20,array('batch_id','exam_hid'),'course_selection_frm');
       $xhr_combobox->gen_xhr_combobox('index_no',"Index No",$xhr_combobox->get_val('index_no'),80,20,array('batch_id','exam_hid','index_no'),'course_selection_frm');
       echo "
-<<<<<<< HEAD
-      var credit_count = new dijit.form.TextBox({
-         id:'credit_count',
-         jsId:'credit_count',
-         name:'credit_count'
-=======
       var credit_count_label=new dijit.form.Button({
          label: 'Credit Count',
          disabled:true
@@ -321,7 +324,6 @@ if(isset($_REQUEST['action'])){
          jsId:'credit_count',
          name:'credit_count',
          style:'width:40px;'
->>>>>>> a1416b2b2877d187eff18f1ac4bbfe068f7556d4
       });
    
       toolbar.addChild(credit_count);
@@ -334,12 +336,6 @@ if(isset($_REQUEST['action'])){
       $xhr_combobox->form_submitter('course_selection_frm');
       echo "
       function count_credits(course_id,state,lec_cred,prac_cred){
-<<<<<<< HEAD
-         if(state=true){
-            dojo.byId('compulsory_credits')+=(lec_cred+prac_cred);
-         }else{
-            dojo.byId('compulsory_credits')-=(lec_cred+prac_cred);
-=======
          var compulsory_credits=dojo.byId('compulsory_credits');
          var prev_value =parseInt(compulsory_credits.value);
          var sel_value  =parseInt(lec_cred)+parseInt(prac_cred);
@@ -347,7 +343,6 @@ if(isset($_REQUEST['action'])){
             compulsory_credits.value=prev_value+sel_value;
          }else{
             compulsory_credits.value=prev_value-sel_value;
->>>>>>> a1416b2b2877d187eff18f1ac4bbfe068f7556d4
          }
          dojo.byId('credit_count').value=dojo.byId('compulsory_credits').value;
       }";

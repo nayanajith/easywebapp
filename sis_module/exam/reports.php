@@ -54,10 +54,16 @@ function gen_exam_summery(){
       //Grade count
       $report.= "<td title=''>";
       $bar='';
+      $in_row=8;
+      $count=1;
       if(isset($arr_grade_count_pr[$course_id])){
-         foreach($arr_grade_count_pr[$course_id] as $grade => $count){
-            $report.= "$bar$grade:$count";
-            $bar='&nbsp;|&nbsp;';
+         foreach(getGradeGPVArr() as $grade => $gpa){
+            if(isset($arr_grade_count_pr[$course_id][$grade])){
+               if($count%$in_row == 0)$report.="<br/>";
+               $report.= "$bar$grade:".$arr_grade_count_pr[$course_id][$grade];
+               $bar='&nbsp;|&nbsp;';
+               $count++;
+            }
          }
       }
       $report.="</td>";
@@ -68,11 +74,13 @@ function gen_exam_summery(){
 
    //When the user request a reload of the page the table will display as a dojo grid
    //THIS IS TESTING FUNCTIONALITY TODDO:
+   /*
    if(!isset($_REQUEST['action'])){
       include A_CLASSES."/data_grid_class.php";
       $data_grid= new Data_grid();
       $report.=$data_grid->gen_data_grid($header_arr,'exam_summary','Course_ID','TABLE',$title);
    }
+    */
 
    $report.="<center>".date("M d, Y")."</center>";
    if(isset($_REQUEST['action'])&&$_REQUEST['action']=='pdf'){
@@ -346,9 +354,6 @@ if(isset($_REQUEST['form'])){
          }
       }   
    break;
-   case 'help':
-      include "reports_help.php";
-   break;
    }
 }else{
 echo "<div align='center'><div id='marks_frm' jsId='marks_frm' dojoType='dijit.form.Form'>";
@@ -357,7 +362,7 @@ if(isset($_SESSION[PAGE]['gen'])&&$_SESSION[PAGE]['gen']=='COURSE'){
 }elseif(isset($_SESSION[PAGE]['gen'])&&$_SESSION[PAGE]['gen']=='EXAM'){
    gen_exam_summery();
 }else{
-   include "reports_help.php";
+   echo "Click Help button for help.";
 }
 echo "</div></div>";
 
