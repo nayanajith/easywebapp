@@ -1,5 +1,6 @@
 <?php 
 d_r('dijit.Dialog');
+d_r('dijit.form.Button');
 ?>
 <script language='javascript'>
    
@@ -7,16 +8,24 @@ d_r('dijit.Dialog');
    var max_status_length=150;
    var stausDialog;
 
-   function update_status_bar(status,info){
-      status=status.toUpperCase();
+   function update_status_bar(status_code,info){
+      //Sometimes status_code and info is not defined due to json decode error
+      if(typeof status_code === 'undefined' || typeof info === 'undefined') {
+         status_code='NOT_DEFINED';
+         info='Undefined error!';
+      }
+
+      status_code=status_code.toUpperCase();
       var orig_info=info;
-      switch(status){
+      switch(status_code){
          case 'OK':
             info=info;
          break;
          case 'ERROR':
             info="<font color='red'>"+info+"</font>";
-            process.innerHTML="<img src='<?php echo IMG."/process-stopped.gif"; ?>' >";
+            <?php if($GLOBALS['LAYOUT']!='pub'){ ?>
+            busy.innerHTML="<img src='<?php echo IMG."/busy-stopped.gif"; ?>' >";
+            <?php }?>
          break;
          case 'NOT_DEFINED':
             info="<font color='orange'>"+info+"</font>";
@@ -59,17 +68,17 @@ d_r('dijit.Dialog');
       <?php } ?>
    }
 
-   /*Update progress bar and processing image (rotating arrows)*/
+   /*Update progress bar and busying image (rotating arrows)*/
    function update_progress_bar(progress){
    
       <?php if($GLOBALS['LAYOUT']!='pub' ){ ?>
       jsProgress.update({maximum: 100, progress: progress });
       <?php } ?>
-      var process = document.getElementById('process') ;
+      var busy = document.getElementById('busy') ;
       if(progress == 100 || progress == 0){
-         process.innerHTML="<img src='<?php echo IMG."/process-stopped.gif"; ?>' >";
+         busy.innerHTML="<img src='<?php echo IMG."/busy-stopped.gif"; ?>' >";
       }else{
-         process.innerHTML="<img src='<?php echo IMG."/process.gif"; ?>' >";
+         busy.innerHTML="<img src='<?php echo IMG."/busy.gif"; ?>' >";
       }
    }
 

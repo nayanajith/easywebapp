@@ -17,14 +17,14 @@ $GLOBALS['MOD_TBL_LOGIN']   = array(
    'db_password'	=>'!@#$%', 
    'db'				=>'moodledb_pg', 
 			*/
+   'target'         =>'personal',
+
 	'md5'				=>'false',
    'table'			=>$GLOBALS['MOD_P_TABLES']['student'], 
    'username'		=>'email',
    'password'		=>'NIC',
    'fullname'		=>'last_name',
    'user_id'		=>'student_id',
-   'home'         => 'personal',
-   'permission'	=>'status'       
 );
 
 ?>

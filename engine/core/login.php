@@ -33,10 +33,13 @@ function before_login() {
    d_r("dijit.form.ValidationTextBox");
    d_r("dijit.form.Form");
    d_r("dijit.form.Button");
-
+   $page=PAGE;
+   if(isset($GLOBALS['MOD_TBL_LOGIN']['target'])){
+      $page=$GLOBALS['MOD_TBL_LOGIN']['target'];
+   }
    return '
     <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data"
-        action="http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].'" method="POST">
+        action="http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST">
 '.
 (isset($_REQUEST['user'])?'<div style="padding:5px;color:red;">Invallid login please try again...</div>':"")
 .'
@@ -51,7 +54,7 @@ function before_login() {
                 return true;
             </script>
             <input type="hidden" name="module" value="'.MODULE.'" >
-            <input type="hidden" name="page" value="'.PAGE.'" >
+            <input type="hidden" name="page" value="'.$page.'" >
             <table cellpadding=0 cellspacing=0 >
                 <tr>
                     <td>
@@ -203,10 +206,11 @@ if (isset($_SESSION['username'])) {
    //If login successful $RESULT should be true then set the session variables
    if ($LOGIN) {
       $ROW=$RESULT_ARR[0];
-      $_SESSION['username']    = $ROW[$GLOBALS['TBL_LOGIN']['username']];
-      $_SESSION['permission'] = $ROW[$GLOBALS['TBL_LOGIN']['permission']];
-      $_SESSION['fullname']    = $ROW[$GLOBALS['TBL_LOGIN']['fullname']];
-      $_SESSION['user_id']    = $ROW[$GLOBALS['TBL_LOGIN']['user_id']];
+      foreach($GLOBALS['TBL_LOGIN'] as $key => $value){
+         if(isset($ROW[$value])){
+            $_SESSION[$key]   = $ROW[$value];
+         }
+      }
       $_SESSION['loged_module']    = MODULE;
    }else{
       //echo "<div style='float:left;padding:5px;color:brown;'>Invallid login please try again...</div>";

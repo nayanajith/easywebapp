@@ -245,7 +245,8 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
 function get_sql_error(){
    global $sql_error;
    if(!is_null($sql_error)){
-      return mysql_escape_string($sql_error);
+      //return mysql_escape_string($sql_error);
+      return str_replace("'","`",$sql_error);
    }else{
       return false; 
    }

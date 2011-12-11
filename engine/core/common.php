@@ -3,15 +3,15 @@
 /*
 Possible status
 /**
-@param status: OK, ERROR, NOT_DEFINED 
+@param status_code: OK, ERROR, NOT_DEFINED 
 @param info: information about the status
 */
 function return_status_json($status,$info){
    $status=strtoupper($status);
    if($status == 'OK' || $status == 'ERROR'){
-      echo "{'status':'$status','info':'$info'}";
+      echo "{'status_code':'$status','info':'$info'}";
    }else{
-      echo "{'status':'NOT_DEFINED','info':'$info','nstatus':'$status'}";
+      echo "{'status_code':'NOT_DEFINED','info':'$info','nstatus':'$status'}";
    }
 }
 

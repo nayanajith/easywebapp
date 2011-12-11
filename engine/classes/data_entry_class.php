@@ -461,8 +461,8 @@ submit the given form
                form         : '$form', 
             
                handle: function(response,ioArgs){
-                  update_status_bar(response.status,response.info);
-                  if(response.status == 'OK'){
+                  update_status_bar(response.status_code,response.info);
+                  if(response.status_code == 'OK'){
                      update_progress_bar(100);
                   }else{
                      update_status_bar('ERROR',response.info);
@@ -512,25 +512,23 @@ submit the given form
 
          if (action=='delete' || dijit.byId('$form').validate()) {
             dojo.xhrPost({
-               url         : '".gen_url()."&form=main&action='+action, 
-               handleAs      : 'json',
-               form         : '$form', 
-            
-               handle: function(response,ioArgs){
-                  if(response.status == 'OK'){
+               url      : '".gen_url()."&form=main&action='+action, 
+               handleAs : 'json',
+               form     : '$form', 
+               handle   : function(response,ioArgs){
+                  if(response.status_code == 'OK'){
                      window.open('?module='+module+'&page='+page,'_parent');
                   }else{
-                     //update_status_bar('ERROR',response.info);
                      update_status_bar('ERROR',response.info);
                   }
                },
             
-               load: function(response) {
+               load     : function(response) {
                   //update_status_bar('OK','Request sent successfully');
                   //update_progress_bar(50);
                }, 
-               error: function() {
-                  update_status_bar('ERROR','Error on submission');
+               error    : function() {
+                  //update_status_bar('ERROR','Error on submission');
                   //update_progress_bar(0);
                }
             });
@@ -567,9 +565,6 @@ submit the given form
                $fill=$this->data[$field];
             }
          }
-
-         /*Fields to bypass when creating forms*/
-         $bypass=array('inner','label','section','style','label_pos');
 
          /*filed parameter arry for current field*/
          $field_array=$this->fields[$field];
@@ -614,7 +609,10 @@ submit the given form
             d_r($field_array['dojoType']);
             $form_control   =$this->form_controls[$field_array['dojoType']];
             $options         =" jsId='$field' id='$field' name='$field' ";
-         
+
+            /*Fields to bypass when creating forms*/
+            $bypass=array('inner','label','section','style','label_pos','type');
+
             /*all paremeters will be inserted to the options string*/
             foreach($field_array as $key => $value){
                if(!in_array($key,$bypass)){
@@ -624,7 +622,7 @@ submit the given form
 
 
             if(isset($field_array['type']) && $field_array['type'] == "hidden"){
-               $options         .="style='width:0px;border:0px;height:0px;overflow:hidden;'\n";
+               $options         .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
                $entry         .=sprintf($form_control,$options,$inner);
             }else{
 
@@ -633,6 +631,7 @@ submit the given form
                if(isset($field_array['length'])){
                   $style         .="width:".$field_array['length']."px;";
                }
+
 
                if(isset($field_array['style'])){
                   $style         .=$field_array['style'];
@@ -718,7 +717,7 @@ submit the given form
          $inner         =isset($field_array['inner'])?$field_array['inner']:"";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','label','section','disabled','label_pos');
+         $bypass=array('inner','label','section','disabled','label_pos','type');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -728,17 +727,18 @@ submit the given form
          }
 
          //Set style and length of the field
-         $style         ="";
+         $style      ="";
          if(isset($field_array['length'])){
-            $style         .="width:".$field_array['length']."px;";
+            $style   .="width:".$field_array['length']."px;";
          }
 
          if(isset($field_array['style'])){
-            $style         .=$field_array['style'];
+            $style   .=$field_array['style'];
          }
 
+
          if($style != ''){
-            $options            .="style='".$style."'";
+            $options .="style='".$style."'";
          }
 
 
@@ -1529,6 +1529,31 @@ submit the given form
       ";
       }
 
+      /*
+      check for duplicates
+      */
+      public function is_duplicate(){
+         $filter='';
+         //for multiple keys
+         if(isset($this->self['keys'])){
+            foreach($this->self['keys'] as $key){
+               $filter.=$key."='".$_REQUEST[$key]."'";
+            }
+         }else{
+            $filter=$this->self['key']."='".$_REQUEST[$this->self['key']]."'";
+         }
+
+         $sql="SELECT * FROM ".$this->self['table']." WHERE ".$filter;
+         $res=exec_query($sql,Q_RET_MYSQL_RES);
+         if(get_num_rows() > 0){
+            return true;
+         }else{
+            return false;
+         }
+      }
+
+
+
 
       protected $pwd_field_guess=array('password','passwd','pwd');
       /*Validate and add record to the table*/
@@ -1544,72 +1569,80 @@ submit the given form
          }
 
          
-         $cols      =""; //coumns of the table
-         $values   =""; //value for each column of the table
-         $comma   ="";
-         /*set columns and values for each column*/
-         foreach( $this->fields as $key => $arr){
-            /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
-            //if( !( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
-            if( !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
-               $cols      .=$comma.$key;
-            
-               /*check for valid json strings to use as json strings in database*/
-               if(isset($_REQUEST[$key])){
-                  $value=$_REQUEST[$key];
-               }else{
-                  $_REQUEST[$key]="";
-                  $value="";
-               }
-
-               $value=str_replace(
-                  array('&quot;','NaN','\n'),
-                  array('"','""',''),
-                  $value
-               );
-               
-               /*apply md5 to the password fields*/
-               if(in_array(strtolower($key),$this->pwd_field_guess)){   
-                  $_REQUEST[$key]=md5($value);
-               }
-            
-               /*if the values is valid json then store clean string */
-               if(json_decode($value) != null ){
-                  $_REQUEST[$key]=$value;
-               }
-            
-               $values   .=$comma."'".$_REQUEST[$key]."'";
-               $comma   =",";
-            }
-
-            /*handle custom fields from form submission*/
-            if(isset($arr['custom']) && $arr['custom'] == 'true' && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
-               if(isset($_REQUEST[$key]) && $_REQUEST[$key] != ''){
+         if($this->is_duplicate()){
+            return_status_json('ERROR',"Duplicate key exists");
+            return false;
+         }else{//key not available  ->  add
+            $cols      =""; //coumns of the table
+            $values   =""; //value for each column of the table
+            $comma   ="";
+            /*set columns and values for each column*/
+            foreach( $this->fields as $key => $arr){
+               /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
+               //if( !( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
+               if( !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
                   $cols      .=$comma.$key;
+               
+                  /*check for valid json strings to use as json strings in database*/
+                  if(isset($_REQUEST[$key])){
+                     $value=$_REQUEST[$key];
+                  }else{
+                     $_REQUEST[$key]="";
+                     $value="";
+                  }
+
+                  $value=str_replace(
+                     array('&quot;','NaN','\n'),
+                     array('"','""',''),
+                     $value
+                  );
+                  
                   /*apply md5 to the password fields*/
                   if(in_array(strtolower($key),$this->pwd_field_guess)){   
-                     //$_REQUEST[$key]=md5($value);
-                     $_REQUEST[$key]=md5($_REQUEST[$key]);
+                     $_REQUEST[$key]=md5($value);
                   }
+               
+                  /*if the values is valid json then store clean string */
+                  if(json_decode($value) != null ){
+                     $_REQUEST[$key]=$value;
+                  }
+               
                   $values   .=$comma."'".$_REQUEST[$key]."'";
                   $comma   =",";
+               }else{
+                  log_msg('kk','lll');   
+               }
+
+               /*handle custom fields from form submission*/
+               if(isset($arr['custom']) && $arr['custom'] == 'true' && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
+                  if(isset($_REQUEST[$key]) && $_REQUEST[$key] != ''){
+                     $cols      .=$comma.$key;
+                     /*apply md5 to the password fields*/
+                     if(in_array(strtolower($key),$this->pwd_field_guess)){   
+                        //$_REQUEST[$key]=md5($value);
+                        $_REQUEST[$key]=md5($_REQUEST[$key]);
+                     }
+                     $values   .=$comma."'".$_REQUEST[$key]."'";
+                     $comma   =",";
+                  }
                }
             }
-         }
 
-         $insert_query   ="INSERT INTO ".$this->self['table']."(%s) VALUES(%s)";
-         $insert_query   =sprintf($insert_query,$cols,$values);
-         $res            =exec_query($insert_query,Q_RET_MYSQL_RES);
+            $insert_query   ="INSERT INTO ".$this->self['table']."(%s) VALUES(%s)";
+            $insert_query   =sprintf($insert_query,$cols,$values);
+            $res            =exec_query($insert_query,Q_RET_MYSQL_RES);
 
-         /*report error/success*/
-         if(get_affected_rows() > 0){
-            return_status_json('OK','record inserted successfully');
-            return true;
-         }else{
-            return_status_json('ERROR',get_sql_error());
-            return true;
+            /*report error/success*/
+            if(get_affected_rows() > 0){
+               return_status_json('OK','record inserted successfully');
+               return true;
+            }else{
+               return_status_json('ERROR',get_sql_error());
+               return false;
+            }
          }
       }
+
 
       /*Validate and update record in the table */
       public function modify_record(){

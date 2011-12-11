@@ -29,7 +29,7 @@ echo "Please login to the system <a href='javascript:open_page(\"courses\",\"log
 	   }
 	   
 	   if(isset($_REQUEST['reg_id'])){
-	   $table = "reg";
+	   $table = $GLOBALS['MOD_P_TABLES']["reg"];
       $query = "SELECT * FROM ".$table." WHERE reg_id = '". $_REQUEST['reg_id']."'" ;
       $res = exec_query($query,Q_RET_MYSQL_RES);
       $row = mysql_fetch_array($res);
@@ -37,13 +37,13 @@ echo "Please login to the system <a href='javascript:open_page(\"courses\",\"log
 	   }
 	  
 	   
-	   $table = "schedule";
+	   $table = $GLOBALS['MOD_P_TABLES']["schedule"];
       $query = "SELECT * FROM ".$table." WHERE session_id = '". $sid."'" ;
       $res = exec_query($query,Q_RET_MYSQL_RES);
       $row = mysql_fetch_array($res);
 
 
-	   $table2 = "course";
+	   $table2 = $GLOBALS['MOD_P_TABLES']["course"];
       $query2 = "SELECT * FROM ".$table2." WHERE course_id = '". $row['course_id']."'" ;
       $res2 = exec_query($query2,Q_RET_MYSQL_RES);
       $row2 = mysql_fetch_array($res2);

@@ -63,29 +63,26 @@ if(isset($_REQUEST['form'])){
                   $_SESSION['password']	=$_REQUEST['NIC'];
                   $_SESSION['fullname']	=$_REQUEST['last_name'];
                   
-                  $table = "student";
-                  $query = "SELECT * FROM ".$table." WHERE NIC = '". $_SESSION['password']."'" ;
-                  $res = exec_query($query,Q_RET_MYSQL_RES);
-                  $student = mysql_fetch_array($res);
-
-                  $_SESSION['user_id']		=$student['student_id'];
+                  $query   = "SELECT * FROM ".$table." WHERE NIC = '". $_SESSION['password']."'" ;
+                  $student = exec_query($query,Q_RET_ARRAY);
+                  $_SESSION['user_id']		=$student[0]['student_id'];
 						$_SESSION['first_time'] =true;
-					}
 					
-				$ind = $_SESSION['user_id'];
-				while(strlen($ind) < 5){
-				$ind = '0'.$ind;
-				}
-				$ind = $ind.date('y');
-				$ind = $ind.($ind%5);
+                  $index_no=gen_reg_no($student[0]['student_id']);
+               /*
+						$ind = $_SESSION['user_id'];
+						while(strlen($ind) < 5){
+						$ind = '0'.$ind;
+						}
+						$ind = $ind.date('y');
+						$ind = $ind.($ind%5);
+                */
 				
-                  $table = "student";
-                  $query = "UPDATE ".$table." SET index_no = '".$ind."' WHERE NIC = '". $_SESSION['password']."'" ;
-                  $res = exec_query($query,Q_RET_MYSQL_RES);				
-
-                                   return;
-				
-                                 break;
+                  $query = "UPDATE ".$table." SET index_no = '".$index_no."' WHERE NIC='". $_SESSION['password']."'" ;
+                  $res = exec_query($query,Q_RET_NONE);				
+					}
+             return;
+             break;
 				 case 'modify':
 					return $formgen->modify_record();
 				 break;

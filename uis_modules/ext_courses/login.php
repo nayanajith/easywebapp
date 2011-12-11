@@ -2,11 +2,11 @@
    if (isset($_SESSION['username'])){
    	//after_login();
 		//echo "Welcome ".$_SESSION['fullname'];
-		if($_REQUEST['page']=='personal' && $_REQUEST['module']=='courses'){
+		if($_REQUEST['page']=='personal' && $_REQUEST['module']=='ext_courses'){
 		
 		}else{
-			//header('Location: ?module=registration&page=postgraduate_apl');
-			include("personal.php");
+			//header('Location: ?module='.MODULE.'&page=personal');
+			//include("personal.php");
 		}
 			
 	}else{

@@ -15,14 +15,13 @@ echo "Please login to the system <a href='javascript:open_page(\"courses\",\"log
 
 
 
-$table = "reg";
+$table = $GLOBALS['MOD_P_TABLES']["reg"];
 $query = "SELECT * FROM ".$table." WHERE student_id = '". $_SESSION['user_id']."' AND session_id = '".$_SESSION['sid']."'" ;
 $res = exec_query($query,Q_RET_MYSQL_RES);
 
 // check if reg has been made;
 if(($reg = mysql_fetch_array($res)) == false){
 
-$table = "reg";
 $query = "INSERT INTO ".$table."(session_id,student_id,status) VALUES('".$_SESSION['sid']."','". $_SESSION['user_id']."','PENDING')" ;
 $res = exec_query($query,Q_RET_MYSQL_RES);
 
@@ -46,23 +45,23 @@ $reg = mysql_fetch_array($res);
 }*/
 
 
-$table = "student";
+$table = $GLOBALS['MOD_P_TABLES']["student"];
 $query = "SELECT * FROM ".$table." WHERE student_id = '". $_SESSION['user_id']."'" ;
 $res = exec_query($query,Q_RET_MYSQL_RES);
 $student = mysql_fetch_array($res);
 
-$table = "schedule";
+$table = $GLOBALS['MOD_P_TABLES']["schedule"];
 $query = "SELECT * FROM ".$table." WHERE session_id = '". $_SESSION['sid']."'" ;
 $res2 = exec_query($query,Q_RET_MYSQL_RES);
 $session = mysql_fetch_array($res2);
    
-$table = "course";
+$table = $GLOBALS['MOD_P_TABLES']["course"];
 $query = "SELECT * FROM ".$table." WHERE course_id = '". $session['course_id']."'" ;
 $res2 = exec_query($query,Q_RET_MYSQL_RES);
 $course = mysql_fetch_array($res2);  
 
 // update payment type
-$table = "reg";
+$table = $GLOBALS['MOD_P_TABLES']["reg"];
 $query = "UPDATE ".$table." SET payment_method = '".$_REQUEST['paymeth']."' WHERE reg_id = '".$reg['reg_id']."'" ;
 $res3 = exec_query($query,Q_RET_MYSQL_RES);	
     
@@ -130,7 +129,7 @@ if($_REQUEST['paymeth'] == 'ONLINE'){
    <input type = 'hidden' name = 'module' value = 'payment' />
    <input type = 'hidden' name = 'data' value = 'true' />   
    <input type = 'hidden' name = 'program' value = 'P' />
-   <button dojoType='dijit.form.Button' type='submit' onclick = payonline() >Make Payment&nbsp;&raquo;</button>
+   <button dojoType='dijit.form.Button' type='submit'  >Make Payment&nbsp;&raquo;</button>
    </form></div>";
    
    
@@ -166,7 +165,7 @@ echo '<h1>Paying Offline to the bank</h1>';
 echo "<hr style='border:1px solid silver;'/>";
 echo '<h4>Instructions</h4>';
 echo '<ol>';
-echo "<li>Please download the <a href='?module=courses&page=offline_pdf&data=true'><b>PDF</b></a> file of the payment voucher.";
+echo "<li>Please download the <a href='?module=".MODULE."&page=offline_pdf&data=true'><b>PDF</b></a> file of the payment voucher.";
 echo '<li>There are four copies as given below,';
 echo "<ol type='I'>";
 echo '<li>UCSC copy 1 ( Post this to us)';
