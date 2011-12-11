@@ -21,5 +21,4 @@ Tables of the system
 $GLOBALS['MOD_P_TABLES']=$program_tables;
 add_table_prefix($GLOBALS["MOD_P_TABLES"],MODULE);
 
-
 ?>

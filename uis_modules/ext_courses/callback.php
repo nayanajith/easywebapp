@@ -19,12 +19,12 @@ echo '</br>';
 	status
    */
 
+d_r("dijit.form.Button");
 if($deq['status'] == 'REJECTED'){
 $deq['tp_ref_no'] -= 10000000;
 echo"<h1 style='color:red'>Transaction Unsuccessful</h1>";  
 	echo "<hr style='border:1px solid silver;'/>"; 
 echo "<p>Your transaction has been unsuccessful. Click retry to attempt payment again or click 'Back to Personal Page' to return to the personal page</p>";
-
 echo '<table width = 100%><tr valign = "top" ><td>';
 echo '<form action= ""  method="get">
 <input type = "hidden" name="module" value = "courses"/>

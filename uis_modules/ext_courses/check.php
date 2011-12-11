@@ -24,7 +24,7 @@ echo '</br>';
    echo "<form method = 'GET'>
    <input type = 'hidden' name = 'request' value = ".$request." />
    <input type = 'hidden' name = 'page' value = 'callback' />
-   <input type = 'hidden' name = 'module' value = 'courses' />
+   <input type = 'hidden' name = 'module' value = '".MODULE."' />
    <input type = 'hidden' name = 'datap' value = 'true' />   
    <input type = 'hidden' name = 'program' value = 'P' />
    <input type='submit' value = 'Make Payment' />

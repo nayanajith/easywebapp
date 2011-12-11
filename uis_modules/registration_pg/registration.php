@@ -1,8 +1,10 @@
 <?php
+/*
 if(!isset($_SESSION['username'])){
 	echo "<h3>Postgraduate online application closed!</h3>";
 	return;
 }
+ */
 include A_CLASSES."/data_entry_class.php";
 $super_table		='registration';
 $keys					=array('rec_id');

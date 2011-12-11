@@ -6,8 +6,8 @@ include A_CORE."/database_schema.php";
 $program_table_schemas=array();
 $program_table_schemas['course']="CREATE TABLE `%scourse` ( 
  `course_id`         mediumint    NOT NULL AUTO_INCREMENT,
- `short_name`        varchar(10)  NOT NULL,
- `long_name`         varchar(60)  NOT NULL,
+ `short_name`        varchar(20)  NOT NULL,
+ `long_name`         varchar(100)  NOT NULL,
  `course_fee`        mediumint    NOT NULL,
  `seating_limit`     mediumint    NOT NULL,
  `venue`             varchar(60)  DEFAULT NULL,
@@ -46,13 +46,14 @@ $program_table_schemas['student']="CREATE TABLE `%sstudent` (
   `email`               varchar(60)	NOT NULL,
   `NIC`                 varchar(20) NOT NULL,
   `title`               varchar(20) NOT NULL,
-  `first_name`          varchar(20) NOT NULL,
-  `last_name`           varchar(20) NOT NULL,
-  `address_line_1`      varchar(40) NOT NULL,
-  `address_line_2`      varchar(40) DEFAULT NULL,
-  `address_line_3`      varchar(40) DEFAULT NULL,
-  `town`                varchar(40) NOT NULL,
-  `province`            varchar(40) NOT NULL,
+  `first_name`          varchar(100) NOT NULL,
+  `middle_names`        varchar(100) NOT NULL,
+  `last_name`           varchar(100) NOT NULL,
+  `address_line_1`      varchar(200) NOT NULL,
+  `address_line_2`      varchar(200) DEFAULT NULL,
+  `address_line_3`      varchar(200) DEFAULT NULL,
+  `city`                varchar(200) NOT NULL,
+  `province`            varchar(200) NOT NULL,
   `phone_num_1`         varchar(15) NOT NULL,  
   `phone_num_2`         varchar(15) DEFAULT NULL,  
    UNIQUE KEY (`email`),
@@ -61,5 +62,4 @@ $program_table_schemas['student']="CREATE TABLE `%sstudent` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 
-add_table_prefix($program_table_schemas,MODULE);
 ?>

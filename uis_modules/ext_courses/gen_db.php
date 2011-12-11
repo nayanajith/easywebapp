@@ -5,6 +5,7 @@ include MOD_CORE."/database_schema.php";
 if(isset($_REQUEST['action'])){ /*haldle requests*/
 	switch($_REQUEST['action']){
       case 'generate_db':
+         add_table_prefix($program_table_schemas,MODULE);
          drop_tables($program_table_schemas);			
          if(create_tables($program_table_schemas)){
             return_status_json("OK",'Tables created successfully!');

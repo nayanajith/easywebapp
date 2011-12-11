@@ -7,7 +7,6 @@ define('INVOICE_DIR',A_MODULES."/".MODULE."/invoice");
 define('VOUCHER_DIR',A_MODULES."/".MODULE."/voucher");
 
 
-include_once(MOD_CORE."/database_schema.php");
 include_once(MOD_CORE."/database.php");
 
 $GLOBALS['MOD_TBL_LOGIN']   = array(

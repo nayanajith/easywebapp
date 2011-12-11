@@ -1,3 +1,4 @@
+
 <?php
 //echo 'use session id .. not reg id or payment type... :P sid ';
 //echo $_SESSION['sid']. " user ". $_SESSION['user_id'];
@@ -9,42 +10,63 @@ $reg = mysql_fetch_array($res);
 */
 if((isset($_SESSION['user_id']) && $_SESSION['user_id'] == "") || isset($_SESSION['user_id']) == false ){
 
-echo "Please login to the system <a href='javascript:open_page(\"".MODULE."\",\"login\")'>HERE</a>";
+echo "Please login to the system <a href='javascript:open_page(\"courses\",\"login\")'>HERE</a>";
 }else{
 
-if($_SESSION['sid'] != ""){
 
-$table = $GLOBALS['MOD_P_TABLES']["reg"];
+
+$table = "reg";
+$query = "SELECT * FROM ".$table." WHERE student_id = '". $_SESSION['user_id']."' AND session_id = '".$_SESSION['sid']."'" ;
+$res = exec_query($query,Q_RET_MYSQL_RES);
+
+// check if reg has been made;
+if(($reg = mysql_fetch_array($res)) == false){
+
+$table = "reg";
+$query = "INSERT INTO ".$table."(session_id,student_id,status) VALUES('".$_SESSION['sid']."','". $_SESSION['user_id']."','PENDING')" ;
+$res = exec_query($query,Q_RET_MYSQL_RES);
+
+
 $query = "SELECT * FROM ".$table." WHERE student_id = '". $_SESSION['user_id']."' AND session_id = '".$_SESSION['sid']."'" ;
 $res = exec_query($query,Q_RET_MYSQL_RES);
 $reg = mysql_fetch_array($res);
+}
 //echo $reg['reg_id'];
-} 
+ 
+
+ 
+
+/*
 if(isset($_SESSION['reg_id']) &&  $_SESSION['reg_id'] != ""){
 
-$table = $GLOBALS['MOD_P_TABLES']["reg"];
+$table = "reg";
 $query = "SELECT * FROM ".$table." WHERE reg_id = '".$_SESSION['reg_id']."'" ;
 $res = exec_query($query,Q_RET_MYSQL_RES);
 $reg = mysql_fetch_array($res);
-}
+}*/
 
 
-$table = $GLOBALS['MOD_P_TABLES']["student"];
+$table = "student";
 $query = "SELECT * FROM ".$table." WHERE student_id = '". $_SESSION['user_id']."'" ;
 $res = exec_query($query,Q_RET_MYSQL_RES);
 $student = mysql_fetch_array($res);
 
-$table = $GLOBALS['MOD_P_TABLES']["schedule"];
-$query = "SELECT * FROM ".$table." WHERE session_id = '". $reg['session_id']."'" ;
+$table = "schedule";
+$query = "SELECT * FROM ".$table." WHERE session_id = '". $_SESSION['sid']."'" ;
 $res2 = exec_query($query,Q_RET_MYSQL_RES);
 $session = mysql_fetch_array($res2);
    
-$table = $GLOBALS['MOD_P_TABLES']["course"];
+$table = "course";
 $query = "SELECT * FROM ".$table." WHERE course_id = '". $session['course_id']."'" ;
 $res2 = exec_query($query,Q_RET_MYSQL_RES);
 $course = mysql_fetch_array($res2);  
+
+// update payment type
+$table = "reg";
+$query = "UPDATE ".$table." SET payment_method = '".$_REQUEST['paymeth']."' WHERE reg_id = '".$reg['reg_id']."'" ;
+$res3 = exec_query($query,Q_RET_MYSQL_RES);	
     
-if($reg['payment_method'] == 'ONLINE'){
+if($_REQUEST['paymeth'] == 'ONLINE'){
    //echo $reg['payment_method'];
   
    echo"<h1>Online payment information</h1>";
@@ -108,7 +130,7 @@ if($reg['payment_method'] == 'ONLINE'){
    <input type = 'hidden' name = 'module' value = 'payment' />
    <input type = 'hidden' name = 'data' value = 'true' />   
    <input type = 'hidden' name = 'program' value = 'P' />
-   <button dojoType='dijit.form.Button' type='submit' >Make Payment&nbsp;&raquo;</button>
+   <button dojoType='dijit.form.Button' type='submit' onclick = payonline() >Make Payment&nbsp;&raquo;</button>
    </form></div>";
    
    
@@ -119,7 +141,7 @@ if($reg['payment_method'] == 'ONLINE'){
    <input type = 'hidden' name = 'module' value = 'courses' />
    <input type = 'hidden' name = 'datap' value = 'true' />   
    <input type = 'hidden' name = 'program' value = 'P' />
-   <input type='submit' value = 'Check' />
+   <input type='submit' onclick = payonline() value = 'Check' />
    </form>";
    
    echo "</td><td valign = 'top' style = 'border-left:1px solid silver'>";
@@ -144,7 +166,7 @@ echo '<h1>Paying Offline to the bank</h1>';
 echo "<hr style='border:1px solid silver;'/>";
 echo '<h4>Instructions</h4>';
 echo '<ol>';
-echo "<li>Please download the <a href='?module=".MODULE."&page=offline_pdf&data=true'><b>PDF</b></a> file of the payment voucher.";
+echo "<li>Please download the <a href='?module=courses&page=offline_pdf&data=true'><b>PDF</b></a> file of the payment voucher.";
 echo '<li>There are four copies as given below,';
 echo "<ol type='I'>";
 echo '<li>UCSC copy 1 ( Post this to us)';

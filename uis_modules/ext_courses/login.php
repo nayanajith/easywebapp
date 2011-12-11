@@ -18,7 +18,7 @@
 		<br/>
 		<br/>
 		<center>
-		<h4>If you are not registered yet please <a href='javascript:open_page(\"courses\",\"st_reg\")'>register</a> for the external courses registration system</h4>
+		<h4>If you are not registered yet please <a href='javascript:open_page(\"".MODULE."\",\"st_reg\")'>register</a> for the external courses registration system</h4>
 		<h4>Please enter your email as username and NIC number as the password to log in to the system if you are already applied</h4>";
 		echo before_login();
 		echo "<br/>";

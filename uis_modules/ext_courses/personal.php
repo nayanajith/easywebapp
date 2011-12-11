@@ -1,10 +1,10 @@
 <?php 
 if((isset($_SESSION['user_id']) && $_SESSION['user_id'] == "") || isset($_SESSION['user_id']) == false ){
 
-echo "Please login to the system <a href='javascript:open_page(\"courses\",\"login\")'>HERE</a>";
+echo "Please login to the system <a href='javascript:open_page(\"".MODULE."\",\"login\")'>HERE</a>";
 }else{
 
-$table = "student";
+$table = $GLOBALS['MOD_P_TABLES']["student"];
 $query = "SELECT * FROM ".$table." WHERE student_id = '". $_SESSION['user_id']."'" ;
 $res = exec_query($query,Q_RET_MYSQL_RES);
 $student = mysql_fetch_array($res);
@@ -16,21 +16,21 @@ echo "<p>Welcome ".$student["first_name"]." ".$student['last_name']. " to your P
 
 echo "<p> In order to change your personal details click <a href='javascript:open_page(\"courses\",\"st_reg\")'>HERE</a> </p>";
 echo "<hr style='border:1px solid silver;'/>";
-$table = "reg";
+$table = $GLOBALS['MOD_P_TABLES']["reg"];
 $query = "SELECT * FROM ".$table." WHERE student_id = '". $_SESSION['user_id']."'" ;
 $res = exec_query($query,Q_RET_MYSQL_RES);
 
 
 //echo "<th>REG ID</th>";
-
+d_r('dijit.form.Button');
 while ($reg = mysql_fetch_array($res)){
    
-   $table = "schedule";
+   $table = $GLOBALS['MOD_P_TABLES']["schedule"];
    $query = "SELECT * FROM ".$table." WHERE session_id = '". $reg['session_id']."'" ;
    $res2 = exec_query($query,Q_RET_MYSQL_RES);
    $session = mysql_fetch_array($res2);
    
-   $table = "course";
+   $table = $GLOBALS['MOD_P_TABLES']["course"];
    $query = "SELECT * FROM ".$table." WHERE course_id = '". $session['course_id']."'" ;
    $res2 = exec_query($query,Q_RET_MYSQL_RES);
    $course = mysql_fetch_array($res2);   
@@ -51,7 +51,7 @@ echo '</td></tr></table>';
 if($reg['status'] == 'RESERVED' || $reg['status'] == 'PENDING' ){
    $_SESSION['sid'] = $session['session_id'];
    echo '<form action= ""  method="get">
-<input type = "hidden" name="module" value = "courses"/>
+<input type = "hidden" name="module" value = "'.MODULE.'"/>
 <input type = "hidden" name="page" value = "confirm"/>
 <input type = "hidden" name = "reg_id" value = "'.$reg['reg_id'].'">
 <button style = "align:right;font-size:12px;font-style:normal" dojoType="dijit.form.Button" type="submit" >Make Payment</button>

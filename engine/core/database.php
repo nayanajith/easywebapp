@@ -335,6 +335,161 @@ function csv_to_db2($csv_file,$table,$field_array,$delimiter,$encloser,$terminat
    $query="LOAD DATA LOCAL INFILE '$csv_file' INTO TABLE $table FIELDS TERMINATED BY '$delimiter' ENCLOSED BY '$encloser' LINES TERMINATED BY '$terminator' $ignore_first_line (".implode(',',$field_array).")";
    return exec_query($query,Q_RET_MYSQL_RES,$db);
 }
+
+/*Addd prefix to each array entrye*/
+function add_prefix(&$value,$key,$prefix){
+   $value=sprintf($value,$prefix,$prefix,$prefix,$prefix,$prefix);
+}
+
+/*Addd prefix to each table to reflect the module*/
+function add_table_prefix(&$schemas,$prefix){
+   array_walk($schemas,'add_prefix',$prefix."_");
+}
+
+//add_table_prefix($program_table_schemas,'bit');
+
+
+/*
+ * Generic table creation function
+ */
+function create_tables($schemas=null){
+   $state=true;
+
+   foreach($schemas as $key=>$schema){
+      if(exec_query($schema,Q_RET_MYSQL_RES)){
+         log_msg('create_program_tables',"Creating table:$key");
+      }else{
+         log_msg('create_program_tables',get_sql_error());
+         $state=false;
+      }
+   }
+   return $state;
+}
+
+
+function drop_tables($tables){
+   $state=true;
+   foreach($tables as $key=>$name){
+      $del_res=exec_query("SELECT * FROM ".$name,Q_RET_MYSQL_RES);
+
+      /*IF the table have data backup the table instead of deleting*/
+      if(get_num_rows()>0){
+         if(exec_query("RENAME TABLE ".$name." TO ".$name."_BAK_".Date('d_m_Y'),Q_RET_MYSQL_RES)){
+            log_msg('drop_system_tables',"Drop table:$name");
+         }else{
+            log_msg('drop_system_tables',get_sql_error());
+            $state=false;
+         }
+      }else{
+         if(exec_query("DROP TABLE ".$name,Q_RET_MYSQL_RES)){
+            log_msg('drop_system_tables',"Drop table:$name");
+         }else{
+            log_msg('drop_system_tables',get_sql_error());
+            $state=false;
+         }
+      }
+   }
+   return $state;
+}
+
+/**
+This function will create all the tables required to manage a program eg: BIT,BICT, BCSC
+
+@param table_prefix prefix to be added when generating program tables eg: bit_, bcsc_, mcs_
+*/
+
+function create_program_tables($schemas=null){
+   global $program_table_schemas;
+   $state=true;
+
+   //If a custom schema requested select that
+   if($schemas != null){
+      $program_table_schemas=$schemas;
+   }
+
+   echo "\n";
+   foreach($program_table_schemas as $key=>$schema){
+      if(exec_query($schema,Q_RET_MYSQL_RES)){
+         log_msg('create_program_tables',"Creating table:$key");
+      }else{
+         log_msg('create_program_tables',get_sql_error());
+         $state=false;
+      }
+   }
+   return $state;
+}
+
+/**
+This function will delete all the tables from the given program eg: BIT,BICT, BCSC
+@param table_prefix prefix to be searched when deleting program tables eg: bit_, bcsc_, mcs_
+*/
+
+
+
+/**
+This will create set of tables to be run the system. These tables are common for all programs
+*/
+function create_system_tables($schemas = null){
+   global $system_table_schemas;
+   $state=true;
+
+   //If a custom schema requested overwrite default
+   if($schemas != null){
+      $system_table_schemas=$schemas;
+   }
+
+   foreach($system_table_schemas as $key=>$schema){
+      if(exec_query($schema,Q_RET_MYSQL_RES)){
+         log_msg('create_system_tables',"Creating table:$key");
+      }else{
+         log_msg('create_system_tables',get_sql_error());
+         $state=false;
+      }
+   }
+   return $state;
+}
+
+/**
+testing
+*/
+
+$trigger="delimiter //
+CREATE TRIGGER updtrigger BEFORE UPDATE ON Employee
+FOR EACH ROW
+BEGIN
+IF NEW.Salary<=500 THEN
+SET NEW.Salary=10000;
+ELSEIF NEW.Salary>500 THEN
+SET NEW.Salary=15000;
+END IF;
+END
+//
+";
+
+$view="
+CREATE VIEW myView AS SELECT id, first_name FROM employee WHERE id = 1;
+";
+
+
+
+$stored_procedure="
+delimiter //
+DROP PROCEDURE IF EXISTS colavg//
+CREATE PROCEDURE colavg(IN tbl CHAR(64), IN col CHAR(64))
+READS SQL DATA
+COMMENT 'Selects the average of column col in table tbl'
+BEGIN
+SET @s = CONCAT('SELECT AVG(' , col , ') FROM ' , tbl);
+PREPARE stmt FROM @s;
+EXECUTE stmt;
+END;
+//
+
+CALL colavg('Country', 'LifeExpectancy');
+
+";
+
+
    
    
 ?>

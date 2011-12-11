@@ -4,14 +4,14 @@ $super_table		='st_reg';
 $keys					=array('student_id');
 $key1					='student_id';
 $grid_array			=array('student_id','email','NIC','first_name','last_name');
-//$grid_array_long	=array('registration_no','NIC','first_name','status');
 
 $table				=$GLOBALS['MOD_P_TABLES']['student'];
+
 $formgen 			=null;
 if(isset($_SESSION['user_id'])){
-	$formgen 		= new Formgenerator($table,$key1,$super_table,$_SESSION['user_id']);
+	$formgen 		= new Formgenerator($table,$keys,$super_table,$_SESSION['user_id']);
 }else{
-	$formgen 		= new Formgenerator($table,$key1,$super_table,null);
+	$formgen 		= new Formgenerator($table,$keys,$super_table,null);
 }
 
 $help_file			=$super_table."_help.php";
@@ -63,6 +63,7 @@ if(isset($_REQUEST['form'])){
                   $_SESSION['password']	=$_REQUEST['NIC'];
                   $_SESSION['fullname']	=$_REQUEST['last_name'];
                   
+                  $table = "student";
                   $query = "SELECT * FROM ".$table." WHERE NIC = '". $_SESSION['password']."'" ;
                   $res = exec_query($query,Q_RET_MYSQL_RES);
                   $student = mysql_fetch_array($res);
@@ -70,8 +71,21 @@ if(isset($_REQUEST['form'])){
                   $_SESSION['user_id']		=$student['student_id'];
 						$_SESSION['first_time'] =true;
 					}
-					return;
-				 break;
+					
+				$ind = $_SESSION['user_id'];
+				while(strlen($ind) < 5){
+				$ind = '0'.$ind;
+				}
+				$ind = $ind.date('y');
+				$ind = $ind.($ind%5);
+				
+                  $table = "student";
+                  $query = "UPDATE ".$table." SET index_no = '".$ind."' WHERE NIC = '". $_SESSION['password']."'" ;
+                  $res = exec_query($query,Q_RET_MYSQL_RES);				
+
+                                   return;
+				
+                                 break;
 				 case 'modify':
 					return $formgen->modify_record();
 				 break;
@@ -149,7 +163,6 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 	echo $formgen->gen_data_grid($grid_array,null,$key1);
 	echo "</td></tr></table>";
 }else{
-      d_r('dijit.form.Button');
 		echo "</td><td width=40% style='vertical-align:top;valign:top;'>";
 		echo "<img src='".IMG."/help_32.png'>";
 		echo "<h4>Registration procedure </h4>";

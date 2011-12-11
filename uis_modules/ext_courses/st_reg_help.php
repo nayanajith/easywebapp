@@ -14,4 +14,10 @@ $help_array=array(
 'province'=>'Province',
 'phone_num_1'=>'Phone num 1',
 'phone_num_2'=>'Phone num'*/);
+
+if(isset($_REQUEST['help']) && $_REQUEST['help'] == true){
+?>
+
+<?php
+}
  ?>
