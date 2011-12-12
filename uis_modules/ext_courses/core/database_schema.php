@@ -7,7 +7,7 @@ $program_table_schemas	=array();
 $system_table_schemas	=array();
 
 $system_table_schemas['course']="CREATE TABLE `%scourse` (
-   `course_code` 		   varchar(20) NOT NULL,
+   `course_code` 		   varchar(8) NOT NULL,
    `description` 		   varchar(50) NOT NULL,
    `coordinator_name`   varchar(100) NOT NULL,
    `coordinator_email`  varchar(100) NOT NULL,
@@ -19,14 +19,15 @@ $system_table_schemas['course']="CREATE TABLE `%scourse` (
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['batch']="CREATE TABLE `%sbatch` (
-   `batch_id` 		varchar(3) NOT NULL,
-   `course_code` 	varchar(20) NOT NULL,
+   `batch_id` 		varchar(20) NOT NULL,
+   `course_code` 	varchar(8) NOT NULL,
    `description` 	varchar(50) NOT NULL,
    `start_date`   date NOT NULL,
    `end_date`     date NOT NULL,
    `start_time`   time NOT NULL,
    `end_time`     time NOT NULL,
    `venue`        varchar(100) NOT NULL,
+   `seats`        int(3) NOT NULL,
    `disabled`     boolean DEFAULT false,
    `deleted`      boolean DEFAULT false,
  	`note` 			varchar(300) DEFAULT NULL,
@@ -45,17 +46,20 @@ $system_table_schemas['filter']="CREATE TABLE `%sfilter` (
    PRIMARY KEY (`filter_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$system_table_schemas['registration']="CREATE TABLE `%sregistration` (
-   `course_code` 		   varchar(20) NOT NULL,
-   `description` 		   varchar(50) NOT NULL,
-   `coordinator_name`   varchar(100) NOT NULL,
-   `coordinator_email`  varchar(100) NOT NULL,
-   `coordinator_phone`  varchar(100) NOT NULL,
-   `disabled`           boolean DEFAULT false,
-   `deleted`            boolean DEFAULT false,
- 	`note` 				   varchar(300) DEFAULT NULL,
-   PRIMARY KEY (`course_code`)
-)ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+$program_table_schemas['enroll']="CREATE TABLE `%senroll` (
+  `id`                  mediumint   NOT NULL AUTO_INCREMENT,
+  `index_no`            varchar(8)   NOT NULL,
+  `batch_id`            varchar(20)   NOT NULL,
+  `registration_no`     varchar(8)   NOT NULL,
+  `payment_status` 		enum('PENDING','ACCEPTED','REJECTED') DEFAULT NULL,
+  `payment_method`      enum('OFFLINE','ONLINE') DEFAULT NULL,
+  `transaction_id`      varchar(20) DEFAULT NULL,
+
+   UNIQUE KEY (`batch_id`,`registration_no`),
+  	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+
 
 $system_table_schemas['student']="CREATE TABLE `%sstudent` (
    `rec_id` 				int(11) NOT NULL AUTO_INCREMENT,
@@ -169,51 +173,6 @@ $system_table_schemas['student']="CREATE TABLE `%sstudent` (
    UNIQUE KEY (`nic`),
    PRIMARY KEY (`rec_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
-
-/*
-$system_table_schemas['validation']="CREATE TABLE `%svalidation` (
-  `registration_no`  varchar(8) NOT NULL DEFAULT '',
-  `lot_no`           int(11) DEFAULT NULL,
-  `validation`       tinyint(1) DEFAULT NULL,
-  `user_name`        varchar(8) DEFAULT NULL,
-  `log_id`           bigint(20) DEFAULT NULL,
-  `note`             text,
-  `hall_allocated`   tinyint(1) NOT NULL DEFAULT '0',
-  `admission_generated` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-$system_table_schemas['exam_hall']="CREATE TABLE `%sexam_hall` (
-  `hall_id` int(11) NOT NULL,
-  `center` varchar(200) DEFAULT NULL,
-  `hall` varchar(200) DEFAULT NULL,
-  `no_of_rooms` int(11) DEFAULT NULL,
-  `sutdents_per_room` int(11) DEFAULT NULL,
-  `center_id` int(11) NOT NULL DEFAULT '0',
-  `center_address` text,
-  `sutdents_allocated` int(11) NOT NULL DEFAULT '0',
-  `hid` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`center_id`,`hall_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-$system_table_schemas['student_alloc']="CREATE TABLE `%sstudent_alloc` (
-  `registration_no` varchar(10) NOT NULL DEFAULT '',
-  `exam_no` varchar(10) NOT NULL DEFAULT '',
-  `hall_id` int(11) DEFAULT NULL,
-  `room_no` int(11) DEFAULT NULL,
-  `center_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`exam_no`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-$system_table_schemas['post_processing']="CREATE TABLE `%spost_processing` (
-  `exam_no` varchar(8) default NULL,
-  `absetnt` tinyint(1) default 0,
-  `unauthorized` tinyint(1) default 0,
-  `user_name` varchar(8) default NULL,
-  `log_id` bigint(20) default NULL,
-  `note` text
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
-
- */
 
 
 add_table_prefix($system_table_schemas,MODULE);

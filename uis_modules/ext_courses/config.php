@@ -46,7 +46,7 @@ $GLOBALS['MOD_TBL_LOGIN']   = array(
    'db'				=>'moodledb_pg', 
 			*/
 	'md5'				=>'false',
-   'table'			=>$GLOBALS['MOD_P_TABLES']['registration'], 
+   'table'			=>$GLOBALS['MOD_P_TABLES']['student'], 
    'username'		=>'email_1',
    'password'		=>'NIC',
    'fullname'		=>'last_name',

@@ -18,22 +18,40 @@ $modif_file			=$file_name."_modif.php";
 $filter_string		="";
 
 
+/*Extract filter according to the filter_id in request string*/
+if(isset($_REQUEST['filter_name']) && $_REQUEST['filter_name'] != ''){
+   $filter_string=$formgen->ret_filter($_REQUEST['filter_name']);
+}
+
+/*generate csv with column headers*/
+if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
+   $filter_str=$filter_string!=""?" WHERE ".$filter_string:"";
+   include $modif_file;
+   $columns=array_keys($fields);
+   $fields=implode(",",$columns);
+
+   $query="SELECT $fields FROM ".$table.$filter_str;
+   $csv_file= $table.".csv";
+   db_to_csv_nr($query,$csv_file);
+   return;
+}
+
 
 if(isset($_REQUEST['form'])){
 	switch($_REQUEST['form']){
       case 'main':
 			if(isset($_REQUEST['action'])){
 				switch($_REQUEST['action']){
-				 case 'add':
-					return $formgen->add_record();
-				 break;
-				 case 'modify':
-					return $formgen->modify_record();
-				 break;
-				 case 'delete':
-					return $formgen->delete_record();
-				 break;
-				}	
+				case 'add':
+				  return $formgen->add_record();
+				break;
+				case 'modify':
+				  return $formgen->modify_record();
+				break;
+				case 'delete':
+				  return $formgen->delete_record();
+				break;
+           	}	
 			}else{
 				if(isset($_REQUEST['data'])&&$_REQUEST['data']=='json'){
 					if(isset($_REQUEST['id'])){
@@ -96,9 +114,6 @@ $formgen->filter_selector();
 //generate help tips 
 include $help_file;
 $formgen->set_help_tips($help_array);
-echo "<script language='javascript'>";
-echo $formgen->param_setter();
-echo "</script>";
 
 }
 

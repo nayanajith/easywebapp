@@ -1,4 +1,10 @@
 <?php
+$course_code_init='';
+//Geting the selected course from the request if available
+if(isset($_REQUEST['course_code'])){
+   $course_code_init=$_REQUEST['course_code'];
+}
+
 $sex_inner="
 <option value='M'>M</option>
 <option value='F'>F</option>
@@ -17,9 +23,14 @@ foreach(array("REV","DR","MR","MS","MRS","MISS") as $value){
 }
 
 $program_inner="";
-//foreach(array("PROF","DR","MR","MS","MRS","REV") as $value){
-foreach(array_keys($GLOBALS['PROGRAMS']) as $value){
-	$program_inner.="<option value='$value'>$value</option>";
+$arr=exec_query('SELECT DISTINCT c.course_code,c.description FROM '.$GLOBALS['MOD_P_TABLES']['course'].' c,'.$GLOBALS['MOD_P_TABLES']['batch'].' b WHERE  c.course_code=b.course_code and c.disabled=0 and b.start_date > current_date',Q_RET_ARRAY,null,'course_code');
+
+foreach($arr as $course_code =>  $info){
+   if($course_code_init==$course_code){
+	   $program_inner.="<option value='$course_code' selected='selected'>".$info['description']."</option>";
+   }else{
+	   $program_inner.="<option value='$course_code'>".$info['description']."</option>";
+   }
 }
 
 	 	
@@ -180,12 +191,12 @@ $fields=array(
 		"value"=>""),	
  */
 "program"=>array(
-		"length"=>"255",
-		"dojoType"=>"dijit.form.ComboBox",
+		"length"=>"355",
+		"dojoType"=>"dijit.form.Select",
 		"required"=>"true",
 		"section"=>"The course which you going to apply",
 		"inner"=>$program_inner,
-		"label"=>"Program",
+		"label"=>"Course",
 		"value"=>""),	
 
 "first_name"=>array(

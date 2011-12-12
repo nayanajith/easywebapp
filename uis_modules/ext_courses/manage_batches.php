@@ -17,6 +17,39 @@ $help_file			=$file_name."_help.php";
 $modif_file			=$file_name."_modif.php";
 $filter_string		="";
 
+/*Extract filter according to the filter_id in request string*/
+if(isset($_REQUEST['filter_name']) && $_REQUEST['filter_name'] != ''){
+   $filter_string=$formgen->ret_filter($_REQUEST['filter_name']);
+}
+
+/*generate csv with column headers*/
+if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
+   $filter_str=$filter_string!=""?" WHERE ".$filter_string:"";
+   include $modif_file;
+   $columns=array_keys($fields);
+   $fields=implode(",",$columns);
+
+   $query="SELECT $fields FROM ".$table.$filter_str;
+   $csv_file= $table.".csv";
+   db_to_csv_nr($query,$csv_file);
+   return;
+}
+
+
+//id table mapper array
+$table_of_id=array(
+   'course_code'=>$GLOBALS['MOD_P_TABLES']['course']
+);
+
+//Map filter for the given id
+$filter_map=array(
+);
+
+//id table mapper array
+$order_by_map=array(
+);
+
+
 
 
 if(isset($_REQUEST['form'])){
@@ -25,6 +58,7 @@ if(isset($_REQUEST['form'])){
 			if(isset($_REQUEST['action'])){
 				switch($_REQUEST['action']){
 				 case 'add':
+                $_REQUEST['batch_id']=$_REQUEST['course_code'].'-'.$_REQUEST['start_date'];
 					return $formgen->add_record();
 				 break;
 				 case 'modify':
@@ -33,6 +67,20 @@ if(isset($_REQUEST['form'])){
 				 case 'delete':
 					return $formgen->delete_record();
 				 break;
+            case 'combo':
+               $filter_str=null;
+               if(isset($filter_map[$_REQUEST['id']])){
+                  $filter_str=$filter_map[$_REQUEST['id']];
+               }
+
+               $order_by=null;
+               if(isset($order_by_map[$_REQUEST['id']])){
+                  $order_by=$order_by_map[$_REQUEST['id']];
+               }
+
+               $formgen->xhr_filtering_select_data($table_of_id[$_REQUEST['id']],$_REQUEST['id'],$filter_str,$order_by);
+            break;
+
 				}	
 			}else{
 				if(isset($_REQUEST['data'])&&$_REQUEST['data']=='json'){
@@ -94,9 +142,6 @@ $formgen->filter_selector();
 //generate help tips 
 include $help_file;
 $formgen->set_help_tips($help_array);
-echo "<script language='javascript'>";
-echo $formgen->param_setter();
-echo "</script>";
 
 }
 

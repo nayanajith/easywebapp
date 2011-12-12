@@ -6,22 +6,23 @@ if(!isset($_SESSION['username'])){
 }
  */
 include A_CLASSES."/data_entry_class.php";
-$super_table		='registration';
+$super_table		='student';
 $keys					=array('rec_id');
 $key1					='rec_id';
 $grid_array			=array('registration_no','NIC','email_1');
 $grid_array_long	=array('registration_no','NIC','first_name','status');
 
 $table				=$GLOBALS['MOD_P_TABLES'][$super_table];
+$file_name        =PAGE;
+
 $formgen 			=null;
 if(isset($_SESSION['user_id'])){
-	$formgen 		= new Formgenerator($table,$keys,$super_table,$_SESSION['user_id']);
+	$formgen 		= new Formgenerator($table,$keys,$file_name,$_SESSION['user_id']);
 }else{
-	$formgen 		= new Formgenerator($table,$keys,$super_table,null);
+	$formgen 		= new Formgenerator($table,$keys,$file_name,null);
 }
-
-$help_file			=$super_table."_help.php";
-$modif_file			=$super_table."_modif.php";
+$help_file			=$file_name."_help.php";
+$modif_file			=$file_name."_modif.php";
 $filter_string		="";
 
 /*Extract filter according to the filter_id in request string*/
@@ -69,6 +70,7 @@ if(isset($_REQUEST['form'])){
                   $_SESSION['password']	=$_REQUEST['NIC'];
                   $_SESSION['fullname']	=$_REQUEST['last_name'];
                   $_SESSION['user_id']		=$_REQUEST['rec_id'];
+						$_SESSION['first_time'] =true;
 						$_SESSION['downloaded'] =false;
 					}
 					return;
@@ -203,11 +205,11 @@ Colombo 07.";
 	if(isset($_SESSION['downloaded'])&& !$_SESSION['downloaded']){
 	//if(isset($_SESSION['first_time'])&& $_SESSION['first_time']){
 		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
-		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('modify','ext_courses','payment')\">Next&nbsp;&raquo;</button>
+		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('modify','ext_courses','available_courses')\">Next&nbsp;&raquo;</button>
 		</div>";
 	}else{
 		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
-		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('add','ext_courses','payment')\">Next&nbsp;&raquo;</button>
+		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('add','ext_courses','available_courses')\">Next&nbsp;&raquo;</button>
 		</div>";
 
 	}

@@ -6,7 +6,8 @@
 		}else{
 			//header('Location: ?module=registration&page=postgraduate_apl');
 			//include("payment.php");
-			include("admission.php");
+			include("available_courses.php");
+			//include("admission.php");
 		}
 				  
 	}else{
