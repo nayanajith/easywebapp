@@ -9,7 +9,7 @@ $grid_array_long	=array('course_code','description','disabled');
 $table				=$GLOBALS['MOD_P_TABLES'][$super_table];
 $formgen 			=null;
 
-$file_name        ="manage_coures";
+$file_name        ="manage_coureses";
 
 $formgen 		   = new Formgenerator($table,$keys,$file_name,null);
 
