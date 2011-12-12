@@ -58,55 +58,7 @@ if($reg['status'] == 'RESERVED' || $reg['status'] == 'PENDING' ){
 </form>';
 }
    
-echo '</td></tr></table>';   
-   
-   echo "<hr style='border:1px solid silver;'/>";
-   /*
-   
-   echo '<form action= ""  method="get">
-<input type = "hidden" name="module" value = "courses"/>
-<input type = "hidden" name="page" value = "course_page"/>
-<input type = "hidden" name="id" value = "'. $course['course_id'].'"/>
-<button dojoType="dijit.form.Button" type="submit" >Course Page</button>
-</form>';
-
-
-if($reg['status'] == 'RESERVED' || $reg['status'] == 'PENDING' ){
-   $_SESSION['sid'] = $session['session_id'];
-   echo "<td><p>" .'<form action= ""  method="get">
-<input type = "hidden" name="module" value = "courses"/>
-<input type = "hidden" name="page" value = "confirm"/>
-<input type = "hidden" name = "reg_id" value = "'.$reg['reg_id'].'">
-<button dojoType="dijit.form.Button" type="submit" >Make Payment</button>
-</form>'. "</td>";
 }
-*/
-
-
-
-
-}
-
-
-
-
-
-
-
-
-echo "</td><td valign = 'top' style = 'border-left:1px solid silver'>";
-echo '<h4>Course Application procedure</h4>';
-echo "<ol>
-		<li>Find a course that you are interested in completing from the <a href='javascript:open_page(\"courses\",\"courses\")'>Find Courses</a> Page</li>
-		<li>Once you have found such a course click on the Apply button next to it to go to the course page</li>
-		<li>In the course page, Apply for a session which you are able to attend. The available sessions are displayed at the bottom of that page</li>
-		<li>Then you must confirm your attendance by selecting a payment method. Note that unless you confirm this, your place will not be reserved</li>
-		<li>Once you have confirmed, you are then able to pay either online or offline</li>
-		<li>If you pay online, your place will be confirmed as soon as the payment goes through</li>
-		<li>If you pay offline, your place will be confirmed when the payment has been recieved. Until such time, the status of your application will be set to 'PENDING' </li>
-			</ol>";
-echo "</td></tr></table>";
-
 echo "<h4><a href='javascript:open_page(\"".MODULE."\",\"courses\")'>Apply for new courses</a></h4>";
 
 echo "<hr style='border:1px solid silver;'/>";

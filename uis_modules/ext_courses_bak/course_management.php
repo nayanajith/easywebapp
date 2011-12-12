@@ -31,7 +31,7 @@ if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
 }
 
 
-	if($_REQUEST['form'] == 'main'){
+	if(isset($_REQUEST['form'])&&$_REQUEST['form'] == 'main'){
  //     case 'main':
 			if(isset($_REQUEST['action'])){
 				switch($_REQUEST['action']){

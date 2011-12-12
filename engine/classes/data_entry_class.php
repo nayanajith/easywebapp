@@ -42,6 +42,7 @@ class Formgenerator {
     */
 
    protected $types=array(
+      "TINYINT(1)"   =>"dijit.form.CheckBox",
       "TINYINT"   =>"dijit.form.NumberTextBox",
       "SMALLINT"   =>"dijit.form.NumberSpinner",
       "MEDIUMINT"   =>"dijit.form.NumberTextBox",
@@ -214,7 +215,8 @@ class Formgenerator {
                   "length"      =>$this->get_field_width($row['Type'],false),
                   "dojoType"   =>$this->get_field_type($row['Type']),
                   "required"   =>($row['Null']=='YES')?"false":"true",
-                  "label"      =>style_text($row['Field'])
+                  "label"      =>style_text($row['Field']),
+                  "label_pos" =>$this->get_label_pos($this->get_field_type($row['Type']))
                   );
                }else{
                   $this->fields[$row['Field']]=array(
@@ -222,7 +224,8 @@ class Formgenerator {
                   "dojoType"   =>$this->get_field_type($row['Type']),
                   "type"      =>"hidden",
                   "required"   =>($row['Null']=='YES')?"false":"true",
-                  "label"      =>style_text($row['Field'])
+                  "label"      =>style_text($row['Field']),
+                  "label_pos" =>$this->get_label_pos($this->get_field_type($row['Type']))
                   );
                }
             }
@@ -284,6 +287,16 @@ class Formgenerator {
          }
       }
 
+      /**
+       * return default label posisition
+       */
+      public function get_label_pos($dojo_type){
+         if($dojo_type == 'dijit.form.CheckBox'){
+            return 'right';
+         }else{
+            return 'top';
+         }
+      }
 
       /*
        * Return length of a field of the table
@@ -313,19 +326,26 @@ class Formgenerator {
        * Retrurn dojo type of the filed which should be associated
        */
       public function get_field_type($type){
+         $type=strtoupper($type);
 
-         //varchar(100)
+         $field_type=$this->types['VARCHAR'];
+
+         //varchar(100) remove brackets 
          $arr=explode("(", $type);
 
+         if(isset($this->types[$type])){
+            $field_type=$this->types[$type];
+         }elseif(isset($this->types[$arr[0]])){
+            $field_type=$this->types[$arr[0]];
+         }
+
          //If the text field is very long generate a text area
-         if($this->types[strtoupper($arr[0])]=="dijit.form.ValidationTextBox" && $this->get_field_width($type,true) > 700 ){
+         if($field_type=="dijit.form.ValidationTextBox" && $this->get_field_width($type,true) > 700 ){
             $type="LONGTEXT";
-         }else{
-            $type=strtoupper($arr[0]);
          }
 
          //log_msg('type',$type);
-         return $this->types[$type];
+         return $field_type;
       }
 
 
@@ -628,10 +648,9 @@ submit the given form
 
                //Set style and length of the field
                $style         ="";
-               if(isset($field_array['length'])){
+               if(isset($field_array['length']) && !$field_array['dojoType'] == 'dijit.form.CheckBox' ){
                   $style         .="width:".$field_array['length']."px;";
                }
-
 
                if(isset($field_array['style'])){
                   $style         .=$field_array['style'];
