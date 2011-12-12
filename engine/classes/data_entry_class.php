@@ -642,13 +642,13 @@ submit the given form
 
 
             if(isset($field_array['type']) && $field_array['type'] == "hidden"){
-               $options         .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
-               $entry         .=sprintf($form_control,$options,$inner);
+               $options     .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
+               $entry       .=sprintf($form_control,$options,$inner);
             }else{
 
                //Set style and length of the field
-               $style         ="";
-               if(isset($field_array['length']) && !$field_array['dojoType'] == 'dijit.form.CheckBox' ){
+               $style        ="";
+               if(isset($field_array['length']) && $field_array['dojoType'] != 'dijit.form.CheckBox' ){
                   $style         .="width:".$field_array['length']."px;";
                }
 

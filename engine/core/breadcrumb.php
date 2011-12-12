@@ -3,7 +3,6 @@ $mod_arr      = $modules;
 $page_arr   = $menu_array;
 $page         ='';
 
-log_msg('module',MODULE);
 if(isset($_SESSION['BREADCRUMB'][MODULE])){
    $key=array_search(PAGE,$_SESSION['BREADCRUMB'][MODULE]);
    if($key >= 0){
@@ -15,7 +14,6 @@ if(isset($_SESSION['BREADCRUMB'][MODULE])){
    $_SESSION['BREADCRUMB'][MODULE]=array();
 }
 
-log_msg('bc',$_SESSION['BREADCRUMB']);
 
 if(isset($page_arr[PAGE])){
    $page=$page_arr[PAGE];

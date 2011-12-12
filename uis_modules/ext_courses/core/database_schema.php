@@ -7,20 +7,21 @@ $program_table_schemas	=array();
 $system_table_schemas	=array();
 
 $system_table_schemas['course']="CREATE TABLE `%scourse` (
-   `course_code` 		   varchar(8) NOT NULL,
-   `description` 		   varchar(50) NOT NULL,
+   `course_id` 		   varchar(8) NOT NULL,
+   `title` 		         varchar(200) NOT NULL,
+   `description` 		   text NOT NULL,
    `coordinator_name`   varchar(100) NOT NULL,
    `coordinator_email`  varchar(100) NOT NULL,
    `coordinator_phone`  varchar(100) NOT NULL,
    `disabled`           boolean DEFAULT false,
    `deleted`            boolean DEFAULT false,
  	`note` 				   varchar(300) DEFAULT NULL,
-   PRIMARY KEY (`course_code`)
+   PRIMARY KEY (`course_id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['batch']="CREATE TABLE `%sbatch` (
    `batch_id` 		varchar(20) NOT NULL,
-   `course_code` 	varchar(8) NOT NULL,
+   `course_id` 	varchar(8) NOT NULL,
    `description` 	varchar(50) NOT NULL,
    `start_date`   date NOT NULL,
    `end_date`     date NOT NULL,
@@ -31,7 +32,7 @@ $system_table_schemas['batch']="CREATE TABLE `%sbatch` (
    `disabled`     boolean DEFAULT false,
    `deleted`      boolean DEFAULT false,
  	`note` 			varchar(300) DEFAULT NULL,
-   UNIQUE KEY (`batch_id`,`course_code`),
+   UNIQUE KEY (`batch_id`,`course_id`),
    PRIMARY KEY (`batch_id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 

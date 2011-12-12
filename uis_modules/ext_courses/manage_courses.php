@@ -1,10 +1,10 @@
 <?php
 include A_CLASSES."/data_entry_class.php";
 $super_table		='course';
-$keys					=array('course_code');
-$key1					='course_code';
-$grid_array			=array('course_code','description');
-$grid_array_long	=array('course_code','description','disabled');
+$keys					=array('course_id');
+$key1					='course_id';
+$grid_array			=array('course_id','description');
+$grid_array_long	=array('course_id','description','disabled');
 
 $table				=$GLOBALS['MOD_P_TABLES'][$super_table];
 $formgen 			=null;

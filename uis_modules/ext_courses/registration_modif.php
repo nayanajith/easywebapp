@@ -1,10 +1,4 @@
 <?php
-$course_code_init='';
-//Geting the selected course from the request if available
-if(isset($_REQUEST['course_code'])){
-   $course_code_init=$_REQUEST['course_code'];
-}
-
 $sex_inner="
 <option value='M'>M</option>
 <option value='F'>F</option>
@@ -22,14 +16,26 @@ foreach(array("REV","DR","MR","MS","MRS","MISS") as $value){
 	$title_inner.="<option value='$value'>$value</option>";
 }
 
-$program_inner="";
-$arr=exec_query('SELECT DISTINCT c.course_code,c.description FROM '.$GLOBALS['MOD_P_TABLES']['course'].' c,'.$GLOBALS['MOD_P_TABLES']['batch'].' b WHERE  c.course_code=b.course_code and c.disabled=0 and b.start_date > current_date',Q_RET_ARRAY,null,'course_code');
 
-foreach($arr as $course_code =>  $info){
-   if($course_code_init==$course_code){
-	   $program_inner.="<option value='$course_code' selected='selected'>".$info['description']."</option>";
+$course_id_init='';
+//Geting the selected course from the request if available
+if(isset($_REQUEST['course_id'])){
+   $course_id_init=$_REQUEST['course_id'];
+}
+
+//generate course selection box
+$program_inner="";
+//display only available
+//$arr=exec_query('SELECT DISTINCT c.course_id,c.description FROM '.$GLOBALS['MOD_P_TABLES']['course'].' c,'.$GLOBALS['MOD_P_TABLES']['batch'].' b WHERE  c.course_id=b.course_id and c.disabled=0 and b.start_date > current_date',Q_RET_ARRAY,null,'course_id');
+
+//display all
+$arr=exec_query('SELECT course_id,title FROM '.$GLOBALS['MOD_P_TABLES']['course'],Q_RET_ARRAY,null,'course_id');
+
+foreach($arr as $course_id =>  $info){
+   if($course_id_init==$course_id){
+	   $program_inner.="<option value='$course_id' selected='selected'>".$info['title']."</option>";
    }else{
-	   $program_inner.="<option value='$course_code'>".$info['description']."</option>";
+	   $program_inner.="<option value='$course_id'>".$info['title']."</option>";
    }
 }
 
@@ -194,7 +200,7 @@ $fields=array(
 		"length"=>"355",
 		"dojoType"=>"dijit.form.Select",
 		"required"=>"true",
-		"section"=>"The course which you going to apply",
+		"section"=>"Select the course which you want to apply",
 		"inner"=>$program_inner,
 		"label"=>"Course",
 		"value"=>""),	

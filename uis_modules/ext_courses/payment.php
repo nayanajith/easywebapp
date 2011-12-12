@@ -79,6 +79,7 @@ if($reg_arr['status'] == 'ACCEPTED' || $reg_arr['status'] == 'ACCEPTED' ){
 		";
 
 }else{
+	echo "<button dojoType='dijit.form.Button' type='submit' onClick=\"open_page('ext_courses','available_courses')\">&laquo;&nbsp;Back</button>";
 	echo "<button dojoType='dijit.form.Button' type='submit' onClick=\"open_page('ext_courses','pay_offline')\">Pay offline to bank</button>";
 	echo "<button dojoType='dijit.form.Button' type='submit' onClick=\"open_page('ext_courses','pay_online')\">Pay online&nbsp;&raquo;</button>";
 }

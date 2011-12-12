@@ -38,7 +38,7 @@ if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
 
 //id table mapper array
 $table_of_id=array(
-   'course_code'=>$GLOBALS['MOD_P_TABLES']['course']
+   'course_id'=>$GLOBALS['MOD_P_TABLES']['course']
 );
 
 //Map filter for the given id
@@ -58,7 +58,7 @@ if(isset($_REQUEST['form'])){
 			if(isset($_REQUEST['action'])){
 				switch($_REQUEST['action']){
 				 case 'add':
-                $_REQUEST['batch_id']=$_REQUEST['course_code'].'-'.$_REQUEST['start_date'];
+                $_REQUEST['batch_id']=$_REQUEST['course_id'].'-'.$_REQUEST['start_date'];
 					return $formgen->add_record();
 				 break;
 				 case 'modify':

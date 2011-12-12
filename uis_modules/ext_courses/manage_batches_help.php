@@ -2,7 +2,7 @@
 <?php
 $help_array=array(
 'batch_id'=>'Batch id',
-'course_code'=>'Course code',
+'course_id'=>'Course code',
 'description'=>'Description',
 'start_date'=>'Start date',
 'end_date'=>'End date',

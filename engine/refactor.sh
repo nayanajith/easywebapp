@@ -9,7 +9,7 @@ fi
 FIND=$1;
 REPLACE=$2;
 
-for FILE in $( find  $( ls | grep -v -e js -e lib -e refactor.sh -e engine ) -type f | grep -v .svn  )
+for FILE in $( find  $( ls | grep -v -e js -e lib -e refactor.sh -e engine  -e img -e files) -type f | grep -v .svn  )
 do  
 	if [[ $( grep $FIND $FILE ) != '' ]] 
 	then 

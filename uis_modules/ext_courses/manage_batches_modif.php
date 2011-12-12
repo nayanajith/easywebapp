@@ -1,9 +1,9 @@
 <?php
 $program_inner="";
-$arr=exec_query('SELECT DISTINCT c.course_code,c.description FROM '.$GLOBALS['MOD_P_TABLES']['course'].' c,'.$GLOBALS['MOD_P_TABLES']['batch'].' b WHERE  c.course_code=b.course_code and c.disabled=0 and b.start_date > current_date',Q_RET_ARRAY,null,'course_code');
+$arr=exec_query('SELECT * FROM '.$GLOBALS['MOD_P_TABLES']['course'],Q_RET_ARRAY,null,'course_id');
 
-foreach($arr as $course_code =>  $info){
-   $program_inner.="<option value='$course_code'>".$info['description']."</option>";
+foreach($arr as $course_id =>  $info){
+   $program_inner.="<option value='$course_id'>".$info['description']."</option>";
 }
 
 
@@ -18,7 +18,7 @@ $fields=array(
 		"label"=>"Batch id",
 		"label_pos"=>"top",
 		"value"=>""),	
-"course_code"=>array(
+"course_id"=>array(
   		"length"=>"140",
 		"dojoType"=>"dijit.form.Select",
 		"required"=>"true",
@@ -29,10 +29,10 @@ $fields=array(
 
 
 /*
-"course_code"=>array(
-      "onChange"=>'set_param("course_code",this.value)',
-      "searchAttr"=>"course_code",
-      "store"=>"course_code_store",
+"course_id"=>array(
+      "onChange"=>'set_param("course_id",this.value)',
+      "searchAttr"=>"course_id",
+      "store"=>"course_id_store",
       "pageSize"=>"10",
 
 		"length"=>"140",

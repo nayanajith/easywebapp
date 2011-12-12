@@ -7,7 +7,7 @@ if(!isset($_SESSION['username'])){
 include(MOD_CLASSES."/offline_voucher_class.php");
 
 //Change offline payment status to PENDING
-exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['registration']." SET status='PENDING'  WHERE rec_id='".$_SESSION['user_id']."'",Q_RET_MYSQL_RES);
+exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='PENDING' payment_method='OFFLINE'  WHERE registration_on='".$_SESSION['user_id']."'",Q_RET_NON);
 
 //Acquire payer information
 $reg_arr	=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['registration']." WHERE rec_id='".$_SESSION['user_id']."'",Q_RET_ARRAY);
