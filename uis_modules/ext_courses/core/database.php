@@ -22,6 +22,7 @@ $GLOBALS["MOD_P_TABLES"]=array(
 	"student"	   =>"%sstudent",          
    "filter"		   =>"%sfilter",
 	"registration" =>"%sregistration",
+	"enroll"       =>"%senroll",
    /*
 	"validation"   =>"%svalidation",
 	"exam_hall"    =>"%sexam_hall",

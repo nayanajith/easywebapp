@@ -72,6 +72,7 @@ if(isset($_REQUEST['form'])){
                   $_SESSION['user_id']		=$_REQUEST['rec_id'];
 						$_SESSION['first_time'] =true;
 						$_SESSION['downloaded'] =false;
+						$_SESSION['course_code'] =$_REQUEST['program'];
 					}
 					return;
 				 break;

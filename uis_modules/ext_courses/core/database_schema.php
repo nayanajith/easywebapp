@@ -48,7 +48,6 @@ $system_table_schemas['filter']="CREATE TABLE `%sfilter` (
 
 $program_table_schemas['enroll']="CREATE TABLE `%senroll` (
   `id`                  mediumint   NOT NULL AUTO_INCREMENT,
-  `index_no`            varchar(8)   NOT NULL,
   `batch_id`            varchar(20)   NOT NULL,
   `registration_no`     varchar(8)   NOT NULL,
   `payment_status` 		enum('PENDING','ACCEPTED','REJECTED') DEFAULT NULL,
@@ -65,7 +64,7 @@ $system_table_schemas['student']="CREATE TABLE `%sstudent` (
    `rec_id` 				int(11) NOT NULL AUTO_INCREMENT,
    `registration_no` 	varchar(8),
    `index_no` 				varchar(8),
-   `program`				enum('MCS','MIT','MIS') NOT NULL,
+   `program`				varchar(10) NOT NULL,
   	`title` 					varchar(5) NOT NULL,
    `first_name` 			varchar(50) NOT NULL,
    `middle_names` 		varchar(50) NOT NULL,
