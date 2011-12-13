@@ -57,7 +57,7 @@ if(isset($_REQUEST['action'])){ /*haldle requests*/
          foreach(array("student","marks","exam","batch","course","gpa") as $table){
             $GLOBALS['CONNECTION'] = mysql_connect("localhost", "root", $_REQUEST['root_pwd']);
             if($GLOBALS['CONNECTION'] && mysql_select_DB($dest, $GLOBALS['CONNECTION'])){
-               if(!exec_query("DELETE FROM ".$program_."_$table",Q_RET_NONE,$db=null,$array_key=null,$deleted=null,$no_connect=true)){
+               if(!exec_query("DELETE FROM ".$program_."_$table",Q_RET_NON,$db=null,$array_key=null,$deleted=null,$no_connect=true)){
                   $create=false;
                   $error.=get_sql_error();
                }   
@@ -69,7 +69,7 @@ if(isset($_REQUEST['action'])){ /*haldle requests*/
          $GLOBALS['CONNECTION'] = mysql_connect("localhost", "root", $_REQUEST['root_pwd']);
          if($GLOBALS['CONNECTION'] && mysql_select_DB($dest, $GLOBALS['CONNECTION'])){
             foreach($migrate_queries as $key => $query){
-               if(!exec_query($query,Q_RET_NONE,$db=null,$array_key=null,$deleted=null,$no_connect=true)){
+               if(!exec_query($query,Q_RET_NON,$db=null,$array_key=null,$deleted=null,$no_connect=true)){
                   $create=false;
                   $error.=get_sql_error();
                }   
@@ -88,7 +88,7 @@ if(isset($_REQUEST['action'])){ /*haldle requests*/
                }
                $p_r=100-$a_r;
                $query="REPLACE INTO ".$program_."_rubric(exam_hid,course_id,paper,assignment)VALUES('$exam_hid','".$row['course_id']."','$p_r','$a_r')";
-               if(!exec_query($query,Q_RET_NONE,$db=null,$array_key=null,$deleted=null,$no_connect=true)){
+               if(!exec_query($query,Q_RET_NON,$db=null,$array_key=null,$deleted=null,$no_connect=true)){
                   $error.=get_sql_error();
                }   
             }

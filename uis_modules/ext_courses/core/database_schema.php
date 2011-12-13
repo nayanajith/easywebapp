@@ -10,6 +10,7 @@ $system_table_schemas['course']="CREATE TABLE `%scourse` (
    `course_id` 		   varchar(8) NOT NULL,
    `title` 		         varchar(200) NOT NULL,
    `description` 		   text NOT NULL,
+   `fee` 		         int NOT NULL,
    `coordinator_name`   varchar(100) NOT NULL,
    `coordinator_email`  varchar(100) NOT NULL,
    `coordinator_phone`  varchar(100) NOT NULL,
@@ -54,6 +55,7 @@ $program_table_schemas['enroll']="CREATE TABLE `%senroll` (
   `payment_status` 		enum('PENDING','ACCEPTED','REJECTED') DEFAULT NULL,
   `payment_method`      enum('OFFLINE','ONLINE') DEFAULT NULL,
   `transaction_id`      varchar(20) DEFAULT NULL,
+  `reserved`            boolean DEFAULT NULL false,
 
    UNIQUE KEY (`batch_id`,`registration_no`),
   	PRIMARY KEY (`id`)

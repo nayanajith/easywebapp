@@ -4,7 +4,7 @@ if(!isset($_SESSION['username'])){
 	return;
 }
 
-exec_query("UPDATE ".$GLOBALS['MOD_S_TABLES']['registration']." set downloaded=true WHERE rec_id='".strtoupper($_SESSION['user_id'])."'",Q_RET_NONE);
+exec_query("UPDATE ".$GLOBALS['MOD_S_TABLES']['registration']." set downloaded=true WHERE rec_id='".strtoupper($_SESSION['user_id'])."'",Q_RET_NON);
 
 $reg_arr	=exec_query("SELECT * FROM ".$GLOBALS['MOD_S_TABLES']['registration']." WHERE rec_id='".strtoupper($_SESSION['user_id'])."'",Q_RET_ARRAY);
 $reg_arr=$reg_arr[0];

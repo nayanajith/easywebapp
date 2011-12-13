@@ -24,6 +24,14 @@ $fields=array(
 		"label"=>"Description",
 		"label_pos"=>"top",
 		"value"=>""),	
+"fee"=>array(
+      "length"=>"80",
+		"dojoType"=>"dijit.form.NumberTextBox",
+		"required"=>"true",
+		"label"=>"Course fee (RS)",
+		"label_pos"=>"top",
+		"value"=>""),	
+
 "coordinator_name"=>array(
 		"length"=>"350",
 		"dojoType"=>"dijit.form.ValidationTextBox",
@@ -52,6 +60,7 @@ $fields=array(
 		"label"=>"Disabled",
 		"label_pos"=>"right",
 		"value"=>""),	
+/*
 "deleted"=>array(
 		"length"=>"70",
 		"dojoType"=>"dijit.form.CheckBox",
@@ -59,6 +68,7 @@ $fields=array(
 		"label"=>"Deleted",
 		"label_pos"=>"right",
 		"value"=>""),	
+ */
 "note"=>array(
       "cols"=>"40",
 		"dojoType"=>"dijit.form.SimpleTextarea",

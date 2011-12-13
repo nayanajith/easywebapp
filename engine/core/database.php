@@ -101,7 +101,7 @@ function opendb2($DB) {
 
 define('Q_RET_ARRAY'      ,'0');//default
 define('Q_RET_MYSQL_RES','1');
-define('Q_RET_NONE'      ,'2');
+define('Q_RET_NON'      ,'2');
 
 /*Store affected rows*/
 $aff_rows=0;
@@ -215,7 +215,7 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
       case Q_RET_MYSQL_RES:
          return $result;
       break;
-      case Q_RET_NONE:
+      case Q_RET_NON:
       break;
       case Q_RET_ARRAY:
       default:
@@ -323,7 +323,7 @@ function csv_to_db_nr($table,$field_array,$csv_file,$first_line_header,$db=null)
          continue;
       }
       $query="INSERT INTO $table(".explode($field_array,',').")values($line)";
-      exec_query($query,Q_RET_NONE,$db);
+      exec_query($query,Q_RET_NON,$db);
    }
 }
 

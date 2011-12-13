@@ -51,6 +51,7 @@ $GLOBALS['MOD_TBL_LOGIN']   = array(
    'password'		=>'NIC',
    'fullname'		=>'last_name',
    'user_id'		=>'registration_no',
+   'rec_id'		   =>'rec_id', //somthing extra
    'permission'	=>'status'       
 );
 

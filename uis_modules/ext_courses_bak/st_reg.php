@@ -79,7 +79,7 @@ if(isset($_REQUEST['form'])){
                 */
 				
                   $query = "UPDATE ".$table." SET index_no = '".$index_no."' WHERE NIC='". $_SESSION['password']."'" ;
-                  $res = exec_query($query,Q_RET_NONE);				
+                  $res = exec_query($query,Q_RET_NON);				
 					}
              return;
              break;

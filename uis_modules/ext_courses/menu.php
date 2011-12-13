@@ -17,7 +17,7 @@ if(isset($_SESSION['user_id'])){
 	//Payment link only show after login
 	$menu_array["payment"]=array("PAGE"=>"Payments","VISIBLE"=>"true");
    //Disapear registration link after login
-	$menu_array["registration"]=array("PAGE"=>"Application","VISIBLE"=>"false");
+	$menu_array["registration"]="My Profile";
 }
 
 //Visible application window after login if the users is a system user

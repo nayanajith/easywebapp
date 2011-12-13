@@ -106,7 +106,7 @@ Insrt index numbers from old bit database to bit_student database
 
 $index_query="INSERT INTO ".$_REQUEST['new_db'].".bit_student(index_no) SELECT a.Index_No FROM ".$_REQUEST['old_db'].".bit_all AS a WHERE a.Reg='R';";
 
-$res=exec_query($index_query,Q_RET_NONE);
+$res=exec_query($index_query,Q_RET_NON);
 
 /*
 Formatted data will be exported to this csv before importing back to the database
@@ -165,20 +165,20 @@ $marks_query="SELECT * FROM ".$_REQUEST['old_db'].".bit_all WHERE Reg='R'";
 
    //Migrating exams
    $exam_query="INSERT INTO ".$_REQUEST['new_db'].".bit_exam(exam_hid,student_year,semester,exam_date) SELECT DISTINCT exam_hid,LEFT(RIGHT(exam_hid,3),1),RIGHT(exam_hid,1),LEFT(exam_hid,10)  FROM ".$_REQUEST['new_db'].".".$_REQUEST['new_table'].";";
-   exec_query($exam_query,Q_RET_NONE);
+   exec_query($exam_query,Q_RET_NON);
 
    //Migrating course ids
    $course_query="INSERT INTO ".$_REQUEST['new_db'].".bit_course(course_id,lecture_credits) SELECT DISTINCT course_id,4  FROM ".$_REQUEST['new_db'].".".$_REQUEST['new_table'].";";
-   exec_query($course_query,Q_RET_NONE);
+   exec_query($course_query,Q_RET_NON);
 
    $course_exam="INSERT INTO ".$_REQUEST['new_db'].".bit_batch(batch_id) SELECT DISTINCT LEFT(index_no,2) FROM ".$_REQUEST['new_db'].".bit_student;";
-   exec_query($course_exam,Q_RET_NONE);
+   exec_query($course_exam,Q_RET_NON);
 
    $student   ="REPLACE INTO ".$_REQUEST['new_db'].".bit_student(index_no,registration_no,initials,last_name,full_name,NID,sex,title,batch_id) SELECT IndexNo,RegNo,Initials,Name,Fname,NID,Gender,Title,LEFT(IndexNo,2) FROM courseadmin.bitstudent;";
-   exec_query($student,Q_RET_NONE);
+   exec_query($student,Q_RET_NON);
 
    $course   ="REPLACE INTO ".$_REQUEST['new_db'].".bit_course(course_id,student_year,semester,course_name,prerequisite,lecture_credits,practical_credits,maximum_students,compulsory,alt_course_id,offered_by,GPA_con) SELECT CourseId,SYear,Semester,CourseName,Prerequisite,Credits_L,Credits_P,MaxStudents,Compulsory,AltCourseId,OfferedBy,GPACon FROM courseadmin.courses where courseid like 'IT%'";
-   exec_query($course,Q_RET_NONE);
+   exec_query($course,Q_RET_NON);
 }else{
 /*
 The form to be presented if the parameters are not present

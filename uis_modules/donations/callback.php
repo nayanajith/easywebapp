@@ -49,7 +49,7 @@ $receipt=$msg_crypt->getReceipt($_REQUEST['receipt']);
 //$receipt=array( "tp_ref_no" => "11000221", "tr_ref_no" => "MCON-REG-08550032-0007010720114", "tax" => "66.80", "status" => "ACCEPTED" );
 //Check for the consistance
 
-exec_query("UPDATE ".$GLOBALS['MOD_S_TABLES']['payment']." SET transaction_id='".$receipt['tr_ref_no']."',status='".$receipt['status']."',tax='".$receipt['tax']."'  WHERE payment_id='".$receipt['tp_ref_no']."'",Q_RET_NONE);
+exec_query("UPDATE ".$GLOBALS['MOD_S_TABLES']['payment']." SET transaction_id='".$receipt['tr_ref_no']."',status='".$receipt['status']."',tax='".$receipt['tax']."'  WHERE payment_id='".$receipt['tp_ref_no']."'",Q_RET_NON);
 switch($receipt['status']){
    case 'PENDING':
 		echo "<h3 style='color:orange'>Transaction pending...</h4>";

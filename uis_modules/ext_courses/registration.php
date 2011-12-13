@@ -17,7 +17,7 @@ $file_name        =PAGE;
 
 $formgen 			=null;
 if(isset($_SESSION['user_id'])){
-	$formgen 		= new Formgenerator($table,$keys,$file_name,$_SESSION['user_id']);
+	$formgen 		= new Formgenerator($table,$keys,$file_name,$_SESSION['rec_id']);
 }else{
 	$formgen 		= new Formgenerator($table,$keys,$file_name,null);
 }
@@ -152,6 +152,7 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 	echo $formgen->gen_data_grid($grid_array,null,$key1);
 	echo "</td></tr></table>";
 }else{
+   if(!isset($_SESSION['user_id'])){
 		echo "</td><td width=40% style='vertical-align:top;valign:top;'>";
 		echo "<img src='".IMG."/help_32.png'>";
 		echo "<h4>Postgraduate Programs </h4>
@@ -203,14 +204,13 @@ Colombo 07.";
 		echo "</td></tr></table>";
 
 
-	if(isset($_SESSION['downloaded'])&& !$_SESSION['downloaded']){
-	//if(isset($_SESSION['first_time'])&& $_SESSION['first_time']){
-		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
-		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('modify','ext_courses','available_courses')\">Next&nbsp;&raquo;</button>
-		</div>";
-	}else{
 		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
 		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('add','ext_courses','available_courses')\">Next&nbsp;&raquo;</button>
+		</div>";
+	}else{
+		echo "</td></tr></table>";
+		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
+		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('modify','ext_courses','registration')\">Modify&nbsp;&raquo;</button>
 		</div>";
 
 	}

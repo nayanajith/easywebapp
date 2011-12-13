@@ -81,11 +81,11 @@ function payment_accepted($row,$row_prog,$amount){
 
 function peyment_process($row,$row_prog,$amount){
 	//Create a new record for the payment
-	exec_query("SET AUTOCOMMIT=0",Q_RET_NONE);
-	exec_query("START TRANSACTION",Q_RET_NONE);
-	exec_query("INSERT INTO ".$GLOBALS['MOD_S_TABLES']['payment']."(registration_no,amount,tax,status)VALUES('".$row['registration_no']."','$amount','PENDING') ",Q_RET_NONE);
+	exec_query("SET AUTOCOMMIT=0",Q_RET_NON);
+	exec_query("START TRANSACTION",Q_RET_NON);
+	exec_query("INSERT INTO ".$GLOBALS['MOD_S_TABLES']['payment']."(registration_no,amount,tax,status)VALUES('".$row['registration_no']."','$amount','PENDING') ",Q_RET_NON);
 	$rec_id=exec_query("SELECT MAX(rec_id) rec_id FROM  ".$GLOBALS['MOD_S_TABLES']['payment'],Q_RET_ARRAY);
-	exec_query("COMMIT",Q_RET_NONE);
+	exec_query("COMMIT",Q_RET_NON);
 	$rec_id=$rec_id[0]['rec_id'];
 	
 	print_user_info($row,$row_prog,$amount);

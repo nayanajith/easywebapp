@@ -76,7 +76,7 @@ if(isset($_REQUEST['form'])){
 						$arr	=$arr[0];
 
 						//setting registration number fot he user
-						exec_query("UPDATE ".$GLOBALS['MOD_S_TABLES']['registration']." set registration_no='".gen_reg_no($arr['rec_id'])."' WHERE rec_id='".strtoupper($arr['rec_id'])."'",Q_RET_NONE);
+						exec_query("UPDATE ".$GLOBALS['MOD_S_TABLES']['registration']." set registration_no='".gen_reg_no($arr['rec_id'])."' WHERE rec_id='".strtoupper($arr['rec_id'])."'",Q_RET_NON);
 							
 						//If the user want to register drop him/her to the email verification procedure
 						if(isset($_REQUEST['registration_type']) && $_REQUEST['registration_type']=1){
@@ -95,7 +95,7 @@ if(isset($_REQUEST['form'])){
 							return;
 						}else{
 							//If the user is one time user let him/her login instantly
-							exec_query("UPDATE ".$GLOBALS['MOD_S_TABLES']['registration']." SET status='TEMP' WHERE rec_id='".$arr['rec_id']."'",Q_RET_NONE);
+							exec_query("UPDATE ".$GLOBALS['MOD_S_TABLES']['registration']." SET status='TEMP' WHERE rec_id='".$arr['rec_id']."'",Q_RET_NON);
 							$_SESSION['username']	=$_REQUEST['email'];
                      $_SESSION['user_id']		=$arr['rec_id'];
                      $_SESSION['email']		=$_REQUEST['email'];

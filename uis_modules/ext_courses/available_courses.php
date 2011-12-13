@@ -11,25 +11,34 @@ if(isset($_SESSION['first_time']) &&  $_SESSION['first_time']==true){
 	$arr	=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['student']." WHERE email_1='".$_SESSION['username']."'",Q_RET_ARRAY);
 
    //Generate the registration number for the student
+	$_SESSION['rec_id']=$arr[0]['rec_id'];
 	$_SESSION['user_id']=gen_reg_no($arr[0]['rec_id']);
 
    //Update the students record with registration number
-   exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['student']." set registration_no='".$_SESSION['user_id']."' WHERE rec_id='".strtoupper($_SESSION['user_id'])."'",Q_RET_NONE);
-   if(!enroll_student(null,$_SESSION['course_id'],$_SESSION['user_id'])){
-      echo "Sorry current batch for this course is full. Please contact CSC or apply for the next batch."; 
+   exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['student']." SET registration_no='".$_SESSION['user_id']."' WHERE email_1='".$_SESSION['username']."'",Q_RET_NON);
+   if(!enroll_student(get_current_batch($_SESSION['course_id']),$_SESSION['user_id'])){
+      echo "Sorry current batch for the requested course is full. Please contact CSC or apply for the next batch."; 
+   }else{
+      include 'payment.php';
+      return;
    }
 
 }elseif(isset($_REQUEST['un_enroll']) && $_REQUEST['un_enroll'] == true){
    un_enroll_student($_REQUEST['batch_id'],$_SESSION['user_id']);
 
-}elseif(isset($_REQUEST['pay_online']) && $_REQUEST['pay_online'] == true){
+}elseif(isset($_REQUEST['make_payment']) && $_REQUEST['make_payment'] == true){
+   $_SESSION['batch_id']=$_REQUEST['batch_id'];
+   $_SESSION['enroll_id']=get_enroll_id($_REQUEST['batch_id'],$_REQUEST['user_id']);
 	//header('Location: ?module='.MODULE.'&page=payment&batch_id='.$_REQUEST['batch_id']);
    include 'payment.php';
    return;
 
 }elseif(isset($_REQUEST['reserve_a_seat']) && $_REQUEST['reserve_a_seat'] == true){
-   enroll_student(null,$_REQUEST['batch_id'],$_SESSION['user_id']);
+   enroll_student($_REQUEST['batch_id'],$_SESSION['user_id']);
+   $_SESSION['batch_id']=$_REQUEST['batch_id'];
 	//header('Location: ?module='.MODULE.'&page=payment&batch_id='.$_REQUEST['batch_id']);
+   
+   //If this is first time and no problem found, proceed with the payment for the selected course
    include 'payment.php';
    return;
 }
@@ -56,7 +65,8 @@ function get_available_seats($batch_id){
  */
 function enroll_student($batch_id,$registration_no){
    if(get_available_seats($batch_id) >=0){
-      exec_query("INSERT INTO ".$GLOBALS['MOD_P_TABLES']['enroll']."(`registration_no`,`batch_id`)values('".$registration_no."','".$batch_id."') ",Q_RET_NONE);
+      exec_query("INSERT INTO ".$GLOBALS['MOD_P_TABLES']['enroll']."(`registration_no`,`batch_id`)values('".$registration_no."','".$batch_id."') ",Q_RET_NON);
+      $_SESSION['enroll_id']=get_enroll_id($batch_id,$registration_no);
       return true;
    }else{
       return false;
@@ -64,11 +74,21 @@ function enroll_student($batch_id,$registration_no){
 }
 
 /**
+ * Enroll a student with a given course or batch
+ */
+function get_enroll_id($batch_id,$registration_no){
+      $arr=exec_query("SElECT id FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE `registration_no`='".$registration_no."' AND `batch_id`='".$batch_id."'",Q_RET_ARRAY);
+      return $arr[0]['id'];
+}
+
+
+
+/**
  * Delete a student from the enralled list
  */
 function un_enroll_student($batch_id,$registration_no){
    //delete the user from database
-   exec_query("DELETE FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE registration_no='".$registration_no."' AND batch_id='".$batch_id."'",Q_RET_NONE);
+   exec_query("DELETE FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE registration_no='".$registration_no."' AND batch_id='".$batch_id."'",Q_RET_NON);
 }
 
 
@@ -101,7 +121,7 @@ foreach($reg_arr as $batch_id => $info){
       $button_bar="<font color='green'>Your payment received and a seat was reserved for you in this course</font>";
       $title=$info['title']." <font color='green'>&isin;</font>";
    }else{
-      $button_bar="<button dojoType='dijit.form.Button' type='submit' name='un_enroll' value='true' >Un enroll</button><button type='submit' name='pay_online' value='true' dojoType='dijit.form.Button' >Pay Online &#187;</button>";
+      $button_bar="<button dojoType='dijit.form.Button' type='submit' name='un_enroll' value='true' >Un enroll</button><button type='submit' name='make_payment' value='true' dojoType='dijit.form.Button' >Make payment &#187;</button>";
       $title=$info['title']." <font color='red'>&notin;</font>";
    }
    $payment_status="<font color='red'>Your payment is not recceived yet. Please be noticed that the available seats will be served in first come first server basis.</font>";

@@ -96,7 +96,7 @@ function gen_gpa(){
             'GPA'=>round($student->getDGPA(),4),
             'credits'=>$student->getTotalCredits(),
          );
-         exec_query("REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(".implode(array_keys($row),",").")values('".implode(array_values($row),"','")."')",Q_RET_NONE);
+         exec_query("REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(".implode(array_keys($row),",").")values('".implode(array_values($row),"','")."')",Q_RET_NON);
       }
       $row=array(
          'index_no'=>$index_no,
@@ -117,7 +117,7 @@ function gen_gpa(){
          'GPA'=>round($student->getCGPA(),4),
          'credits'=>$student->getTotalCredits(),
       );
-      exec_query("REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(".implode(array_keys($row),",").")values('".implode(array_values($row),"','")."')",Q_RET_NONE);
+      exec_query("REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(".implode(array_keys($row),",").")values('".implode(array_values($row),"','")."')",Q_RET_NON);
    }
    return_status_json('OK','GPA calculated successfully for the batch-'.$_SESSION[PAGE]['batch_id']);
 }
