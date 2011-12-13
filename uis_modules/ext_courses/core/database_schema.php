@@ -56,8 +56,24 @@ $program_table_schemas['enroll']="CREATE TABLE `%senroll` (
   `payment_method`      enum('OFFLINE','ONLINE') DEFAULT NULL,
   `transaction_id`      varchar(20) DEFAULT NULL,
   `reserved`            boolean DEFAULT NULL false,
+  `updated_time` 		   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
    UNIQUE KEY (`batch_id`,`registration_no`),
+  	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+$program_table_schemas['invoice']="CREATE TABLE `%sinvoice` (
+  `id`                  int   NOT NULL AUTO_INCREMENT,
+  `invoice_id`          varchar(8)     NOT NULL,
+  `invoice_title`       varchar(200)   NOT NULL,
+  `purpose`             varchar(200)   NOT NULL,
+  `amount_number`       int            NOT NULL,
+  `amount_word`         varchar(200)   NOT NULL,
+  `payer_name` 		   varchar(300)   NOT NULL,
+  `payer_NIC` 		      varchar(11)    NOT NULL,
+  `acc_no`              varchar(30)    NOT NULL,
+   `updated_time` 		timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   UNIQUE KEY (`invoice_id`),
   	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 

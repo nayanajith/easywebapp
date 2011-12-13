@@ -28,7 +28,7 @@ if(isset($_SESSION['first_time']) &&  $_SESSION['first_time']==true){
 
 }elseif(isset($_REQUEST['make_payment']) && $_REQUEST['make_payment'] == true){
    $_SESSION['batch_id']=$_REQUEST['batch_id'];
-   $_SESSION['enroll_id']=get_enroll_id($_REQUEST['batch_id'],$_REQUEST['user_id']);
+   $_SESSION['enroll_id']=get_enroll_id($_REQUEST['batch_id'],$_SESSION['user_id']);
 	//header('Location: ?module='.MODULE.'&page=payment&batch_id='.$_REQUEST['batch_id']);
    include 'payment.php';
    return;

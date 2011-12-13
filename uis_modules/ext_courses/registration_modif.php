@@ -209,7 +209,7 @@ $fields=array(
 		"length"=>"350",
 		"dojoType"=>"dijit.form.ValidationTextBox",
 		"required"=>"true",
-		"section"=>"Tell us about you",
+		"section"=>"About you",
 		"autocomplete"=>"on",
 		"label"=>"First Name",
 		"value"=>"nayanajith"),	
@@ -778,6 +778,8 @@ $fields["NIC"]=array(
 		"label"=>"NIC Number",
 		"value"=>"");
 
+}elseif(isset($_SESSION['user_id'])){
+   unset($fields["program"]);
 }
 
 
