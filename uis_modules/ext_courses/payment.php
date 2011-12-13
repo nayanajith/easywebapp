@@ -5,7 +5,7 @@ if(!isset($_SESSION['username'])){
 	return;
 }
 //Get course, batch, enroll information
-$course_arr=exec_query("SELECT c.title,c.fee,b.start_date,b.batch_id FROM ".$GLOBALS['MOD_P_TABLES']['course']." c,".$GLOBALS['MOD_P_TABLES']['batch']." b, ".$GLOBALS['MOD_P_TABLES']['enroll']." e WHERE e.id='".$_SESSION['enroll_id']."' AND e.batch_id=b.batch_id AND b.course_id=c.course_id",Q_RET_ARRAY);
+$course_arr=exec_query("SELECT c.title,c.fee,b.start_date,b.batch_id FROM ".$GLOBALS['MOD_P_TABLES']['course']." c,".$GLOBALS['MOD_P_TABLES']['batch']." b, ".$GLOBALS['MOD_P_TABLES']['enroll']." e WHERE e.enroll_id='".$_SESSION['enroll_id']."' AND e.batch_id=b.batch_id AND b.course_id=c.course_id",Q_RET_ARRAY);
 $course_arr=$course_arr[0];
 
 //Get student information

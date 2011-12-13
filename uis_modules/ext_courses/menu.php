@@ -14,20 +14,19 @@ $menu_array   = array(
 if(isset($_SESSION['user_id'])){
 	$menu_array["login"]=array("PAGE"=>"Login","VISIBLE"=>"false");
 	$menu_array["available_courses"]	=array("PAGE"=>"Available Courses","VISIBLE"=>"true");
-	//Payment link only show after login
-	$menu_array["payment"]=array("PAGE"=>"Payments","VISIBLE"=>"true");
    //Disapear registration link after login
 	$menu_array["registration"]="My Profile";
 }
 
 //Visible application window after login if the users is a system user
 if(isset($_SESSION['loged_module']) && $_SESSION['loged_module']=='home'){
-	$menu_array["registration"]=array("PAGE"=>"Application","VISIBLE"=>"true");
+	$menu_array["registration"]=array("PAGE"=>"Students","VISIBLE"=>"true");
 	$menu_array["payment"]=array("PAGE"=>"Payment","VISIBLE"=>"false");
 	$menu_array["login"]=array("PAGE"=>"Login","VISIBLE"=>"false");
 	$admin_menu=array(
 	   "manage_courses"				=>"Courses",
 	   "manage_batches"				=>"Batches",
+		"manage_enrollment"			=>"Enrollments",
 		"reports"						=>"Reports",
 	   "manage_config"				=>"Configure",
   	);

@@ -18,13 +18,13 @@ if (top != self){
 
 //If no receipt was send through the request show the previouse status of the online payment and exit
 if(!isset($_REQUEST['receipt'])){
-	$user_info=exec_query("SELECT payment_status FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE id='".$_SESSION['enroll_id']."'",Q_RET_ARRAY);
+	$user_info=exec_query("SELECT payment_status FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_ARRAY);
 	$user_info=$user_info[0];
 	if($user_info['payment_status'] == 'ACCEPTED'){
 		echo "
 		<h3>Online payment status</h3>
 		<span style='color:green'>You have successfully completed the payment online!</span><br/>
-		Please check your email for the payment voucher... <br/>
+		Please check your email for the payment invoice... <br/>
 		Thank you!
 		";
 	}else{
@@ -44,31 +44,32 @@ $receipt=$msg_crypt->getReceipt($_REQUEST['receipt']);
 //Array ( [tp_ref_no] => 08550032 [tr_ref_no] => MCON-REG-08550032-0007010720114 [tax] => 66.80 [status] => REJECTED ) 
 //$receipt=array( "tp_ref_no" => "11000221", "tr_ref_no" => "MCON-REG-08550032-0007010720114", "tax" => "66.80", "status" => "ACCEPTED" );
 //Check for the consistance
-$test=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE id='".$_SESSION['enroll_id']."' AND registration_no='".$receipt['tp_ref_no'] ."'",Q_RET_ARRAY);
+$test=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE enroll_id='".$_SESSION['enroll_id']."' AND registration_no='".$receipt['tp_ref_no'] ."'",Q_RET_ARRAY);
 if(get_num_rows() != 1){
 	session_destroy();
 }
 
 
-exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET transaction_id='".$receipt['tr_ref_no']."'  WHERE id='".$_SESSION['enroll_id']."'",Q_RET_MYSQL_RES);
+exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET transaction_id='".$receipt['tr_ref_no']."'  WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_MYSQL_RES);
 switch($receipt['status']){
    case 'PENDING':
 		echo "<h3 style='color:orange'>Transaction pending...</h4>";
    break;
+	case'REJECTED':
    case 'ACCEPTED':
 		//Changing the online payment status to ACCEPTED
-		exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='ACCEPTED'  WHERE id='".$_SESSION['enroll_id']."'",Q_RET_MYSQL_RES);
+		exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='ACCEPTED'  WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_MYSQL_RES);
 		$row=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['student']." WHERE registration_no='".$_SESSION['user_id']."'",Q_RET_ARRAY);
 		$row=$row[0];
 
       //Get course, batch, enroll information
-      $course_arr=exec_query("SELECT c.title,c.fee,b.start_date,b.batch_id,c.online_payment_code FROM ".$GLOBALS['MOD_P_TABLES']['course']." c,".$GLOBALS['MOD_P_TABLES']['batch']." b, ".$GLOBALS['MOD_P_TABLES']['enroll']." e WHERE e.id='".$_SESSION['enroll_id']."' AND e.batch_id=b.batch_id AND b.course_id=c.course_id",Q_RET_ARRAY);
+      $course_arr=exec_query("SELECT c.title,c.fee,b.start_date,b.batch_id,c.online_payment_code FROM ".$GLOBALS['MOD_P_TABLES']['course']." c,".$GLOBALS['MOD_P_TABLES']['batch']." b, ".$GLOBALS['MOD_P_TABLES']['enroll']." e WHERE e.enroll_id='".$_SESSION['enroll_id']."' AND e.batch_id=b.batch_id AND b.course_id=c.course_id",Q_RET_ARRAY);
       $course_arr=$course_arr[0];
 
 		echo "
 		<h3>Online payment status</h3>
 		<span style='color:green'>You have successfully completed the payment online!</span><br/>
-		Please check your email for the payment voucher... <br/>
+		Please check your email for the payment invoice... <br/>
 		Thank you!
 		";
 
@@ -101,11 +102,11 @@ switch($receipt['status']){
 
 		include_once MOD_CLASSES."/mail_templates_class.php";
 		$templates	=new Mail_templates();
-		$mail_body	=$templates->payment_voucher($user_info,$program_arr,$pay_for_arr);
+		$mail_body	=$templates->payment_invoice($user_info,$program_arr,$pay_for_arr);
 	break;
 	case'REJECTED':
 		//Changing the online payment status to REJECTED
-		exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='REJECTED'  WHERE id='".$_SESSION['enroll_id']."'",Q_RET_NON);
+		exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='REJECTED'  WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_NON);
 
 		echo "
 		<h3>Online payment status</h3>

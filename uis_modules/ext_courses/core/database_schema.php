@@ -50,7 +50,7 @@ $program_table_schemas['filter']="CREATE TABLE `%sfilter` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['enroll']="CREATE TABLE `%senroll` (
-  `id`                  int   NOT NULL AUTO_INCREMENT,
+  `enroll_id`                  int   NOT NULL AUTO_INCREMENT,
   `batch_id`            varchar(20)   NOT NULL,
   `registration_no`     varchar(8)   NOT NULL,
   `payment_status` 		enum('PENDING','ACCEPTED','REJECTED') DEFAULT NULL,
@@ -60,11 +60,11 @@ $program_table_schemas['enroll']="CREATE TABLE `%senroll` (
   `updated_time` 		   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
    UNIQUE KEY (`batch_id`,`registration_no`),
-  	PRIMARY KEY (`id`)
+  	PRIMARY KEY (`enroll_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['voucher']="CREATE TABLE `%svoucher` (
-  `id`                  int   NOT NULL AUTO_INCREMENT,
+  `rec_id`                  int   NOT NULL AUTO_INCREMENT,
   `voucher_id`          varchar(8)     NOT NULL,
   `voucher_title`       varchar(200)   NOT NULL,
   `purpose`             varchar(200)   NOT NULL,

@@ -3,8 +3,8 @@
 define('MOD_CLASSES',A_MODULES."/".MODULE."/classes");
 define('MOD_CORE',A_MODULES."/".MODULE."/core");
 define('MOD_DOCS',W_MODULES."/".MODULE."/docs");
-define('INVOICE_DIR',A_MODULES."/".MODULE."/voucher");
-define('VOUCHER_DIR',A_MODULES."/".MODULE."/voucher");
+define('INVOICE_DIR',A_MODULES."/".MODULE."/invoices");
+define('VOUCHER_DIR',A_MODULES."/".MODULE."/vouchers");
 define('MOD_A_ROOT',A_MODULES."/".MODULE);
 
 /*---------------------------configure Database--------------------------------*/

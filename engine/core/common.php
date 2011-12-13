@@ -299,8 +299,27 @@ function gen_reg_no($sequence){
 }
 
 /*
-File donload function 
+File donload function $file: path to file
 */
+function file_download_plain($file){
+   $finfo      =finfo_open(FILEINFO_MIME_TYPE);
+   $mime_type  =finfo_file($finfo, $file);
+      
+   if (file_exists($file)) {
+      header("Pragma: public");
+      header("Expires: 0");
+      header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+      header("Cache-Control: private",false);
+      header("Content-Type: ".$mime_type);
+      header("Content-Disposition: attachment; filename=\"".basename($file)."\";");
+      header("Content-Transfer-Encoding: binary");
+      header("Content-Length: ".@filesize($file));
+      readfile($file);
+   }else{
+      return_status_json('ERROR',"File not found!");
+   }
+   exit;
+}
 
 function file_download($path,$fid){
    $file       =$path."/".base64_decode($fid);

@@ -7,8 +7,8 @@ if(!isset($_SESSION['username'])){
  */
 include A_CLASSES."/data_entry_class.php";
 $super_table		='student';
-$keys					=array('rec_id');
-$key1					='rec_id';
+$keys					=array('registration_no');
+$key1					='registration_no';
 $grid_array			=array('registration_no','NIC','email_1');
 $grid_array_long	=array('registration_no','NIC','first_name','status');
 
@@ -16,7 +16,7 @@ $table				=$GLOBALS['MOD_P_TABLES'][$super_table];
 $file_name        =PAGE;
 
 $formgen 			=null;
-if(isset($_SESSION['user_id'])){
+if(isset($_SESSION['user_id']) && isset($_SESSION['loged_module']) && $_SESSION['loged_module'] != 'home'){
 	$formgen 		= new Formgenerator($table,$keys,$file_name,$_SESSION['rec_id']);
 }else{
 	$formgen 		= new Formgenerator($table,$keys,$file_name,null);

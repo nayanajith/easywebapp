@@ -6,7 +6,7 @@ if(!isset($_SESSION['username'])){
 
 //Acquire payer information
 //Get course, batch, enroll information
-$course_arr=exec_query("SELECT c.title,c.fee,b.start_date,b.batch_id,c.online_payment_code FROM ".$GLOBALS['MOD_P_TABLES']['course']." c,".$GLOBALS['MOD_P_TABLES']['batch']." b, ".$GLOBALS['MOD_P_TABLES']['enroll']." e WHERE e.id='".$_SESSION['enroll_id']."' AND e.batch_id=b.batch_id AND b.course_id=c.course_id",Q_RET_ARRAY);
+$course_arr=exec_query("SELECT c.title,c.fee,b.start_date,b.batch_id,c.online_payment_code FROM ".$GLOBALS['MOD_P_TABLES']['course']." c,".$GLOBALS['MOD_P_TABLES']['batch']." b, ".$GLOBALS['MOD_P_TABLES']['enroll']." e WHERE e.enroll_id='".$_SESSION['enroll_id']."' AND e.batch_id=b.batch_id AND b.course_id=c.course_id",Q_RET_ARRAY);
 $course_arr=$course_arr[0];
 //Get student information
 $student_arr=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['student']." WHERE registration_no='".$_SESSION['user_id']."'",Q_RET_ARRAY);
@@ -85,7 +85,7 @@ function payment_accepted($student_arr,$course_arr){
 
 function peyment_process($student_arr,$course_arr){
    //Change offline payment status to PENDING
-   exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='PENDING', payment_method='ONLINE'  WHERE id='".$_SESSION['enroll_id']."'",Q_RET_NON);
+   exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='PENDING', payment_method='ONLINE'  WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_NON);
 
 	print_user_info($student_arr,$course_arr);
 

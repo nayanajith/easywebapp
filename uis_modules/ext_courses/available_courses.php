@@ -77,8 +77,8 @@ function enroll_student($batch_id,$registration_no){
  * Enroll a student with a given course or batch
  */
 function get_enroll_id($batch_id,$registration_no){
-      $arr=exec_query("SElECT id FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE `registration_no`='".$registration_no."' AND `batch_id`='".$batch_id."'",Q_RET_ARRAY);
-      return $arr[0]['id'];
+      $arr=exec_query("SElECT enroll_id FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE `registration_no`='".$registration_no."' AND `batch_id`='".$batch_id."'",Q_RET_ARRAY);
+      return $arr[0]['enroll_id'];
 }
 
 
@@ -117,14 +117,15 @@ foreach($reg_arr as $batch_id => $info){
    $my_courses[]=$info['course_id'];
    $button_bar="";
    $title="";
+	$payment_status="";
    if($info['payment_status']=='ACCEPTED'){
       $button_bar="<font color='green'>Your payment received and a seat was reserved for you in this course</font>";
       $title=$info['title']." <font color='green'>&isin;</font>";
    }else{
       $button_bar="<button dojoType='dijit.form.Button' type='submit' name='un_enroll' value='true' >Un enroll</button><button type='submit' name='make_payment' value='true' dojoType='dijit.form.Button' >Make payment &#187;</button>";
       $title=$info['title']." <font color='red'>&notin;</font>";
+   	$payment_status="<font color='red'>Your payment is not recceived yet. Please be noticed that the available seats will be served in first come first server basis.</font>";
    }
-   $payment_status="<font color='red'>Your payment is not recceived yet. Please be noticed that the available seats will be served in first come first server basis.</font>";
    printf($course_box,$batch_id,$title,$info['description'],$info['start_date'],$payment_status,$button_bar);
 }
 

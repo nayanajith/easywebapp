@@ -7,11 +7,11 @@ if(!isset($_SESSION['username'])){
 include(MOD_CLASSES."/offline_voucher_class.php");
 
 //Change offline payment status to PENDING
-exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='PENDING', payment_method='OFFLINE'  WHERE id='".$_SESSION['enroll_id']."'",Q_RET_NON);
+exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='PENDING', payment_method='OFFLINE'  WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_NON);
 
 //Acquire payer information
 //Get course, batch, enroll information
-$course_arr=exec_query("SELECT c.title,c.fee,b.start_date,b.batch_id FROM ".$GLOBALS['MOD_P_TABLES']['course']." c,".$GLOBALS['MOD_P_TABLES']['batch']." b, ".$GLOBALS['MOD_P_TABLES']['enroll']." e WHERE e.id='".$_SESSION['enroll_id']."' AND e.batch_id=b.batch_id AND b.course_id=c.course_id",Q_RET_ARRAY);
+$course_arr=exec_query("SELECT c.title,c.fee,b.start_date,b.batch_id FROM ".$GLOBALS['MOD_P_TABLES']['course']." c,".$GLOBALS['MOD_P_TABLES']['batch']." b, ".$GLOBALS['MOD_P_TABLES']['enroll']." e WHERE e.enroll_id='".$_SESSION['enroll_id']."' AND e.batch_id=b.batch_id AND b.course_id=c.course_id",Q_RET_ARRAY);
 $course_arr=$course_arr[0];
 
 //Get student information
@@ -44,12 +44,12 @@ $payment_info=array(
 exec_query("INSERT INTO ".$GLOBALS['MOD_P_TABLES']['voucher']."(`".implode('`,`',array_keys($payment_info))."`)values('".implode("','",array_values($payment_info))."')",Q_RET_NON);
 
 //Update voucher_id in voucher tabl
-$arr=exec_query("SELECT id FROM ".$GLOBALS['MOD_P_TABLES']['voucher']." WHERE payer_id='".$student_arr['registration_no']."' ORDER BY  updated_time DESC LIMIT 1",Q_RET_ARRAY);
-$voucher_id=gen_reg_no($arr[0]['id']);
-exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['voucher']." SET voucher_id='".$voucher_id."' WHERE id='".$arr[0]['id']."'",Q_RET_NON);
+$arr=exec_query("SELECT rec_id FROM ".$GLOBALS['MOD_P_TABLES']['voucher']." WHERE payer_id='".$student_arr['registration_no']."' ORDER BY  updated_time DESC LIMIT 1",Q_RET_ARRAY);
+$voucher_id=gen_reg_no($arr[0]['rec_id']);
+exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['voucher']." SET voucher_id='".$voucher_id."' WHERE rec_id='".$arr[0]['id']."'",Q_RET_NON);
 
 //Update transaction_id in enroll table
-exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET transaction_id='".$voucher_id."' WHERE id='".$_SESSION['enroll_id']."'",Q_RET_NON);
+exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET transaction_id='".$voucher_id."' WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_NON);
 
 $payment_info['voucher_id']=$voucher_id;
 	
@@ -59,8 +59,14 @@ $voucher=new Voucher($payment_info);
 
 //Acquire pdf document
 $pdf=$voucher->getPdf();
+$file=VOUCHER_DIR."/".$voucher_id.".pdf";
 
-$pdf->Output('payment_voucher.pdf', 'I');
+//Save the file
+$pdf->Output($file, 'F');
+
+//download the file
+file_download_plain($file);
+//$pdf->Output('payment_voucher.pdf', 'I');
 //$pdf->Output("/tmp/tt.pdf", 'F');
 //return $pdf_file;
 
