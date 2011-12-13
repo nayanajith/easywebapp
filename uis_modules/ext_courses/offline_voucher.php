@@ -66,8 +66,8 @@ $pdf->Output($file, 'F');
 
 //download the file
 file_download_plain($file);
+
+//output the file
 //$pdf->Output('payment_voucher.pdf', 'I');
-//$pdf->Output("/tmp/tt.pdf", 'F');
-//return $pdf_file;
 
 ?>

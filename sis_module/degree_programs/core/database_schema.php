@@ -53,9 +53,9 @@ $program_table_schemas['rubric']="CREATE TABLE `%srubric` (
    `deleted`         boolean     DEFAULT false,
    `note`            varchar(300),
    PRIMARY KEY (`exam_hid`,`course_id`),
-   FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`),
-   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`)
-   ON UPDATE CASCADE ON DELETE SET NULL
+   FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`) ON UPDATE CASCADE ON DELETE SET NULL, 
+   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL
+   
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 
@@ -72,9 +72,9 @@ $program_table_schemas['paper']="CREATE TABLE `%spaper`(
    `deleted`         boolean     DEFAULT false,
    `note`            varchar(300) NULL,
    PRIMARY KEY (`paper_id`),
-   FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`),
-   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`)
-   ON UPDATE CASCADE ON DELETE SET NULL
+   FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`) ON UPDATE CASCADE ON DELETE SET NULL,
+   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL
+   
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['eligibility']="CREATE TABLE `%seligibility`(
@@ -108,8 +108,7 @@ $program_table_schemas['push']="CREATE TABLE `%spush`(
   `deleted`          boolean     DEFAULT false,
    `note`            varchar(300) DEFAULT NULL,
   PRIMARY KEY (`paper_id`),
-  FOREIGN KEY (`paper_id`) REFERENCES %spaper(`paper_id`)
-  ON UPDATE CASCADE ON DELETE SET NULL
+  FOREIGN KEY (`paper_id`) REFERENCES %spaper(`paper_id`) ON UPDATE CASCADE ON DELETE SET NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 
@@ -147,19 +146,17 @@ $program_table_schemas['marks']="CREATE TABLE `%smarks` (
   `can_release`      boolean       DEFAULT true,
   `deleted`          boolean     DEFAULT false,
   `note`             varchar(300)    DEFAULT NULL,
-  PRIMARY KEY (`exam_hid`,`course_id`,`index_no`),
-   FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`),
-   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`),
-   FOREIGN KEY (`index_no`) REFERENCES %sstudent(`index_no`)
-   ON UPDATE CASCADE ON DELETE SET NULL
-
+   PRIMARY KEY (`exam_hid`,`course_id`,`index_no`),
+   FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`) ON UPDATE CASCADE ON DELETE SET NULL,
+   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL,
+   FOREIGN KEY (`index_no`) REFERENCES %sstudent(`index_no`) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['student']="CREATE TABLE `%sstudent`(
    `rid`             bigint(10)       unsigned NOT NULL AUTO_INCREMENT,
    `index_no`        varchar(8)       DEFAULT NULL,
    `registration_no` varchar(20)    DEFAULT NULL,
-     `batch_id`      varchar(12)    DEFAULT NULL COMMENT 'Batch',
+   `batch_id`      varchar(12)    DEFAULT NULL COMMENT 'Batch',
    `full_name`       varchar(500)   DEFAULT NULL,
    `initials`        varchar(20)    DEFAULT NULL,
    `last_name`       varchar(300)   DEFAULT NULL,
@@ -199,10 +196,10 @@ $program_table_schemas['student']="CREATE TABLE `%sstudent`(
    `deleted`         boolean          DEFAULT false,
    `status`          enum('READING','TRANSFERED','CANCELED','BANNED','GRADUATED') DEFAULT 'READING',
    `note`            varchar(300)    DEFAULT NULL,
-
-UNIQUE KEY (`index_no`),
-UNIQUE KEY (`registration_no`),
-PRIMARY KEY(`rid`)
+	UNIQUE KEY (`index_no`),
+	UNIQUE KEY (`registration_no`),
+   FOREIGN KEY (`batch_id`) REFERENCES %sbatch(`batch_id`) ON UPDATE CASCADE ON DELETE SET NULL,
+	PRIMARY KEY(`rid`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
 $program_table_schemas['state']="CREATE TABLE `%sstate` (
@@ -276,6 +273,7 @@ $program_table_schemas['filter']="CREATE TABLE `%sfilter` (
   `deleted`          boolean     DEFAULT false,
    `note`            varchar(300) DEFAULT NULL,
    PRIMARY KEY (`filter_name`,`table_name`,`user_id`)
+  /*, FOREIGN KEY (`user_id`) REFERENCES %suser(`user_id`) ON UPDATE CASCADE ON DELETE SET NULL */
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['mcq_paper']="CREATE TABLE %smcq_paper(
@@ -300,9 +298,8 @@ $program_table_schemas['mcq_paper']="CREATE TABLE %smcq_paper(
    `note`                   text  NULL,
    PRIMARY KEY (`paper_id`),
    UNIQUE KEY (`course_id`,`exam_hid`),
-   FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`),
-   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`)
-   ON UPDATE CASCADE ON DELETE SET NULL
+   FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`) ON UPDATE CASCADE ON DELETE SET NULL,
+   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['mcq_answers']="CREATE TABLE %smcq_answers(
@@ -313,8 +310,7 @@ $program_table_schemas['mcq_answers']="CREATE TABLE %smcq_answers(
    `state`           varchar(50) NOT NULL,
    `note`            text NULL,
    PRIMARY KEY (`index_no`,`paper_id`),
-   FOREIGN KEY (`paper_id`) REFERENCES %spapr(`paper_id`)
-   ON UPDATE CASCADE ON DELETE SET NULL
+   FOREIGN KEY (`paper_id`) REFERENCES %spapr(`paper_id`) ON UPDATE CASCADE ON DELETE SET NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 
@@ -335,9 +331,8 @@ $program_table_schemas['mcq_marking_logic']="CREATE TABLE %smcq_marking_logic(
    `NOA`             int NULL,
    `note`            text NULL,
    PRIMARY KEY (`question`,`option_id`,`paper_id`),
-   FOREIGN KEY (`paper_id`) REFERENCES %spapr(`paper_id`)
-   ON UPDATE CASCADE ON DELETE SET NULL
-)ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+   FOREIGN KEY (`paper_id`) REFERENCES %spapr(`paper_id`) ON UPDATE CASCADE ON DELETE SET NULL
+  )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['mcq_marks']="CREATE TABLE %smcq_marks(
    `index_no`           varchar(8) NOT NULL,
@@ -346,8 +341,7 @@ $program_table_schemas['mcq_marks']="CREATE TABLE %smcq_marks(
    `mark`               int NOT NULL,
    `manual_mark`        int NOT NULL DEFAULT 0,
    PRIMARY KEY (`index_no`,`paper_id`,`section`),
-   FOREIGN KEY (`paper_id`) REFERENCES %spapr(`paper_id`)
-   ON UPDATE CASCADE ON DELETE SET NULL
+   FOREIGN KEY (`paper_id`) REFERENCES %spapr(`paper_id`) ON UPDATE CASCADE ON DELETE SET NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['transcript']="CREATE TABLE `%stranscript` (

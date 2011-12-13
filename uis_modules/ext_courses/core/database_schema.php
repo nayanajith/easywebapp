@@ -34,8 +34,10 @@ $program_table_schemas['batch']="CREATE TABLE `%sbatch` (
    `disabled`     boolean DEFAULT false,
    `deleted`      boolean DEFAULT false,
  	`note` 			varchar(300) DEFAULT NULL,
+   PRIMARY KEY (`batch_id`),
    UNIQUE KEY (`batch_id`,`course_id`),
-   PRIMARY KEY (`batch_id`)
+   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL
+   
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['filter']="CREATE TABLE `%sfilter` (
@@ -58,9 +60,11 @@ $program_table_schemas['enroll']="CREATE TABLE `%senroll` (
   `transaction_id`      varchar(20) DEFAULT NULL,
   `reserved`            boolean DEFAULT FALSE,
   `updated_time` 		   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
+  	PRIMARY KEY (`enroll_id`),
    UNIQUE KEY (`batch_id`,`registration_no`),
-  	PRIMARY KEY (`enroll_id`)
+	FOREIGN KEY (`batch_id`) REFERENCES %sbatch(`batch_id`) ON UPDATE CASCADE ON DELETE SET NULL,
+	FOREIGN KEY (`registration_no`) REFERENCES %sstudent(`registration_no`) ON UPDATE CASCADE ON DELETE SET NULL
+
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['voucher']="CREATE TABLE `%svoucher` (
@@ -72,10 +76,11 @@ $program_table_schemas['voucher']="CREATE TABLE `%svoucher` (
   `amount_word`         varchar(200)   NOT NULL,
   `payer_name` 		   varchar(300)   NOT NULL,
   `payer_NIC` 		      varchar(11)    NOT NULL,
+  `payer_id` 		      varchar(8)    NOT NULL,
   `acc_no`              varchar(30)    NOT NULL,
-   `updated_time` 		timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   UNIQUE KEY (`voucher_id`),
-  	PRIMARY KEY (`id`)
+  `updated_time` 		timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY (`voucher_id`),
+  PRIMARY KEY (`rec_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 

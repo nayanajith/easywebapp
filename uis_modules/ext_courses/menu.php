@@ -20,17 +20,16 @@ if(isset($_SESSION['user_id'])){
 
 //Visible application window after login if the users is a system user
 if(isset($_SESSION['loged_module']) && $_SESSION['loged_module']=='home'){
-	$menu_array["registration"]=array("PAGE"=>"Students","VISIBLE"=>"true");
-	$menu_array["payment"]=array("PAGE"=>"Payment","VISIBLE"=>"false");
-	$menu_array["login"]=array("PAGE"=>"Login","VISIBLE"=>"false");
 	$admin_menu=array(
-	   "manage_courses"				=>"Courses",
-	   "manage_batches"				=>"Batches",
-		"manage_enrollment"			=>"Enrollments",
-		"reports"						=>"Reports",
-	   "manage_config"				=>"Configure",
+		"registration"			=>"Students",
+	   "manage_courses"		=>"Courses",
+	   "manage_batches"		=>"Batches",
+		"manage_enrollment"	=>"Enrollments",
+		"reports"				=>"Reports",
+	   "manage_config"		=>"Configure",
   	);
-	$menu_array=array_merge($menu_array,$admin_menu);
+	//$menu_array=array_merge($menu_array,$admin_menu);
+	$menu_array=$admin_menu;
 }
 
 $toolbar	=array(

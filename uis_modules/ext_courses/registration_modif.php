@@ -152,14 +152,6 @@ $fields=array(
 		"label"=>"Received",
 		"value"=>""),	
 
-"status"=>array(
-		"length"=>"77",
-		"dojoType"=>"dijit.form.NumberTextBox",
-		"type"=>"hidden",
-		"required"=>"false",
-		"label"=>"Payment Status",
-		"value"=>""),	
-
 "downloaded"=>array(
 		"length"=>"77",
 		"dojoType"=>"dijit.form.NumberTextBox",
@@ -740,36 +732,29 @@ $fields=array(
 	);
 if(isset($_SESSION['loged_module']) && $_SESSION['loged_module'] == 'home'){
 $received_inner="
-<option value='0'>0</option>
-<option value='1'>1</option>
+<option value='0'>NO</option>
+<option value='1'>YES</option>
 ";
 
 $fields["received"]=array(
 		"length"=>"50",
-		"dojoType"=>"dijit.form.ComboBox",
+		"dojoType"=>"dijit.form.CheckBox",
 		"required"=>"false",
 		"section"=>"Vefiry and pass the application [moderator]",
 		"label"=>"Received and OK",
-		"inner"=>$received_inner,
+		"label_pos"=>"right",
 		"value"=>"");	
 
 //Add to front of the array
 //array_unshift($fields, $received);
 
-$fields["status"]=array(
-		"length"=>"150",
-		"dojoType"=>"dijit.form.ValidationTextBox",
-		"required"=>"false",
-		"label"=>"Payment Status",
-		"value"=>"");
-
 $fields["downloaded"]=array(
 		"length"=>"50",
-		"dojoType"=>"dijit.form.ComboBox",
-		"inner"=>$received_inner,
+		"dojoType"=>"dijit.form.CheckBox",
 		"required"=>"false",
-		"label"=>"Downloaded(0/1)",
-		"value"=>"");	
+		"label"=>"Downloaded",
+		"label_pos"=>"right",
+		"value"=>"1");	
 
 $fields["NIC"]=array(
 		"length"=>"150",
