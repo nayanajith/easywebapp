@@ -16,7 +16,7 @@ $title_inner="";
 foreach(array('MR',"MS","DR","PROF") as $value){
    $title_inner.="<option value='$value'>$value</option>";
 }
-
+d_r("dojox.form.PasswordValidator");
 $password_custom='
 <input type="hidden" name="password" id="password" jsId="password" dojoType="dijit.form.ValidationTextBox" style="border:0px;width:0px;" value="" ></input>
 <div dojoType="dijit.form.DropDownButton">

@@ -201,11 +201,25 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
          closedb();
       }
       /*Not a resource but success query*/
+		/*
       if($result){
          return true;   
       }else{
          return false;   
       }
+		*/
+		//even thouthe query fails 
+   	switch($type){
+         case Q_RET_MYSQL_RES:
+            return $result;
+         break;
+         case Q_RET_ARRAY:
+         default:
+            return array();
+			break;
+		}
+
+
    }else{
       /*Set num rows*/
       $num_rows=mysql_num_rows($result);

@@ -156,7 +156,7 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 		echo "</td><td width=40% style='vertical-align:top;valign:top;'>";
 		echo "<img src='".IMG."/help_32.png'>";
       echo "<h4>Short term courses</h4>
-You can find more information about the available short term courses <a href='http://ucsc.lk/training'>here</a>
+<p>You can find more information about the available short term courses <a href='http://ucsc.lk/training'>here</a></p>
 ";
 		echo "<hr style='border:1px solid silver;'/>";
 		echo "<h4>Registration procedure </h4>";
@@ -171,24 +171,22 @@ You can find more information about the available short term courses <a href='ht
 			</ol>";
 		echo "<hr style='border:1px solid silver;'/>";
 		echo "<h4>Postal address</h4>";
-		echo "<pre style='font:inherit'>";
-      echo "
-         Coordinator,
-         Computing Services Centre,
-         University of Colombo School of Computing,
-         No. 35, Reid Avenue,
-         Colomobo 07.";
-		echo "</pre>";
+		echo "<pre style='font:inherit'><p>
+Coordinator,
+Computing Services Centre,
+University of Colombo School of Computing,
+No. 35, Reid Avenue,
+Colomobo 07.</p></pre>";
 		echo "<hr style='border:1px solid silver;'/>";
-      echo "<h4>Further information</h4>
-         For any queries regarding short term course registration please contact <br/>Computing Services Centre<br />
-         <pre style='font:inherit'>
-         Tel: 0112158910 / 0112158911 / 0112581245
-         Fax: 0112587235
-         e-mail <img height='17px' src='".IMG."/csc_mail.png'>
-         </pre>";
+      echo "<h4>Further information</h4><p>
+         For any queries regarding short term course registration please contact Computing Services Centre:
+         <pre style='font:inherit'><p>
+Tel: 0112158910 / 0112158911 / 0112581245
+Fax: 0112587235
+e-mail <img height='17px' src='".IMG."/csc_mail.png'></p>
+         </pre></p>";
 		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Technical assistance</h4>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'>";
+		echo "<h4>Technical assistance</h4><p>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'></p>";
 		echo "</td></tr></table>";
 
 
