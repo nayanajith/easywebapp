@@ -56,7 +56,7 @@ function get_available_seats($batch_id){
    $batch_arr=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['batch']." b,".$GLOBALS['MOD_P_TABLES']['course']." c WHERE b.course_id=c.course_id AND b.batch_id='".$batch_id."' AND start_date > current_date ORDER BY start_date DESC LIMIT 1 ",Q_RET_ARRAY);
    $max_seats  =$batch_arr[0]['seats'];
 
-   $seats_avail=exec_query("SEELCT (".$max_seats." - COUNT(*)) seats FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE batch_id='".$batch_id."'",Q_RET_ARRAY);
+   $seats_avail=exec_query("SELECT (".$max_seats." - COUNT(*)) seats FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE batch_id='".$batch_id."'",Q_RET_ARRAY);
    return $seats_avail[0]['seats'];
 }
 

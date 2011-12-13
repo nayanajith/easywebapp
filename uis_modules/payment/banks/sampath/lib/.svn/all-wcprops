@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/lib
+END
+ibmjceprovider.jar
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/lib/ibmjceprovider.jar
+END
+ibmpkcs.jar
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/lib/ibmpkcs.jar
+END
+commons-cli-1.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/lib/commons-cli-1.2.jar
+END

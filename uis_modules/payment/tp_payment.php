@@ -6,6 +6,7 @@ $ERROR=array(
 	"NO_PAY_FOR"=>-102
 );
 
+
 //log_msg("lll",implode(",",array_values($_REQUEST)));
 //Check for essential parameters and  proceed with furter functions
 $program_arr=null;
@@ -116,7 +117,8 @@ $composite_tr_id	=$transaction->gen_composite_id($program_arr['program_code'],$p
 $bank=$banks['sampath'];
 
 //calculate tax and total fee
-$tax_percentage	=$pay_for_arr['tax'];
+//$tax_percentage	=$pay_for_arr['tax'];
+$tax_percentage	=$GLOBALS['TAX'];
 $tax_fee				=($request_arr['amount']/100)*$tax_percentage;
 $total_fee			=sprintf("%.02f",$tax_fee+$request_arr['amount']);
 $real_amount		=($total_fee-($total_fee*$bank['commission']));
@@ -164,5 +166,4 @@ Please press <input type='submit' value='redirect'> if not redirected automatica
 document.getElementById('m_form').submit();
 </script>
 ";
-
 ?>

@@ -4,8 +4,8 @@ include A_CLASSES."/data_entry_class.php";
 $super_table		='program';
 $keys					=array('short_name');
 $key1					='short_name';
-$grid_array			=array('short_name','description');
-$grid_array_long	=array('short_name','description');
+$grid_array			=array('short_name','program_id');
+$grid_array_long	=array('short_name','program_id');
 
 $table				=$GLOBALS['MOD_P_TABLES'][$super_table];
 $formgen 			= new Formgenerator($table,$keys,$super_table,null);

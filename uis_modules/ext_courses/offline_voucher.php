@@ -44,7 +44,7 @@ $payment_info=array(
 exec_query("INSERT INTO ".$GLOBALS['MOD_P_TABLES']['voucher']."(`".implode('`,`',array_keys($payment_info))."`)values('".implode("','",array_values($payment_info))."')",Q_RET_NON);
 
 //Update voucher_id in voucher tabl
-$arr=exec_query("SELECT id FROM ".$GLOBALS['MOD_P_TABLES']['voucher']." WHERE payer_id='".$student_arr['registration_no']."' ORDER BY  update_time DESC LIMIT 1",Q_RET_ARRAY);
+$arr=exec_query("SELECT id FROM ".$GLOBALS['MOD_P_TABLES']['voucher']." WHERE payer_id='".$student_arr['registration_no']."' ORDER BY  updated_time DESC LIMIT 1",Q_RET_ARRAY);
 $voucher_id=gen_reg_no($arr[0]['id']);
 exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['voucher']." SET voucher_id='".$voucher_id."' WHERE id='".$arr[0]['id']."'",Q_RET_NON);
 

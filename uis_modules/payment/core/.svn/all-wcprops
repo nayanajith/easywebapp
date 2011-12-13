@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/SIS/!svn/ver/616/trunk/uis_modules/payment/core
+END
+database.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/SIS/!svn/ver/506/trunk/uis_modules/payment/core/database.php
+END
+database_schema.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/SIS/!svn/ver/616/trunk/uis_modules/payment/core/database_schema.php
+END
+select_program.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/core/select_program.php
+END

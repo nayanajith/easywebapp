@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/SIS/!svn/ver/576/trunk/uis_modules/payment/banks/sampath
+END
+IPGReceipt.class
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/IPGReceipt.class
+END
+IPGInvoice.class
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/IPGInvoice.class
+END
+IPGCompile.sh
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/IPGCompile.sh
+END
+IPGReceipt.sh
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/IPGReceipt.sh
+END
+IPGInvoice.sh
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/IPGInvoice.sh
+END
+ipginvoce.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/SIS/!svn/ver/576/trunk/uis_modules/payment/banks/sampath/ipginvoce.php
+END
+IPGReceipt.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/IPGReceipt.java
+END
+IPGInvoice.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/IPGInvoice.java
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/SIS/!svn/ver/502/trunk/uis_modules/payment/banks/sampath/README
+END

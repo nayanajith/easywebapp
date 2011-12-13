@@ -1,10 +1,7 @@
 <?php
 class Mail_templates{
-	protected $mail;
-	function __construct($mail=null){
-		if($mail != null){
-			$this->mail=$mail;
-		}
+	function __construct(){
+
 	}
 
 	function reset_password_template($password){
@@ -53,9 +50,6 @@ class Mail_templates{
 	}
 
 
-
-
-
 	function payment_invoice($user_info,$program_info,$pay_for_info){
 		$body=$this->payment_invoice_html($user_info,$program_info,$pay_for_info);
 
@@ -70,16 +64,13 @@ class Mail_templates{
 		return $mail->mail_attachment($user_info['transaction_id'].".pdf", INVOICE_DIR, $user_info['email'], $GLOBALS['PAYMENT_ADMIN_MAIL'], "UCSC payment gateway", $GLOBALS['PAYMENT_ADMIN_MAIL'], 'UCSC payment status', $body);
 	}
 
-
-
-
-
-
-	function mail_alert($mesg){
+	function bursar_mail_alert($mesg){
 		$body="<h4>There are payments to be cleared.</h4>
 INFO:<br/>\n
 $mesg	
 
+<br/>\n
+<a href='https://epay.sipg.lk/ipg/IndexM.htm'>Click here to clear the payments</a><br/>\n
 --<br/>\n
 Auto generated on ".date('d-m-Y')."<br/>\n
 UCSC Payment Gateway<br/>\n
@@ -90,23 +81,20 @@ UCSC Payment Gateway<br/>\n
 	return $mail->send_mail($GLOBALS['PAYMENT_ADMIN_MAIL'],'nml@ucsc.cmb.ac.lk',null,null,"UCSC online payment status",$body);
 	}
 
-
-
-
-
-	function email_verification($rec_id,$varification_code){
-		$url="https://".$_SERVER['HTTP_HOST']."?module=donations&page=email_verification&rec_id=$rec_id&code=".urlencode($varification_code);
-		$body="<h4>Email varification</h4>
-Please click on the link <a href='$url'>$url</a> or copy paste in browser address bar  to complete the registration procedure.<br/>\n
+	function tp_mail_alert($mesg,$tp_mail){
+		$body="<h4>You have online payments today</h4>
+INFO:<br/>\n
+$mesg	
 
 --<br/>\n
 Auto generated on ".date('d-m-Y')."<br/>\n
-UCSC funding/donation program<br/>\n
+UCSC Payment Gateway<br/>\n
 ";	
-		include_once A_CLASSES."/mail_class.php";
-		$mail			=new Mail_native();
-		$mail->send_mail($GLOBALS['NOREPLY_MAIL'],$this->mail,null,null,"UCSC Funder/Donor Rgistration",$body);
+	include_once A_CLASSES."/mail_class.php";
+	$mail			=new Mail_native();
+	$mail->send_mail($GLOBALS['PAYMENT_ADMIN_MAIL'],$tp_mail,null,null,"UCSC online payment status",$body);
 	}
+
 }
 
 ?>

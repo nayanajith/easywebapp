@@ -36,13 +36,14 @@ $GLOBALS['TITLE_LONG']  = 'University of Colombo School of Computing Payment Gat
 $GLOBALS['LOGO']        = 'ucsc-logo.png';
 $GLOBALS['FAVICON']     = 'favicon.ico';
 
-/*---------------------------header modification--------------------------------*/
+/*------------------------------mail information--------------------------------*/
 $GLOBALS['PAYMENT_ADMIN_MAIL'] = 'UCSC information system <info@ucsc.cmb.ac.lk>';
 $GLOBALS['PAYMENT_CLAER_MAIL'] = '<nml@ucsc.cmb.ac.lk>';
 $GLOBALS['PAYMENT_CLAER_MAIL'] = '<nih@ucsc.cmb.ac.lk>';
 
 /*---------------------------path to bank config--------------------------------*/
 include(BANK_A_ROOT."/config.php");
+$GLOBALS['TAX'] = 3.093;
 
 
 /*--------------------email confirmation key addtion----------------------------*/

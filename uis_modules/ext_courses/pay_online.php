@@ -15,7 +15,7 @@ $student_arr=$student_arr[0];
 
 function print_user_info($student_arr,$course_arr){
 	echo"<h3>Online payment information</h3>";
- 	echo"<h4>Registration Fee - ".strtoupper($course_arr['title'])."</h4>";
+ 	echo"<h4>Registration Fee - ".$course_arr['title']."</h4>";
 	echo"<table cellpadding='5'>
 	<tr><td style='font-weight:bold'>Registration number</td><td>".$student_arr['registration_no']."</td></tr>
 	<tr><td style='font-weight:bold'>NIC number</td><td>".$student_arr['NIC']."</td></tr>
@@ -113,7 +113,7 @@ function peyment_process($student_arr,$course_arr){
 
 	//print_r($msg_crypt->genRquest($request));
 	//$payment_gw_url="https://ucsc.lk/uis/?module=payment&page=tp_payment&data=true&program=M";
-	$payment_gw_url="https://ucsc.lk/uis/?module=payment&page=tp_payment&data=true&program=S";
+	$payment_gw_url="https://ucsc.lk/uis_/?module=payment&page=tp_payment&data=true&program=S";
 	
 		
 	//echo $request;

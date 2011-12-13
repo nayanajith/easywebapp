@@ -228,9 +228,9 @@ class Voucher{
 					<b>Instruction to Bank</b><br/>
 					Please do not accept unless the cage below is filled<br/>
 					<table style="border:1px solid black;" cellspacing="4" cellpadding="3" width="520">
-						<tr><td width="125">APPLICANT'S FULL NAME</td><td width="360" class="writing fill_space">%s</td></tr>
-						<tr><td>APPLICANT'S INDEX NO</td><td class="writing fill_space">%s</td></tr>
-						<tr><td>APPLICANT'S NIC NO</td><td  class="writing fill_space">%s</td></tr>
+						<tr><td width="125">STUDENT'S FULL NAME</td><td width="360" class="writing fill_space">%s</td></tr>
+						<tr><td>STUDENT'S REG NO</td><td class="writing fill_space">%s</td></tr>
+						<tr><td>STUDENT'S NIC NO</td><td  class="writing fill_space">%s</td></tr>
 					</table>
 				</td>
 			</tr>
@@ -312,6 +312,8 @@ EOD;
 			//writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
 			$this->pdf->setXY($x,$y);
 			$this->pdf->writeHTML($content, true, false, false, false, 'L');
+			$spaces="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			$this->pdf->writeHTML('<span style="font-family:monospace;text-decoration:line-through;text-align:center;">'.$spaces.'cut here'.$spaces.'</span>', true, false, false, false, 'L');
 
 			//PRINT 1D BARCODES
 			//write1DBarcode($code, $type, $x='', $y='', $w='', $h='', $xres='', $style='', $align='')

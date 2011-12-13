@@ -1,0 +1,13 @@
+h1{
+	text-align:center;
+}
+li{
+	font-weight:bold;
+}
+*{
+	text-align:justify;
+}
+code{
+	background-color:whitesmoke;
+}
+

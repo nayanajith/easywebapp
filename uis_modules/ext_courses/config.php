@@ -36,6 +36,7 @@ $GLOBALS['MOD_TBL_LOGIN']   = array(
 );
 */
 
+$GLOBALS['AUTH_MOD']       ='MYSQL'; //authentication modes: LDAP,MYSQL,PASSWD
 $GLOBALS['MOD_TBL_LOGIN']   = array(
 		  /*
    'db_host'		=>'192.248.16.109', 

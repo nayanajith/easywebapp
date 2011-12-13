@@ -1,0 +1,19 @@
+------------------------MAIN CLASS AND SHELL SCRIPT-------------
+IPGInvoice.java
+IPGInvoice.sh
+
+--------------------------KYES DIRECTORY------------------------
+./ipgkeys:
+ipgpubkey.txt
+myprivkey.txt
+mypubkey.txt
+
+------------------------DEPENDENT LIBRARIES---------------------
+./lib:
+commons-cli-1.2.jar
+ibmjceprovider.jar
+ibmpkcs.jar
+iclient.jar
+
+----------------------------EXECUTION---------------------------
+./IPGInvoice.sh -a 100 -k ipgkeys/ -m m -r 'http://abc' -t t
