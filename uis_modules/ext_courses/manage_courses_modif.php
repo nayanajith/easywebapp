@@ -31,7 +31,13 @@ $fields=array(
 		"label"=>"Course fee (RS)",
 		"label_pos"=>"top",
 		"value"=>""),	
-
+"online_payment_code"=>array(
+      "length"=>"50",
+		"dojoType"=>"dijit.form.ValidationTextBox",
+		"required"=>"true",
+		"label"=>"Online payment code",
+		"label_pos"=>"top",
+		"value"=>""),	
 "coordinator_name"=>array(
 		"length"=>"350",
 		"dojoType"=>"dijit.form.ValidationTextBox",

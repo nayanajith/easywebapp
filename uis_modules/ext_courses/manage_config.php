@@ -3,7 +3,7 @@ if(isset($_REQUEST['action'])){ /*haldle requests*/
 	switch($_REQUEST['action']){
       case 'generate_db':
 			$drop		=drop_tables($GLOBALS["MOD_P_TABLES"]);
-			$create	=create_tables($system_table_schemas);
+			$create	=create_tables($program_table_schemas);
 
 			if(!$create){
 				return_status_json('ERROR','Error in table recreation process, it may partially done!');

@@ -4,21 +4,25 @@ if(!isset($_SESSION['username'])){
 	return;
 }
 
-$row=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['registration']." WHERE rec_id='".strtoupper($_SESSION['user_id'])."'",Q_RET_ARRAY);
-$row=$row[0];
+//Acquire payer information
+//Get course, batch, enroll information
+$course_arr=exec_query("SELECT c.title,c.fee,b.start_date,b.batch_id,c.online_payment_code FROM ".$GLOBALS['MOD_P_TABLES']['course']." c,".$GLOBALS['MOD_P_TABLES']['batch']." b, ".$GLOBALS['MOD_P_TABLES']['enroll']." e WHERE e.id='".$_SESSION['enroll_id']."' AND e.batch_id=b.batch_id AND b.course_id=c.course_id",Q_RET_ARRAY);
+$course_arr=$course_arr[0];
+//Get student information
+$student_arr=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['student']." WHERE registration_no='".$_SESSION['user_id']."'",Q_RET_ARRAY);
+$student_arr=$student_arr[0];
 
-$pg_app_fee=$GLOBALS['FEE'];
 
-function print_user_info($row,$pg_app_fee){
+function print_user_info($student_arr,$course_arr){
 	echo"<h3>Online payment information</h3>";
- 	echo"<h4>Payment for the postgraduate application processing</h4>";
+ 	echo"<h4>Registration Fee - ".strtoupper($course_arr['title'])."</h4>";
 	echo"<table cellpadding='5'>
-	<tr><td style='font-weight:bold'>Registration number</td><td>".$row['registration_no']."</td></tr>
-	<tr><td style='font-weight:bold'>NIC number</td><td>".$row['NIC']."</td></tr>
-	<tr><td style='font-weight:bold'>Name</td><td style='font-size:150%'>".$row['first_name']." ".$row['middle_names']." ".$row['last_name']."</td></tr>
-	<tr><td style='font-weight:bold'>Payment</td><td>Rs&nbsp;".sprintf("%.02f",$pg_app_fee)."</td></tr>
-	<tr><td style='font-weight:bold'>Convenience fee for online payment </td><td>Rs&nbsp;".sprintf("%.02f",(($pg_app_fee/100)*$GLOBALS['TAX']))."</td></tr>
-	<tr><td style='font-weight:bold'>Total payment</td><td>Rs&nbsp;".sprintf("%.02f",($pg_app_fee+($pg_app_fee/100)*$GLOBALS['TAX']))."</td></tr>
+	<tr><td style='font-weight:bold'>Registration number</td><td>".$student_arr['registration_no']."</td></tr>
+	<tr><td style='font-weight:bold'>NIC number</td><td>".$student_arr['NIC']."</td></tr>
+	<tr><td style='font-weight:bold'>Name</td><td style='font-size:150%'>".$student_arr['first_name']." ".$student_arr['middle_names']." ".$student_arr['last_name']."</td></tr>
+	<tr><td style='font-weight:bold'>Payment</td><td>Rs&nbsp;".sprintf("%.02f",$course_arr['fee'])."</td></tr>
+	<tr><td style='font-weight:bold'>Convenience fee for online payment </td><td>Rs&nbsp;".sprintf("%.02f",(($course_arr['fee']/100)*$GLOBALS['TAX']))."</td></tr>
+	<tr><td style='font-weight:bold'>Total payment</td><td>Rs&nbsp;".sprintf("%.02f",($course_arr['fee']+($course_arr['fee']/100)*$GLOBALS['TAX']))."</td></tr>
 	</table>";
 
 }
@@ -28,14 +32,14 @@ function print_instructions(){
 	<hr/>
 	<ol>
 	<li>When you press Proceed you will be directed to sampath bank's online payment system
-	<li>The payment invoice will be mailed to your personal mail given in the application
-	<li>Please use the transaction ID of the payment invoice for further queries on the online transaction
+	<li>The payment voucher will be mailed to your personal mail given in the application
+	<li>Please use the transaction ID of the payment voucher for further queries on the online transaction
 	</ol>
 	";
 }
 
-function payment_rejected($row,$payment_category){
-	print_user_info($row,$payment_category);
+function payment_rejected($student_arr,$payment_category){
+	print_user_info($student_arr,$payment_category);
 	echo "
 	<br/>
 	<br/>
@@ -53,8 +57,8 @@ function payment_rejected($row,$payment_category){
 	";
 }
 
-function payment_accepted($row,$pg_app_fee){
-	print_user_info($row,$pg_app_fee);
+function payment_accepted($student_arr,$course_arr){
+	print_user_info($student_arr,$course_arr);
 
 	echo "
 	<br/>
@@ -63,9 +67,9 @@ function payment_accepted($row,$pg_app_fee){
 	<h3>Online payment status</h3>
 	<h4>
 	<span style='color:green'>You have successfully completed the online payment!</span><br/>
-	Please check your email for the payment invoice... <br/>
+	Please check your email for the payment voucher... <br/>
 	Thank you!<h4>
-	<!-- a href=''>Resend the invoice</a -->
+	<!-- a href=''>Resend the voucher</a -->
 	";
 
 	/*
@@ -79,22 +83,22 @@ function payment_accepted($row,$pg_app_fee){
 	*/
 }
 
-function peyment_process($row,$pg_app_fee){
-	//Change online payment status to PENDING
-	exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['registration']." SET status='PENDING'  WHERE rec_id='".$_SESSION['user_id']."'",Q_RET_MYSQL_RES);
-	
-	print_user_info($row,$pg_app_fee);
+function peyment_process($student_arr,$course_arr){
+   //Change offline payment status to PENDING
+   exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='PENDING', payment_method='ONLINE'  WHERE id='".$_SESSION['enroll_id']."'",Q_RET_NON);
+
+	print_user_info($student_arr,$course_arr);
 
 	print_instructions();
 
 	include MOD_CLASSES."/crypt.php";
-	$key='amEMiw9fp7YnSWO/ea4DU1HX8QgPzn05B38jBSqxc60=';
-	$tp_ref_id=$row['registration_no'];
-	$pay_for="A";
-	$amount=$pg_app_fee;
-	$nic=$row['NIC'];
-	$email=$row["email_1"];
-	$full_name=$row['first_name']." ".$row['middle_names']." ".$row['last_name'];
+	$key='GIrR5G2U0o75Iwfg3O6mqd1LFz4WuSVBD5BdlANZN3M=';
+	$tp_ref_id=$student_arr['registration_no'];
+	$pay_for=$course_arr['online_payment_code'];
+	$amount=$course_arr['fee'];
+	$nic=$student_arr['NIC'];
+	$email=$student_arr["email_1"];
+	$full_name=$student_arr['first_name']." ".$student_arr['middle_names']." ".$student_arr['last_name'];
 
 
    $msg_crypt= new Message_crypt($key);
@@ -109,7 +113,7 @@ function peyment_process($row,$pg_app_fee){
 
 	//print_r($msg_crypt->genRquest($request));
 	//$payment_gw_url="https://ucsc.lk/uis/?module=payment&page=tp_payment&data=true&program=M";
-	$payment_gw_url="https://ucsc.lk/uis/?module=payment&page=tp_payment&data=true&program=P";
+	$payment_gw_url="https://ucsc.lk/uis/?module=payment&page=tp_payment&data=true&program=S";
 	
 		
 	//echo $request;
@@ -138,19 +142,19 @@ function peyment_process($row,$pg_app_fee){
 }
 
 
-switch($row['status']){
+switch($student_arr['status']){
 case 'ACCEPTED':
-	payment_accepted($row,$pg_app_fee);
+	payment_accepted($student_arr,$course_arr);
 break;
 case 'REJECTED':
 	if(isset($_REQUEST['retry']) && $_REQUEST['retry']=='true'){
-		peyment_process($row,$pg_app_fee);
+		peyment_process($student_arr,$course_arr);
 	}else{
-		payment_rejected($row,$pg_app_fee);
+		payment_rejected($student_arr,$course_arr);
 	}
 break;
 default:
-	peyment_process($row,$pg_app_fee);
+	peyment_process($student_arr,$course_arr);
 break;
 }
 

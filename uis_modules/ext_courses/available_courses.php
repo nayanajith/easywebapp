@@ -29,15 +29,15 @@ if(isset($_SESSION['first_time']) &&  $_SESSION['first_time']==true){
 }elseif(isset($_REQUEST['make_payment']) && $_REQUEST['make_payment'] == true){
    $_SESSION['batch_id']=$_REQUEST['batch_id'];
    $_SESSION['enroll_id']=get_enroll_id($_REQUEST['batch_id'],$_SESSION['user_id']);
-	//header('Location: ?module='.MODULE.'&page=payment&batch_id='.$_REQUEST['batch_id']);
+   //header('Location: ?module='.MODULE.'&page=payment&batch_id='.$_REQUEST['batch_id']);
    include 'payment.php';
    return;
 
 }elseif(isset($_REQUEST['reserve_a_seat']) && $_REQUEST['reserve_a_seat'] == true){
    enroll_student($_REQUEST['batch_id'],$_SESSION['user_id']);
    $_SESSION['batch_id']=$_REQUEST['batch_id'];
-	//header('Location: ?module='.MODULE.'&page=payment&batch_id='.$_REQUEST['batch_id']);
-   
+   //header('Location: ?module='.MODULE.'&page=payment&batch_id='.$_REQUEST['batch_id']);
+
    //If this is first time and no problem found, proceed with the payment for the selected course
    include 'payment.php';
    return;
@@ -53,7 +53,7 @@ function get_current_batch($course_id){
  */
 function get_available_seats($batch_id){
    //Registering the student with his first course
-   $batch_arr=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['batch']." b,".$GLOBALS['MOD_P_TABLES']['course']." c WHERE b.course_id=c.course_id AND b.batch='".$batch_id."' AND start_date > current_date ORDER BY start_date DESC LIMIT 1 ",Q_RET_ARRAY);
+   $batch_arr=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['batch']." b,".$GLOBALS['MOD_P_TABLES']['course']." c WHERE b.course_id=c.course_id AND b.batch_id='".$batch_id."' AND start_date > current_date ORDER BY start_date DESC LIMIT 1 ",Q_RET_ARRAY);
    $max_seats  =$batch_arr[0]['seats'];
 
    $seats_avail=exec_query("SEELCT (".$max_seats." - COUNT(*)) seats FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE batch_id='".$batch_id."'",Q_RET_ARRAY);

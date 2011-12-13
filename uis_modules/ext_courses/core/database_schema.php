@@ -4,13 +4,14 @@ Program database tables set of tables for each program
 */
 include(A_CORE."/database_schema.php");
 $program_table_schemas	=array();
-$system_table_schemas	=array();
+$program_table_schemas	=array();
 
-$system_table_schemas['course']="CREATE TABLE `%scourse` (
+$program_table_schemas['course']="CREATE TABLE `%scourse` (
    `course_id` 		   varchar(8) NOT NULL,
    `title` 		         varchar(200) NOT NULL,
    `description` 		   text NOT NULL,
    `fee` 		         int NOT NULL,
+   `online_payment_code`varchar(2) NOT NULL,
    `coordinator_name`   varchar(100) NOT NULL,
    `coordinator_email`  varchar(100) NOT NULL,
    `coordinator_phone`  varchar(100) NOT NULL,
@@ -20,7 +21,7 @@ $system_table_schemas['course']="CREATE TABLE `%scourse` (
    PRIMARY KEY (`course_id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$system_table_schemas['batch']="CREATE TABLE `%sbatch` (
+$program_table_schemas['batch']="CREATE TABLE `%sbatch` (
    `batch_id` 		varchar(20) NOT NULL,
    `course_id` 	varchar(8) NOT NULL,
    `description` 	varchar(50) NOT NULL,
@@ -37,7 +38,7 @@ $system_table_schemas['batch']="CREATE TABLE `%sbatch` (
    PRIMARY KEY (`batch_id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$system_table_schemas['filter']="CREATE TABLE `%sfilter` (
+$program_table_schemas['filter']="CREATE TABLE `%sfilter` (
   `filter_id` 		int(11) NOT NULL AUTO_INCREMENT,
   `table_name`    varchar(30) CHARACTER SET utf8 DEFAULT NULL,
   `user_id`       int(11) NOT NULL,
@@ -49,23 +50,23 @@ $system_table_schemas['filter']="CREATE TABLE `%sfilter` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['enroll']="CREATE TABLE `%senroll` (
-  `id`                  mediumint   NOT NULL AUTO_INCREMENT,
+  `id`                  int   NOT NULL AUTO_INCREMENT,
   `batch_id`            varchar(20)   NOT NULL,
   `registration_no`     varchar(8)   NOT NULL,
   `payment_status` 		enum('PENDING','ACCEPTED','REJECTED') DEFAULT NULL,
   `payment_method`      enum('OFFLINE','ONLINE') DEFAULT NULL,
   `transaction_id`      varchar(20) DEFAULT NULL,
-  `reserved`            boolean DEFAULT NULL false,
+  `reserved`            boolean DEFAULT FALSE,
   `updated_time` 		   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
    UNIQUE KEY (`batch_id`,`registration_no`),
   	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$program_table_schemas['invoice']="CREATE TABLE `%sinvoice` (
+$program_table_schemas['voucher']="CREATE TABLE `%svoucher` (
   `id`                  int   NOT NULL AUTO_INCREMENT,
-  `invoice_id`          varchar(8)     NOT NULL,
-  `invoice_title`       varchar(200)   NOT NULL,
+  `voucher_id`          varchar(8)     NOT NULL,
+  `voucher_title`       varchar(200)   NOT NULL,
   `purpose`             varchar(200)   NOT NULL,
   `amount_number`       int            NOT NULL,
   `amount_word`         varchar(200)   NOT NULL,
@@ -73,13 +74,13 @@ $program_table_schemas['invoice']="CREATE TABLE `%sinvoice` (
   `payer_NIC` 		      varchar(11)    NOT NULL,
   `acc_no`              varchar(30)    NOT NULL,
    `updated_time` 		timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   UNIQUE KEY (`invoice_id`),
+   UNIQUE KEY (`voucher_id`),
   	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 
 
-$system_table_schemas['student']="CREATE TABLE `%sstudent` (
+$program_table_schemas['student']="CREATE TABLE `%sstudent` (
    `rec_id` 				int(11) NOT NULL AUTO_INCREMENT,
    `registration_no` 	varchar(8),
    `index_no` 				varchar(8),
@@ -193,7 +194,7 @@ $system_table_schemas['student']="CREATE TABLE `%sstudent` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
 
 
-add_table_prefix($system_table_schemas,MODULE);
+add_table_prefix($program_table_schemas,MODULE);
 
 /*Check and if not exists, create the database and the program table*/
 $GLOBALS['CONNECTION'] 	= mysql_connect($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS']);

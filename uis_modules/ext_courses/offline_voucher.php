@@ -19,6 +19,7 @@ $student_arr=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['student']." W
 $student_arr=$student_arr[0];
 
 //Build the array which is a parameter of the voucher generator
+/*
 $payment_info=array(
    "RS ".sprintf("%.02f",$course_arr['fee']),
    strtoupper(number_to_text($course_arr['fee'])." rupees only"),
@@ -26,11 +27,12 @@ $payment_info=array(
    $student_arr['registration_no'],
 	$student_arr['NIC']
 );
+ */
 
 //Generic information of the convocation payment voucher
 $payment_info=array(
    'acc_no'	      =>"086-1001-511-89665",
-   'inv_title'	   =>"POSTGRADUATE APPLICATION 2011",
+   'voucher_title'=>"SHORT TERM COURSE REGISTRATION 2011",
    'purpose'	   =>"REGISTRATION FEE - ".strtoupper($course_arr['title']),
    'amount_number'=>$course_arr['fee'],
 	'amount_word'	=>strtoupper(number_to_text($course_arr['fee'])." rupees only"),
@@ -39,19 +41,21 @@ $payment_info=array(
    'payer_NIC'	   =>$student_arr['NIC'],
 );
 	
-exec_query("INSERT INTO ".$GLOBALS['MOD_P_TABLES']['invoice']."(`".implode('`,`',array_keys($payment_info))."`)values('".implode("','",array_values($payment_info))."')",Q_RET_NON);
+exec_query("INSERT INTO ".$GLOBALS['MOD_P_TABLES']['voucher']."(`".implode('`,`',array_keys($payment_info))."`)values('".implode("','",array_values($payment_info))."')",Q_RET_NON);
 
-//Update invoice_id in invoice tabl
-$arr=exec_query("SELECT id FROM ".$GLOBALS['MOD_P_TABLES']['invoice']." WHERE payer_id='".$student_arr['registration_no']."' ORDER BY  update_time DESC LIMIT 1",Q_RET_ARRAY);
-$invoice_id=gen_reg_no($arr[0]['id']);
-exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['invoice']."SET invoice_id='".$invoice_id."' WHERE id='".$arr[0]['id']."'",Q_RET_NON)
+//Update voucher_id in voucher tabl
+$arr=exec_query("SELECT id FROM ".$GLOBALS['MOD_P_TABLES']['voucher']." WHERE payer_id='".$student_arr['registration_no']."' ORDER BY  update_time DESC LIMIT 1",Q_RET_ARRAY);
+$voucher_id=gen_reg_no($arr[0]['id']);
+exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['voucher']." SET voucher_id='".$voucher_id."' WHERE id='".$arr[0]['id']."'",Q_RET_NON);
 
 //Update transaction_id in enroll table
-exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']."SET transaction_id='".$invoice_id."' WHERE id='".$_SESSION['enroll_id']."'",Q_RET_NON)
+exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET transaction_id='".$voucher_id."' WHERE id='".$_SESSION['enroll_id']."'",Q_RET_NON);
+
+$payment_info['voucher_id']=$voucher_id;
 	
 //Generate the voucher 
 //__construct($payer_info,$acc_no,$inv_title)
-$voucher=new Voucher($invoice_id);
+$voucher=new Voucher($payment_info);
 
 //Acquire pdf document
 $pdf=$voucher->getPdf();

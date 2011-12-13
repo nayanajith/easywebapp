@@ -167,7 +167,7 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 			<li>Fill the application form and press <b>Next</b> button at the end of the form</li>
 			<li>Download the generated application(pdf) and print it</li>
 			<li>Choose the preferred payment procedure online or offline and do the payment accordingly</li>
-			<li>If you use online payment method, the payment invoice will be sent to your personal email. Download the invoice(pdf) and print it. Finally send the voucher and the application to the UCSC</li>
+			<li>If you use online payment method, the payment voucher will be sent to your personal email. Download the voucher(pdf) and print it. Finally send the voucher and the application to the UCSC</li>
 			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally send the voucher stamped by the bank and the application to the UCSC</li>
 			</ol>";
 		echo "<hr style='border:1px solid silver;'/>";

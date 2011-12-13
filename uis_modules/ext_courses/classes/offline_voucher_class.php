@@ -113,12 +113,9 @@ class Voucher{
 	 * @param page_format		: A4,A5,B4
 	 * @param page_orientation	: P,L 
 	 */
-	public function __construct($payer_info,$acc_no,$vou_title,$purpose){
+	public function __construct($payer_info){
 
 		$this->payer_info			=$payer_info;
-		$this->acc_no				=$acc_no;
-		$this->vou_title			=$vou_title;
-		$this->purpose				=$purpose;
 		$this->date					=date('d-m-Y');
 
 		/*Pdf generator page setup*/
@@ -298,14 +295,14 @@ EOD;
 			$content=sprintf(
 				$student_info,
 				$quadruple,
-            $this->vou_title,
-            $this->purpose,
-            $this->acc_no,
-				$this->payer_info[0],
-				$this->payer_info[1],
-            $this->payer_info[2],
-				$this->payer_info[3],
-				$this->payer_info[4]
+            $this->payer_info['voucher_title'],
+            $this->payer_info['purpose'],
+            $this->payer_info['acc_no'],
+				"RS ".sprintf("%.02f",$this->payer_info['amount_number']),
+				$this->payer_info['amount_word'],
+            $this->payer_info['payer_name'],
+				$this->payer_info['payer_id'],
+				$this->payer_info['payer_NIC']
 			);
 
 			//Add a page to the sheet
@@ -319,7 +316,7 @@ EOD;
 			//PRINT 1D BARCODES
 			//write1DBarcode($code, $type, $x='', $y='', $w='', $h='', $xres='', $style='', $align='')
 			$this->pdf->setXY($x+50,$y);
-			$this->pdf->write1DBarcode($this->payer_info[3], 'I25', '', '', '80', 15, 0.4, $style, 'N');
+			$this->pdf->write1DBarcode($this->payer_info['voucher_id'], 'I25', '', '', '80', 15, 0.4, $style, 'N');
 			$y+=130;
 
 			if($vou_count==1){

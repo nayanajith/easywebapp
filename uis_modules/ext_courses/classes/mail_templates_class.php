@@ -13,7 +13,7 @@ class Mail_templates{
 		";
 	}
 
-	/*Generate the invoice pdf*/
+	/*Generate the voucher pdf*/
 	function gen_pdf($content,$pdf_file){
 	   include A_CLASSES."/letterhead_pdf_class.php";
 		//$letterhead=new Letterhead("A6","L");
@@ -31,8 +31,8 @@ class Mail_templates{
 	}
 
 
-	//HTML output of the invoice
-	function payment_invoice_html($user_info,$program_info,$pay_for_info){
+	//HTML output of the voucher
+	function payment_voucher_html($user_info,$program_info,$pay_for_info){
 	return "
 		<style> td{border-bottom:1px dotted whitesmoke;}</style>
 		<table style='border:1px solid silver;'>
@@ -56,12 +56,12 @@ class Mail_templates{
 
 
 
-	function payment_invoice($user_info,$program_info,$pay_for_info){
-		$body=$this->payment_invoice_html($user_info,$program_info,$pay_for_info);
+	function payment_voucher($user_info,$program_info,$pay_for_info){
+		$body=$this->payment_voucher_html($user_info,$program_info,$pay_for_info);
 
 		$pdf_file=INVOICE_DIR."/".$user_info['transaction_id'].".pdf"; 
 
-		/*Generate the pdf of the invoice*/
+		/*Generate the pdf of the voucher*/
 		$body=str_replace("'","\"",$body);
 		$this->gen_pdf($body,$pdf_file);
 

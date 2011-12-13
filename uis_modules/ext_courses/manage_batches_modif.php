@@ -3,7 +3,7 @@ $program_inner="";
 $arr=exec_query('SELECT * FROM '.$GLOBALS['MOD_P_TABLES']['course'],Q_RET_ARRAY,null,'course_id');
 
 foreach($arr as $course_id =>  $info){
-   $program_inner.="<option value='$course_id'>".$info['description']."</option>";
+   $program_inner.="<option value='$course_id'>".$info['title']."</option>";
 }
 
 
@@ -22,7 +22,7 @@ $fields=array(
   		"length"=>"140",
 		"dojoType"=>"dijit.form.Select",
 		"required"=>"true",
-		"label"=>"Course code",
+		"label"=>"Course",
 		"label_pos"=>"top",
       "inner"=>$program_inner,
 		"value"=>""),	
