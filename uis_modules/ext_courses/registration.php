@@ -164,8 +164,10 @@ You can find more information about the available short term courses <a href='ht
 			<li>Fill the application form and press <b>Next</b> button at the end of the form</li>
 			<!--li>Download the generated application(pdf) and print it</li-->
 			<li>Choose the preferred payment procedure online or offline and do the payment accordingly</li>
-			<li>If you use online payment method, the payment voucher will be sent to your personal email. Download the voucher(pdf) and print it. Finally send the voucher and the application to the UCSC</li>
-			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally send the voucher stamped by the bank to the UCSC</li>
+			<li>If you use online payment method, the payment invoice will be sent to your personal email.</li>
+         <li>If the online payment is successful we will reserve a seat for you</li>
+			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally post / handover / fax the voucher stamped by the bank to the UCSC.</li>
+         <li>When the payment voucher received we will reserve a seat for you</li>
 			</ol>";
 		echo "<hr style='border:1px solid silver;'/>";
 		echo "<h4>Postal address</h4>";
@@ -183,7 +185,7 @@ You can find more information about the available short term courses <a href='ht
          <pre style='font:inherit'>
          Tel: 0112158910 / 0112158911 / 0112581245
          Fax: 0112587235
-         e-mail csc@ucsc.lk
+         e-mail <img height='17px' src='".IMG."/csc_mail.png'>
          </pre>";
 		echo "<hr style='border:1px solid silver;'/>";
 		echo "<h4>Technical assistance</h4>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'>";
