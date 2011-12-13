@@ -47,9 +47,10 @@ class Mail_templates{
 			<tr><td >Payment for</td><td>".$program_info['description']." ".$pay_for_info['description']."</td></tr> 
 			<tr><td >Payment Amount</td><td align='right'>".sprintf("%.02f",$user_info['amount'])."</td></tr> 
 			<tr><td >Convenience fee (".$pay_for_info['tax']."% of Payment)</td><td align='right'>".sprintf("%.02f",$user_info['tax'])."</td></tr> 
-			<tr><td >Total fee</td><td align='right'><u>".sprintf("%.02f",number_format($user_info['tax']+$user_info['amount'],2))."</u></td></tr> 
+			<tr><td >Total fee</td><td align='right'><u>".sprintf("%.02f",$user_info['tax']+$user_info['amount'])."</u></td></tr> 
 		</table>
 		";
+			//<tr><td >Total fee</td><td align='right'><u>".sprintf("%.02f",number_format($user_info['tax']+$user_info['amount'],2))."</u></td></tr> 
 	}
 
 

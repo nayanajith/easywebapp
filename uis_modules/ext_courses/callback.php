@@ -97,7 +97,7 @@ switch($receipt['status']){
 		//$user_info['email']='nml@ucsc.cmb.ac.lk';
 
 		$program_arr['description']="SHORT TERM COURSE REGISTRATION 2011";
-		$pay_for_arr['description']="Registration Fee - ".strtoupper($course_arr['title']);
+		$pay_for_arr['description']="REGISTRATION FEE - ".strtoupper($course_arr['title']);
 		$pay_for_arr['tax']=$GLOBALS['TAX'];
 
 		include_once MOD_CLASSES."/mail_templates_class.php";

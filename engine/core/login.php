@@ -147,7 +147,7 @@ if (isset($_SESSION['username'])) {
 
          //Getting user information for the given ldap user from the given login table
          $SQL = "SELECT * FROM ".$GLOBALS['TBL_LOGIN']['table']." WHERE ldap_user_id='$user'";
-         $RESULT_ARR    = exec_query($SQL, Q_RET_ARR);
+         $RESULT_ARR    = exec_query($SQL, Q_RET_ARRAY);
 
          //If there is a user for the given ldap user id check the password from the ldap server
          if (isset($RESULT_ARR[0])) {
