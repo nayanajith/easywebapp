@@ -132,7 +132,7 @@ if(isset($_REQUEST['form'])){
 }else{
 	echo "<table width=100%><tr><td style='vertical-align:top;valign:top'>";
 	if($GLOBALS['LAYOUT'] == 'pub'){
-		echo "<h3>Postgraduate Application form</h3>";
+		echo "<h3>Short term course registration form</h3>";
 		echo $formgen->gen_form(false,false);
 	}else{
 		echo $formgen->gen_form(true,true);
@@ -155,56 +155,42 @@ if($GLOBALS['LAYOUT'] != 'pub'){
    if(!isset($_SESSION['user_id'])){
 		echo "</td><td width=40% style='vertical-align:top;valign:top;'>";
 		echo "<img src='".IMG."/help_32.png'>";
-		echo "<h4>Postgraduate Programs </h4>
-				<table>
-				<tr><td><a href='http://ucsc.cmb.ac.lk/node/77'>MCS</a></td><td>: Master of computer science</td></tr>
-				<tr><td><a href='http://ucsc.cmb.ac.lk/node/78'>MIT</a></td><td>: Master of information technology</td></tr>
-				<tr><td><a href='http://ucsc.cmb.ac.lk/node/79'>MIS</a></td><td>: Master of science in information security</td></tr> 
-				</table>";
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Application procedure </h4>";
-		echo "<ol>
-			<li>Fill the application form and press <b>Next</b> button at the end of the form</li>
-			<li>Download the generated application(pdf) and print it</li>
-			<li>Choose the preferred payment procedure online or offline and do the payment accordingly</li>
-			<li>If you use online payment method, the payment voucher will be sent to your personal email. Download the voucher(pdf) and print it. Finally send the voucher and the application to the UCSC</li>
-			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally send the voucher stamped by the bank and the application to the UCSC</li>
-			</ol>";
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4 >Important Dates<span style='color:red'> [Deadline Extended]</apan></h4>";
-echo "
-<h4>Deadline for the registration of masters programs has been extended until 30th August, 2011</h4>
-Application Form and the payment slip should be sent on or before <b>30th  August 2011</b>.<br/>
-Those who have successfully completed the application process could obtained their Admission card by <b>02st September 2011</b> from the UCSC website.
+      echo "<h4>Short term courses</h4>
+You can find more information about the available short term courses <a href='http://ucsc.lk/training'>here</a>
 ";
 		echo "<hr style='border:1px solid silver;'/>";
-
-		echo "Download detailed instruction sheet [<a href='".MOD_DOCS."/user_instructions.pdf'>pdf</a>]<br/>";
-		echo "Download the postgraduate call for application advertisement [<a href='".MOD_DOCS."/postgraduate_advertisment.pdf'>pdf</a>]<br/>";
-/*
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Postgraduate programs</h4>";
-		foreach($GLOBALS['PROGRAMS'] as $key => $value){
-			echo "<b>$key: </b>".style_text($value)."<br/>";		
-		}
-*/
+		echo "<h4>Registration procedure </h4>";
+		echo "<ol>
+			<li>Fill the application form and press <b>Next</b> button at the end of the form</li>
+			<!--li>Download the generated application(pdf) and print it</li-->
+			<li>Choose the preferred payment procedure online or offline and do the payment accordingly</li>
+			<li>If you use online payment method, the payment voucher will be sent to your personal email. Download the voucher(pdf) and print it. Finally send the voucher and the application to the UCSC</li>
+			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally send the voucher stamped by the bank to the UCSC</li>
+			</ol>";
 		echo "<hr style='border:1px solid silver;'/>";
 		echo "<h4>Postal address</h4>";
 		echo "<pre style='font:inherit'>";
-		echo "Senior Assistant Registrar/Academic and Publications,
-UCSC,
-No: 35 Reid Avenue,
-Colombo 07.";
+      echo "
+         Coordinator,
+         Computing Services Centre,
+         University of Colombo School of Computing,
+         No. 35, Reid Avenue,
+         Colomobo 07.";
 		echo "</pre>";
 		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Further information</h4>For any queries regarding postgraduate application please contact <br/>Academic & Publications branch UCSC<br />
-			   <b>TP: 0112589123</b><br/><br/>";
+      echo "<h4>Further information</h4>
+         For any queries regarding short term course registration please contact <br/>Computing Services Centre<br />
+         <pre style='font:inherit'>
+         Tel: 0112158910 / 0112158911 / 0112581245
+         Fax: 0112587235
+         e-mail csc@ucsc.lk
+         </pre>";
 		echo "<hr style='border:1px solid silver;'/>";
 		echo "<h4>Technical assistance</h4>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'>";
 		echo "</td></tr></table>";
 
 
-		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
+		echo "<br/><br/><br/><div align='right' class='buttonBar' style='border:0px;' >
 		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('add','ext_courses','available_courses')\">Next&nbsp;&raquo;</button>
 		</div>";
 	}else{
