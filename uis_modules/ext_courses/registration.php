@@ -16,8 +16,8 @@ $table				=$GLOBALS['MOD_P_TABLES'][$super_table];
 $file_name        =PAGE;
 
 $formgen 			=null;
-if(isset($_SESSION['user_id']) && isset($_SESSION['loged_module']) && $_SESSION['loged_module'] != 'home'){
-	$formgen 		= new Formgenerator($table,$keys,$file_name,$_SESSION['rec_id']);
+if(isset($_SESSION['user_id']) ){
+	$formgen 		= new Formgenerator($table,$keys,$file_name,$_SESSION['user_id']);
 }else{
 	$formgen 		= new Formgenerator($table,$keys,$file_name,null);
 }
@@ -196,7 +196,7 @@ e-mail <img height='17px' src='".IMG."/csc_mail.png'></p>
 	}else{
 		echo "</td></tr></table>";
 		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
-		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('modify','ext_courses','registration')\">Modify&nbsp;&raquo;</button>
+		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('modify','ext_courses','registration')\">Modify</button>
 		</div>";
 
 	}

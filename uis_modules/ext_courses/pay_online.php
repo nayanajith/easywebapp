@@ -129,7 +129,7 @@ function peyment_process($student_arr,$course_arr){
    </script>
 
    <!-- form method='POST' action='".$payment_gw_url."' id='m_form' target='textFile'-->
-   <form method='POST' action='".$payment_gw_url."' id='m_form' target='_blank'>
+   <form method='POST' action='".$payment_gw_url."' id='m_form' >
 		<input type='hidden' name='request' value='".$request."' />
 		<!-- iframe id='textFile' name='textFile' style='border:0px;' width='100%'  height='10' align='center'>
 		</iframe -->

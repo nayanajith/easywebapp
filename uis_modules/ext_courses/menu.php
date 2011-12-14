@@ -40,16 +40,25 @@ $toolbar	=array(
 		'Add'		=>array('icon'=>'NewPage','action'=>'submit_form("add")'),
 		'Save'	=>array('icon'=>'Save','action'=>'submit_form("modify")'),
 		'Delete'	=>array('icon'=>'Delete','action'=>'submit_form("delete")'),
-		'Grid'	=>array('icon'=>'Table','action'=>'grid()'),
 		'Print'	=>array('icon'=>'Print')
 	),
 	"manage_batches"		=>array(
 		'Add'		=>array('icon'=>'NewPage','action'=>'submit_form("add")'),
 		'Save'	=>array('icon'=>'Save','action'=>'submit_form("modify")'),
 		'Delete'	=>array('icon'=>'Delete','action'=>'submit_form("delete")'),
-		'Grid'	=>array('icon'=>'Table','action'=>'grid()'),
 		'Print'	=>array('icon'=>'Print')
 	),
+
+	"manage_enrollment"		=>array(
+		'Add'		=>array('icon'=>'NewPage','action'=>'submit_form("add")'),
+		'Save'	=>array('icon'=>'Save','action'=>'submit_form("modify")'),
+		'Delete'	=>array('icon'=>'Delete','action'=>'submit_form("delete")'),
+		'Print'	=>array('icon'=>'Print'),
+		'CSV'		=>array('icon'=>'Database','action'=>'get_csv()'),
+		'Add Filter'	=>array('icon'=>'Filter','action'=>'show_dialog()','label'=>'Add Filter')
+
+	),
+
 
 	"registration"		=>array(
 		'Add'		=>array('icon'=>'NewPage','action'=>'submit_form("add")'),
