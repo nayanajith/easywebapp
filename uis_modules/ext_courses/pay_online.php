@@ -113,7 +113,7 @@ function peyment_process($student_arr,$course_arr){
 
 	//print_r($msg_crypt->genRquest($request));
 	//$payment_gw_url="https://ucsc.lk/uis/?module=payment&page=tp_payment&data=true&program=M";
-	$payment_gw_url="https://ucsc.lk/uis_/?module=payment&page=tp_payment&data=true&program=S";
+	$payment_gw_url="https://ucsc.lk/uis/?module=payment&page=tp_payment&data=true&program=S";
 	
 		
 	//echo $request;

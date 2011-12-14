@@ -2,13 +2,10 @@
 /**
 Author: nayanajith mahendra laxaman -> nml@ucsc.lk
 */
-
-/*
-if($_SERVER['REMOTE_ADDR'] != '10.16.16.183'){
+if($_SERVER['REMOTE_ADDR'] != '192.248.16.12'){
    echo "<br/><br/><br/><center>Site down for maintenance!</center>";
    exit();
 }
-*/
 
 /*redirec through https*/
 /*

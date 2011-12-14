@@ -179,7 +179,7 @@ No. 35, Reid Avenue,
 Colomobo 07.</p></pre>";
 		echo "<hr style='border:1px solid silver;'/>";
       echo "<h4>Further information</h4><p>
-         For any queries regarding short term course registration please contact <b>Ms. Anuradha</b> at Computing Services Centre:
+         For any queries regarding short term course registration please contact Computing Services Centre:
          <pre style='font:inherit'><p>
 Tel: 0112158910 / 0112158911 / 0112581245
 Fax: 0112587235

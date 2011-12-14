@@ -23,7 +23,7 @@ echo "<br/><br/><br/><table cellpadding='5'>
 
 
 echo "<br/><br/><br/><div align='right' class='buttonBar' >";
-echo "<button dojoType='dijit.form.Button' type='submit' onClick=\"open_page('ext_courses','available_courses')\">&laquo;&nbsp;Back</button>";
+echo "<button dojoType='dijit.form.Button' type='submit' onClick=\"open_page('ext_courses','available_courses')\">Available courses</button>";
 echo "<button dojoType='dijit.form.Button' type='submit' onClick=\"open_page('ext_courses','pay_offline')\">Pay offline to bank</button>";
 echo "<button dojoType='dijit.form.Button' type='submit' onClick=\"open_page('ext_courses','pay_online')\">Pay online&nbsp;&raquo;</button>";
 echo "</div>";
