@@ -2,7 +2,7 @@
    if (isset($_SESSION['username'])){
    	//after_login();
 		//echo "Welcome ".$_SESSION['fullname'];
-		if($_REQUEST['page']=='available_courses' && $_REQUEST['module']=='ext_courses'){
+		if(isset($_REQUEST['page']) && $_REQUEST['page']=='available_courses' && isset($_REQUEST['module']) && $_REQUEST['module']=='ext_courses'){
 		}else{
 			//header('Location: ?module=registration&page=postgraduate_apl');
 			//include("payment.php");

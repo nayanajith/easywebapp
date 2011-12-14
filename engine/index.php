@@ -2,10 +2,12 @@
 /**
 Author: nayanajith mahendra laxaman -> nml@ucsc.lk
 */
+/*
 if($_SERVER['REMOTE_ADDR'] != '192.248.16.12'){
    echo "<br/><br/><br/><center>Site down for maintenance!</center>";
    exit();
 }
+*/
 
 /*redirec through https*/
 /*
@@ -15,11 +17,11 @@ if($_SERVER['HTTPS']!="on")
    header("Location:$redirect");
 }
 
+*/
 if($_SERVER['HTTP_HOST']!="ucsc.lk"){
    $redirect= "https://ucsc.lk".$_SERVER['REQUEST_URI'];
    header("Location:$redirect");
 }
-*/
 //session_cache_limiter('private');
 //session_cache_expire(120);
 session_start();
@@ -38,7 +40,7 @@ if(isset($_REQUEST['test_key']) && $_REQUEST['test_key']=='1400c95dd934343957b52
 */
 /*--------------------------Enable disable Errors ----------------------------*/
 error_reporting(E_ALL|E_STRICT);
-ini_set('display_errors',1);
+ini_set('display_errors',0);
 
 /*-----------------------advanced php configuration---------------------------*/
 ini_set('memory_limit','1024M');

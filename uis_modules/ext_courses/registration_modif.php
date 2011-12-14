@@ -19,7 +19,7 @@ if(isset($_REQUEST['course_id'])){
 }
 
 //generate course selection box
-$program_inner="";
+$program_inner="<option value=''></option>";
 //display only available
 //$arr=exec_query('SELECT DISTINCT c.course_id,c.description FROM '.$GLOBALS['MOD_P_TABLES']['course'].' c,'.$GLOBALS['MOD_P_TABLES']['batch'].' b WHERE  c.course_id=b.course_id and c.disabled=0 and b.start_date > current_date',Q_RET_ARRAY,null,'course_id');
 
