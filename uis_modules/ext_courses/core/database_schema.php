@@ -59,6 +59,7 @@ $program_table_schemas['enroll']="CREATE TABLE `%senroll` (
   `payment_method`      enum('OFFLINE','ONLINE') DEFAULT NULL,
   `transaction_id`      varchar(20) DEFAULT NULL,
   `reserved`            boolean DEFAULT FALSE,
+ 	`note` 			      varchar(300) DEFAULT NULL,
   `updated_time` 		   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   	PRIMARY KEY (`enroll_id`),
    UNIQUE KEY (`batch_id`,`registration_no`),

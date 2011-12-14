@@ -39,7 +39,7 @@ function before_login() {
    }
    return '
     <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data"
-        action="https://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST">
+        action="http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST">
 '.
 (isset($_REQUEST['user'])?'<div style="padding:5px;color:red;">Invallid login please try again...</div>':"")
 .'

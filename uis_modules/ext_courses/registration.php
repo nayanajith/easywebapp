@@ -166,7 +166,7 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 			<li>Choose the preferred payment procedure online or offline and do the payment accordingly</li>
 			<li>If you use online payment method, the payment invoice will be sent to your personal email.</li>
          <li>If the online payment is successful we will reserve a seat for you</li>
-			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally post / handover / fax the voucher stamped by the bank to the UCSC.</li>
+			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally you can scan and email, fax, post or handover the voucher stamped by the bank to the UCSC.</li>
          <li>When the payment voucher received to us we will reserve a seat for you. You can <a href=\"javascript:open_page('ext_courses','login')\">login</a> to the system and check for the status.</li>
 			</ol>";
 		echo "<hr style='border:1px solid silver;'/>";
@@ -182,8 +182,10 @@ Colomobo 07.</p></pre>";
          For any queries regarding short term course registration please contact Computing Services Centre:
          <pre style='font:inherit'><p>
 Tel: 0112158910 / 0112158911 / 0112581245
+
 Fax: 0112587235
-e-mail <img height='17px' src='".IMG."/csc_mail.png'></p>
+
+Email: <img  style='valign:bottom' src='".IMG."/csc_mail.png'></p>
          </pre></p>";
 		echo "<hr style='border:1px solid silver;'/>";
 		echo "<h4>Technical assistance</h4><p>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'></p>";

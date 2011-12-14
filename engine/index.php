@@ -18,10 +18,12 @@ if($_SERVER['HTTPS']!="on")
 }
 
 */
+/*
 if($_SERVER['HTTP_HOST']!="ucsc.lk"){
    $redirect= "https://ucsc.lk".$_SERVER['REQUEST_URI'];
    header("Location:$redirect");
 }
+*/
 //session_cache_limiter('private');
 //session_cache_expire(120);
 session_start();

@@ -27,6 +27,10 @@ if(isset($_REQUEST['pay_online'])){
 <h3>Pleaes select a donation scheme to proceed</h3>
 <?php
 $table=$GLOBALS['MOD_S_TABLES']['program'];
+d_r('dijit.form.Form');
+d_r('dijit.form.NumberTextBox');
+d_r('dijit.form.RadioButton');
+
 $arr	=exec_query("SELECT * FROM $table WHERE disabled=0",Q_RET_ARRAY,null,'program_id');
 echo "<form action='' id='donation_to_frm' dojoType='dijit.form.Form' jsId='donation_to_frm' onSubmit='return this.validate()'><table width='100%' cellpadding='5' cellspacing='20'>";
 $first=true;

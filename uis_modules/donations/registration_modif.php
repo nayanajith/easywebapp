@@ -148,7 +148,7 @@ $fields=array(
 		"jsId"=>"password",
 		"label"=>"Password",
 		"value"=>""),	
-
+/*
 "captcha"=>array(
 		"custom"=>"true",
 		"disabled"=>"true",
@@ -162,7 +162,7 @@ $fields=array(
 		"custom"=>"true",
 		"label"=>"",
 		),
-
+ */
 
 
 /*
