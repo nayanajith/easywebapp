@@ -236,11 +236,11 @@ class Voucher{
 			</tr>
 			<tr>
 				<td align="center" colspan="4" style="border-bottom:1px solid black;">
-					DO NOT WRITE ANYTHING BELOW THIS LINE
 				</td>
 			</tr>
 			<tr>
-				<td height="100" colspan="4">
+				<td height="100" colspan="4" align="center">
+					DO NOT WRITE ANYTHING BELOW THIS LINE
 				</td>
 			</tr>
 		</table>

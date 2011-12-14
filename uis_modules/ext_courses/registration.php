@@ -167,7 +167,7 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 			<li>If you use online payment method, the payment invoice will be sent to your personal email.</li>
          <li>If the online payment is successful we will reserve a seat for you</li>
 			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally post / handover / fax the voucher stamped by the bank to the UCSC.</li>
-         <li>When the payment voucher received to us we will reserve a seat for you. You can <a href=\"javascript:open_page('ext_courses','login')\>login</a> to the system and check for the status.</li>
+         <li>When the payment voucher received to us we will reserve a seat for you. You can <a href=\"javascript:open_page('ext_courses','login')\">login</a> to the system and check for the status.</li>
 			</ol>";
 		echo "<hr style='border:1px solid silver;'/>";
 		echo "<h4>Postal address</h4>";

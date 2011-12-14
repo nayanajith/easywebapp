@@ -29,37 +29,35 @@ $payment_info=array(
 );
  */
 
+$next=exec_query("SELECT MAX(rec_id)+1 next FROM ".$GLOBALS['MOD_P_TABLES']['voucher'],Q_RET_ARRAY);
+$next_voucher_id=gen_reg_no($next[0]['next']);
+
 //Generic information of the convocation payment voucher
 $payment_info=array(
-   'acc_no'	      =>"086-1001-511-89665",
-   'voucher_title'=>"SHORT TERM COURSE REGISTRATION 2011",
-   'purpose'	   =>"REGISTRATION FEE - ".strtoupper($course_arr['title']),
+   'acc_no'	      =>$GLOBALS['V_ACC'],
+   'voucher_title'=>$GLOBALS['V_TITLE'],
+   'purpose'	   =>sprintf($GLOBALS['V_PURPOSE'],strtoupper($course_arr['title'])),
    'amount_number'=>$course_arr['fee'],
 	'amount_word'	=>strtoupper(number_to_text($course_arr['fee'])." rupees only"),
    'payer_name'	=>$student_arr['first_name']." ".$student_arr['middle_names']." ".$student_arr['last_name'],
    'payer_id'	   =>$student_arr['registration_no'],
    'payer_NIC'	   =>$student_arr['NIC'],
+   'voucher_id'	=>$next_voucher_id,
 );
 	
+
 exec_query("INSERT INTO ".$GLOBALS['MOD_P_TABLES']['voucher']."(`".implode('`,`',array_keys($payment_info))."`)values('".implode("','",array_values($payment_info))."')",Q_RET_NON);
 
-//Update voucher_id in voucher tabl
-$arr=exec_query("SELECT rec_id FROM ".$GLOBALS['MOD_P_TABLES']['voucher']." WHERE payer_id='".$student_arr['registration_no']."' ORDER BY  updated_time DESC LIMIT 1",Q_RET_ARRAY);
-$voucher_id=gen_reg_no($arr[0]['rec_id']);
-exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['voucher']." SET voucher_id='".$voucher_id."' WHERE rec_id='".$arr[0]['id']."'",Q_RET_NON);
-
 //Update transaction_id in enroll table
-exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET transaction_id='".$voucher_id."' WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_NON);
+exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET transaction_id='".$payment_info['voucher_id']."' WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_NON);
 
-$payment_info['voucher_id']=$voucher_id;
-	
 //Generate the voucher 
 //__construct($payer_info,$acc_no,$inv_title)
 $voucher=new Voucher($payment_info);
 
 //Acquire pdf document
 $pdf=$voucher->getPdf();
-$file=VOUCHER_DIR."/".$voucher_id.".pdf";
+$file=VOUCHER_DIR."/".$payment_info['voucher_id'].".pdf";
 
 //Save the file
 $pdf->Output($file, 'F');

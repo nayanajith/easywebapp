@@ -69,11 +69,18 @@ $GLOBALS['FAVICON']     = 'favicon.ico';
 /*--------------------email confirmation key addtion----------------------------*/
 $GLOBALS['CONFIRM_ADDITION']=md5('#ucsc$');
 
-/*---------------------------header modification--------------------------------*/
+/*---------------------------mail configuration---------------------------------*/
 $GLOBALS['PAYMENT_ADMIN_MAIL'] = 'UCSC information system <info@ucsc.cmb.ac.lk>';
 $GLOBALS['PAYMENT_CLAER_MAIL'] = '<nml@ucsc.cmb.ac.lk>';
 
+/*------------------------------online payment-----------------------------------*/
 //Convenience fee tax percentage
 $GLOBALS['TAX']=3.093;
+
+/*-----------------------------voucher globals-----------------------------------*/
+//offline voucher
+$GLOBALS['V_ACC']		="086-1001-011-90483";
+$GLOBALS['V_TITLE']	="SHORT TERM COURSE REGISTRATION ".date('Y');
+$GLOBALS['V_PURPOSE']="REGISTRATION FEE - %s";
 
 ?>

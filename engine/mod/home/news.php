@@ -20,6 +20,7 @@
 
 <table width="100%">
 <tr>
+<?php /*
 <td align="left" class="news_title">
 Postgraduates Application <span style='color:red'>[Deadline Extended]</span>
 </td>
@@ -34,6 +35,17 @@ Payments can by done either online using your credit cards or by making your pay
 <li>Those who have successfully completed the application process could obtained their Admission card by <b>02nd September 2011</b> from the UCSC website.</li>
 </ul>
 </td>
+*/?>
+<td align="left" class="news_title">
+Short term course registration 
+</td>
+</tr>
+<tr>
+<td class="news_body">
+Registration for the short term courses can be done <a href="javascript:open_page('ext_courses','registration')">online</a>.<br/>
+Payments can by done either online using your credit cards or by making your payment to the nearest People's Bank using the payment vouchers generated in application process.
+</td>
+
 </tr>
 <tr><td align="right" class="news_time"></td></tr>
 </table>

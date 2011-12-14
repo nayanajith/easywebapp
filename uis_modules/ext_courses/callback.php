@@ -56,7 +56,6 @@ switch($receipt['status']){
 		echo "<h3 style='color:orange'>Transaction pending...</h4>";
    break;
    case 'ACCEPTED':
-	case'REJECTED':
 		//Changing the online payment status to ACCEPTED
 		exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='ACCEPTED', reserved=true  WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_MYSQL_RES);
 		$row=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['student']." WHERE registration_no='".$_SESSION['user_id']."'",Q_RET_ARRAY);

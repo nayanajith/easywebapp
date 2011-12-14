@@ -3,8 +3,8 @@ include A_CLASSES."/data_entry_class.php";
 $super_table		='course';
 $keys					=array('course_id');
 $key1					='course_id';
-$grid_array			=array('course_id','description');
-$grid_array_long	=array('course_id','description','disabled');
+$grid_array			=array('course_id','title');
+$grid_array_long	=array('course_id','title','disabled');
 
 $table				=$GLOBALS['MOD_P_TABLES'][$super_table];
 $formgen 			=null;

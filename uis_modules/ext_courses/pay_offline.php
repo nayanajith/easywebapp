@@ -19,10 +19,13 @@ if(!isset($_SESSION['username'])){
 <li>The UCSC copy must be sent to UCSC, and please note that Handing over the copy of voucher is compulsory to process your application.
 <pre style='font:inherit'>
 <b>Postal address:</b>
-Senior Assistant Registrar/Academic and Publications,
-UCSC,
-No: 35 Reid Avenue,
-Colombo 07.
+Coordinator,
+Computing Services Centre,
+University of Colombo School of Computing,
+No. 35, Reid Avenue,
+Colomobo 07.
+<br/>
+<b>Fax number:</b> 0112587235
 </pre>
 </ol>
 

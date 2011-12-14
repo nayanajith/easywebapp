@@ -80,12 +80,15 @@
 <tr><td width='80%' style='padding:10px;vertical-align:top;valign:top;padding-right:5px;'>
 <div style='min-height:350px;border:1px solid #C9D7F1;padding:10px;position:relative;border-bottom:3px solid #C9D7F1;' class='bgTop round' >
 <!--____________________Help Print Download buttons__________________________-->
-<?php d_r('dijit.form.Button');?>
+<?php d_r('dijit.form.Button');
+/*
 <div style='float:right'>
    <span dojoType='dijit.form.Button' label='Help' showLabel='false' iconClass='dijitIcon dijitIconDocuments' onClick='help_dialog()'></span>
    <span dojoType='dijit.form.Button' label='Print' showLabel='false' iconClass='dijitIcon dijitIconPrint' onClick='page_print()'></span>
    <!--span dojoType='dijit.form.Button' label='Pdf' showLabel='false' iconClass='dijitIcon dijitIconFile' onClick='page_pdf()'></span-->
 </div>
+*/
+?>
 <!--________________________start data_body area_____________________________-->
        <?php 
           //include page in module
