@@ -55,10 +55,10 @@ switch($receipt['status']){
    case 'PENDING':
 		echo "<h3 style='color:orange'>Transaction pending...</h4>";
    break;
-	case'REJECTED':
    case 'ACCEPTED':
+	case'REJECTED':
 		//Changing the online payment status to ACCEPTED
-		exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='ACCEPTED'  WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_MYSQL_RES);
+		exec_query("UPDATE ".$GLOBALS['MOD_P_TABLES']['enroll']." SET payment_status='ACCEPTED', reserved=true  WHERE enroll_id='".$_SESSION['enroll_id']."'",Q_RET_MYSQL_RES);
 		$row=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['student']." WHERE registration_no='".$_SESSION['user_id']."'",Q_RET_ARRAY);
 		$row=$row[0];
 
@@ -68,9 +68,12 @@ switch($receipt['status']){
 
 		echo "
 		<h3>Online payment status</h3>
-		<span style='color:green'>You have successfully completed the payment online!</span><br/>
-		Please check your email for the payment invoice... <br/>
-		Thank you!
+		<h4 style='color:green'>You have successfully completed the payment online.</h4>
+ 		<h4>We have a seat reserved for you in ".$course_arr['title']." course.</h4>
+		<p>Please check your email for the payment invoice... <br/>
+		Thank you!</p>
+		<p>You can apply for more courses at the <a href=\"javascript:open_page('ext_courses','available_courses')\">Available courses</a> page</p>
+
 		";
 
       $tp_ref_id=$row['registration_no'];

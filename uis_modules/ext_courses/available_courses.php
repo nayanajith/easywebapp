@@ -56,7 +56,7 @@ function get_available_seats($batch_id){
    $batch_arr=exec_query("SELECT * FROM ".$GLOBALS['MOD_P_TABLES']['batch']." b,".$GLOBALS['MOD_P_TABLES']['course']." c WHERE b.course_id=c.course_id AND b.batch_id='".$batch_id."' AND start_date > current_date ORDER BY start_date DESC LIMIT 1 ",Q_RET_ARRAY);
    $max_seats  =$batch_arr[0]['seats'];
 
-   $seats_avail=exec_query("SELECT (".$max_seats." - COUNT(*)) seats FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE batch_id='".$batch_id."'",Q_RET_ARRAY);
+   $seats_avail=exec_query("SELECT (".$max_seats." - COUNT(*)) seats FROM ".$GLOBALS['MOD_P_TABLES']['enroll']." WHERE batch_id='".$batch_id."' AND reserved=true " ,Q_RET_ARRAY);
    return $seats_avail[0]['seats'];
 }
 
@@ -64,7 +64,7 @@ function get_available_seats($batch_id){
  * Enroll a student with a given course or batch
  */
 function enroll_student($batch_id,$registration_no){
-   if(get_available_seats($batch_id) >=0){
+   if(get_available_seats($batch_id) >0){
       exec_query("INSERT INTO ".$GLOBALS['MOD_P_TABLES']['enroll']."(`registration_no`,`batch_id`)values('".$registration_no."','".$batch_id."') ",Q_RET_NON);
       $_SESSION['enroll_id']=get_enroll_id($batch_id,$registration_no);
       return true;
@@ -92,7 +92,8 @@ function un_enroll_student($batch_id,$registration_no){
 }
 
 
-echo "<h3>Enroll for new courses and reserve seats</h3><br/><br/>";
+echo "<h3>Enroll for new courses and reserve seats</h3><br/>";
+echo "<h4>These are the courses currently open for enrollment</h4>";
 
 d_r('dijit.form.Form');
 $course_box="
@@ -111,15 +112,16 @@ $course_box="
 
 
 //Getting the list of courses enrolled by this user
-$reg_arr=exec_query("SELECT c.course_id,c.title,c.description,b.start_date,b.batch_id,e.payment_status,e.payment_method,e.transaction_id FROM ".$GLOBALS["MOD_P_TABLES"]["enroll"]." e, ".$GLOBALS["MOD_P_TABLES"]["course"]." c, ".$GLOBALS["MOD_P_TABLES"]["batch"]." b WHERE registration_no='".$_SESSION['user_id']."' AND e.batch_id=b.batch_id and b.course_id=c.course_id",Q_RET_ARRAY,null,"batch_id");
+$reg_arr=exec_query("SELECT e.reserved,c.course_id,c.title,c.description,b.start_date,b.batch_id,e.payment_status,e.payment_method,e.transaction_id FROM ".$GLOBALS["MOD_P_TABLES"]["enroll"]." e, ".$GLOBALS["MOD_P_TABLES"]["course"]." c, ".$GLOBALS["MOD_P_TABLES"]["batch"]." b WHERE registration_no='".$_SESSION['user_id']."' AND e.batch_id=b.batch_id and b.course_id=c.course_id",Q_RET_ARRAY,null,"batch_id");
 $my_courses=array();
 foreach($reg_arr as $batch_id => $info){
    $my_courses[]=$info['course_id'];
    $button_bar="";
    $title="";
 	$payment_status="";
-   if($info['payment_status']=='ACCEPTED'){
-      $button_bar="<font color='green'>Your payment received and a seat was reserved for you in this course</font>";
+   //if($info['payment_status']=='ACCEPTED' ){
+   if($info['reserved']==true){
+      $button_bar="<font color='green'>A seat was reserved for you in this course</font>";
       $title=$info['title']." <font color='green'>&isin;</font>";
    }else{
       $button_bar="<button dojoType='dijit.form.Button' type='submit' name='un_enroll' value='true' >Un enroll</button><button type='submit' name='make_payment' value='true' dojoType='dijit.form.Button' >Make payment &#187;</button>";
