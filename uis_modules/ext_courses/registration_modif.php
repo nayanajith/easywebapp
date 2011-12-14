@@ -175,6 +175,13 @@ $fields=array(
 		"required"=>"false",
 		"label"=>"Rec id",
 		"value"=>""),	
+"registration_no"=>array(
+		"length"=>"77",
+		"dojoType"=>"dijit.form.TextBox",
+		"type"=>"hidden",
+		"required"=>"false",
+		"label"=>"Registration No:",
+		"value"=>""),	
 
 /*
 "registration_no"=>array(

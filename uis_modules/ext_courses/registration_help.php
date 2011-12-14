@@ -13,7 +13,7 @@ $help_array=array(
 /*
 'last_name'=>'Last name',
  */
-'NIC'=>'Without spaces<br/>NIC will also use as your password to login to the system',
+'NIC'=>'Without spaces<br/><font color="red">NIC will also use as your password to login to the system</font>',
 /*
 'DOB'=>'Dob',
 'gender'=>'Gender',
@@ -62,7 +62,7 @@ $help_array=array(
 'affiliation'=>'Affiliation',
 'designation'=>'Designation',
 */
-'email_1'=>'This E-mail address will use as your username  to login to the system',
+'email_1'=>'<font color="red">This E-mail address will use as your username  to login to the system</font>',
 /*
 'telephone_1'=>'Telephone 1',
 'mobile_1'=>'Mobile 1',
