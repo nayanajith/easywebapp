@@ -1,6 +1,6 @@
 <?php
 include A_CLASSES."/data_entry_class.php";
-$formgen = new Formgenerator($GLOBALS['MOD_S_TABLES']['pay_for'],array('pay_for_id','pay_for_code'),'pay_for');
+$formgen = new Formgenerator($GLOBALS['MOD_S_TABLES']['pay_for'],array('short_name','pay_for_code'),'pay_for');
 
 if(isset($_REQUEST['form'])){
 	switch($_REQUEST['form']){

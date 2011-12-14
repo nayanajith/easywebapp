@@ -13,7 +13,7 @@ d_r('dijit.ProgressBar');
          <div id='status_bar'>status</div>
       </td>
       <td style='border-right:1px solid silver;padding-left:5px;width:2%;'>
-      <div id='busy'><img src='<?php echo IMG."/process-stopped.gif"; ?>' ></div>
+      <div id='busy'><img src='<?php echo IMG."/busy-stopped.gif"; ?>' ></div>
       </td>
       <td style='padding-left:5px;width:5%;text-align:center'>
          Progress:
