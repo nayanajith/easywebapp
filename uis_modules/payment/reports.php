@@ -25,8 +25,8 @@ function gen_payment_sheet($do_clearing=null){
 		*/
 	);
 
-	$query="SELECT ".implode(',',array_keys($fields))." FROM payment_payment p, payment_pay_for f, payment_program r,  payment_employee e 
-		WHERE p.program_id=r.program_id AND p.pay_for_id=f.pay_for_id AND p.employee_id=e.employee_id AND f.pay_for_code='".$_SESSION[PAGE]['pay_for_code']."' AND r.program_code='".$_SESSION[PAGE]['program_code']."';";
+	//$query="SELECT ".implode(',',array_keys($fields))." FROM payment_payment p, payment_pay_for f, payment_program r,  payment_employee e WHERE p.program_id=r.program_id AND p.pay_for_id=f.pay_for_id AND p.employee_id=e.employee_id AND f.pay_for_code='".$_SESSION[PAGE]['pay_for_code']."' AND r.program_code='".$_SESSION[PAGE]['program_code']."' AND status='ACCEPTED';";
+	$query="SELECT ".implode(',',array_keys($fields))." FROM payment_payment p, payment_pay_for f, payment_program r,  payment_employee e WHERE p.program_id=r.program_id AND p.pay_for_id=f.pay_for_id AND p.employee_id=e.employee_id AND f.pay_for_code='".$_SESSION[PAGE]['pay_for_code']."' AND r.program_code='".$_SESSION[PAGE]['program_code']."';";
 
 	/*
 	$query="SELECT *      

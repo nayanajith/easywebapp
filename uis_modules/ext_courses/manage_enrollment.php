@@ -50,7 +50,7 @@ if(isset($_REQUEST['form'])){
 					return $formgen->modify_record();
 				 break;
 				 case 'delete':
-					return $formgen->delete_record();
+					return $formgen->delete_record(true);
 				 break;
 				}	
 			}else{

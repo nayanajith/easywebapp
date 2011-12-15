@@ -31,7 +31,7 @@ if(!isset($_REQUEST['receipt'])){
 		echo "
 		<h3>Online payment status</h3>
 		<span style='color:red'>We are sorry that your payment was declined by the bank!</span><br/><br/>
-		Do you want to  <a href=\"javascript:open_page('ext_courses','pay_offline')\">retry</a> or try our <a href=\"javascript:open_page('ext_courses','pay_offline')\">offline</a> payment procedure.";
+		Do you want to  <a href=\"javascript:open_page('ext_courses','pay_online')\">retry</a> or try our <a href=\"javascript:open_page('ext_courses','pay_offline')\">offline</a> payment procedure.";
 	}
 	return;
 }
