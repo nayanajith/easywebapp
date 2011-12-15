@@ -662,7 +662,7 @@ $fields["NIC"]=array(
 		"label"=>"NIC Number",
 		"value"=>"");
 
-	unset($fields["program"]);
+unset($fields["program"]);
 }elseif(isset($_SESSION['user_id'])){
    unset($fields["program"]);
 }
