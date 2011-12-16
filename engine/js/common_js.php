@@ -54,15 +54,21 @@ function help_dialog(){
 }
 
 
-/*-- Downloader --*/
+/*-- Seemless Downloader --*/
 dojo.require('dojo.io.iframe');
 
 //Seamless download using  iframe
 function download(url){
 	update_status_bar('OK','Processing...');
+
+   //dojo iframe is creating to set the source of it   
 	var iframe = dojo.io.iframe.create("downloader");
+
+   //Downloading the file using iframe
+   //TODO: this is sometime not work for chrome use browser detection and swtich the downloading method
 	dojo.io.iframe.setSrc(iframe, url, true);
 	update_status_bar('OK','Done');
+
    //DEBUG ONLY
 	update_status_bar('OK',url);
 	update_progress_bar(100);

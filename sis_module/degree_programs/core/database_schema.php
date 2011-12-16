@@ -7,7 +7,7 @@ $program_table_schemas   =array();
 $system_table_schemas   =array();
 
 $program_table_schemas['course']="CREATE TABLE `%scourse` (
-  `course_id`        varchar(10)   NOT NULL,
+  `course_id`        varchar(10)   NOT NULL COMMENT 'Primary Key: Unique Course ID.',
   `student_year`     char(2)       DEFAULT NULL,
   `semester`         char(2)       DEFAULT NULL,
   `course_name`      varchar(60) DEFAULT NULL,
@@ -24,7 +24,7 @@ $program_table_schemas['course']="CREATE TABLE `%scourse` (
   `deleted`          boolean     DEFAULT false,
   `note`             varchar(300) DEFAULT NULL,
    PRIMARY KEY (`course_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table that contains information of all the courses.' ;";
 
 
 $program_table_schemas['exam']="CREATE TABLE `%sexam` ( 

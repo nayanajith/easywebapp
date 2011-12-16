@@ -34,8 +34,8 @@ public function delete_record($purge=true)
 class Formgenerator {
 
    protected $modifier      ="_modif.php";
-   protected $help_file      ="_help.php";
-   protected $data_json      ="_data.json";
+   protected $help_file     ="_help.php";
+   protected $data_json     ="_data.json";
 
    /*
     * Field types array

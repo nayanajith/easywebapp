@@ -7,31 +7,37 @@ d_r('dijit.form.Button');
    /*Update status bar*/
    var max_status_length=150;
    var stausDialog;
+   //If the public kayout used set the javascript variable to used with
+   var pub=false;
+   <?php if($GLOBALS['LAYOUT']!='pub'){ ?>
+   pub=true;
+   <?php }?>
 
    function update_status_bar(status_code,info){
       //Sometimes status_code and info is not defined due to json decode error
       if(typeof status_code === 'undefined' || typeof info === 'undefined') {
-         status_code='NOT_DEFINED';
-         info='Undefined error!';
+         return;
+         //status_code='NOT_DEFINED';
+         //info='Undefined error!';
       }
 
       status_code=status_code.toUpperCase();
       var orig_info=info;
+
+      //Set the color to the message according to the status
       switch(status_code){
          case 'OK':
+         default:
             info=info;
          break;
          case 'ERROR':
             info="<font color='red'>"+info+"</font>";
-            <?php if($GLOBALS['LAYOUT']!='pub'){ ?>
-            busy.innerHTML="<img src='<?php echo IMG."/busy-stopped.gif"; ?>' >";
-            <?php }?>
+            if(!pub){
+               set_busy(false);
+            }
          break;
          case 'NOT_DEFINED':
             info="<font color='orange'>"+info+"</font>";
-         break;
-         default:
-            info="<font color='green'>"+info+"</font>";
          break;
       }
       <?php if($GLOBALS['LAYOUT']!='pub'){ ?>
@@ -70,15 +76,30 @@ d_r('dijit.form.Button');
 
    /*Update progress bar and busying image (rotating arrows)*/
    function update_progress_bar(progress){
-   
-      <?php if($GLOBALS['LAYOUT']!='pub' ){ ?>
-      jsProgress.update({maximum: 100, progress: progress });
-      <?php } ?>
-      var busy = document.getElementById('busy') ;
-      if(progress == 100 || progress == 0){
-         busy.innerHTML="<img src='<?php echo IMG."/busy-stopped.gif"; ?>' >";
+      if(pub){
+         return;
       }else{
-         busy.innerHTML="<img src='<?php echo IMG."/busy.gif"; ?>' >";
+         jsProgress.update({maximum: 100, progress: progress });
+         if(progress == 100 || progress == 0){
+            set_busy(false);
+         }else{
+            set_busy(true);
+         }
+      }
+   }
+
+   /*Update the busy state of the icon*/
+   function set_busy(is_busy){
+      alert(is_busy);
+      if(pub){
+         return;
+      }else{
+         var busy = document.getElementById('busy') ;
+         if(is_busy){
+            busy.innerHTML="<img src='<?php echo IMG."/busy.gif"; ?>' >";
+         }else{
+            busy.innerHTML="<img src='<?php echo IMG."/busy-stopped.gif"; ?>' >";
+         }
       }
    }
 

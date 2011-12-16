@@ -1,15 +1,14 @@
 <?php
-include('../config.php');
-include(A_CORE."/common.php");
-
+include_once('../config.php');
+include_once(A_CORE."/common.php");
 
 header("Content-type: text/css");
 header("Content-Disposition: attachment; filename=\"common.css\"");
 //$menu_active="#C9D7F1";
-//$menu_active         ="#5b92c8";
+//$menu_active       ="#5b92c8";
 $menu_active         ="#5b92c8";
-$menu_activeText      ="white";
-$menu_inactive         ="whitesmoke";
+$menu_activeText     ="white";
+$menu_inactive       ="whitesmoke";
 $menu_inactiveText   ="black";
 $light_bg_color      ="whitesmoke";
 $border_color        ="silver";
@@ -21,9 +20,9 @@ $backgrounds[$GLOBALS['THEME']][1] -> bottom bg
 */
 $backgrounds=array(
    'claro'   =>array(IMG.'/bodyBg.gif',IMG.'/bodyBgBot.gif'),
-   'nihilo'   =>array('',''),
+   'nihilo'  =>array('',''),
    'soria'   =>array(IMG.'/bodyBg.gif',IMG.'/bodyBgBot.gif'),
-   'tundra'   =>array('','')
+   'tundra'  =>array('','')
 );
 
 ?>

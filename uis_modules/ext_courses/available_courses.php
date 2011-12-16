@@ -122,13 +122,13 @@ foreach($reg_arr as $batch_id => $info){
    //if($info['payment_status']=='ACCEPTED' ){
    if($info['reserved']==true){
       $button_bar="<font color='green'>A seat was reserved for you in this course</font>";
-      $title=$info['title']." <font color='green'>&isin;</font>";
+      $title=htmlspecialchars_decode($info['title'])." <font color='green'>&isin;</font>";
    }else{
       $button_bar="<button dojoType='dijit.form.Button' type='submit' name='un_enroll' value='true' >Un enroll</button><button type='submit' name='make_payment' value='true' dojoType='dijit.form.Button' >Make payment &#187;</button>";
       $title=$info['title']." <font color='red'>&notin;</font>";
    	$payment_status="<font color='red'>Your payment is not recceived yet. Please be noticed that the available seats will be served in first come first server basis.</font>";
    }
-   printf($course_box,$batch_id,$title,$info['description'],$info['start_date'],$payment_status,$button_bar);
+   printf($course_box,$batch_id,$title,htmlspecialchars_decode($info['description']),$info['start_date'],$payment_status,$button_bar);
 }
 
 //Getting the list of courses available (not enrolled) for this user
@@ -143,7 +143,7 @@ foreach($batch_arr as $course_id => $info){
    $button_bar="<button dojoType='dijit.form.Button' type='submit' name='reserve_a_seat' value='true'>Reserve a seat &#187;</button>";
    $title=$info['title']." <font color='red'>&notin;</font>";
    $payment_status="<font color='blue'>Press 'Reserve a seat' button to continue with the payment procedure to reserve a seat in this course</font>";
-   printf($course_box,$info['batch_id'],$title,$info['description'],$info['start_date'],$payment_status,$button_bar);
+   printf($course_box,$info['batch_id'],htmlspecialchars_decode($title),htmlspecialchars_decode($info['description']),$info['start_date'],$payment_status,$button_bar);
 }
 
 ?>

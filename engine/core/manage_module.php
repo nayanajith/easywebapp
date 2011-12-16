@@ -178,6 +178,96 @@ function gen_visible_module_array(){
    return $tabs;
 }
 
+/*Module requre */
+/*
+Array
+(
+    [home] => Array
+        (
+            [news] => News
+            [about] => About
+            [help] => Help
+            [slogin] => Login
+        )
+
+    [system] => Array
+        (
+            [manage_users] => System Users
+            [manage_permission] => System Users Permission
+            [activity] => Activity Log
+            [system_log] => System Log
+            [init_db] => >Regenerate Database<
+        )
+*/
+/**
+ * Convention of class names :with first letter upper case ends with _class.php
+ * Convention of function files :camel case with first letter lower case  ends with .php
+ * - $uri:module path using java convention eg: uis.student.registration.batch
+ */
+$module_hierarchy;
+function uis_require($uri,$strict=null){
+   global $module_hierarchy;
+
+   //If strict is false camel case will be converted in to underscore and returned if camel case is not available
+   $strict=false;
+
+   //If the module array alrady loaded it will not loaded for this session
+   if(!isset($module_hierarchy)){
+      $module_hierarchy=gen_module_array();
+   }
+   //Seperate the tokens by '.'
+   $break   =explode(".",$uri);
+
+   //Go through the module array to find it's availability
+   /*
+   $index=0;
+   $base =null;
+   if(isset($module_hierarchy[$break[$index]])){
+      $base =$module_hierarchy[$break[$index++]];
+      while(isset($base[$break[$index]])){
+         $base=$base[$break[$index++]];
+         print_r($base);
+      }
+   }
+    */
+
+   $file    =$break[sizeof($break)-1];
+   $module  =$break[sizeof($break)-2];
+
+   $file=A_ROOT."/".str_replace(".","/",$uri).".php";
+   if(is_file($file)){
+      include_once($file);
+      return $file; 
+   }else{
+      return false; 
+   }
+}
+echo uis_require("home.news");
+
+
+/**
+ * This function will return the names of the classes in the given file
+ */
+function get_php_classes($php_file) {
+  $classes = array();
+  $tokens = token_get_all($php_file);
+  $count = count($tokens);
+  for ($i = 2; $i < $count; $i++) {
+    if (   $tokens[$i - 2][0] == T_CLASS
+        && $tokens[$i - 1][0] == T_WHITESPACE
+        && $tokens[$i][0] == T_STRING) {
+
+        $classes[] = $tokens[$i][1];
+    }
+  }
+  return $classes;
+}
+
+/*Module provide */
+function uis_provide(){
+}
+
+
 
 /*Generat JSON for module tree*/
 if($GLOBALS['DATA']==true){

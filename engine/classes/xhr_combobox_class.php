@@ -89,31 +89,19 @@ class XHR_Combobox{
    * javascript function to set values for parameters
    */ 
    function param_setter(){
-        echo  "
+      echo  "
       function set_param(key,value) {
-         /*
-         update_status_bar('OK','Processing...');
-         update_progress_bar(10);
-         */
-
          dojo.xhrPost({
             url       : '".gen_url()."&form=main&action=param&data=json&param='+key+'&'+key+'='+value,
               handleAs :'json',
               load       : function(response, ioArgs) {        
                   update_status_bar(response.status,response.info);
-               /*
-               if(response.status == 'OK'){
-                  update_progress_bar(100);
-                     update_status_bar('OK','Done');
-               }
-               */
                },
                error : function(response, ioArgs) {
-                        update_status_bar('ERROR',response);
+                  update_status_bar('ERROR',response);
                }
          });
-      }   
-        ";
+      }";
    }    
 
    /*
@@ -121,6 +109,7 @@ class XHR_Combobox{
     */
    function html_requester(){
       echo "
+      //Request html from back end and set it as inner html of target element 
       function request_html(target,sourse_array,action_) {
          var content_obj   =document.getElementById(target);
          var url='';   
@@ -151,8 +140,9 @@ class XHR_Combobox{
             form      :target,
             load       : function(response, ioArgs) {        
                content_obj.innerHTML=response;
-                 update_status_bar('OK','Done');
+               update_status_bar('OK','Done');
                update_progress_bar(100);
+               //Parse the content placed inside content_obj
                dojo.parser.parse(content_obj);
             },
             error : function(response, ioArgs) {

@@ -33,10 +33,10 @@ Tables of the system
 */
 $system_tables=array(
    'program'         =>'program',          
-   'users'            =>'users',              
+   'users'           =>'users',              
    'permission'      =>'permission',              
-   'filter'            =>'filter',         
-   'log'               =>'log'              
+   'filter'          =>'filter',         
+   'log'             =>'log'              
 );
 
 $GLOBALS['S_TABLES']=$system_tables;

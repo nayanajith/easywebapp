@@ -56,15 +56,6 @@ function verify_captcha($custom_param=null){
 
 
 /*
- * Print debug messages
- */
-function debug($msg,$id,$color){
-   if(isset($GLOBALS['DEBUG']) && $GLOBALS['DEBUG']){
-      echo "<span style='color:".$color."'>[".$id."]</span>".$msg."<br/>";
-   }
-}
-
-/*
 Return prefix url
 default -> base url with module, page and program
 2 -> with all current key,value pairs 
@@ -102,41 +93,6 @@ function gen_url($type=null){
          return $GLOBALS['PAGE_GEN']."?module=".MODULE."&page=".PAGE."&program=".PROGRAM.$filter_name;
       break;
    }
-}
-
-
-/*
- * Convert number to text for 1,2,3
- */
-function num_to_text($num){
-   $text="";
-   switch ($num){
-      case 1:
-         $text="First";
-         break;
-      case 2:
-         $text="Second";
-         break;
-      case 3:
-         $text="Third";
-         break;
-      case 4:
-         $text="Fourth";
-         break;
-   }
-   return $text;
-}
-
-
-/*
- * Extract Examination id and return ac year ex year and semester
- */
-function exam_detail($eid){
-   return array(
-      "semester"=>num_to_text(substr($eid, -1, 1)),
-      "ac_year" =>num_to_text(substr($eid, -2, 1)),
-      "ex_year" =>2000+(int)substr($eid, 0, -2)
-   );
 }
 
 

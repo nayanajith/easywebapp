@@ -75,7 +75,7 @@ if(isset($_REQUEST['form'])){
                   $formgen->xhr_filter_filler_data($_REQUEST['id']);
                }else{
                   $filter_string.="table_name='".$table."'";
-                  $formgen->xhr_filtering_select_data($GLOBALS['P_TABLES']['filter'],'filter_name',$filter_string);
+                  $formgen->xhr_filtering_select_data($GLOBALS['S_TABLES']['filter'],'filter_name',$filter_string);
                }
 
             }
@@ -95,7 +95,7 @@ if(isset($_REQUEST['form'])){
 
       break;
       case 'select_filter':
-         $formgen->xhr_filtering_select_data($GLOBALS['P_TABLES']['filter'],'filter_name',"table_name='".$table."'");
+         $formgen->xhr_filtering_select_data($GLOBALS['S_TABLES']['filter'],'filter_name',"table_name='".$table."'");
       break;
    }
 }else{
