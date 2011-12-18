@@ -39,6 +39,7 @@ $program_table_schemas['exam']="CREATE TABLE `%sexam` (
   `venue`            varchar(25),
   `deleted`          boolean DEFAULT false,
    `note`            varchar(300),
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    UNIQUE KEY (`exam_hid`),
    PRIMARY KEY (`exam_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
@@ -52,6 +53,7 @@ $program_table_schemas['rubric']="CREATE TABLE `%srubric` (
    `assignment_must` boolean     DEFAULT false,
    `deleted`         boolean     DEFAULT false,
    `note`            varchar(300),
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    PRIMARY KEY (`exam_hid`,`course_id`),
    FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`) ON UPDATE CASCADE ON DELETE SET NULL, 
    FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL
@@ -136,15 +138,19 @@ EO->Exam offence
 
 $program_table_schemas['marks']="CREATE TABLE `%smarks` (
   `exam_hid`         varchar(20)       NOT NULL,
-  `course_id`        char(10)    NOT NULL,
+  `course_id`        char(10)      NOT NULL,
   `index_no`         varchar(8)       NOT NULL,
-  `paper_mark`       int(3)       unsigned DEFAULT null,
-  `assignment_mark`  int(3)       unsigned DEFAULT null,
+  `paper_mark`       int(3)        unsigned DEFAULT null,
+  `assignment_mark`  int(3)        unsigned DEFAULT null,
   `final_mark`       varchar(3)    DEFAULT null,
-  `push`             int(3)       unsigned DEFAULT null,
-   `state`           enum('PR','AB','MC','EO') default 'PR',
+  `push`             int(3)        unsigned DEFAULT null,
+  `grand_final_mark` varchar(3)    DEFAULT null,
+  `grade`            varchar(2)    DEFAULT null,
+  `gpv`              float          DEFAULT NULL,
+  `state`            enum('PR','AB','MC','EO') default 'PR',
   `can_release`      boolean       DEFAULT true,
   `deleted`          boolean     DEFAULT false,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `note`             varchar(300)    DEFAULT NULL,
    PRIMARY KEY (`exam_hid`,`course_id`,`index_no`),
    FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`) ON UPDATE CASCADE ON DELETE SET NULL,
@@ -195,6 +201,7 @@ $program_table_schemas['student']="CREATE TABLE `%sstudent`(
    `registered`      boolean          DEFAULT NULL,
    `deleted`         boolean          DEFAULT false,
    `status`          enum('READING','TRANSFERED','CANCELED','BANNED','GRADUATED') DEFAULT 'READING',
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    `note`            varchar(300)    DEFAULT NULL,
 	UNIQUE KEY (`index_no`),
 	UNIQUE KEY (`registration_no`),
@@ -215,6 +222,7 @@ $program_table_schemas['state']="CREATE TABLE `%sstate` (
   `comment_year4`    text          DEFAULT NULL,
   `note_year4`       text          DEFAULT NULL,
   `deleted`          boolean     DEFAULT false,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `note`             varchar(300)    DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
@@ -237,10 +245,12 @@ $program_table_schemas['gpa']="CREATE TABLE `%sgpa` (
   `GPA`              float(5,2)    DEFAULT NULL,
   `credits`          int(4)       NOT NULL DEFAULT '0',
   `deleted`          boolean     DEFAULT false,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    `note`            varchar(300)    NOT NULL DEFAULT '0',
    PRIMARY KEY (`index_no`,`degree_class`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
  
+/*
 $program_table_schemas['course_selection']="CREATE TABLE `%sscourse_selection`(
   `index_no`         varchar(8)       NOT NULL DEFAULT '',
   `courses_year1`    text          DEFAULT NULL,
@@ -253,7 +263,7 @@ $program_table_schemas['course_selection']="CREATE TABLE `%sscourse_selection`(
   `attendance_year4` text          DEFAULT NULL,
    PRIMARY KEY (`index_no`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
+ */
 
 $program_table_schemas['batch']="CREATE TABLE `%sbatch` (
   `batch_id`         varchar(50) NOT NULL DEFAULT '',
@@ -295,6 +305,7 @@ $program_table_schemas['mcq_paper']="CREATE TABLE %smcq_paper(
    `logic_question_delimiter` varchar(10) DEFAULT ';',
    `logic_option_delimiter` varchar(10) DEFAULT ';',
    `logic_first_line_header` boolean DEFAULT true,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    `note`                   text  NULL,
    PRIMARY KEY (`paper_id`),
    UNIQUE KEY (`course_id`,`exam_hid`),
@@ -308,6 +319,7 @@ $program_table_schemas['mcq_answers']="CREATE TABLE %smcq_answers(
    `answers`         text NULL,
    `marks`           int NULL,
    `state`           varchar(50) NOT NULL,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    `note`            text NULL,
    PRIMARY KEY (`index_no`,`paper_id`),
    FOREIGN KEY (`paper_id`) REFERENCES %spapr(`paper_id`) ON UPDATE CASCADE ON DELETE SET NULL
@@ -329,25 +341,28 @@ $program_table_schemas['mcq_marking_logic']="CREATE TABLE %smcq_marking_logic(
    `E`               int NULL,
    `BLANK`           int NULL,
    `NOA`             int NULL,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    `note`            text NULL,
    PRIMARY KEY (`question`,`option_id`,`paper_id`),
    FOREIGN KEY (`paper_id`) REFERENCES %spapr(`paper_id`) ON UPDATE CASCADE ON DELETE SET NULL
   )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['mcq_marks']="CREATE TABLE %smcq_marks(
-   `index_no`           varchar(8) NOT NULL,
-   `paper_id`           int NOT NULL,
-   `section`            int NOT NULL,
-   `mark`               int NOT NULL,
-   `manual_mark`        int NOT NULL DEFAULT 0,
+  `index_no`           varchar(8) NOT NULL,
+  `paper_id`           int NOT NULL,
+  `section`            int NOT NULL,
+  `mark`               int NOT NULL,
+  `manual_mark`        int NOT NULL DEFAULT 0,
+  `timestamp`          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    PRIMARY KEY (`index_no`,`paper_id`,`section`),
    FOREIGN KEY (`paper_id`) REFERENCES %spapr(`paper_id`) ON UPDATE CASCADE ON DELETE SET NULL
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $program_table_schemas['transcript']="CREATE TABLE `%stranscript` (
   `id`    int NOT NULL AUTO_INCREMENT,
-  `transcript_id`       char(2) DEFAULT NULL,
-  `timestamp`           timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `index_no`           varchar(8) NOT NULL,
+  `transcript_id`      char(2) DEFAULT NULL,
+  `timestamp`          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    PRIMARY KEY (`id`),
    UNIQUE KEY (`transcript_id`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
@@ -356,7 +371,7 @@ $program_table_schemas['grades']="CREATE TABLE `%sgrades` (
   `mark`                int(3) NOT NULL DEFAULT '0',
   `grade`               char(2) DEFAULT NULL,
   `gpv`                 decimal(3,2) DEFAULT NULL,
-  PRIMARY KEY (`marks`)
+  PRIMARY KEY (`mark`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 //Initial data for the grade table

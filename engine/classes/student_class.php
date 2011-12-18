@@ -293,20 +293,25 @@ class Student{
    protected $courses= array();
    protected $regInfo=null;
 
-   public function __construct($index_no=null) {
+   //Recalculate the gpa if TRUE
+   protected $RECALCULATE=true;
 
+   public function __construct($index_no=null,$recalc=true) {
+
+
+      $this->RECALCULATE      = $recalc;
 
       $this->self['program']  = PROGRAM;
-      $this->self['index_no']  = $index_no;
+      $this->self['index_no'] = $index_no;
 
       /*Related tables*/
       $this->self['marks']    = $GLOBALS['P_TABLES']["marks"];
       $this->self['student']  = $GLOBALS['P_TABLES']["student"];
-      //$this->self['student_extend']  = $GLOBALS['P_TABLES']["student_extend"];
       $this->self['gpa']      = $GLOBALS['P_TABLES']["gpa"];
 
       $this->loadRegData();
       $this->loadCourses();
+
       /*
       echo "<pre>";
       print_r($this->courses);

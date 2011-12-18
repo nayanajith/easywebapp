@@ -203,7 +203,8 @@ $db_columns=array(
          //build the query
          $query="REPLACE INTO ".$GLOBALS['P_TABLES']['marks']."($keys)values($values)";
          //Insert marks to the database if exists with same keys replace with new values
-         exec_query($query,Q_RET_ARRAY,null,null,'all');
+         exec_query($query,Q_RET_NON);
+
       
          //errors will be collectted to this array
          if(!is_query_ok()){
@@ -213,6 +214,13 @@ $db_columns=array(
       $blank=false;   
       $values='';
    }
+
+   //calculate grand_final_mark,grade and gpv for the uploaded marks
+   $query_calc="UPDATE ".$GLOBALS['P_TABLES']['marks']." SET grand_final_mark=final_mark+push,grade=(SELECT grade FROM ".$GLOBALS['P_TABLES']['grades']." WHERE mark=grand_final_mark),gpv=(SELECT gpv FROM bcsc_grades WHERE mark=grand_final_mark)*(SELECT lecture_credits+practical_credits FROM ".$GLOBALS['P_TABLES']['course']." WHERE course_id='".$_SESSION[PAGE]['course_id']."') WHERE exam_hid='".$_SESSION[PAGE]['exam_id']."' and course_id='".$_SESSION[PAGE]['course_id']."'";
+
+   exec_query($query_calc,Q_RET_NON);
+   $sql_errors[]=get_sql_error();
+
 
    //Return json status
    if(sizeof($sql_errors) > 0 ){
