@@ -367,6 +367,10 @@ if(isset($_SESSION[PAGE]['gen'])&&$_SESSION[PAGE]['gen']=='COURSE'){
 echo "</div></div>";
 
 //Generate course selection tooltip dialog
+if(!isset($_SESSION[PAGE]['exam_hid'])){
+   $_SESSION[PAGE]['exam_hid']=null;
+}
+
 $arr=exec_query("SELECT DISTINCT course_id FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."'",Q_RET_ARRAY,null,'course_id');
 $course_id_checkboxes="";
 $cols=3;

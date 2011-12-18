@@ -21,6 +21,7 @@ $program_tables=array(
    'log'                  =>'%slog',         
    'filter'               =>'%sfilter',         
    'marks'               =>'%smarks',       
+   'marks_stat'          =>'%smarks_stat',       
    'student'            =>'%sstudent',
    'course_selection'   =>'%scourse_selection',
    'state'               =>'%sstate',

@@ -27,6 +27,7 @@ $program_table_schemas['course']="CREATE TABLE `%scourse` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table that contains information of all the courses.' ;";
 
 
+
 $program_table_schemas['exam']="CREATE TABLE `%sexam` ( 
    `exam_id`         int NOT NULL AUTO_INCREMENT,
    `exam_hid`        varchar(20) NOT NULL,
@@ -157,6 +158,27 @@ $program_table_schemas['marks']="CREATE TABLE `%smarks` (
    FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL,
    FOREIGN KEY (`index_no`) REFERENCES %sstudent(`index_no`) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+
+//Course_ID STD   AVG   MAX   MIN   PRESENT  ABSENT   MEDICAL  OFFENDED GRADE_COUNT
+$program_table_schemas['marks_stat']="CREATE TABLE `%smarks_stat` (
+  `exam_hid`         varchar(20)    NOT NULL,
+  `course_id`        char(10)       NOT NULL,
+  `std`              float          NOT NULL,       
+  `avg`              float          NOT NULL,
+  `max`              float          NOT NULL,
+  `min`              float          NOT NULL,
+  `present`          int(3)         NOT NULL,
+  `absent`           int(3)         NOT NULL,
+  `medical`          int(3)         NOT NULL,
+  `offended`         int(3)         NOT NULL,
+  `grade_count`      varchar(150)   NOT NULL,
+   PRIMARY KEY (`exam_hid`,`course_id`),
+   FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`) ON UPDATE CASCADE ON DELETE SET NULL,
+   FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL
+
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
 
 $program_table_schemas['student']="CREATE TABLE `%sstudent`(
    `rid`             bigint(10)       unsigned NOT NULL AUTO_INCREMENT,

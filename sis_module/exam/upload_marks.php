@@ -170,7 +170,7 @@ $db_columns=array(
    $blank   =false;
 
 
-   $sql_errors='';
+   $activity='<ol><li>Saving marks of the student...';
    for($i=1;$i<=$studnt_count;$i++){
       $values_comma   ='';
       //If can_release is false the value for the request will not set so we set it as 0 
@@ -208,7 +208,7 @@ $db_columns=array(
       
          //errors will be collectted to this array
          if(!is_query_ok()){
-            $sql_errors.=get_sql_error();
+            $activity.=get_sql_error();
          }
       }
       $blank=false;   
@@ -216,30 +216,66 @@ $db_columns=array(
    }
 
    //calculate grand_final_mark,grade and gpv for the uploaded marks
+   $activity.='<li>Calculating grand_final, grade and gpv...';
    $query_calc="UPDATE ".$GLOBALS['P_TABLES']['marks']." SET grand_final_mark=final_mark+push,grade=(SELECT grade FROM ".$GLOBALS['P_TABLES']['grades']." WHERE mark=grand_final_mark),gpv=(SELECT gpv FROM bcsc_grades WHERE mark=grand_final_mark)*(SELECT lecture_credits+practical_credits FROM ".$GLOBALS['P_TABLES']['course']." WHERE course_id='".$_SESSION[PAGE]['course_id']."') WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' and course_id='".$_SESSION[PAGE]['course_id']."'";
 
    exec_query($query_calc,Q_RET_NON);
-   $sql_errors.=get_sql_error();
+   $activity.=get_sql_error();
 
 
    //Reset repeat_max
-   $query_clean_repeat_max="UPDATE bcsc_marks SET repeat_max=false";
+   $activity.='<li>Calculating repeat max...';
+   $query_clean_repeat_max="UPDATE bcsc_marks SET repeat_max=false WHERE course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."'";
    exec_query($query_clean_repeat_max,Q_RET_NON);
-   $sql_errors.=get_sql_error();
+   $activity.=get_sql_error();
 
 
-   //Find repeat mx for the students in effect of current save
+   //Find repeat max for the students in effect of current save
    $query_repeat_max="UPDATE bcsc_marks m,(SELECT exam_hid, index_no, course_id, MAX(grand_final_mark) grand_final_mark,COUNT(*) count_ FROM bcsc_marks WHERE course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."'  GROUP BY index_no,course_id) r SET m.repeat_max=1 WHERE r.count_ > 1 AND m.exam_hid=r.exam_hid AND m.course_id=r.course_id AND m.index_no=r.index_no";
    exec_query($query_repeat_max,Q_RET_NON);
-   $sql_errors.=get_sql_error();
+   $activity.=get_sql_error();
+
+
+   //Get grade count for the selected course in selected exam
+   $arr_grade_count=exec_query("SELECT GROUP_CONCAT(grade) grades,GROUP_CONCAT(count) counts FROM(SELECT grade,COUNT(grade) count FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' AND NOT ISNULL(grade) GROUP BY grade) AS r;",Q_RET_ARRAY);
+   $activity.=get_sql_error();
+   $arr_grade_count=array_combine(explode(',',$arr_grade_count[0]['grades']),explode(',',$arr_grade_count[0]['counts']));
+   $grade_count_json=json_encode($arr_grade_count);
+
+
+   //Get state count for selected course in  selected exam
+   $arr_state_count=exec_query("SELECT GROUP_CONCAT(state) states,GROUP_CONCAT(count) counts FROM(SELECT state,COUNT(state) count FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' GROUP BY state) AS r;",Q_RET_ARRAY);
+   $activity.=get_sql_error();
+   $arr_state_count=array_combine(explode(',',$arr_state_count[0]['states']),explode(',',$arr_state_count[0]['counts']));
+   $arr_state=array(
+      'PR'=>'0',
+      'AB'=>'0',
+      'MC'=>'0',
+      'EO'=>'0',
+   );
+   $arr_state_count=array_merge($arr_state,$arr_state_count);
+
+
+   //Get the statistics of selected course of the selected exam
+   $arr_statistics=exec_query("SELECT MAX(grand_final_mark) max,MIN(grand_final_mark) min,ROUND(AVG(grand_final_mark),2) avg,ROUND(STD(grand_final_mark),2) std FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' AND state='PR';",Q_RET_ARRAY);
+   $arr_statistics=$arr_statistics[0];
+
+
+   //Update the satistics data  of this course in this exam
+   $activity.='<li>Updating statistics...';
+   $update_stat_query="REPLACE INTO ".$GLOBALS['P_TABLES']['marks_stat']."(`exam_hid`,`course_id`,`std`,`avg`,`max`,`min`,`present`,`absent`,`medical`,`offended`,`grade_count`)values('".$_SESSION[PAGE]['exam_hid']."','".$_SESSION[PAGE]['course_id']."','".$arr_statistics['std']."','".$arr_statistics['avg']."','".$arr_statistics['max']."','".$arr_statistics['min']."','".$arr_state_count['PR']."','".$arr_state_count['AB']."','".$arr_state_count['MC']."','".$arr_state_count['EO']."','".$grade_count_json."')";
+   exec_query($update_stat_query,Q_RET_NON);
+   $activity.=get_sql_error();
 
 
    //Return json status
-   if(trim($sql_errors) != '' ){
-      return_status_json('ERROR',$sql_errors);
+   /*
+   if(trim($activity) != '' ){
+      return_status_json('ERROR',$activity);
    }else{
-      return_status_json('OK','Marks uploaded sucessfully!');
-   }
+    */
+      return_status_json('OK',$activity);
+   //}
 }
 
 //id table mapper array
