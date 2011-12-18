@@ -95,7 +95,7 @@ class XHR_Combobox{
             url       : '".gen_url()."&form=main&action=param&data=json&param='+key+'&'+key+'='+value,
               handleAs :'json',
               load       : function(response, ioArgs) {        
-                  update_status_bar(response.status,response.info);
+                  update_status_bar(response.status_code,response.info);
                },
                error : function(response, ioArgs) {
                   update_status_bar('ERROR',response);
@@ -166,7 +166,6 @@ class XHR_Combobox{
             break;   
             case 'csv':
             case 'pdf':
-               //window.open('".gen_url()."&form=main&action='+action,downloader);
                download('".gen_url()."&form=main&action='+action);
                return;
             break;   
@@ -195,8 +194,8 @@ class XHR_Combobox{
                form        : '$form', 
             
                handle: function(response,ioArgs){
-                  update_status_bar(response.status,response.info);
-                  if(response.status == 'OK'){
+                  update_status_bar(response.status_code,response.info);
+                  if(response.status_code == 'OK'){
                      update_progress_bar(100);
                   }
                },

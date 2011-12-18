@@ -170,7 +170,7 @@ $db_columns=array(
    $blank   =false;
 
 
-   $sql_errors=array();
+   $sql_errors='';
    for($i=1;$i<=$studnt_count;$i++){
       $values_comma   ='';
       //If can_release is false the value for the request will not set so we set it as 0 
@@ -208,7 +208,7 @@ $db_columns=array(
       
          //errors will be collectted to this array
          if(!is_query_ok()){
-            $sql_errors[]=get_sql_error();
+            $sql_errors.=get_sql_error();
          }
       }
       $blank=false;   
@@ -216,15 +216,27 @@ $db_columns=array(
    }
 
    //calculate grand_final_mark,grade and gpv for the uploaded marks
-   $query_calc="UPDATE ".$GLOBALS['P_TABLES']['marks']." SET grand_final_mark=final_mark+push,grade=(SELECT grade FROM ".$GLOBALS['P_TABLES']['grades']." WHERE mark=grand_final_mark),gpv=(SELECT gpv FROM bcsc_grades WHERE mark=grand_final_mark)*(SELECT lecture_credits+practical_credits FROM ".$GLOBALS['P_TABLES']['course']." WHERE course_id='".$_SESSION[PAGE]['course_id']."') WHERE exam_hid='".$_SESSION[PAGE]['exam_id']."' and course_id='".$_SESSION[PAGE]['course_id']."'";
+   $query_calc="UPDATE ".$GLOBALS['P_TABLES']['marks']." SET grand_final_mark=final_mark+push,grade=(SELECT grade FROM ".$GLOBALS['P_TABLES']['grades']." WHERE mark=grand_final_mark),gpv=(SELECT gpv FROM bcsc_grades WHERE mark=grand_final_mark)*(SELECT lecture_credits+practical_credits FROM ".$GLOBALS['P_TABLES']['course']." WHERE course_id='".$_SESSION[PAGE]['course_id']."') WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' and course_id='".$_SESSION[PAGE]['course_id']."'";
 
    exec_query($query_calc,Q_RET_NON);
-   $sql_errors[]=get_sql_error();
+   $sql_errors.=get_sql_error();
+
+
+   //Reset repeat_max
+   $query_clean_repeat_max="UPDATE bcsc_marks SET repeat_max=false";
+   exec_query($query_clean_repeat_max,Q_RET_NON);
+   $sql_errors.=get_sql_error();
+
+
+   //Find repeat mx for the students in effect of current save
+   $query_repeat_max="UPDATE bcsc_marks m,(SELECT exam_hid, index_no, course_id, MAX(grand_final_mark) grand_final_mark,COUNT(*) count_ FROM bcsc_marks WHERE course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."'  GROUP BY index_no,course_id) r SET m.repeat_max=1 WHERE r.count_ > 1 AND m.exam_hid=r.exam_hid AND m.course_id=r.course_id AND m.index_no=r.index_no";
+   exec_query($query_repeat_max,Q_RET_NON);
+   $sql_errors.=get_sql_error();
 
 
    //Return json status
-   if(sizeof($sql_errors) > 0 ){
-      return_status_json('ERROR',implode(',',$sql_errors));
+   if(trim($sql_errors) != '' ){
+      return_status_json('ERROR',$sql_errors);
    }else{
       return_status_json('OK','Marks uploaded sucessfully!');
    }

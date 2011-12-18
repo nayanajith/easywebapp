@@ -9,7 +9,7 @@ d_r('dijit.form.Button');
    var stausDialog;
    //If the public kayout used set the javascript variable to used with
    var pub=false;
-   <?php if($GLOBALS['LAYOUT']!='pub'){ ?>
+   <?php if($GLOBALS['LAYOUT']=='pub'){ ?>
    pub=true;
    <?php }?>
 
@@ -90,7 +90,6 @@ d_r('dijit.form.Button');
 
    /*Update the busy state of the icon*/
    function set_busy(is_busy){
-      alert(is_busy);
       if(pub){
          return;
       }else{

@@ -10,26 +10,26 @@ $system_tables=array(
 Tables for the program
 */
 $program_tables=array(
-   'eligibility'         =>'%seligibility',
-   'course'               =>'%scourse',
+   'eligibility'        =>'%seligibility',
+   'course'             =>'%scourse',
    'exam'               =>'%sexam',        
-   'rubric'               =>'%srubric',        
-   'paper'               =>'%spaper',        
+   'rubric'             =>'%srubric',        
+   'paper'              =>'%spaper',        
    'push'               =>'%spush',        
-   'gpa'                  =>'%sgpa',         
-   'log'                  =>'%slog',         
-   'filter'               =>'%sfilter',         
-   'marks'               =>'%smarks',       
+   'gpa'                =>'%sgpa',         
+   'log'                =>'%slog',         
+   'filter'             =>'%sfilter',         
+   'marks'              =>'%smarks',       
    'student'            =>'%sstudent',
    'course_selection'   =>'%scourse_selection',
-   'state'               =>'%sstate',
-   'batch'               =>'%sbatch',
-   'staff'               =>'%sstaff',
-   'mcq_paper'            =>'%smcq_paper',
-   'mcq_answers'         =>'%smcq_answers',
-   'mcq_marking_logic'   =>'%smcq_marking_logic',
-   'mcq_marks'            =>'%smcq_marks',
-   'grades'               =>'%sgrades'
+   'state'              =>'%sstate',
+   'batch'              =>'%sbatch',
+   'staff'              =>'%sstaff',
+   'mcq_paper'          =>'%smcq_paper',
+   'mcq_answers'        =>'%smcq_answers',
+   'mcq_marking_logic'  =>'%smcq_marking_logic',
+   'mcq_marks'          =>'%smcq_marks',
+   'grades'             =>'%sgrades'
 );     
 
 $GLOBALS['P_TABLES']=$program_tables;

@@ -296,10 +296,7 @@ class Student{
    //Recalculate the gpa if TRUE
    protected $RECALCULATE=true;
 
-   public function __construct($index_no=null,$recalc=true) {
-
-
-      $this->RECALCULATE      = $recalc;
+   public function __construct($index_no=null,$recalc=null) {
 
       $this->self['program']  = PROGRAM;
       $this->self['index_no'] = $index_no;
@@ -308,16 +305,19 @@ class Student{
       $this->self['marks']    = $GLOBALS['P_TABLES']["marks"];
       $this->self['student']  = $GLOBALS['P_TABLES']["student"];
       $this->self['gpa']      = $GLOBALS['P_TABLES']["gpa"];
+      $this->self['grade']   = $GLOBALS['P_TABLES']["grade"];
+      $this->self['course']  = $GLOBALS['P_TABLES']["course"];
 
       $this->loadRegData();
       $this->loadCourses();
+      $this->loadGPAData();
 
-      /*
-      echo "<pre>";
-      print_r($this->courses);
-      echo "</pre>";
-      */
-      
+      //If marks have uploaded after 
+      if(is_null($recalc)){
+         $this->RECALCULATE      = $this->is_marks_course_updated_after_gpa();
+      }else{
+         $this->RECALCULATE      = $recalc;
+      }
    }
 
    public function getRegNo(){
@@ -534,6 +534,16 @@ public function getTranscript(){
       }else{
          return array_search(3.5,$classes);
       }
+   }
+
+   /**
+    * Check wether students marks updated after gpa calculation if so recalculate gpa
+    */
+
+   public function is_marks_course_updated_after_gpa(){
+      $arr=exec_query("SELECT MAX(m.timestamp)<g.timestamp OR MAX(c.timestamp)>MAX(m.timestamp) updated FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['gpa']." g,".$GLOBALS['P_TABLES']['course']." c where m.index_no='".$this->self['index_no']."' AND m.index_no=g.index_no",Q_RET_ARRAY);
+
+      return $arr[0]['updated'];
    }
 
 
@@ -794,10 +804,10 @@ public function getTranscript(){
          //If the student have repeated the subject find the maximum he earned
          if(sizeof($course) >1){
             foreach($course as $exam_hid => $marks){
-               if(key_exists(strtoupper($marks['final_mark']), $gradeExp)  && $mark == 0){
+               if(key_exists(strtoupper($marks['grand_final_mark']), $gradeExp)  && $mark == 0){
                   $eid=$exam_hid;
-               }elseif($marks['final_mark']>$mark){
-                  $mark=$marks['final_mark'];
+               }elseif($marks['grand_final_mark']>$mark){
+                  $mark=$marks['grand_final_mark'];
                   $eid=$exam_hid;
                }
             }
@@ -817,11 +827,11 @@ public function getTranscript(){
          if(courseYear($course_id)==$year){
             foreach($course as $key => $exam){
                $mark=array(
-                  'course_id'   =>$course_id,
+                  'course_id' =>$course_id,
                   'coursename'=>getCourseName($course_id),
-                  'credit'      =>getCredits($course_id),
-                  'grade'      =>getGradeC($exam['final_mark']+$exam['push'],$course_id),
-                  'mark'      =>$exam['final_mark'],
+                  'credit'    =>getCredits($course_id),
+                  'grade'     =>getGradeC($exam['grand_final_mark'],$course_id),
+                  'mark'      =>$exam['grand_final_mark'],
                   'exam'      =>getExamYear($key),
                );
                $marks[]=$mark;
@@ -840,7 +850,14 @@ public function getTranscript(){
 
       $result  = exec_query($query,Q_RET_MYSQL_RES);
       while($row = mysql_fetch_assoc($result)){
-         $marks=array('final_mark'=>$row['final_mark'],'push'=>$row['push'],'state'=>$row['state']);
+         $marks=array(
+            'final_mark'      =>$row['final_mark'],
+            'push'            =>$row['push'],
+            'state'           =>$row['state'],
+            'grand_final_mark'=>$row['grand_final_mark'],
+            'grade'           =>$row['grade'],
+            'gpv'             =>$row['gpa']
+         );
          if(!empty($this->courses[$row['course_id']]))
          {
             $course=$this->courses[$row['course_id']];
@@ -858,6 +875,13 @@ public function getTranscript(){
    public function getCourses(){
       return $this->courses;   
    }
+
+
+   public function loadGPAData(){
+      $query   =" SELECT * FROM ".$this->self['gpa']." WHERE index_no ='".$this->self['index_no']."'";
+   
+   }
+
 }
 
 ?>
