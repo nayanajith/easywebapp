@@ -5,7 +5,7 @@ d_r('dijit.form.Button');
 <script language='javascript'>
    
    /*Update status bar*/
-   var max_status_length=150;
+   var max_status_length=100;
    var stausDialog;
    //If the public kayout used set the javascript variable to used with
    var pub=false;

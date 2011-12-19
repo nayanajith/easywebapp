@@ -305,8 +305,8 @@ class Student{
       $this->self['marks']    = $GLOBALS['P_TABLES']["marks"];
       $this->self['student']  = $GLOBALS['P_TABLES']["student"];
       $this->self['gpa']      = $GLOBALS['P_TABLES']["gpa"];
-      $this->self['grade']   = $GLOBALS['P_TABLES']["grade"];
-      $this->self['course']  = $GLOBALS['P_TABLES']["course"];
+      //$this->self['grades']   = $GLOBALS['P_TABLES']["grades"];
+      $this->self['course']   = $GLOBALS['P_TABLES']["course"];
 
       $this->loadRegData();
       $this->loadCourses();
@@ -846,7 +846,7 @@ public function getTranscript(){
     */
    public function loadCourses(){
       $course     = null;
-      $query   =" SELECT course_id,exam_hid,state,final_mark,push FROM ".$this->self['marks']." WHERE index_no ='".$this->self['index_no']."' AND can_release=true ORDER BY course_id";
+      $query   =" SELECT course_id,exam_hid,state,final_mark,push,grand_final_mark,grade,gpv FROM ".$this->self['marks']." WHERE index_no ='".$this->self['index_no']."' AND can_release=true ORDER BY course_id";
 
       $result  = exec_query($query,Q_RET_MYSQL_RES);
       while($row = mysql_fetch_assoc($result)){
@@ -856,7 +856,7 @@ public function getTranscript(){
             'state'           =>$row['state'],
             'grand_final_mark'=>$row['grand_final_mark'],
             'grade'           =>$row['grade'],
-            'gpv'             =>$row['gpa']
+            'gpv'             =>$row['gpv']
          );
          if(!empty($this->courses[$row['course_id']]))
          {
