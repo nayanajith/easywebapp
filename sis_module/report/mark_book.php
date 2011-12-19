@@ -137,7 +137,7 @@ function list_markbooks(){
       if ($dh = opendir($dir)) {
           while (($file = readdir($dh)) !== false) {
             if(filetype($dir."/".$file) == 'file'){
-              echo "<a href='".gen_url()."&form=main&action=pdf&fid=".base64_encode($file)."'>$file</a><br/>\n";
+              echo "<a href='".gen_url()."&form=main&action=pdf&fid=".base64_encode($file)."'>$file</a><br>\n";
             }
           }
           closedir($dh);

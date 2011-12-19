@@ -66,9 +66,9 @@ class MYPDF extends TCPDF {
             <tr>
                <td>&nbsp;</td>
                <td align='center'>
-                  ...........................................................<br/>
-                  ".$this->AR_name."<br/>
-                  Assistant Registrar/Examinations<br/>
+                  ...........................................................<br>
+                  ".$this->AR_name."<br>
+                  Assistant Registrar/Examinations<br>
                   for Registrat
                </td>
             </tr>
@@ -211,7 +211,7 @@ class Transcript{
 
 
       $template=<<<EOS
-<style>
+<style type="text/css">
 *{
    font-size:94%;
    font-family:arial;
@@ -269,7 +269,7 @@ class Transcript{
    <tr>
       <td  valign='top' >
          <table width='100%' class='trans_body' cellpadding='0' cellspacing='0'>
-            <tr><th width='10%'>COURSE</th><th width='60%'>COURSE TITLE</th><th width='9%'>CREDITS</th><th width='10%'>MARK/<br/>GRADE</th><th width='14%'>EXAM<br/>DATE</th></tr>
+            <tr><th width='10%'>COURSE</th><th width='60%'>COURSE TITLE</th><th width='9%'>CREDITS</th><th width='10%'>MARK/<br>GRADE</th><th width='14%'>EXAM<br>DATE</th></tr>
             $course_year1
             </table>
       <table width='100%' class='trans_body_2' cellpadding='0' cellspacing='0'>
@@ -279,7 +279,7 @@ class Transcript{
       </td>
       <td  valign='top' >
          <table width='100%' class='trans_body' cellpadding='0' cellspacing='0'>
-            <tr><th width='10%'>COURSE</th><th width='60%'>COURSE TITLE</th><th width='9%'>CREDITS</th><th width='10%'>MARK/<br/>GRADE</th><th width='14%'>EXAM<br/>DATE</th></tr>
+            <tr><th width='10%'>COURSE</th><th width='60%'>COURSE TITLE</th><th width='9%'>CREDITS</th><th width='10%'>MARK/<br>GRADE</th><th width='14%'>EXAM<br>DATE</th></tr>
             $course_year3
          </table>
          <table width='100%' class='trans_body_2' cellpadding='0' cellspacing='0'>
@@ -291,7 +291,7 @@ class Transcript{
 </table>
 EOS;
       $info=<<<EOS
-<style>
+<style type="text/css">
    .info{
       font-size:90%;
       font-weight:bold;

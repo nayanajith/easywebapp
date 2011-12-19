@@ -244,7 +244,7 @@ class Mark_book{
             $width=$sub_cols_arr[0];
             array_shift($sub_cols_arr);
             $table_header.='<td class="tHeader" width="'.$width.'">'."\n";
-            $table_header.=implode("<br/>",$sub_cols_arr);
+            $table_header.=implode("<br>",$sub_cols_arr);
             $table_header.="</td>\n";
          }
       }
@@ -396,7 +396,7 @@ class Mark_book{
    /*Student detail arry to be filled for each student before inserting to the report table*/
    protected $student=array(
       'No'         =>'6',
-      'Index_No'   =>'0009202<br/>R000920',
+      'Index_No'   =>'0009202<br>R000920',
       'Name'      =>'Mr. M KATPAHARAJAH',
       'Marks'=>array(
          '2001'=>array(
@@ -410,8 +410,8 @@ class Mark_book{
             'C8'=>'62-B'
          )
          ),
-      'Class'      =>'1.88<br/>1.88<br/>1.88<br/>',
-      'Result'   =>'To Sit LMS Assessments: IT1203,IT1303.<br/>Year 3. To Sit Modules: IT1203,IT1303.'
+      'Class'      =>'1.88<br>1.88<br>1.88<br>',
+      'Result'   =>'To Sit LMS Assessments: IT1203,IT1303.<br>Year 3. To Sit Modules: IT1203,IT1303.'
    );   
 
    /**
@@ -517,7 +517,7 @@ class Mark_book{
       $eligibility=new Student($index_no);
 
       $this->student['No']         =$this->student_count++;
-      $this->student['Index_No']   =$index_no."<br/>".$eligibility->getRegNo();
+      $this->student['Index_No']   =$index_no."<br>".$eligibility->getRegNo();
       $this->student['Name']      =$eligibility->getName(2);
       $this->student['Result']   ='';
 

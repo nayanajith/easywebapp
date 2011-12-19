@@ -110,7 +110,7 @@ exit();
 ...
 </div>
 
-<script language='javascript'>
+<script type="text/javascript" >
    function submit_form(action){
       update_status_bar('...');
       update_progress_bar(10);

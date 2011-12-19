@@ -135,7 +135,7 @@ class Formgenerator_pub extends Formgenerator {
             //$form.="<div style='float:left'><p>For added security, please enter the verification code hidden in the image.</p>";
             $form.="<div style='padding:10px;'><h4 style='background-color:#C9D7F1;padding:2px;text-align:center' class='bgCenter'>The not so fine print</h4>";
             $form.="<p>For added security, please enter the verification code hidden in the image.</p>";
-            $form.="<img src='?module=payment&page=captchar&data=true' style='border:1px solid #C9D7F1' /><br/>";
+            $form.="<img src='?module=payment&page=captchar&data=true' style='border:1px solid #C9D7F1' ><br>";
             d_r('dijit.form.ValidationTextBox');
             $form.="Code <font color='red'>*</font><input type='text' dojoType='dijit.form.ValidationTextBox' name='captcha' id='security_code' jsId='security_code' required='true' style='width:100px' ></input></div>";
          }
@@ -171,7 +171,7 @@ class Formgenerator_pub extends Formgenerator {
 
          //Buttons of the form
          $form.= "
-            <script language='javascript'>
+            <script type="text/javascript" >
             function submit_form(action){
                update_status_bar('OK','...');
                update_progress_bar(10);

@@ -112,7 +112,7 @@ echo "<table width=100%><tr><td >";
    echo $formgen->gen_form(false,true);
    echo $formgen->gen_filter();
    echo "
-      <script language='javascript'>
+      <script type="text/javascript" >
          function grid(){
             url='".gen_url().(isset($_REQUEST['filter_name'])?"&filter_name=".$_REQUEST['filter_name']:"")."&form=grid';
             open(url,'_self');

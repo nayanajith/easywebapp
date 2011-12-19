@@ -41,7 +41,7 @@ function client_side_handle($form_name,$input_name,$btn_label,$callback,$file_id
       /*Upload form*/
       $frm.="<form name='$form_name' id='$form_name' enctype='multipart/form-data' method='post' style='border:1px solid silver;padding:5px'>
    <label for='$input_name'>Choose file</label>
-   <input type='file' name='$input_name' id='$input_name' /><br/><br/>
+   <input type='file' name='$input_name' id='$input_name' ><br><br>
    <button dojoType='dijit.form.Button' >$btn_label
         <script type='dojo/method' event='onClick' args='evt'>
          ".$form_name."_upload('$input_name');
@@ -55,14 +55,14 @@ $frm .="
 <script type='text/javascript'>
 
    /*Change the form in to deleter*/
-   var delete_frm_inner_".$form_name."='<input type=\"hidden\" name=\"".$input_name."_file_id\" value=\"$file_id\" />'+
+   var delete_frm_inner_".$form_name."='<input type=\"hidden\" name=\"".$input_name."_file_id\" value=\"$file_id\" >'+
    '<button dojoType=\"dijit.form.Button\" onClick=\"".$form_name."_delete(\'$input_name\')\">Delete'+
    '</button>';
 
    /*Change the form into uploader*/
    var upload_frm_inner_".$form_name."='<label for=\"$input_name\">Choose file</label>'+
-   '<input type=\"hidden\" name=\"".$input_name."_file_id\" value=\"$file_id\" />'+
-   '<input type=\"file\" name=\"$input_name\" id=\"$input_name\" /><br/><br/>'+
+   '<input type=\"hidden\" name=\"".$input_name."_file_id\" value=\"$file_id\" >'+
+   '<input type=\"file\" name=\"$input_name\" id=\"$input_name\" ><br><br>'+
    '<button dojoType=\"dijit.form.Button\" onClick=\"".$form_name."_upload(\'$input_name\')\">$btn_label'+
    '</button>';
 

@@ -78,7 +78,7 @@ class MCQ_paper {
          $tmp_array=explode($this->question_delimiter,$answers);
          $answers_array=array_slice($tmp_array,$this->sections[$section-1],$this->sections[$section]);
 
-         //echo implode("__",$answers_array)."<br/>";
+         //echo implode("__",$answers_array)."<br>";
 
          //Processing answer by unswer
          foreach ($answers_array as $key => $answer) {
@@ -245,7 +245,7 @@ if(empty($_GET['paper_id'])){
       </select></td>
    </tr>
 </table>
-<input type="submit" name="submit" value="Generate Report" /></form>
+<input type="submit" name="submit" value="Generate Report" ></form>
 <?php 
 }else{
 $mcq_paper= new MCQ_paper($_GET['paper_id']);

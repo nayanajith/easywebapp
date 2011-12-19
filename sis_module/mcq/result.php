@@ -240,7 +240,7 @@ if(empty($_GET['exam_id'])){
       </select></td>
    </tr>
 </table>
-<input type="submit" name="submit" value="Next&gt;" /></form>
+<input type="submit" name="submit" value="Next&gt;" ></form>
 <?php 
 }else{
 $mcq_paper= new MCQ_paper($_GET['course_id'], $_GET['exam_id']);

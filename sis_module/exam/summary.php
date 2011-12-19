@@ -19,7 +19,7 @@ if(isset($_REQUEST['data']) && isset($_REQUEST['exam_hid'])){
    get_course_summery($_REQUEST['exam_hid']);
 }else{
 ?>
-<style>
+<style type="text/css">
 .report_table{
 }
 
@@ -58,7 +58,7 @@ echo "</table>";
 <div align='center' id='xhr_content'>
 </div>
 </div>
-<script language='javascript'>
+<script type="text/javascript" >
 //xhr request to get data from backend
 function request_data(exam_hid) {
 
@@ -100,8 +100,8 @@ function submit_form(){
    //print Styles
    var print_style="body { background-colour:#EFEFEF; margin:0px auto !important; padding:0px auto !important;} #A4 {background-color:#FFFFFF; left:200px; right:190px; height:297mm !important; width:210mm !important; margin:1px solid #FFFFFF; }";
    //Write style from current page to printing page
-   consoleRef.document.writeln("<style>");
-   for(var i=0;i<styles.length;i++){
+   consoleRef.document.writeln("<style type="text/css">");
+   for(var i=0;i<style type="text/css"s.length;i++){
       consoleRef.document.writeln(styles.item(i).innerHTML);
    }
    consoleRef.document.writeln(print_style);

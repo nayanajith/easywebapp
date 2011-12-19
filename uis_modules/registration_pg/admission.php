@@ -12,15 +12,15 @@ if(!isset($_REQUEST['pdf'])){
 	echo "<table style='font-size:14px;' cellpadding=10>
 				<tr><td>NAME</td><td>".strtoupper($arr['first_name'].' '.$arr['middle_names'].' '.$arr['last_name'])."</td></tr>
 				<tr><td>NIC/Passport Number</td><td>".$arr['NIC']."</td></tr>
-			</table><br/>
+			</table><br>
 		";
-	echo "<hr style='border:1px solid silver;'/>";
+	echo "<hr style='border:1px solid silver;'>";
 	echo "<h2>You can <a href='?module=registration_pg&page=admission&pdf=true&data=true'><b>download</b></a> the admission card.</h2>";
-	echo "<hr style='border:1px solid silver;'/>";
-	echo "<h4>Further information</h4>For any queries regarding postgraduate application please contact <br/>Academic & Publications branch UCSC<br />
-			   <b>TP: 0112589123</b><br/><br/>";
-	echo "<hr style='border:1px solid silver;'/>";
-	echo "<h4>Technical assistance</h4>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'>";
+	echo "<hr style='border:1px solid silver;'>";
+	echo "<h4>Further information</h4>For any queries regarding postgraduate application please contact <br>Academic & Publications branch UCSC<br >
+			   <b>TP: 0112589123</b><br><br>";
+	echo "<hr style='border:1px solid silver;'>";
+	echo "<h4>Technical assistance</h4>For technical assistance please write to <br> <img src='".IMG."/uis_mail.png'>";
 }else{
 	$registration_no=$arr['registration_no'];
 	$file = MOD_A_ROOT.'/admissions/'.$registration_no.'.pdf';
@@ -44,13 +44,13 @@ if(!isset($_REQUEST['pdf'])){
 		if(isset($_REQUEST['data'])){
 			header('Location: ?module=registration_pg&page=admission&pdf=true');
 		}
-		echo "<h3>Downloading Admission Card</h3><br/><br/><br/>";
+		echo "<h3>Downloading Admission Card</h3><br><br><br>";
 		echo "<h2>Your admission is not yet available please try again later</h2>";
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Further information</h4>For any queries regarding postgraduate application please contact <br/>Academic & Publications branch UCSC<br />
-			   <b>TP: 0112589123</b><br/><br/>";
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Technical assistance</h4>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'>";
+		echo "<hr style='border:1px solid silver;'>";
+		echo "<h4>Further information</h4>For any queries regarding postgraduate application please contact <br>Academic & Publications branch UCSC<br >
+			   <b>TP: 0112589123</b><br><br>";
+		echo "<hr style='border:1px solid silver;'>";
+		echo "<h4>Technical assistance</h4>For technical assistance please write to <br> <img src='".IMG."/uis_mail.png'>";
 	}
 }
 ?>

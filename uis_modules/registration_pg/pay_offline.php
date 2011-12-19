@@ -26,6 +26,6 @@ Colombo 07.
 </pre>
 </ol>
 
-<br/><br/><br/><div align='right' class='buttonBar'  >
+<br><br><br><div align='right' class='buttonBar'  >
 <button dojoType='dijit.form.Button' onClick="open_page('registration_pg','payment')">&laquo;&nbsp;Back</button>
 </div>

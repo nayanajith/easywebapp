@@ -139,7 +139,7 @@ if(isset($_REQUEST['form'])){
 		echo $formgen->gen_filter();
 	}
 	echo "
-		<script language='javascript'>
+		<script type="text/javascript" >
 			function grid(){
 				url='".gen_url()."&form=grid';
 				open(url,'_self');
@@ -158,7 +158,7 @@ if($GLOBALS['LAYOUT'] != 'pub'){
       echo "<h4>Short term courses</h4>
 <p>You can find more information about the available short term courses <a href='http://ucsc.lk/training'>here</a></p>
 ";
-		echo "<hr style='border:1px solid silver;'/>";
+		echo "<hr style='border:1px solid silver;'>";
 		echo "<h4>Registration procedure </h4>";
 		echo "<ol>
 			<li>Fill the application form and press <b>Next</b> button at the end of the form</li>
@@ -169,7 +169,7 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally you can scan and email, fax, post or handover the voucher stamped by the bank to the UCSC.</li>
          <li>When the payment voucher received to us we will reserve a seat for you. You can <a href=\"javascript:open_page('ext_courses','login')\">login</a> to the system and check for the status.</li>
 			</ol>";
-		echo "<hr style='border:1px solid silver;'/>";
+		echo "<hr style='border:1px solid silver;'>";
 		echo "<h4>Postal address</h4>";
 		echo "<pre style='font:inherit'><p>
 Coordinator,
@@ -177,7 +177,7 @@ Computing Services Centre,
 University of Colombo School of Computing,
 No. 35, Reid Avenue,
 Colomobo 07.</p></pre>";
-		echo "<hr style='border:1px solid silver;'/>";
+		echo "<hr style='border:1px solid silver;'>";
       echo "<h4>Further information</h4><p>
          For any queries regarding short term course registration please contact Computing Services Centre:
          <pre style='font:inherit'><p>
@@ -187,17 +187,17 @@ Fax: 0112587235
 
 Email: <img  style='valign:bottom' src='".IMG."/csc_mail.png'></p>
          </pre></p>";
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Technical assistance</h4><p>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'></p>";
+		echo "<hr style='border:1px solid silver;'>";
+		echo "<h4>Technical assistance</h4><p>For technical assistance please write to <br> <img src='".IMG."/uis_mail.png'></p>";
 		echo "</td></tr></table>";
 
 
-		echo "<br/><br/><br/><div align='right' class='buttonBar' style='border:0px;' >
+		echo "<br><br><br><div align='right' class='buttonBar' style='border:0px;' >
 		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('add','ext_courses','available_courses')\">Next&nbsp;&raquo;</button>
 		</div>";
 	}else{
 		echo "</td></tr></table>";
-		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
+		echo "<br><br><br><div align='right' class='buttonBar'  >
 		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('modify','ext_courses','registration')\">Modify</button>
 		</div>";
 
@@ -210,7 +210,7 @@ $formgen->filter_selector();
 include $help_file;
 $formgen->set_help_tips($help_array);
 /*
-echo "<script language='javascript'>";
+echo "<script type="text/javascript" >";
 echo $formgen->param_setter();
 echo "</script>";
 */

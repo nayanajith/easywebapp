@@ -1,10 +1,10 @@
 
 <h3>Rest password</h3>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+<br>
+<br>
+<br>
+<br>
+<br>
 <center>
 <?php
 $arr		=array();
@@ -46,9 +46,9 @@ d_r("dijit.form.Button");
 d_r("dijit.form.ValidationTextBox");
 ?>
 <div dojoType="dijit.form.Form" action="" style='background-color:whitesmoke;padding:30px;width:400px;vertical-align:center' align='center' class='bgCenter round'>
-<input type="hidden" name="module" value="<?php echo MODULE; ?>" />
-<input type="hidden" name="page" value="<?php echo PAGE; ?>"  />
-<label for="email">My email address</label><input type='text' dojoType="dijit.form.ValidationTextBox" name="email" id="email" regExp	="\b[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b" invalidMessage	="Please enter a valid email address" trim="true" required="true" /><br/><br/>
+<input type="hidden" name="module" value="<?php echo MODULE; ?>" >
+<input type="hidden" name="page" value="<?php echo PAGE; ?>"  >
+<label for="email">My email address</label><input type='text' dojoType="dijit.form.ValidationTextBox" name="email" id="email" regExp	="\b[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b" invalidMessage	="Please enter a valid email address" trim="true" required="true" ><br><br>
 <button dojoType="dijit.form.Button" type="submit">Email me a new password</button>
 </div>
 </center>

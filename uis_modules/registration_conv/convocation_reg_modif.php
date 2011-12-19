@@ -34,7 +34,7 @@ $email_custom='
        Click to enter email 
    </span>
    <div dojoType="dijit.TooltipDialog">
-		<label for="email_new">Email</label><br/>
+		<label for="email_new">Email</label><br>
 		<input type="text" 
 			jsId		="email_new"  
 			dojoType	="dijit.form.ValidationTextBox" 
@@ -43,8 +43,8 @@ $email_custom='
 			prompMessage	="Enter email address"
 			invalidMessage	="Please enter a valid email address" 
 			trim=true
-		/><br/>
-      <label for="email_verify" >Validate</label><br/>
+		><br>
+      <label for="email_verify" >Validate</label><br>
 		<input type="text" 
 			jsId		="email_verify"  
 			dojoType	="dijit.form.ValidationTextBox" 
@@ -53,7 +53,7 @@ $email_custom='
 			prompMessage	="Validate email address"
 			invalidMessage="Please enter a valid email address" 
 			trim=true
-		/>
+		>
 
 		<div id="msg"></div>
       <button dojoType="dijit.form.Button" type="submit">

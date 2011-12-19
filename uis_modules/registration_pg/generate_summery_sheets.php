@@ -37,7 +37,7 @@ echo W_RPT."/".$_SESSION['user_id']."-summery_list.pdf";
 		action='<?php echo $GLOBALS['PAGE_GEN']; ?>';
 		method='GET'>
 
-	<script type="dojo/method" event="onSubmit">
+	<script type="text/javascript" type="dojo/method" event="onSubmit">
 	return true;
 	</script>
 Select Center<select name="center"  dojoType="dijit.form.ComboBox" > 
@@ -58,7 +58,7 @@ Select Center<select name="center"  dojoType="dijit.form.ComboBox" >
 
 </div>
 
-<script language='javascript'>
+<script type="text/javascript" >
 function submit_form(action){
 
 	if(!confirm(dojo.toJson(dijit.byId('frm_attendance').getValues(), true))){

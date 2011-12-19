@@ -15,7 +15,7 @@ function gen_pass_list_form(){
    echo $_SESSION[PAGE]['batch_id']."-".$_SESSION[PAGE]['degree']; 
    $arr=exec_query("SELECT index_no FROM ".$GLOBALS['P_TABLES']['student']." WHERE batch_id='".$_SESSION[PAGE]['batch_id']."' LIMIT 1",Q_RET_ARRAY,null,'index_no');
    foreach(array_keys($arr) as $index_no){
-      echo $index_no."<br/>";
+      echo $index_no."<br>";
       $eligibility = new Eligibility($index_no,'YEAR-4');
    }
 

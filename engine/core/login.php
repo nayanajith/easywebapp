@@ -43,7 +43,7 @@ function before_login() {
 '.
 (isset($_REQUEST['user'])?'<div style="padding:5px;color:red;">Invallid login please try again...</div>':"")
 .'
-            <script type="dojo/method" event="onSubmit">
+            <script type="text/javascript" type="dojo/method" event="onSubmit">
                 if (this.validate()) {
                     //return confirm("Form is valid, press OK to submit");
                     return true;
@@ -64,7 +64,7 @@ function before_login() {
                     <td>
                         <input type="text" id="user" name="user" required="true" style="color:black;width:60px" 
                         dojoType="dijit.form.ValidationTextBox"
-                        />
+                        >
                     </td>
                     <td>
                         <label for="password">
@@ -73,7 +73,7 @@ function before_login() {
                     <td>
                         <input type="password" id="password" name="password" required="true" style="color:black;width:60px" 
                         dojoType="dijit.form.ValidationTextBox"
-                        />
+                        >
                     </td>
                     <td>
                         <button dojoType="dijit.form.Button" type="submit" name="loginBtn" value="Submit" >
@@ -214,6 +214,6 @@ if (isset($_SESSION['username'])) {
       $_SESSION['loged_module']    = MODULE;
    }else{
       //echo "<div style='float:left;padding:5px;color:brown;'>Invallid login please try again...</div>";
-      //echo "<script language=javascript>alert('Invalid login please try again...');</script>";
+      //echo "<script type="text/javascript" language=javascript>alert('Invalid login please try again...');</script>";
    }
 ?>

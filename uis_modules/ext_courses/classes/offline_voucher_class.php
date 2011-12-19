@@ -141,7 +141,7 @@ class Voucher{
 	//Generate quadruples of vouchers using the information feeded in constructor
 	public function gen_voucher_quadruples(){
 		$student_info=<<<EOD
-		<style>
+		<style type="text/css">
 			.writing{
 				font-family:times;
 				font-style:italic;
@@ -157,22 +157,22 @@ class Voucher{
 		<table border="0" cellpadding="5" style="border:1px solid black;">
 			<tr>
 				<td style="font-weight:bold" width="205">
-					CASH-PAYING-IN-SLIP<br/>
-					(To be filled in quadruplicate)<br/>
+					CASH-PAYING-IN-SLIP<br>
+					(To be filled in quadruplicate)<br>
 					%s
 				</td>
 				<td width="110">
 					&nbsp;
 				</td>
 				<td colspan="2" style="font-weight:bold;font-size:32px;" width="400">
-					%s<br/>
+					%s<br>
 					UNIVERSITY OF COLOMBO SCHOOL OF COMPUTING (UCSC)
 				</td>
 			</tr>	
 			<tr>
 				<td>
 					<table style="border-collapse:collapse;" border="1" cellpadding="2" width="70%%">
-						<tr><td rowspan="3" width="50">DEPOSIT<br/>DATE</td><td>D</td><td>D</td><td>M</td><td>M</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td></tr>
+						<tr><td rowspan="3" width="50">DEPOSIT<br>DATE</td><td>D</td><td>D</td><td>M</td><td>M</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td></tr>
 						<tr><td height="20">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>2</td><td>0</td><td>1</td><td>1</td></tr>
 					</table>
 				</td>
@@ -225,8 +225,8 @@ class Voucher{
 					</table>
 				</td>
 				<td colspan="3" >
-					<b>Instruction to Bank</b><br/>
-					Please do not accept unless the cage below is filled<br/>
+					<b>Instruction to Bank</b><br>
+					Please do not accept unless the cage below is filled<br>
 					<table style="border:1px solid black;" cellspacing="4" cellpadding="3" width="520">
 						<tr><td width="125">STUDENT'S FULL NAME</td><td width="360" class="writing fill_space">%s</td></tr>
 						<tr><td>STUDENT'S REG NO</td><td class="writing fill_space">%s</td></tr>

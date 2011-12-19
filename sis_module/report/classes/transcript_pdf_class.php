@@ -43,12 +43,12 @@ class MYPDF extends TCPDF {
       /*Custom long header  with html formatted*/ 
       $header ="
 <h3>University of Colombo School of Computing (UCSC), Sri Lanka</h3>
-University Transcripts Academic Year ".$this->header_info['year']." <br/>
-Common Aptitude Test for Selection of Candidates<br/>
-of the<br/>
+University Transcripts Academic Year ".$this->header_info['year']." <br>
+Common Aptitude Test for Selection of Candidates<br>
+of the<br>
 Bachelor of Information and Communication Technology (BICT) at UCSC,Vavuniya Campus and the Rajarata University
 <h3>EXAMINATION ADDMISSION CARD</h3>
-<hr/>
+<hr>
 ";
       /*Header location from the top*/
       $this->SetY(25);

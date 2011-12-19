@@ -7,7 +7,7 @@ if(!isset($_SESSION['username'])){
 //Callback can be trapped inside an IFRAME, this javascript will exit from the iframe
 /*
 echo "
-<script language='javascript'>
+<script type="text/javascript" >
 	//if (top != self) top.location.href = location.href;
 if (top != self){
   	top.location.href = '?module=registration&page=pay_online';
@@ -23,14 +23,14 @@ if(!isset($_REQUEST['receipt'])){
 	if($user_info['payment_status'] == 'ACCEPTED'){
 		echo "
 		<h3>Online payment status</h3>
-		<span style='color:green'>You have successfully completed the payment online!</span><br/>
-		Please check your email for the payment invoice... <br/>
+		<span style='color:green'>You have successfully completed the payment online!</span><br>
+		Please check your email for the payment invoice... <br>
 		Thank you!
 		";
 	}else{
 		echo "
 		<h3>Online payment status</h3>
-		<span style='color:red'>We are sorry that your payment was declined by the bank!</span><br/><br/>
+		<span style='color:red'>We are sorry that your payment was declined by the bank!</span><br><br>
 		Do you want to  <a href=\"javascript:open_page('ext_courses','pay_online')\">retry</a> or try our <a href=\"javascript:open_page('ext_courses','pay_offline')\">offline</a> payment procedure.";
 	}
 	return;
@@ -69,7 +69,7 @@ switch($receipt['status']){
 		<h3>Online payment status</h3>
 		<h4 style='color:green'>You have successfully completed the payment online.</h4>
  		<h4>We have a seat reserved for you in ".$course_arr['title']." course.</h4>
-		<p>Please check your email for the payment invoice... <br/>
+		<p>Please check your email for the payment invoice... <br>
 		Thank you!</p>
 		<p>You can apply for more courses at the <a href=\"javascript:open_page('ext_courses','available_courses')\">Available courses</a> page</p>
 
@@ -112,8 +112,8 @@ switch($receipt['status']){
 
 		echo "
 		<h3>Online payment status</h3>
-      <br/>
-		<span style='color:red'>We are sorry that your payment was declined by the bank!</span><br/><br/>
+      <br>
+		<span style='color:red'>We are sorry that your payment was declined by the bank!</span><br><br>
 		Do you want to  <a href=\"javascript:open_page('ext_courses','pay_offline')\">retry</a> or try our <a href=\"javascript:open_page('ext_courses','pay_offline')\">offline</a> payment procedure.";
 	break;
 }

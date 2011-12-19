@@ -361,8 +361,8 @@ class Attendance{
 		//Print Symmery
 
 		public function print_summery(){
-			//echo "<br/><h3>Summery of the month ".$this->self['today']['month']."</h3>";
-			//echo "<br/><h3>Summery of the month</h3>";
+			//echo "<br><h3>Summery of the month ".$this->self['today']['month']."</h3>";
+			//echo "<br><h3>Summery of the month</h3>";
 			echo "<table border=0 style='border-collapse:collapse;' cellpadding=5>";
 			/*
 			 foreach ($attend_summery as $key => $value) {
@@ -429,7 +429,7 @@ class Attendance{
 		 */
 		public function style(){
 		   echo "
-		   <style>
+		   <style type="text/css">
 		    .calendar{border-collapse:collapse;border-color:#C9D7F1;width:850px;}
 		    .title   {background:#C9D7F1;font-weight:bold;color:blue;border:1px solid silver;}
 		    .day     {background:whitesmoke;}

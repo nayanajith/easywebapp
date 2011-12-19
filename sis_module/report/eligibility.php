@@ -70,7 +70,7 @@ function gen_eligibility_list($eligibility_arr){
       echo "<table border='1' style='border-collapse:collapse'>";
       echo $report;
       echo "</table>";
-      echo  "<script language='javascript'>window.print();</script>'";
+      echo  "<script type="text/javascript" >window.print();</script>'";
    }elseif(isset($_REQUEST['action']) && $_REQUEST['action']=='csv'){
       $report=trim($report);
       $report=str_replace(array('</td><td>','</th><th>'),"','",$report);
@@ -167,7 +167,7 @@ if(isset($_REQUEST['action'])){
       echo "</div></div>";
 
       //Index number selector in toolbar
-      echo "<script type='text/javascript'>";
+      echo "<script type="text/javascript" type='text/javascript'>";
       echo "dojo.addOnLoad(function() {";
 
       //function gen_xhr_combobox($id,$label,$value,$width,$page_size,$source_array=null,$target=null);

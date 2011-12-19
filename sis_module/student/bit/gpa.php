@@ -2,7 +2,7 @@
 <html>
 <head>
 <link rel="stylesheet"
-   href="<?php echo CSS; ?>/common_css.php" type="text/css" />
+   href="<?php echo CSS; ?>/common_css.php" type="text/css" >
 </head>
 <body>
 <?php
@@ -214,7 +214,7 @@ while($row = mysql_fetch_array($result3)){
 echo " </tr>\n";
 echo "</table>";
 /*
- echo "<br />";
+ echo "<br >";
 
  echo "<table border=\"1\" cellspacing=\"2\" cellpadding=\"2\">";
  echo "<tr>";
@@ -258,8 +258,8 @@ echo "</table>";
  else
  {
  echo "<form enctype=\"multipart/form-data\" action=\"gpa.php\" method=\"POST\">";
- echo "Index Number: <input name=\"indexnumber\" type=\"text\" /><br />";
- echo "<input type=\"submit\" value=\"Submit\" />";
+ echo "Index Number: <input name=\"indexnumber\" type=\"text\" ><br >";
+ echo "<input type=\"submit\" value=\"Submit\" >";
  echo "</form>";
  }
 

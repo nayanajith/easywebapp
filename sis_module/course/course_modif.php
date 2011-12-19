@@ -30,7 +30,7 @@ $lecture_credits_custom='
      constraints="{min:9,max:1550,places:0}"
      id="integerspinner2"
      name="someNumber"
-     />
+     >
 ';
 
 $semester_inner="
@@ -85,7 +85,7 @@ $alt_course_id_custom='
       <table>
       '.$course_id_checkboxes.'
       </table>
-      <br/>
+      <br>
       <button dojoType="dijit.form.Button" type="submit">
          OK
            <script type="dojo/method" event="onClick" args="evt">

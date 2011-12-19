@@ -268,7 +268,7 @@ class Student{
 
    public function debug($msg,$id,$color){
       if($this->DEBUG){
-         echo "<span style='color:".$color."'>[".$id."]</span>".$msg."<br/>";
+         echo "<span style='color:".$color."'>[".$id."]</span>".$msg."<br>";
       }
    }
 

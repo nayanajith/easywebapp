@@ -138,7 +138,7 @@ class Writable_app_form{
 
 	function set_help_tips(){
       include A_MODULES."/".MODULE."/".$this->table."_help.php";
-		echo "<style>.helptt{max-width:400px;text-align:justify;color:green;}</style>";
+		echo "<style type="text/css">.helptt{max-width:400px;text-align:justify;color:green;}</style>";
 		foreach( $help_array as $key => $value){
 			if($value == '')continue;
 			echo "<div dojoType='dijit.Tooltip' connectId='$key' position='below' >

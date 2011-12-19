@@ -2,14 +2,14 @@
 <html>
    <head>
       <title><?php echo MODULE."&gt;".PAGE.":".$GLOBALS['TITLE']; ?></title>
-      <link rel="search" href="/search" />
+      <link rel="search" href="/search" >
 
 <!--_________________________________CSS_____________________________________-->
       <?php 
          include A_CORE."/style.php";
       ?>
 <!--______________________________FAVICON____________________________________-->
-      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" />
+      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" >
 
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
@@ -22,7 +22,7 @@
       include A_CORE."/loading.php";
    ?>
 <!--____________________________end loading ________________________________-->
-      <style>
+      <style type="text/css">
 .bContainer_modif{
    -moz-border-radius-bottomleft:0px;
    -moz-border-radius-bottomright:0px;
@@ -48,13 +48,13 @@
       <div dojoType="dijit.layout.BorderContainer" class='bgTop bContainer bContainer_modif'    gutters="false" liveSplitters="true" >
          <div dojoType="dijit.layout.ContentPane" region="top" gutter="false" style="padding:5px;height:200px;">
             <!-- bannar -->
-            <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=60px style='float:left'/>
+            <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=60px style='float:left'>
             <h1 style='float:left;font-size:24px;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE']; ?></h1>
          </div>
          <div dojoType="dijit.layout.ContentPane" region="center" gutter="false" style="padding:5px;">
             <div align=center class='bgTop bContainer' style='padding:10px;width:400px;height:150px;'>
                <h3 style='float:left'>Login to <?php echo $GLOBALS['TITLE']; ?></h3>
-               <br/><br/><br/>
+               <br><br><br>
                <?php 
                     if (isset($_SESSION['username'])){
                        echo after_login();

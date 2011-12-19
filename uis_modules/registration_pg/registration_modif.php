@@ -53,7 +53,7 @@ $edu_prof_custom='
 		<table>
 		'.$edu_prof_custom_data.'
 		</table>
-		<br/>
+		<br>
       <button dojoType="dijit.form.Button" type="submit">
          OK
   			<script type="dojo/method" event="onClick" args="evt">
@@ -70,7 +70,7 @@ $edu_prof_custom='
       </button>
    </div>
 </div>
-<br/>
+<br>
 ';
 
 $employment_record_custom_data="
@@ -102,7 +102,7 @@ $employment_record_custom='
 		<table>
 		'.$employment_record_custom_data.'
 		</table>
-		<br/>
+		<br>
       <button dojoType="dijit.form.Button" type="submit">
          OK
   			<script type="dojo/method" event="onClick" args="evt">
@@ -119,7 +119,7 @@ $employment_record_custom='
       </button>
    </div>
 </div>
-<br/>
+<br>
 ';
  
 

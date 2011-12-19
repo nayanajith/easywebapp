@@ -181,7 +181,7 @@ class Application{
 	public function gen_application(){
 		$row=$this->applier_info;
 		$content='
-<style>
+<style type="text/css">
 	th{
 		text-align:left;	
 		font-weight:bold;
@@ -205,7 +205,7 @@ class Application{
 <tr>
 	<td width="325">
 	<table >
-		<tr><th>Permanent Address:</th><td><br/>'.$row['address1_1'].', '.$row['address2_1'].', '.$row['address3_1'].'.</td></tr>	
+		<tr><th>Permanent Address:</th><td><br>'.$row['address1_1'].', '.$row['address2_1'].', '.$row['address3_1'].'.</td></tr>	
 		<tr><th>Mobile Phone:</th><td>'.$row['mobile_1'].'</td></tr>	
 		<tr><th>Fixed Phone:</th><td>'.$row['telephone_1'].'</td></tr>	
 		<tr><th>E-mail:</th><td>'.$row['email_1'].'</td></tr>	
@@ -213,7 +213,7 @@ class Application{
 	</td>
 	<td width="325">
 	<table >
-		<tr><th>Office Address:</th><td><br/>'.$row['address1_2'].', '.$row['address2_2'].', '.$row['address3_2'].'.</td></tr>	
+		<tr><th>Office Address:</th><td><br>'.$row['address1_2'].', '.$row['address2_2'].', '.$row['address3_2'].'.</td></tr>	
 		<tr><th>Mobile Phone:</th><td>'.$row['mobile_2'].'</td></tr>	
 		<tr><th>Fixed Phone:</th><td>'.$row['telephone_2'].'</td></tr>	
 		<tr><th>E-mail:</th><td>'.$row['email_2'].'</td></tr>	
@@ -222,7 +222,7 @@ class Application{
 </tr>
 <tr>
 	<td width="325">
-		<b>Address for Correspondence :</b> '.strtolower($row['corresp_addr']).' <br/> 
+		<b>Address for Correspondence :</b> '.strtolower($row['corresp_addr']).' <br> 
 		   (Note :- All correspondence will be sent to this address.)
 	</td>
 	<td width="325">
@@ -349,7 +349,7 @@ class Application{
 </tr>
 <tr>
 	<td colspan="2" width="650">
-		I declare that the above information is true and correct to the best of my knowledge. I agree to abide by the conditions stipulated by the University of Colombo School of Computing.<br/>
+		I declare that the above information is true and correct to the best of my knowledge. I agree to abide by the conditions stipulated by the University of Colombo School of Computing.<br>
 		<table >
 			<tr><th align="right">Date :</th><td style="border-bottom:1px dotted black;" ></td><th align="right">Signature :</th><td style="border-bottom:1px dotted black;"></td></tr>
 		</table>
@@ -381,8 +381,8 @@ class Application{
 <tr>
 	<td colspan="2" width="650">
 		<h4>Remarks :</h4>
-		<br/>
-		<br/>
+		<br>
+		<br>
 	</td>
 </tr>
 </table>';

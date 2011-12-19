@@ -47,7 +47,7 @@ class MYPDF extends TCPDF {
 		/*Custom long header  with html formatted*/ 
 		$header ="
 <h3>UNIVERSITY OF COLOMBO SCHOOL OF COMPUTING (UCSC)</h3>
-BACHLOR OF INFORMATION & COMMUNICATION TECHNOLOGY (BICT)<br/>					
+BACHLOR OF INFORMATION & COMMUNICATION TECHNOLOGY (BICT)<br>					
 APITITUDE TEST - ".$this->header_info['year'];
 
 	/*Header position from the top*/
@@ -189,7 +189,7 @@ class Summery_list{
 			for($room_no=1;$room_no <= $num_rooms; $room_no++){
 				/*Variable to store Attendance sheet html*/
 				$sheet_style="
-<style>
+<style type="text/css">
 th{
 	background-color:silver;
 	font-weight:bold;
@@ -211,7 +211,7 @@ th{
 				$sheet_thead='<tr><th style="background-color:white;" width="220px"></th><th width="40px" border="1">Serial</th><th width="65px" border="1">Index No</th><th width="120px" border="1">Present / Absent</th><th style="background-color:white"></th></tr>';
 
 				$sheet_footer='
-<style>
+<style type="text/css">
 .fill{
 	border-bottom:1px dashed black;
 	width:120px;
@@ -219,11 +219,11 @@ th{
 }
 </style>
 <table >
-<tr><td width="200px;" align="right">&nbsp;<br/><b>Total Present:</b></td><td class="fill"></td><td width="200px;"></td><td></td></tr>
-<tr><td  align="right">&nbsp;<br/><b>Total Absent:</b></td><td class="fill"></td><td ></td><td></td></tr>
+<tr><td width="200px;" align="right">&nbsp;<br><b>Total Present:</b></td><td class="fill"></td><td width="200px;"></td><td></td></tr>
+<tr><td  align="right">&nbsp;<br><b>Total Absent:</b></td><td class="fill"></td><td ></td><td></td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
-<tr><td align="right" >&nbsp;<br/><b>Date:</b></td><td class="fill" ></td><td ></td><td></td></tr>
-<tr><td align="right">&nbsp;<br/><b>Signature of Invigilator:</b></td><td class="fill" ></td><td align="right">&nbsp;<br/><b>Signature of  Supervisor:</b></td><td class="fill" ></td></tr>
+<tr><td align="right" >&nbsp;<br><b>Date:</b></td><td class="fill" ></td><td ></td><td></td></tr>
+<tr><td align="right">&nbsp;<br><b>Signature of Invigilator:</b></td><td class="fill" ></td><td align="right">&nbsp;<br><b>Signature of  Supervisor:</b></td><td class="fill" ></td></tr>
 </table>';
 
 				

@@ -1,16 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <html>
    <head>
       <title><?php echo MODULE."&gt;".PAGE.":".$GLOBALS['TITLE']; ?></title>
-      <link rel="search" href="/search" />
+      <link rel="search" href="/search" >
 
 <!--_________________________________CSS_____________________________________-->
       <?php 
          include A_CORE."/style.php";
       ?>
 <!--______________________________FAVICON____________________________________-->
-      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" />
+      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" >
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
          include A_CORE."/dojo_require.php";
@@ -53,7 +53,7 @@ This contains the login box from core/login.php and program selector from core/p
 -->
          <div dojoType="dijit.layout.ContentPane" region="top" gutter="false" style='padding:5px;' >
             <!-- bannar -->
-            <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=60px style='float:left'/>
+            <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=60px style='float:left'>
             <h1 style='float:left;font-size:24px;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE']; ?></h1>
             <div style='float:right;'>
 <!--__________________________end Login form ________________________________-->

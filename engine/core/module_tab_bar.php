@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
 //var first_time=true;
 
 /*function will not execute for the fist load*/

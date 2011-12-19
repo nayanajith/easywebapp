@@ -124,7 +124,7 @@ function gen_permission_tree(){
       <tr>
       <td style='background-color:silver' >".$mod."</td>
       <td style='background-color:silver' align='right'>
-      <select dojoType='dijit.form.ComboBox' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px' />
+      <select dojoType='dijit.form.ComboBox' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px' >
          <option value='D'>DENIED</option>
          <option value='R'>READ</option>
          <option value='W'>WRITE</option>
@@ -143,7 +143,7 @@ function gen_permission_tree(){
             echo "<tr>
             <td style='background-color:whitesmoke'>".$page."</td>
             <td style='background-color:whitesmoke' align='right'>
-            <select dojoType='dijit.form.ComboBox' name='P#".$mod_key."#".$page_key."' id='DP#".$mod_key."#".$page_key."' value='DENIED' style='width:70px' />
+            <select dojoType='dijit.form.ComboBox' name='P#".$mod_key."#".$page_key."' id='DP#".$mod_key."#".$page_key."' value='DENIED' style='width:70px' >
                <option value='D'>DENIED</option>
                <option value='R'>READ</option>
                <option value='W'>WRITE</option>
@@ -152,7 +152,7 @@ function gen_permission_tree(){
             </tr>\n";
          }
       }
-      echo "</table><br/>";
+      echo "</table><br>";
    }
 
 }
@@ -172,7 +172,7 @@ while($row=mysql_fetch_assoc($res)){
 echo "<option value='".$row['username']."'>".$row['username']."</option>";
 }
 
-echo "</select><br/><br/>";
+echo "</select><br><br>";
 
 gen_permission_tree();
 ?>

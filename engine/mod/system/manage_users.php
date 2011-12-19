@@ -103,7 +103,7 @@ echo "<table width=100%><tr><td style='vertical-align:top'>";
    echo $formgen->gen_form(false,true);
    echo $formgen->gen_filter();
    echo "
-      <script language='javascript'>
+      <script type="text/javascript" >
          function grid(){
             url='".gen_url().(isset($_REQUEST['filter_name'])?"&filter_name=".$_REQUEST['filter_name']:"")."&form=grid';
             open(url,'_self');
@@ -123,7 +123,7 @@ function filter_selector(){
 
 <!--_____________________________start filter select___________________________-->
 
-<script type="text/javascript">
+<script type="text/javascript" type="text/javascript">
 dojo.addOnLoad(function() {
    toolbar = new dijit.byId("toolbar");
    var filterStore = new dojox.data.QueryReadStore({

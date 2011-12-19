@@ -5,7 +5,7 @@
 <?php
 include_once("style.php");
 ?>
-<style>
+<style type="text/css">
 .items a {
 	text-decoration: none;
 }
@@ -60,7 +60,7 @@ $names=array(
 <h3>Certificate Verification System</h3>
    <?php
    print_items($names,"?",'course',$course,true);
-   echo "<br/><hr style='border-color:#C9D7F1;'>";
+   echo "<br><hr style='border-color:#C9D7F1;'>";
    echo "<div style='margin-top:20px;' >";
    switch($course){
    	case 'BIT':
@@ -85,6 +85,6 @@ $names=array(
    		break;
 
    }
-   echo "<br/><center><span style='font-size:10px; color:silver;'>&copy; 2002-2010, All rights reserved by University of Colombo School of Computing</span></center>";
+   echo "<br><center><span style='font-size:10px; color:silver;'>&copy; 2002-2010, All rights reserved by University of Colombo School of Computing</span></center>";
    echo "</div>";
    ?></div>

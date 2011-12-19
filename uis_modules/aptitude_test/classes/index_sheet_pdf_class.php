@@ -47,7 +47,7 @@ class MYPDF extends TCPDF {
 		/*Custom long header  with html formatted*/ 
 		$header ="
 <h3>UNIVERSITY OF COLOMBO SCHOOL OF COMPUTING (UCSC)</h3>
-BACHLOR OF INFORMATION & COMMUNICATION TECHNOLOGY (BICT)<br/>					
+BACHLOR OF INFORMATION & COMMUNICATION TECHNOLOGY (BICT)<br>					
 APITITUDE TEST - ".$this->header_info['year'];
 
 	/*Header position from the top*/
@@ -188,7 +188,7 @@ class Index_list{
 			for($room_no=1;$room_no <= $num_rooms; $room_no++){
 				/*Variable to store Attendance sheet html*/
 				$sheet_style="
-<style>
+<style type="text/css">
 th{
 	background-color:silver;
 	font-weight:bold;

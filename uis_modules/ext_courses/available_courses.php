@@ -92,7 +92,7 @@ function un_enroll_student($batch_id,$registration_no){
 }
 
 
-echo "<h3>Enroll for new courses and reserve seats</h3><br/>";
+echo "<h3>Enroll for new courses and reserve seats</h3><br>";
 echo "<h4>These are the courses currently open for enrollments</h4>";
 
 d_r('dijit.form.Form');

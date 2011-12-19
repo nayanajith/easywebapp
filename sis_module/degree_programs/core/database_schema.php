@@ -27,7 +27,6 @@ $program_table_schemas['course']="CREATE TABLE `%scourse` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Table that contains information of all the courses.' ;";
 
 
-
 $program_table_schemas['exam']="CREATE TABLE `%sexam` ( 
    `exam_id`         int NOT NULL AUTO_INCREMENT,
    `exam_hid`        varchar(20) NOT NULL,
@@ -147,7 +146,8 @@ $program_table_schemas['marks']="CREATE TABLE `%smarks` (
   `push`             int(3)        unsigned DEFAULT null,
   `grand_final_mark` varchar(3)    DEFAULT null,
   `grade`            varchar(2)    DEFAULT null,
-  `gpv`              float          DEFAULT NULL,
+  `gpv`              float         DEFAULT NULL,
+  `repeat_max`       boolean       DEFAULT FALSE,
   `state`            enum('PR','AB','MC','EO') default 'PR',
   `can_release`      boolean       DEFAULT true,
   `deleted`          boolean     DEFAULT false,
@@ -271,21 +271,18 @@ $program_table_schemas['gpa']="CREATE TABLE `%sgpa` (
    `note`            varchar(300)    NOT NULL DEFAULT '0',
    PRIMARY KEY (`index_no`,`degree_class`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
- 
-/*
-$program_table_schemas['course_selection']="CREATE TABLE `%sscourse_selection`(
-  `index_no`         varchar(8)       NOT NULL DEFAULT '',
-  `courses_year1`    text          DEFAULT NULL,
-  `attendance_year1` text          DEFAULT NULL,
-  `courses_year2`    text          DEFAULT NULL,
-  `attendance_year2` text          DEFAULT NULL,
-  `courses_year3`    text          DEFAULT NULL,
-  `attendance_year3` text          DEFAULT NULL,
-  `courses_year4`    text          DEFAULT NULL,
-  `attendance_year4` text          DEFAULT NULL,
-   PRIMARY KEY (`index_no`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
- */
+
+//new gpa table
+$program_table_schemas['gpa2']="CREATE TABLE `%sgpa2` (
+  `index_no`      varchar(8) NOT NULL DEFAULT '',
+  `year`          enum('1','2','3','4','3T','4T') NOT NULL,
+  `credits`       int(11) DEFAULT NULL,
+  `gpv`           float DEFAULT NULL,
+  `gpa`           float DEFAULT NULL,
+  `class_degree`  enum('C','D') NOT NULL DEFAULT 'D',
+  PRIMARY KEY (`index_no`,`class_degree`,`year`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+
 
 $program_table_schemas['batch']="CREATE TABLE `%sbatch` (
   `batch_id`         varchar(50) NOT NULL DEFAULT '',

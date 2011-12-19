@@ -15,12 +15,12 @@ if(isset($_REQUEST['Receipt'])){
 	$program_arr   =$program_arr[0];
 
 	echo "
-Redirecting...<br/>
+Redirecting...<br>
 <form method='POST' action='".$program_arr['tp_ip']."/".$program_arr['tp_callback']."' id='m_form'>
-<input type='hidden' name='receipt' value='' />
+<input type='hidden' name='receipt' value='' >
 Please press <input type='submit' value='redirect'> if not redirected automatically
 </form>
-<script>
+<script type="text/javascript">
 document.getElementById('m_form').submit();
 </script>
 ";
@@ -105,12 +105,12 @@ header($data);
 echo "
 Redirecting...
 <form method='POST' action='http://".$program_arr['tp_ip']."/".$program_arr['tp_callback']."' id='m_form'>
-<input type='hidden' name='tp_ref_id' value='".$payment_arr['tp_ref_id']."' />
-<input type='hidden' name='tr_ref_id' value='".$payment_arr['transaction_id']."' />
-<input type='hidden' name='state' value='".$payment_arr['status']."' />
-<input type='hidden' name='tax' value='".$payment_arr['tax']."' />
+<input type='hidden' name='tp_ref_id' value='".$payment_arr['tp_ref_id']."' >
+<input type='hidden' name='tr_ref_id' value='".$payment_arr['transaction_id']."' >
+<input type='hidden' name='state' value='".$payment_arr['status']."' >
+<input type='hidden' name='tax' value='".$payment_arr['tax']."' >
 </form>
-<script>
+<script type="text/javascript">
 document.getElementById('m_form').submit();
 </script>
 ";
@@ -120,12 +120,12 @@ $message_crypt 	= new Message_crypt($program_arr['tp_key']);
 $receipt=$message_crypt->genReceipt($payment_arr['tp_ref_id'],$payment_arr['transaction_id'],$payment_arr['tax'],$payment_arr['status']);
 
 echo "
-Redirecting...<br/>
+Redirecting...<br>
 <form method='POST' action='".$program_arr['tp_ip']."/".$program_arr['tp_callback']."' id='m_form'>
-<input type='hidden' name='receipt' value='".$receipt."' />
+<input type='hidden' name='receipt' value='".$receipt."' >
 Please press <input type='submit' value='redirect'> if not redirected automatically
 </form>
-<script>
+<script type="text/javascript">
 document.getElementById('m_form').submit();
 </script>
 ";

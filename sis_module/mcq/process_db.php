@@ -57,9 +57,9 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
          for($i=1;$i<=$mcq_paper->get_num_sections();$i++)
          {
             if($mcq_paper->mark_answers($i)){
-               $info.="<a href=\'".gen_url()."&data=csv&paper_id=".$paper_id."&section_id=$i\'>marks of section $i</a><br/>";
+               $info.="<a href=\'".gen_url()."&data=csv&paper_id=".$paper_id."&section_id=$i\'>marks of section $i</a><br>";
             }else{
-               $info.="error in section $i<br/>";
+               $info.="error in section $i<br>";
                $is_error=true;
             }
          }
@@ -90,7 +90,7 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
 ...
 </div>
 
-<script language='javascript'>
+<script type="text/javascript" >
    function submit_form(action){
       update_status_bar('...');
       update_progress_bar(10);

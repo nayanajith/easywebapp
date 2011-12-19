@@ -40,7 +40,7 @@ if($summery || (!empty($courseid) && !empty($examid) && !empty($table))){
          echo "<th><a href='$url&$key=1'>$value</a></th>";
       }
    }
-   echo "<tr/>";
+   echo "<tr>";
 
    //set all functions to count mode
    $count     =2;
@@ -68,7 +68,7 @@ if($summery || (!empty($courseid) && !empty($examid) && !empty($table))){
    print_table($table,$cols,$condition_medical,"final","Medical",$count);
 
    //Print Pass precentage over all students
-   echo "<td>".round(($pass_count/$all_count)*100,2)."|".round(($pass_count/($all_count-$ab))*100,2)."</td></tr></table><br/>";
+   echo "<td>".round(($pass_count/$all_count)*100,2)."|".round(($pass_count/($all_count-$ab))*100,2)."</td></tr></table><br>";
 
    //Print statistics of the course
    $cols_stat=array("max(marks3)"=>"Max","min(marks3)"=>"Min","avg(marks3)"=>"Avg","std(marks3)"=>"Std");

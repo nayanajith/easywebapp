@@ -29,7 +29,7 @@ closeDB();
          </td>
       </tr>
    </table>
-   <input type="submit" name="submit" value="Next&gt;" />
+   <input type="submit" name="submit" value="Next&gt;" >
 </form>
 
 <?php
@@ -41,11 +41,11 @@ closeDB();
       <tr>
          <td>Scanned answer file(csv):</td>
          <td>
-            <input type="file" name="<?php echo $_POST['examId']; ?>" id="file" />
+            <input type="file" name="<?php echo $_POST['examId']; ?>" id="file" >
          </td>
       </tr>
    </table>
-   <input type="submit" name="submit" value="Upload" /></form>
+   <input type="submit" name="submit" value="Upload" ></form>
 </form>
 <?php
 //If the filename is null prompt and return
@@ -58,19 +58,19 @@ $store = "scanned_mark_sheets";
 
    if($_FILES[$filaname]["type"] != "text/csv"||$_FILES[$filename]["size"] < 20000){
       if($_FILES[$filename]["error"] > 0){
-         drow_box("<br/><br/><center>Return Code: ".$_FILES[$filename]["error"]."</center><br/><br/>",'Error','yellow',250);
+         drow_box("<br><br><center>Return Code: ".$_FILES[$filename]["error"]."</center><br><br>",'Error','yellow',250);
       }else{
          $dest=$store."/".$filaname.".csv";
          if(file_exists($dest)){
             echo $_FILES[$filaname]["name"] . " already exists. ";
-            drow_box("<br/><br/><center>".$_FILES[$filaname]["name"]."already exists</center><br/><br/>",'Error','yellow',250);
+            drow_box("<br><br><center>".$_FILES[$filaname]["name"]."already exists</center><br><br>",'Error','yellow',250);
          }else{
             move_uploaded_file($_FILES[$filaname]["tmp_name"],$dest);
-            drow_box("<br/><br/><center>Stored in:".$dest."</center><br/><br/>",'Success','white',250);
+            drow_box("<br><br><center>Stored in:".$dest."</center><br><br>",'Success','white',250);
          }
       }
    }else{
-      drow_box('<br/><br/><center>Invalid File!</center><br/><br/>','Error','yellow',250);
+      drow_box('<br><br><center>Invalid File!</center><br><br>','Error','yellow',250);
    }
 }
 ?>

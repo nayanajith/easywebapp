@@ -31,7 +31,7 @@ define('COMPRESS' , 'NO');
 /*------------------------------title info------------------------------------*/
 $GLOBALS['TITLE_SHORT'] = 'UIS';
 $GLOBALS['TITLE']       = 'UCSC Information System';
-$GLOBALS['TITLE_LONG']  = '&nbsp;University of Colombo School of Computing<br/>&nbsp;Information System';
+$GLOBALS['TITLE_LONG']  = '&nbsp;University of Colombo School of Computing<br>&nbsp;Information System';
 $GLOBALS['INSTITUTE']   = 'University of Colombo School of Computing';
 $GLOBALS['ADMIN_MAIL']  = 'uis@ucsc.cmb.ac.lk';
 $GLOBALS['INFO_MAIL']   = 'info@ucsc.cmb.ac.lk';

@@ -7,7 +7,7 @@ while($row=mysql_fetch_assoc($res)){
    $eligibility=new Eligibility($row['index_no'],'DIT');
    $student_state=$eligibility->eval_criteria();
    if($student_state['final']=='DIT'){
-      echo "<br/>".$row['index_no'].":";
+      echo "<br>".$row['index_no'].":";
       echo "Pass";   
    }
 }

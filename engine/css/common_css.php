@@ -90,6 +90,49 @@ img {
    border: none; 
 }
 
+/*------------------------------news styles------------------------------*/
+.news_title{
+   font-size:150%;
+   color:blue;
+   font-weight:bold;
+}
+.news_body{
+   border-top:1px solid silver;
+   padding:10px;
+}
+.news_time{
+   border-bottom:1px solid silver;
+   font-style:italic;
+   font-size:80%;
+   color:silver;
+   color:blue;
+}
+
+
+/*-------------------------pre-loader styles------------------------------*/
+/* pre-loader specific stuff to prevent unsightly flash of unstyled content */
+#loader {
+   padding:0;
+   margin:0;
+   position:absolute;
+   top:0; left:0;
+   width:100%; height:100%;
+   background:#ededed;
+   z-index:999;
+   vertical-align:middle;
+}
+#loaderInner {
+   padding:2px;
+   position:relative;
+   width:155px;
+   background:gray;
+   color:#fff;
+   /*
+   margin-top:200px;
+   margin-left:auto;
+   margin-right:auto;
+   */
+}
 
 
 /*-------------------------Paper size setup------------------------------*/

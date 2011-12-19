@@ -9,7 +9,7 @@
    <!--dt><b>BIT</b></dt>
 	<dd><u>Degree in Information Technology</u>  is three year programme consisting of minimum of 21 courses and individual Project (96 credits and 1560 hours).</dd-->
 </dl><center> ";	
-   		echo "<br/><fieldset class='round' style='width:300px;'><legend>DIT/HDIT Verification Form</legend>";
+   		echo "<br><fieldset class='round' style='width:300px;'><legend>DIT/HDIT Verification Form</legend>";
    		echo "<table><tr><td style='text-align:right'>Select Category</td><td><select name='category'>
 	<option value='0'selected>-select-</option>
 	<option value='1'>DIT</option>

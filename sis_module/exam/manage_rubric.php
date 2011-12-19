@@ -130,7 +130,7 @@ echo "<table width=100%><tr><td>";
    echo $formgen->gen_xhr_form_filler('fill_form',$table,'course_id',false);
    echo $formgen->gen_filter();
    echo "
-      <script language='javascript'>
+      <script type="text/javascript" >
          function grid(){
             url='".gen_url().(isset($_REQUEST['filter_name'])?"&filter_name=".$_REQUEST['filter_name']:"")."&form=grid';
             open(url,'_self');
@@ -146,7 +146,7 @@ echo $formgen->filter_selector();
 //generate help tips 
 include $help_file;
 $formgen->set_help_tips($help_array);
-echo "<script language='javascript'>";
+echo "<script type="text/javascript" >";
 echo $formgen->param_setter();
 echo "</script>";
 }

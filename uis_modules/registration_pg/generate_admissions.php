@@ -18,7 +18,7 @@ $query="SELECT registration_no FROM ".$GLOBALS['MOD_S_TABLES']['validation']." W
 $res=exec_query($query,Q_RET_MYSQL_RES);
 
 while($row=mysql_fetch_assoc($res)){
-	echo "Generating admission for ".$row['registration_no']." ...<br/>\n";
+	echo "Generating admission for ".$row['registration_no']." ...<br>\n";
 	$tmp_pdf		="/tmp/".$row['registration_no']."-tmp.pdf";
 	$final_pdf	=$admission_dir."/".$row['registration_no'].".pdf";
 
@@ -57,7 +57,7 @@ while($row=mysql_fetch_assoc($res)){
 		action='<?php echo $GLOBALS['PAGE_GEN']; ?>';
 		method='GET'>
 
-	<script type="dojo/method" event="onSubmit">
+	<script type="text/javascript" type="dojo/method" event="onSubmit">
 	return true;
 	</script>
 <select name="center"  dojoType="dijit.form.ComboBox" > 
@@ -69,7 +69,7 @@ while($row=mysql_fetch_assoc($res)){
 			echo "<option value='".$row['center']."'>".$row['center']."</option>";
 			/*
 			 echo '<input  name="'.$row['center'].'" dojoType="dijit.form.CheckBox" value="1" ></input>
-				    <label for="mycheck">'.$row['center'].'</label><br/>';
+				    <label for="mycheck">'.$row['center'].'</label><br>';
 			 */
 			}
 		?>
@@ -83,7 +83,7 @@ while($row=mysql_fetch_assoc($res)){
 
 </div>
 
-<script language='javascript'>
+<script type="text/javascript" >
 function submit_form(action){
 	if(!confirm(dojo.toJson(dijit.byId('frm_attendance').getValues(), true))){
 		return;	

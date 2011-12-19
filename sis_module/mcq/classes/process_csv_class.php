@@ -97,7 +97,7 @@ class MCQ_paper {
    public function get_answer_lines(){
       $markFile=MOD_A_CSV."/answer_file_".$this->self['paper_id'].".csv";
       $lines    =file($markFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-      //echo "ANSWERS:".$markFile."<br/>";
+      //echo "ANSWERS:".$markFile."<br>";
       
       //Total No. of students sit the exam -> line count
       $this->no_of_students=sizeof($lines)-1;
@@ -185,7 +185,7 @@ class MCQ_paper {
          $tmp_array=explode($this->question_delimiter,$answers);
          $answers_array=array_slice($tmp_array,$this->sections[$section-1],$this->sections[$section]);
 
-         //echo implode("__",$answers_array)."<br/>";
+         //echo implode("__",$answers_array)."<br>";
 
          //Processing answer by unswer
          foreach ($answers_array as $key => $answer) {
@@ -245,7 +245,7 @@ class MCQ_paper {
 
    public function print_stat($stat_array) {
       //Statistics table
-      echo "<style>
+      echo "<style type="text/css">
    .left{
       float:left;
       font-size:9px;
@@ -562,8 +562,8 @@ class MCQ_paper {
          }
          //$mark=round($mark/$this->paper['no_of_questions'],0);
          //echo $this->cur_section_size."|";
-         //echo $mark."<br/>";
-         //echo $this->cur_section_size."<br/>";
+         //echo $mark."<br>";
+         //echo $this->cur_section_size."<br>";
          $mark=round($mark/$this->cur_section_size,0);
          //$query="UPDATE mcq_answers SET marks='$mark' WHERE paper_id='$paper_id' AND index_no='$index_no'";
          //$result=mysql_query($query,$GLOBALS['CONNECTION']);

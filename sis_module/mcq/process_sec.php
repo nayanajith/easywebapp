@@ -175,7 +175,7 @@ class MCQ_paper {
          $tmp_array=explode($this->question_delimiter,$answers);
          $answers_array=array_slice($tmp_array,$this->sections[$section-1],$this->sections[$section]);
 
-         //echo implode("__",$answers_array)."<br/>";
+         //echo implode("__",$answers_array)."<br>";
 
          //Processing answer by unswer
          foreach ($answers_array as $key => $answer) {
@@ -525,7 +525,7 @@ class MCQ_paper {
           }
          }
          //$mark=round($mark/$this->paper['no_of_questions'],0);
-         //echo $mark."<br/>";
+         //echo $mark."<br>";
          $mark=round($mark/$this->cur_section_size,0);
          //$query="UPDATE mcq_answers SET marks='$mark' WHERE paper_id='$paper_id' AND index_no='$index_no'";
          //$result=mysql_query($query,$GLOBALS['CONNECTION']);
@@ -642,8 +642,8 @@ if(empty($_GET['paper_id'])){
       </select></td>
    </tr>
 </table>
-<input type="submit" name="submit" value="Generate Report" /> <input
-   type="submit" name="submit" value="Mark Answers" /></form>
+<input type="submit" name="submit" value="Generate Report" > <input
+   type="submit" name="submit" value="Mark Answers" ></form>
       <?php
 }else{
    if(isset($_GET['submit'])){

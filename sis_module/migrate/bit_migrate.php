@@ -192,25 +192,25 @@ The form to be presented if the parameters are not present
       action='<?php echo $GLOBALS['PAGE_GEN']; ?>';
       method='GET'>
 
-   <script type="dojo/method" event="onSubmit">
+   <script type="text/javascript" type="dojo/method" event="onSubmit">
    return true;
    </script>
-   <input type=hidden name=module    value="<?php echo MODULE;    ?>" />
-   <input type=hidden name=page       value="<?php echo PAGE;    ?>" />
-   <input type=hidden name=program    value="<?php echo PROGRAM; ?>" />
+   <input type=hidden name=module    value="<?php echo MODULE;    ?>" >
+   <input type=hidden name=page       value="<?php echo PAGE;    ?>" >
+   <input type=hidden name=program    value="<?php echo PROGRAM; ?>" >
    <table>
-      <tr><td><label for='old_db'>Old Database</label></td><td><input dojotype="dijit.form.TextBox" name='old_db'    id='old_db'    value='bit'       /></td></tr>
-      <tr><td><label for='old_table'>Old Table</label></td><td><input dojoType="dijit.form.TextBox" name='old_table' id='old_table' value='bit_all'    /></td></tr>
-      <tr><td><label for='new_db'>New Database</label></td><td><input dojoType="dijit.form.TextBox" name='new_db'    id='new_db'    value='sis'    /></td></tr>
-      <tr><td><label for='new_table'>New Table</label></td><td><input dojoType="dijit.form.TextBox" name='new_table' id='new_table' value='bit_marks'   /></td></tr>
-      <tr><td><label for='root_pwd'>DB root password</label></td><td><input dojoType="dijit.form.TextBox" name='root_pwd' id='root_pwd' type='password'   /></td></tr>
+      <tr><td><label for='old_db'>Old Database</label></td><td><input dojotype="dijit.form.TextBox" name='old_db'    id='old_db'    value='bit'       ></td></tr>
+      <tr><td><label for='old_table'>Old Table</label></td><td><input dojoType="dijit.form.TextBox" name='old_table' id='old_table' value='bit_all'    ></td></tr>
+      <tr><td><label for='new_db'>New Database</label></td><td><input dojoType="dijit.form.TextBox" name='new_db'    id='new_db'    value='sis'    ></td></tr>
+      <tr><td><label for='new_table'>New Table</label></td><td><input dojoType="dijit.form.TextBox" name='new_table' id='new_table' value='bit_marks'   ></td></tr>
+      <tr><td><label for='root_pwd'>DB root password</label></td><td><input dojoType="dijit.form.TextBox" name='root_pwd' id='root_pwd' type='password'   ></td></tr>
    </table>
 </div>
-<script>
+<script type="text/javascript">
 function submit_form(){
 /*
      status_ = dijit.byId("status_bar");
-   status_.innerHTML="<img src='<?php echo IMG; ?>/loading.gif' />";
+   status_.innerHTML="<img src='<?php echo IMG; ?>/loading.gif' >";
 */
      formDlg = dijit.byId("frm_db_migrate");
    formDlg.submit();

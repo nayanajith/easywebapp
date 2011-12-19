@@ -47,7 +47,7 @@ class MYPDF extends TCPDF {
 		/*Custom long header  with html formatted*/ 
 		$header ="
 <h3>UNIVERSITY OF COLOMBO SCHOOL OF COMPUTING (UCSC)</h3>
-BACHLOR OF INFORMATION & COMMUNICATION TECHNOLOGY (BICT)<br/>					
+BACHLOR OF INFORMATION & COMMUNICATION TECHNOLOGY (BICT)<br>					
 APITITUDE TEST - ".$this->header_info['year'];
 
 	/*Header position from the top*/
@@ -189,7 +189,7 @@ class Attendance_sheets{
 			for($room_no=1;$room_no <= $num_rooms; $room_no++){
 				/*Variable to store Attendance sheet html*/
 				$sheet_style="
-<style>
+<style type="text/css">
 th{
 	background-color:silver;
 	font-weight:bold;
@@ -214,13 +214,13 @@ under the separate cover to the Assistant Register (Examination) , & one to be e
 scripts. When answer scripts are packeted separately for each part of paper, it is necessary to enclose a copy of the					
 attendance list in each packet.
 </div>
-<br/>';
+<br>';
 
 				$sheet_table='<table border="1" style="border-collapse:collapse" cellpadding="2">';
 				$sheet_thead='<tr><th width="40px">Serial</th><th width="65px">Index No</th><th width="340px">Name</th><th width="75px">ID Number</th><th width="120px">Signature</th></tr>';
 
 				$sheet_footer='
-<style>
+<style type="text/css">
 .fill{
 	border-bottom:1px dashed black;
 	width:155px;
@@ -228,8 +228,8 @@ attendance list in each packet.
 }
 </style>
 <table >
-<tr><td align="right" width="140px;">&nbsp;<br/><b>Date:</b></td><td class="fill" ></td><td width="140px;"></td><td></td></tr>
-<tr><td align="right">&nbsp;<br/><b>Signature of Invigilator:</b></td><td class="fill" ></td><td align="right">&nbsp;<br/><b>Signature of  Supervisor:</b></td><td class="fill" ></td></tr>
+<tr><td align="right" width="140px;">&nbsp;<br><b>Date:</b></td><td class="fill" ></td><td width="140px;"></td><td></td></tr>
+<tr><td align="right">&nbsp;<br><b>Signature of Invigilator:</b></td><td class="fill" ></td><td align="right">&nbsp;<br><b>Signature of  Supervisor:</b></td><td class="fill" ></td></tr>
 </table>';
 
 				

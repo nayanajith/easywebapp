@@ -32,6 +32,7 @@ $migrate_queries=array(
 
 //select case compulsory when 'x'  then 'a' when 'N' then 'b' end from sis.bcsc_course
 
+$error="";
 if(isset($_REQUEST['action'])){ /*haldle requests*/
    switch($_REQUEST['action']){
       case 'migrate_db':
@@ -92,7 +93,7 @@ d_r('dijit.form.Button');
 </select>
 </td></tr></table>
 </form>
-<script language="javascript">
+<script type="text/javascript" >
    function submit_form(action){
       update_status_bar('OK','...');
       update_progress_bar(10);

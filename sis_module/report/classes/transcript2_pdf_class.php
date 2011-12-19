@@ -63,9 +63,9 @@ class MYPDF extends TCPDF {
       /*Set font*/ 
       $this->SetFont('helvetica', '', 8);
       $custom_footer="
-      <hr/>
-      <br/>
-      <br/>
+      <hr>
+      <br>
+      <br>
       <table>
          <tr>
             <td valign='bottom'>
@@ -233,7 +233,7 @@ class Transcript{
       $AR_name="A.B.C. def";
                
       $template=<<<EOS
-<style>
+<style type="text/css">
 *{
    font-size:100%;
    font-family:arial;

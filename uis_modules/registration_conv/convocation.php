@@ -121,7 +121,7 @@ echo "<table width=100%><tr><td style='vertical-align:top;valign:top'>";
 	}
 	echo $formgen->gen_filter();
 	echo "
-		<script language='javascript'>
+		<script type="text/javascript" >
 			function grid(){
 				url='".gen_url().(isset($_REQUEST['filter_name'])?"&filter_name=".$_REQUEST['filter_name']:"")."&form=grid';
 				open(url,'_self');
@@ -133,7 +133,7 @@ echo "</td><td width=40% style='vertical-align:top;valign:top;border-left:1px do
 		/*
 		echo "<h4>Declaration form</h4>You can download Delcration form [<a href=''>pdf</a>]";
 		echo "<h4>Convocation information</h4>You can download convocation information letter [<a href=''>pdf</a>]";
-		echo "<hr style='border:1px solid silver;'/>";
+		echo "<hr style='border:1px solid silver;'>";
 		 */
 		echo "<img src='".IMG."/help_32.png'>";
 		echo "<h4>Help on typing sinhala and tamil</h4>You can get assistance to enter your name in Sinhala and Tamil from our <a href='http://ucsc.lk/ltrl/services/feconverter/' target='_blank' >font converter</a> or <a href='http://translate.google.com/#en|ta|' >google translator</a>";
@@ -141,14 +141,14 @@ echo "</td><td width=40% style='vertical-align:top;valign:top;border-left:1px do
 		echo "<h4>Enable sinhala in windows</h4>Download and install sinhala packa from ltrl [<a href='http://www.ucsc.cmb.ac.lk/ltrl/?page=downloads' target='_blank'>link</a>]";
 		echo "<h4>Enable sinhala in linux</h4>A guide on how to enable sinhala in linux [<a href='http://sinhala.sourceforge.net/' target='_blank'>link</a>]";
 		*/
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Further information</h4>For any queries regarding convocation registration please contact the examination division of the UCSC<br />
-			   <b>TP: 0112588996/97</b><br/><br/>";
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Technical assistance</h4>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'>";
+		echo "<hr style='border:1px solid silver;'>";
+		echo "<h4>Further information</h4>For any queries regarding convocation registration please contact the examination division of the UCSC<br >
+			   <b>TP: 0112588996/97</b><br><br>";
+		echo "<hr style='border:1px solid silver;'>";
+		echo "<h4>Technical assistance</h4>For technical assistance please write to <br> <img src='".IMG."/uis_mail.png'>";
 		echo "</td></tr></table>";
 
-		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
+		echo "<br><br><br><div align='right' class='buttonBar'  >
 		<button dojoType='dijit.form.Button' type='submit' onClick=\"submit_form('modify','registration','payment')\">Next&nbsp;&raquo;</button>
 		</div>";
 
@@ -164,7 +164,7 @@ $formgen->filter_selector();
 include $help_file;
 $formgen->set_help_tips($help_array);
 /*
-echo "<script language='javascript'>";
+echo "<script type="text/javascript" >";
 echo $formgen->param_setter();
 echo "</script>";
 */

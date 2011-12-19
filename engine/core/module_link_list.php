@@ -1,4 +1,4 @@
-<script language="javascript">
+<script type="text/javascript" >
 function open_module(module){
    window.open('<?php echo $GLOBALS['PAGE_GEN']; ?>?module='+module+'&program=<?php echo PROGRAM; ?>','_parent');
 }
@@ -25,7 +25,7 @@ link list genertion for the modules
       if(is_array($modules[$module_key])){
          $module_name=$modules[$module_key]['MODULE'];
       }
-       echo "<a href=\"javascript:open_module('$module_key')\" style='font-weight:bold;text-decoration:none;color:gray'>".$module_name."</a><br/>";
+       echo "<a href=\"javascript:open_module('$module_key')\" style='font-weight:bold;text-decoration:none;color:gray'>".$module_name."</a><br>";
 
       $vbar="";
       foreach($module as $page_key => $page){
@@ -36,7 +36,7 @@ link list genertion for the modules
           echo $vbar."<a href=\"javascript:open_page('$module_key','$page_key')\" >$page</a>";
          $vbar=" | ";
       }
-      echo "<br/><br/>";
+      echo "<br><br>";
    }
 ?>
 

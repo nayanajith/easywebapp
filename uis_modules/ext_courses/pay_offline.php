@@ -24,11 +24,11 @@ Computing Services Centre,
 University of Colombo School of Computing,
 No. 35, Reid Avenue,
 Colomobo 07.
-<br/>
+<br>
 <b>Fax number:</b> 0112587235
 </pre>
 </ol>
 
-<br/><br/><br/><div align='right' class='buttonBar'  >
+<br><br><br><div align='right' class='buttonBar'  >
 <button dojoType='dijit.form.Button' onClick="open_page('ext_courses','payment')">&laquo;&nbsp;Back</button>
 </div>

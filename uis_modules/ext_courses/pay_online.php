@@ -29,7 +29,7 @@ function print_user_info($student_arr,$course_arr){
 
 function print_instructions(){
    echo "<h4>Instructions</h4>
-	<hr/>
+	<hr>
 	<ol>
 	<li>When you press Proceed you will be directed to sampath bank's online payment system
 	<li>The payment voucher will be mailed to your personal mail given in the application
@@ -41,16 +41,16 @@ function print_instructions(){
 function payment_rejected($student_arr,$payment_category){
 	print_user_info($student_arr,$payment_category);
 	echo "
-	<br/>
-	<br/>
-	<br/>
+	<br>
+	<br>
+	<br>
 	<h3>Online payment status</h3>
-	<span style='color:red'>We are sorry that your payment was not successful!</span><br/>
+	<span style='color:red'>We are sorry that your payment was not successful!</span><br>
 	Please try again or try our <a href=\"javascript:open_page('ext_courses','pay_offline')\">offline payment procedure</a>.";
 
 	//print_instructions();
 
-	echo "<br/><br/><br/><br/><br/><div align='right' class='buttonBar'  >
+	echo "<br><br><br><br><br><div align='right' class='buttonBar'  >
 	<button dojoType='dijit.form.Button' jsId='back_btn'onClick=\"open_page('ext_courses','payment')\">&laquo;&nbsp;Back</button>
 	<button dojoType='dijit.form.Button' jsId='proceed_btn' type='submit' onClick=\"open_page('ext_courses','pay_online&retry=true')\" >Try again&nbsp;&raquo;</button>
 	</div>
@@ -61,13 +61,13 @@ function payment_accepted($student_arr,$course_arr){
 	print_user_info($student_arr,$course_arr);
 
 	echo "
-	<br/>
-	<br/>
-	<br/>
+	<br>
+	<br>
+	<br>
 	<h3>Online payment status</h3>
 	<h4>
-	<span style='color:green'>You have successfully completed the online payment!</span><br/>
-	Please check your email for the payment voucher... <br/>
+	<span style='color:green'>You have successfully completed the online payment!</span><br>
+	Please check your email for the payment voucher... <br>
 	Thank you!<h4>
 	<!-- a href=''>Resend the voucher</a -->
 	";
@@ -75,7 +75,7 @@ function payment_accepted($student_arr,$course_arr){
 	/*
 	print_instructions();
 
-	echo "<br/><br/><br/><div align='right' class='buttonBar'  >
+	echo "<br><br><br><div align='right' class='buttonBar'  >
 	<button dojoType='dijit.form.Button' jsId='back_btn'onClick=\"open_page('registration','payment');this.diable;\">&laquo;&nbsp;Back</button>
 	<button dojoType='dijit.form.Button' jsId='proceed_btn' type='submit' onClick=\"iframe_open()\" >Proceed&nbsp;&raquo;</button>
 	</div>
@@ -118,7 +118,7 @@ function peyment_process($student_arr,$course_arr){
 		
 	//echo $request;
 	echo "
-	<script language='javascript'>
+	<script type="text/javascript" >
 	function iframe_open(){
 		//back_btn.setAttribute('disabled', true);
 		//proceed_btn.setAttribute('label', 'Reload');
@@ -130,10 +130,10 @@ function peyment_process($student_arr,$course_arr){
 
    <!-- form method='POST' action='".$payment_gw_url."' id='m_form' target='textFile'-->
    <form method='POST' action='".$payment_gw_url."' id='m_form' >
-		<input type='hidden' name='request' value='".$request."' />
+		<input type='hidden' name='request' value='".$request."' >
 		<!-- iframe id='textFile' name='textFile' style='border:0px;' width='100%'  height='10' align='center'>
 		</iframe -->
-		<br/><br/><br/>
+		<br><br><br>
 		<div align='right' class='buttonBar'  >
 			<button dojoType='dijit.form.Button' jsId='back_btn' onClick=\"open_page('ext_courses','payment');this.diable;\">&laquo;&nbsp;Back</button>
 			<button dojoType='dijit.form.Button' jsId='proceed_btn' type='submit' onMouseUp=\"iframe_open()\" >Proceed&nbsp;&raquo;</button>

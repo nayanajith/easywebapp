@@ -44,11 +44,11 @@ function input_gen($field_info,$value){
                         input_td($input,$field,$value);
                         break;
                 case 'hidden':
-                        $input="<input type='hidden' name='$field'  class='$css_class' value='$value' />";
+                        $input="<input type='hidden' name='$field'  class='$css_class' value='$value' >";
                         input_td($input,$field,$value);
                         break;
                 case 'file':
-                        $input="<input type='file' name='$field'  class='$css_class' value='$value' />";
+                        $input="<input type='file' name='$field'  class='$css_class' value='$value' >";
                         input_td($input,$field,$value);
                         break;
                 case 'textarea':
@@ -56,11 +56,11 @@ function input_gen($field_info,$value){
                         input_td($input,$field,$value);
                         break;
                 case 'radio':
-                        $input="<input type='radio' name='$field' id='$field' class='$css_class' value='$value' />";
+                        $input="<input type='radio' name='$field' id='$field' class='$css_class' value='$value' >";
                         input_td($input,$field,$value);
                         break;
                 case 'checkbox':
-                        $input="<input type='checkbox' name='$field' id='$field' class='$css_class' value='$value' />";
+                        $input="<input type='checkbox' name='$field' id='$field' class='$css_class' value='$value' >";
                         input_td($input,$field,$value);
                         break;
                 case 'optgroup':

@@ -52,12 +52,12 @@ foreach($arr as $key => $row){
 	$first=false;
 }
 
-echo "<tr><td>Amount in SLR:&nbsp;<input type='text' dojoType='dijit.form.NumberTextBox' name='amount' required='true' value='".(isset($_SESSION['amount'])?$_SESSION['amount']:"")."' /> </td></tr>";
+echo "<tr><td>Amount in SLR:&nbsp;<input type='text' dojoType='dijit.form.NumberTextBox' name='amount' required='true' value='".(isset($_SESSION['amount'])?$_SESSION['amount']:"")."' > </td></tr>";
 echo "</table>";
-echo "<input type='hidden' name='data' value='true' />
-		<input type='hidden' name='module' value='donations' />
-		<input type='hidden' name='page' value='donation_to' />";
-echo "<br/><br/><br/><div align='right' class='buttonBar'  >
+echo "<input type='hidden' name='data' value='true' >
+		<input type='hidden' name='module' value='donations' >
+		<input type='hidden' name='page' value='donation_to' >";
+echo "<br><br><br><div align='right' class='buttonBar'  >
 		<button dojoType='dijit.form.Button' type='button' name='loginBtn' onClick=\"open_page('donations','registration')\">&laquo;&nbsp;Back</button>
 		<button dojoType='dijit.form.Button' type='submit' name='pay_offline' >Pay offline to bank</button>
 		<button dojoType='dijit.form.Button' type='submit' name='pay_online'>Credit/VISA card payment&nbsp;&raquo;</button>

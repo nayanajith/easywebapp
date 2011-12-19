@@ -9,7 +9,7 @@ class Data_grid{
    //type -> CSV,TABLE
    public function gen_data_grid($field_array,$csv_url_or_tableid,$key,$type,$title=''){
        $output= "
-        <script language='javascript'>
+        <script type="text/javascript" >
             //acction to perform when the user clicked on the grid
             function grid_clicked(e){
                var selectedValue = grid.store.getValue(grid.getItem(e.rowIndex),'".$key."');
@@ -79,7 +79,7 @@ class Data_grid{
       }else{
          d_r('dojox.data.HtmlTableStore');
          $output.= "<span dojoType='dojox.data.HtmlTableStore' tableId='".$csv_url_or_tableid."' jsId='gridStore'></span>";
-         $output.= "<script>dojo.byId('".$csv_url_or_tableid."').style.display='none';</script>";
+         $output.= "<script type="text/javascript">dojo.byId('".$csv_url_or_tableid."').style.display='none';</script>";
       }
         $output.="<div dojoType='dijit.Menu' jsid='gridMenu' id='gridMenu' style='display: none;'>
             <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>

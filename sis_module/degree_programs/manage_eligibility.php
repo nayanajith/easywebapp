@@ -119,7 +119,7 @@ echo $formgen->gen_form(false,true);
 if($GLOBALS['LAYOUT']='app'){
 echo $formgen->gen_filter();
 echo "
-      <script language='javascript'>
+      <script type="text/javascript" >
          function grid(){
             url='".gen_url().(isset($_REQUEST['filter_name'])?"&filter_name=".$_REQUEST['filter_name']:"")."&form=grid';
             open(url,'_self');
@@ -167,15 +167,15 @@ foreach($course as $key => $options){
    echo "
    <div dojoType='dijit.Dialog' id='course_dialog_year$key' jsId='course_dialog_year$key' title='Courses Year $key' align=center>
    <table>
-   <tr><td>Optional</td><td>:<input type=text dojoType='dijit.form.TextBox' value='all' name='O' /></td></tr>
-   <tr><td>Compulsory</td><td>:<input type=text dojoType='dijit.form.TextBox' value='all' name='C' /></td></tr>
+   <tr><td>Optional</td><td>:<input type=text dojoType='dijit.form.TextBox' value='all' name='O' ></td></tr>
+   <tr><td>Compulsory</td><td>:<input type=text dojoType='dijit.form.TextBox' value='all' name='C' ></td></tr>
    $options
    </table>
    <button  dojoType='dijit.form.Button'  onClick='fill_courses($key)'>
    Ok
    </button>
    
-   <script>
+   <script type="text/javascript">
    var button = new dijit.form.Button({
           label: \"select\",
       onClick:function(){ 
@@ -189,7 +189,7 @@ foreach($course as $key => $options){
    ";
 }
 
-echo "<script>
+echo "<script type="text/javascript">
 function show_course_dialog(key){
    formDlg = dijit.byId('course_dialog_year'+key);
    /*extract values from textarea*/

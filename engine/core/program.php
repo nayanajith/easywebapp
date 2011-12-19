@@ -23,7 +23,7 @@ $GLOBALS['PROGRAMS']=$programs;
 function program_select($program){
    d_r('dijit.form.FilteringSelect');
    echo "
-   <script>
+   <script type='text/javascript'>
 
    function change_program(program,desc){
       URL=\"".$GLOBALS['PAGE_GEN']."?module=".MODULE."&page=".PAGE."&program=\"+desc;

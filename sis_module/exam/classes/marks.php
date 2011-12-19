@@ -14,17 +14,17 @@ if(isset($_SESSION['views'])){
 $_SESSION['host']=$_SERVER['REMOTE_ADDR'];
 ?>
 
-<script 
+<script type="text/javascript" 
 type   ="text/javascript" 
 src   ="<?php echo W_MODULES."/".$modules[$module]."/js/spreadsheet.js"; ?>"
 </script>
 
-<script 
+<script type="text/javascript" 
 type   ="text/javascript" 
 src   ="<?php echo W_MODULES."/".$modules[$module]."/js/ajaxtt.js"; ?>"
 </script>
 
-<script 
+<script type="text/javascript" 
 type   ="text/javascript" 
 src   ="<?php echo W_MODULES."/".$modules[$module]."/js/xml.js"; ?>"
 </script>
@@ -78,7 +78,7 @@ $input_array=array(
 
 
 echo "
-<script>
+<script type="text/javascript">
 
 function course_name(course){
    switch(course){
@@ -122,7 +122,7 @@ function input_gen($id,$label,$type,$size,$_GET,$event,$val){
       echo "<input type=checkbox id='$id' name='$id' $event value='$value' size=$size>";
    break;
    default:
-      echo "<br/>";
+      echo "<br>";
    break;
    }
 }
@@ -209,7 +209,7 @@ echo "</div>";
 <br />
 <br />
 <div id=status_bar><!-- Status bar --></div>
-<script language="javascript">
+<script type="text/javascript" >
    init_element();
    calculate_all();
    sync.start();

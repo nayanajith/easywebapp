@@ -136,7 +136,7 @@ if(isset($_REQUEST['form'])){
 		echo $formgen->gen_filter();
 	}
 	echo "
-		<script language='javascript'>
+		<script type="text/javascript" >
 			function grid(){
 				url='".gen_url()."&form=grid';
 				open(url,'_self');
@@ -157,7 +157,7 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 				<tr><td><a href='http://ucsc.cmb.ac.lk/node/78'>MIT</a></td><td>: Master of information technology</td></tr>
 				<tr><td><a href='http://ucsc.cmb.ac.lk/node/79'>MIS</a></td><td>: Master of science in information security</td></tr> 
 				</table>";
-		echo "<hr style='border:1px solid silver;'/>";
+		echo "<hr style='border:1px solid silver;'>";
 		echo "<h4>Application procedure </h4>";
 		echo "<ol>
 			<li>Fill the application form and press <b>Next</b> button at the end of the form</li>
@@ -166,25 +166,25 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 			<li>If you use online payment method, the payment invoice will be sent to your personal email. Download the invoice(pdf) and print it. Finally send the voucher and the application to the UCSC</li>
 			<li>If you choose offline payment method, you have to download the voucher quadruples(pdf) and print it. Follow the procedure given in offline payment page. Finally send the voucher stamped by the bank and the application to the UCSC</li>
 			</ol>";
-		echo "<hr style='border:1px solid silver;'/>";
+		echo "<hr style='border:1px solid silver;'>";
 		echo "<h4 >Important Dates<span style='color:red'> [Deadline Extended]</apan></h4>";
 echo "
 <h4>Deadline for the registration of masters programs has been extended until 30th August, 2011</h4>
-Application Form and the payment slip should be sent on or before <b>30th  August 2011</b>.<br/>
+Application Form and the payment slip should be sent on or before <b>30th  August 2011</b>.<br>
 Those who have successfully completed the application process could obtained their Admission card by <b>02st September 2011</b> from the UCSC website.
 ";
-		echo "<hr style='border:1px solid silver;'/>";
+		echo "<hr style='border:1px solid silver;'>";
 
-		echo "Download detailed instruction sheet [<a href='".MOD_DOCS."/user_instructions.pdf'>pdf</a>]<br/>";
-		echo "Download the postgraduate call for application advertisement [<a href='".MOD_DOCS."/postgraduate_advertisment.pdf'>pdf</a>]<br/>";
+		echo "Download detailed instruction sheet [<a href='".MOD_DOCS."/user_instructions.pdf'>pdf</a>]<br>";
+		echo "Download the postgraduate call for application advertisement [<a href='".MOD_DOCS."/postgraduate_advertisment.pdf'>pdf</a>]<br>";
 /*
-		echo "<hr style='border:1px solid silver;'/>";
+		echo "<hr style='border:1px solid silver;'>";
 		echo "<h4>Postgraduate programs</h4>";
 		foreach($GLOBALS['PROGRAMS'] as $key => $value){
-			echo "<b>$key: </b>".style_text($value)."<br/>";		
+			echo "<b>$key: </b>".style_text($value)."<br>";		
 		}
 */
-		echo "<hr style='border:1px solid silver;'/>";
+		echo "<hr style='border:1px solid silver;'>";
 		echo "<h4>Postal address</h4>";
 		echo "<pre style='font:inherit'>";
 		echo "Senior Assistant Registrar/Academic and Publications,
@@ -192,21 +192,21 @@ UCSC,
 No: 35 Reid Avenue,
 Colombo 07.";
 		echo "</pre>";
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Further information</h4>For any queries regarding postgraduate application please contact <br/>Academic & Publications branch UCSC<br />
-			   <b>TP: 0112589123</b><br/><br/>";
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Technical assistance</h4>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'>";
+		echo "<hr style='border:1px solid silver;'>";
+		echo "<h4>Further information</h4>For any queries regarding postgraduate application please contact <br>Academic & Publications branch UCSC<br >
+			   <b>TP: 0112589123</b><br><br>";
+		echo "<hr style='border:1px solid silver;'>";
+		echo "<h4>Technical assistance</h4>For technical assistance please write to <br> <img src='".IMG."/uis_mail.png'>";
 		echo "</td></tr></table>";
 
 
 	if(isset($_SESSION['downloaded'])&& !$_SESSION['downloaded']){
 	//if(isset($_SESSION['first_time'])&& $_SESSION['first_time']){
-		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
+		echo "<br><br><br><div align='right' class='buttonBar'  >
 		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('modify','registration_pg','payment')\">Next&nbsp;&raquo;</button>
 		</div>";
 	}else{
-		echo "<br/><br/><br/><div align='right' class='buttonBar'  >
+		echo "<br><br><br><div align='right' class='buttonBar'  >
 		<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"submit_form('add','registration_pg','payment')\">Next&nbsp;&raquo;</button>
 		</div>";
 
@@ -219,7 +219,7 @@ $formgen->filter_selector();
 include $help_file;
 $formgen->set_help_tips($help_array);
 /*
-echo "<script language='javascript'>";
+echo "<script type="text/javascript" >";
 echo $formgen->param_setter();
 echo "</script>";
 */

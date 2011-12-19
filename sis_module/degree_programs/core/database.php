@@ -17,6 +17,7 @@ $program_tables=array(
    'paper'              =>'%spaper',        
    'push'               =>'%spush',        
    'gpa'                =>'%sgpa',         
+   'gpa2'               =>'%sgpa2',         
    'log'                =>'%slog',         
    'filter'             =>'%sfilter',         
    'marks'              =>'%smarks',       

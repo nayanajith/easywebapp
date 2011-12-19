@@ -4,7 +4,7 @@
  */
 function debug($msg,$id,$color){
 	if(DEBUG){
-		echo "<span style='color:".$color."'>[".$id."]</span>".$msg."<br/>";
+		echo "<span style='color:".$color."'>[".$id."]</span>".$msg."<br>";
 	}
 }
 
@@ -383,17 +383,17 @@ function print_header($title){
 	echo "
 <body style='background:silver;'>
 <div align=center class=a4stat >
-<br/><table>
-<tr><td align=right><img src='".$GLOBALS['logo']."' height=60 /></td>
+<br><table>
+<tr><td align=right><img src='".$GLOBALS['logo']."' height=60 ></td>
 <td><h3>".TITLE_LONG."</h3></td></tr>
-<tr><td colspan=2 align=center><h4>$title</h4></td></tr></table><hr/>";	
+<tr><td colspan=2 align=center><h4>$title</h4></td></tr></table><hr>";	
 }
 
 /*
  * Print Footer of the reports
  */
 function print_footer(){
-	echo "<hr/><h4>".date('D jS \of F Y')."</h4></div></body></html>";
+	echo "<hr><h4>".date('D jS \of F Y')."</h4></div></body></html>";
 }
 
 ?>

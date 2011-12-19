@@ -7,7 +7,7 @@ if(!isset($_SESSION['username'])){
 //Callback can be trapped inside an IFRAME, this javascript will exit from the iframe
 /*
 echo "
-<script language='javascript'>
+<script type="text/javascript" >
 	//if (top != self) top.location.href = location.href;
 if (top != self){
   	top.location.href = '?module=registration&page=pay_online';
@@ -23,14 +23,14 @@ if(!isset($_REQUEST['receipt'])){
 	if($user_info['status'] == 'ACCEPTED'){
 		echo "
 		<h3>Online payment status</h3>
-		<span style='color:green'>You have successfully completed the payment online!</span><br/>
-		Please check your email for the payment invoice... <br/>
+		<span style='color:green'>You have successfully completed the payment online!</span><br>
+		Please check your email for the payment invoice... <br>
 		Thank you!
 		";
 	}else{
 		echo "
 		<h3>Online payment status</h3>
-		<span style='color:red'>We are sorry that your payement was rejected by the bank!</span><br/>
+		<span style='color:red'>We are sorry that your payement was rejected by the bank!</span><br>
 		Please try again later or try our <a href=\"javascript:open_page('registration_pg','pay_offline')\">offline payment procedure</a>.
 		";
 	}
@@ -64,8 +64,8 @@ switch($receipt['status']){
 
 		echo "
 		<h3>Online payment status</h3>
-		<span style='color:green'>You have successfully completed the payment online!</span><br/>
-		Please check your email for the payment invoice... <br/>
+		<span style='color:green'>You have successfully completed the payment online!</span><br>
+		Please check your email for the payment invoice... <br>
 		Thank you!
 		";
 
@@ -106,7 +106,7 @@ switch($receipt['status']){
 
 		echo "
 		<h3>Online payment status</h3>
-		<span style='color:red'>We are sorry that your payement was rejected by the bank!</span><br/>
+		<span style='color:red'>We are sorry that your payement was rejected by the bank!</span><br>
 		Please try again later or try our <a href=\"javascript:open_page('registration_pg','pay_offline')\">offline payment procedure</a>.
 		";
 	break;

@@ -22,7 +22,7 @@ $GLOBALS['SUB_PROGRAMS']=$sub_programs;
 function sub_program_select($sub_program){
 	d_r('dijit.form.FilteringSelect');
 	echo "
-	<script>
+	<script type="text/javascript">
 
 	function change_sub_program(sub_program,desc){
 		URL=\"".gen_url()."&sub_program=\"+desc;

@@ -1,17 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!DOCTYPE html> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 
 <html>
    <head>
       <title><?php echo MODULE."&gt;".PAGE.":".$GLOBALS['TITLE']; ?></title>
-      <link rel="search" href="/search" />
+      <link rel="search" href="/search" >
 
 <!--_________________________________CSS_____________________________________-->
       <?php 
          include A_CORE."/style.php";
       ?>
 <!--______________________________FAVICON____________________________________-->
-      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" />
+      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>" type="image/x-icon" >
 
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
@@ -33,7 +33,7 @@
 <table width='100%' cellpadding=5 cellspacing=0 >
 <!--header-->
 <tr><td colspan=2 style>
-            <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=80px style='float:left'/>
+            <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=80px style='float:left'>
             <span style='float:left;font-size:26px;font-weight:bold;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE_LONG']; ?></span>
             <div style='float:right;padding:20px;'>
 <!--__________________________end Login form ________________________________-->
@@ -41,12 +41,12 @@
                if (isset($_SESSION['username'])){
                   /*
                   if($_SESSION['reg_type']='GUEST'){
-                     echo "You are loged in as GUEST with ".$_SESSION['username']." <br/>";
+                     echo "You are loged in as GUEST with ".$_SESSION['username']." <br>";
                   }else{
                   */
-                  //   echo "You are loged in as ".$_SESSION['username']."<br/>";
+                  //   echo "You are loged in as ".$_SESSION['username']."<br>";
                   //}
-                  echo "You are loged in as ".$_SESSION['username']."<br/>";
+                  echo "You are loged in as ".$_SESSION['username']."<br>";
                   echo "<a href=\"?page=".PAGE."&module=".MODULE."&logout=logout\">Logout</a>";
                }else{
                   //echo "You can <a href=\"?page=login&module=".MODULE."\">login</a> here";
@@ -122,9 +122,9 @@
 </div>
 </td></tr>
 </table>
-<div>
+</div>
 <!--_______________________________parse dojo________________________________-->
       <?php parse_dojo(); ?>
 
-   </body>
+</body>
 </html>

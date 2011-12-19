@@ -10,7 +10,7 @@ include A_CORE."/database.php";
 
 /*If the databse configuration files already available do not do enything but show this message and return*/
 if(file_exists(DB_CONF)){
-   echo "<br/><br/><br/><br/><center>System have already installed!<br/>If you want to reinstall the system please delete db_config.php</center>";
+   echo "<br><br><br><br><center>System have already installed!<br>If you want to reinstall the system please delete db_config.php</center>";
    return;
 }
 
@@ -123,14 +123,14 @@ return;
 <html>
    <head>
       <title>UCSCSIS INSTALLER</title>
-      <link rel="search" href="/search" />
+      <link rel="search" href="/search" >
 
 <!--_________________________________CSS_____________________________________-->
       <?php 
          include A_CORE."/style.php";
       ?>
 <!--______________________________FAVICON____________________________________-->
-      <link rel="shortcut icon" href="<?php echo $GLOBALS['FAVICON']; ?>"type="image/x-icon" />
+      <link rel="shortcut icon" href="<?php echo $GLOBALS['FAVICON']; ?>"type="image/x-icon" >
 
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
@@ -138,13 +138,13 @@ return;
          include A_CORE."/dojo_require.php";
          include A_CORE."/script.php";
       ?>
-<script language='javascript'>
-   //content:"<ul>"+msg+"</ul><br/><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide();window.open('<?php echo W_ROOT;?>','_self')\" type='button'>OK</button></center>"
+<script type="text/javascript" >
+   //content:"<ul>"+msg+"</ul><br><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide();window.open('<?php echo W_ROOT;?>','_self')\" type='button'>OK</button></center>"
    function status_dialog(msg){
       stausDialog = new dijit.Dialog({
          title: "Status report",
          style: "width: 600px;",
-         content:"<ul>"+msg+"</ul><br/><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide()\" type='button'>OK</button></center>"
+         content:"<ul>"+msg+"</ul><br><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide()\" type='button'>OK</button></center>"
       });
       stausDialog.show();
    }
@@ -186,7 +186,7 @@ function show_dialog(){
 }
 
 </script>
-<style>
+<style type="text/css">
 .f_label{text-align:right;}
 .field{width:100px;}
 </style>
@@ -217,31 +217,31 @@ function show_dialog(){
             <table cellpadding=0 cellspacing=5>
                <tr>
                   <td class=f_label width=200><label for=db_host >Database Host</label></td>
-                  <td class=field><input id=db_host name=db_host type=text dojoType="dijit.form.ValidationTextBox"  required='true' /></td>
+                  <td class=field><input id=db_host name=db_host type=text dojoType="dijit.form.ValidationTextBox"  required='true' ></td>
                </tr>
                <tr>
                   <td class=f_label><label for=db_root >Root Password</label></td>
-                  <td class=field><input id=db_root name=db_root type=password dojoType="dijit.form.ValidationTextBox" required='true' /></td>
+                  <td class=field><input id=db_root name=db_root type=password dojoType="dijit.form.ValidationTextBox" required='true' ></td>
                </tr>
                <tr>
-                  <td colspan=2><hr/></td>
+                  <td colspan=2><hr></td>
                </tr>
                <tr>
                   <td class=f_label><label for=db_name>Database</label></td>
-                  <td class=field><input dojoType="dijit.form.ValidationTextBox" type=text id=db_name name=db_name required='true' /></td>
+                  <td class=field><input dojoType="dijit.form.ValidationTextBox" type=text id=db_name name=db_name required='true' ></td>
                </tr>
                <tr>
                   <td class=f_label><label for=db_user>Database User Name</label></td>
-                  <td class=field><input dojoType="dijit.form.ValidationTextBox" type=text id=db_user name=db_user required='true' /></td>
+                  <td class=field><input dojoType="dijit.form.ValidationTextBox" type=text id=db_user name=db_user required='true' ></td>
                </tr>
                <tr>
                   <td class=f_label><label for=db_password >Database Password</label></td>
-                  <td class=field><input id=db_password  name=db_password type=password dojoType="dijit.form.ValidationTextBox" required='true' /></td>
+                  <td class=field><input id=db_password  name=db_password type=password dojoType="dijit.form.ValidationTextBox" required='true' ></td>
                </tr>
                   <td class=f_label><label for=verify_password >Verify Password</label></td>
-                  <td class=field><input id=verify_password type=password dojoType="dijit.form.ValidationTextBox" required='true' /></td>
+                  <td class=field><input id=verify_password type=password dojoType="dijit.form.ValidationTextBox" required='true' ></td>
                </tr>
-               <tr><td colspan=2><hr/></td></tr>
+               <tr><td colspan=2><hr></td></tr>
                <tr>
                   <td align='center' colspan='2'>
                      <button dojoType="dijit.form.Button" onClick="show_dialog()" type="button">

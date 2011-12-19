@@ -143,7 +143,7 @@ $al_subject_custom='
       <table>
       '.$al_subjects_checkboxes.'
       </table>
-      <br/>
+      <br>
       <button dojoType="dijit.form.Button" type="submit">
          OK
            <script type="dojo/method" event="onClick" args="evt">
@@ -168,7 +168,7 @@ $al_subject_custom='
       </button>
    </div>
 </div>
-<br/>
+<br>
 <input type="hidden" width="300"  name="AL_subjects" id="AL_subjects" jsId="AL_subjects" dojoType="dijit.form.ValidationTextBox" readOnly=true value="%s" style="border:0px;" ></input>
 ';
 

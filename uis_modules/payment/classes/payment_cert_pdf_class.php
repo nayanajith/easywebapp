@@ -43,12 +43,12 @@ class MYPDF extends TCPDF {
 		/*Custom long header  with html formatted*/ 
 		$header ="
 <h3>University of Colombo School of Computing (UCSC), Sri Lanka</h3>
-University Admissions Academic Year ".$this->header_info['year']." <br/>
-Common Aptitude Test for Selection of Candidates<br/>
-of the<br/>
+University Admissions Academic Year ".$this->header_info['year']." <br>
+Common Aptitude Test for Selection of Candidates<br>
+of the<br>
 Bachelor of Information and Communication Technology (BICT) at UCSC,Vavuniya Campus and the Rajarata University
 <h3>EXAMINATION ADDMISSION CARD</h3>
-<hr/>
+<hr>
 ";
 		/*Header location from the top*/
 		$this->SetY(25);
@@ -203,7 +203,7 @@ class Admission{
 'signature'=>'
 <table border="1" cellpadding="2">
 	<tr><td>Date & Time of Examination</td><td>Exam Hall</td><td>Candidate\'s Signature</td><td>Invigilator\'s Signature</td></tr>
-	<tr><td>'.$this->date.'<br/>'.$this->duration.'</td><td>'.$row['hall'].'</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+	<tr><td>'.$this->date.'<br>'.$this->duration.'</td><td>'.$row['hall'].'</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>',
 
 /*Conditions that students should be aware when the students sit to the exam */
@@ -224,7 +224,7 @@ class Admission{
 </table>',
 
 'attestation'=>'
-<style>
+<style type="text/css">
 .line{
 	border-bottom:1px dashed black;
 	height:40px;
@@ -241,11 +241,11 @@ class Admission{
 	<tr><td class="t_center">Signature of candidate</td><td width="200px"></td><td class="t_center">Signature of Attester</td></tr>
 	<tr><td>&nbsp;</td><td>&nbsp;</td><td height="100px" class="line"></td></tr>
 	<tr><td>&nbsp;</td><td>&nbsp;</td><td class="t_center">Official Seal of the Attester (with name)</td></tr>
-	<tr><td>&nbsp;</td><td>&nbsp;</td><td class="line" align="left">&nbsp;<br/>Date:</td></tr>
+	<tr><td>&nbsp;</td><td>&nbsp;</td><td class="line" align="left">&nbsp;<br>Date:</td></tr>
 </table>',
 
 'nb'=>'
-<hr/>
+<hr>
 <div style="text-align:justify">
 	* (Head or Retired Head of a Government/Director Managed approved  school, Grama Niladhari of the Division, Justice of Peace, Commissioner of Oaths, Attorney at Law, Notary Public, Commissioned Officer of the armed forces, Staff Officer of Govt./Corporation, the Chief Incumbent of the Buddhist Vihara, A religious Dignitary of standing of any other religion)	
 </div>'

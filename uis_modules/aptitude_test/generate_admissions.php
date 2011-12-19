@@ -17,7 +17,7 @@ $query="SELECT index_no FROM bict_validation WHERE validation=1 AND admission_ge
 $res=mysql_query($query,$GLOBALS['CONNECTION']);
 
 while($row=mysql_fetch_assoc($res)){
-	echo "Generating admission for ".$row['index_no']." ...<br/>\n";
+	echo "Generating admission for ".$row['index_no']." ...<br>\n";
 	$tmp_pdf		="/tmp/".$row['index_no']."-tmp.pdf";
 	$final_pdf	=$admission_dir."/".$row['index_no'].".pdf";
 
@@ -52,7 +52,7 @@ mysql_close($GLOBALS['CONNECTION']);
 		action='<?php echo $GLOBALS['PAGE_GEN']; ?>';
 		method='GET'>
 
-	<script type="dojo/method" event="onSubmit">
+	<script type="text/javascript" type="dojo/method" event="onSubmit">
 	return true;
 	</script>
 <select name="center"  dojoType="dijit.form.ComboBox" > 
@@ -64,7 +64,7 @@ mysql_close($GLOBALS['CONNECTION']);
 			echo "<option value='".$row['center']."'>".$row['center']."</option>";
 			/*
 			 echo '<input  name="'.$row['center'].'" dojoType="dijit.form.CheckBox" value="1" ></input>
-				    <label for="mycheck">'.$row['center'].'</label><br/>';
+				    <label for="mycheck">'.$row['center'].'</label><br>';
 			 */
 			}
 		?>
@@ -78,7 +78,7 @@ mysql_close($GLOBALS['CONNECTION']);
 
 </div>
 
-<script language='javascript'>
+<script type="text/javascript" >
 function submit_form(action){
 	if(!confirm(dojo.toJson(dijit.byId('frm_attendance').getValues(), true))){
 		return;	

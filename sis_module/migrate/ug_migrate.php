@@ -46,9 +46,16 @@ $migrate_queries=array(
    "gpa"         =>"REPLACE INTO ".$program_."_gpa(index_no,degree_class,GPV1,credits1,GPA1,GPV2,credits2,GPA2,GPV3,credits3,GPA3,GPV4,credits4,GPA4,GPV,GPA,credits) SELECT IndexNo,Tag,GPV1,credits1,GPA1,GPV2,credits2,GPA2,GPV3,credits3,GPA3,GPV4,credits4,GPA4,GPVT,GPAT,CreditsT FROM ".$source.".".$pc."gpv",
 
    //Migrate course information
-   "course"      =>"REPLACE INTO ".$program_."_course(course_id,student_year,semester,course_name,prerequisite,lecture_credits,practical_credits,maximum_students,compulsory,alt_course_id,offered_by,non_grade) SELECT CourseId,SYear,Semester,CourseName,Prerequisite,Credits_L,Credits_P,MaxStudents,Compulsory,AltCourseId,OfferedBy,GPACon FROM ".$source.".courses where courseid like '".$cc."%' or courseid like 'ENH%'"
+   "course"      =>"REPLACE INTO ".$program_."_course(course_id,student_year,semester,course_name,prerequisite,lecture_credits,practical_credits,maximum_students,compulsory,alt_course_id,offered_by,non_grade) SELECT CourseId,SYear,Semester,CourseName,Prerequisite,Credits_L,Credits_P,MaxStudents,Compulsory,AltCourseId,OfferedBy,GPACon FROM ".$source.".courses where courseid like '".$cc."%' or courseid like 'ENH%'",
+
+   "final_grade_gpv" =>"UPDATE ".$program_."_marks m,".$program_."_grades g,".$program_."_course c SET m.grand_final_mark=m.final_mark+m.push,m.grade=g.grade,m.gpv=g.gpv*(c.lecture_credits+c.practical_credits)  WHERE m.course_id=c.course_id AND (m.final_mark+m.push)=g.mark",
+
+
+   "gpa2"=>"REPLACE INTO ".$program_."_gpa2(`index_no`,`year`,`gpv`,`credits`,`gpa`)(SELECT r.index_no,r.year,SUM(r.gpv),SUM(r.credits),(SUM(r.gpv)/SUM(r.credits)) FROM(SELECT m.index_no,MAX(m.gpv) gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$program_."_marks m,".$program_."_course c WHERE m.course_id=c.course_id AND index_no IN(SELECT index_no FROM ".$program_."_marks GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year)",
+
 );
 
+$error='';
 
 if(isset($_REQUEST['action'])){ /*haldle requests*/
    switch($_REQUEST['action']){
@@ -128,7 +135,7 @@ d_r('dijit.form.Button');
 </select>
 </td></tr></table>
 </form>
-<script language="javascript">
+<script type="text/javascript" >
    function submit_form(action){
       update_status_bar('OK','...');
       update_progress_bar(10);

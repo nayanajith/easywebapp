@@ -48,7 +48,7 @@ $fixed_th="<table border=1 align=center cellpadding=0 cellspacing=0 id=table_hea
 <th width=50px>FINAL</th>
 <th width=50px>GRADE</th>
 <th width=50px>GPV</th>
-<th width=50px>SUGGESTION<br/>(mark\t|\tgrade\t|\tgpv)</th>
+<th width=50px>SUGGESTION<br>(mark\t|\tgrade\t|\tgpv)</th>
 <th width=50px>PUSH</th>
 </tr>
 </table>
@@ -64,7 +64,7 @@ echo "<tr style='visibility:vissible;overflow;hidden;height:0px;'>
 <th width=50px>FINAL</th>
 <th width=50px>GRADE</th>
 <th width=50px>GPV</th>
-<th width=50px>SUGGESTION<br/>(mark\t|\tgrade\t|\tgpv)</th>
+<th width=50px>SUGGESTION<br>(mark\t|\tgrade\t|\tgpv)</th>
 <th width=50px>PUSH</th>
 </tr>";
 if($rows){

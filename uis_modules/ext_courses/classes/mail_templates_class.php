@@ -34,14 +34,14 @@ class Mail_templates{
 	//HTML output of the invoice
 	function payment_invoice_html($user_info,$program_info,$pay_for_info){
 	return "
-		<style> td{border-bottom:1px dotted whitesmoke;}</style>
+		<style type="text/css"> td{border-bottom:1px dotted whitesmoke;}</style>
 		<table style='border:1px solid silver;' width='100%'>
 			<tr><td colspan='2' align='center'><h3>PAYMENT RECEIPT</h3></td></tr>
 			<tr><td width='200px'>Telephone</td><td width='400px'>+94-11-2581245</td></tr> 
 			<tr><td>Fax Number</td><td>+94-11-2587239</td></tr> 
 			<tr><td>Email to Contact</td><td>info@ucsc.cmb.ac.lk</td></tr> 
 			<tr><td>UCSC Website</td><td>www.ucsc.cmb.ac.lk</td></tr> 
-			<tr><td colspan='2'><hr/></td></tr> 
+			<tr><td colspan='2'><hr></td></tr> 
 			<tr><td >Payment Reference ID</td><td >".$user_info['transaction_id']."</td></tr> 
 			<tr><td >Payer Name</td><td>".$user_info['first_name']." ".$user_info['middle_names']." ".$user_info['last_name']."</td></tr> 
 			<tr><td >Payment for</td><td>".$program_info['description']." ".$pay_for_info['description']."</td></tr> 
@@ -78,12 +78,12 @@ class Mail_templates{
 
 	function mail_alert($mesg){
 		$body="<h4>There are payments to be cleared.</h4>
-INFO:<br/>\n
+INFO:<br>\n
 $mesg	
 
---<br/>\n
-Auto generated on ".date('d-m-Y')."<br/>\n
-UCSC Payment Gateway<br/>\n
+--<br>\n
+Auto generated on ".date('d-m-Y')."<br>\n
+UCSC Payment Gateway<br>\n
 ";	
 	include_once A_CLASSES."/mail_class.php";
 	$mail			=new Mail_native();
@@ -98,11 +98,11 @@ UCSC Payment Gateway<br/>\n
 	function email_verification($rec_id,$varification_code){
 		$url="https://".$_SERVER['HTTP_HOST']."?module=donations&page=email_verification&rec_id=$rec_id&code=".urlencode($varification_code);
 		$body="<h4>Email varification</h4>
-Please click on the link <a href='$url'>$url</a> or copy paste in browser address bar  to complete the registration procedure.<br/>\n
+Please click on the link <a href='$url'>$url</a> or copy paste in browser address bar  to complete the registration procedure.<br>\n
 
---<br/>\n
-Auto generated on ".date('d-m-Y')."<br/>\n
-UCSC funding/donation program<br/>\n
+--<br>\n
+Auto generated on ".date('d-m-Y')."<br>\n
+UCSC funding/donation program<br>\n
 ";	
 		include_once A_CLASSES."/mail_class.php";
 		$mail			=new Mail_native();

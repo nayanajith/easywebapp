@@ -29,7 +29,7 @@ if(is_array($page)){
 </td>
 <td>
 <!-- img src='<?php echo IMG ?>/breadcrumb_arrow.gif' style='margin:0px;padding:0px;opacity: 0.20;filter:alpha(opacity=20);' / -->
-<img src='<?php echo IMG ?>/breadcrumb_arrow.png' style='margin:0px;padding:0px;vertical-align:bottom' />
+<img src='<?php echo IMG ?>/breadcrumb_arrow.png' style='margin:0px;padding:0px;vertical-align:bottom' >
 </td>
 <td>
 <?php 

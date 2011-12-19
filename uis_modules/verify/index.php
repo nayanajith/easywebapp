@@ -92,19 +92,19 @@ if($csv){
 <link 
    rel   ="search" 
    href  ="/search" 
-/>
+>
 
 <link 
    rel   ="stylesheet"
    href  ="<?php echo $GLOBALS['css']; ?>/common_css.php" 
    type  ="text/css" 
-/>
+>
 
 <link 
    rel   ="shortcut icon" 
    href  ="<?php echo $GLOBALS['favicon']; ?>"
    type  ="image/x-icon" 
-/>
+>
 
 <SCRIPT 
    language ='javascript'
@@ -147,7 +147,7 @@ if($print){
 				src	='<?php echo $GLOBALS['logo']; ?>' 
 				alt	='<?php echo $GLOBALS['title']; ?>' 
 				width	=90 
-			/>
+			>
 		</td>
 		<td valign=bottom>
 		<h1><?php echo $GLOBALS['title']; ?></h1>
@@ -163,7 +163,7 @@ if($print){
 	</tr>
 	<tr>
 		<td colspan=2>
-			<hr />
+			<hr >
 		</td>
 	</tr>
 	<tr>
@@ -246,7 +246,7 @@ if (isset($_SESSION['username']) && $_SESSION['permission'] == 'admin') {
 </div>
 <!-- END SUB MENU -->
 
-<br/>
+<br>
 <!-- START DATA REPRESENTATION BODY -->
 <div id=dataContainer >
 <div id=data  style='padding:10px;position:relative;'>

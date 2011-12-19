@@ -2,8 +2,8 @@
 if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
    //include MOD_CLASSES."/degree_cert_fpdf_class.php";
    $img_file = MOD_W_RESOURCE.'/bit_cert_front.jpg';
-   echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />";
-   echo "<img src='$img_file' style='width:297mm;height:420mm;position:absolute;left:0mm;top:0mm;'/>";
+   echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8' >";
+   echo "<img src='$img_file' style='width:297mm;height:420mm;position:absolute;left:0mm;top:0mm;'>";
    //insert the content to the pdf
 
    $name_in_en="DEVAPURAGE MANOJ NILANGA FERNANDO";
@@ -17,7 +17,7 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
 }
 
 ?>
-<script language='javascript'>
+<script type="text/javascript" >
    function submit_form(action){
       update_status_bar('...');
       update_progress_bar(10);

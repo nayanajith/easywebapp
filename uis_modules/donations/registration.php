@@ -188,7 +188,7 @@ if(isset($_REQUEST['form'])){
 		echo $formgen->gen_filter();
 	}
 	echo "
-		<script language='javascript'>
+		<script type="text/javascript" >
 			function grid(){
 				url='".gen_url()."&form=grid';
 				open(url,'_self');
@@ -207,23 +207,23 @@ if($GLOBALS['LAYOUT'] != 'pub'){
 		echo "
 			<h4>Register with us</h4>
 <p>			If you are willing to do further donations/fund rising in future, please register with us so that it is possible to maintain a history of your donations/fundings as well as we can maintain a closer relationship with you. </p>
-			<hr style='border:1px solid silver;'/>
+			<hr style='border:1px solid silver;'>
 
 			<h4>Pay as a one time user</h4>
 <p>			If you are paying as a onetime user you will only have to fill a few field of the form and straightaway you will be able to do the donation. Even though you are not registered with us you will receive an invoice for the payment and if you want to do more donation/funding in future, there is no restriction.</p>
-			<hr style='border:1px solid silver;'/>
+			<hr style='border:1px solid silver;'>
 
 			<h4>Pay online</h4>
 <p>			You can py online using your credit/debit card using our online payment system. After completing the procedure you will redirected to the banks payment gateway. There you can enter your credit card details and complete the transaction.</p>
-			<hr style='border:1px solid silver;'/>
+			<hr style='border:1px solid silver;'>
 
 			<h4>Pay offline</h4>
 		<p>It is also possible to pay offilien using our offline payment voucher. When your are following the offline payment method you will have to download a pdf of the payment voucher and follow the instructions given in relevant location in the middle of the procedure. </p>
 			";
-		echo "<hr style='border:1px solid silver;'/>";
-		echo "<h4>Technical assistance</h4>For technical assistance please write to <br/> <img src='".IMG."/uis_mail.png'>";
+		echo "<hr style='border:1px solid silver;'>";
+		echo "<h4>Technical assistance</h4>For technical assistance please write to <br> <img src='".IMG."/uis_mail.png'>";
 		echo "</td></tr></table>";
-		echo "<br/><br/><br/><div align='right' class='buttonBar' id='buttonBar'  >";
+		echo "<br><br><br><div align='right' class='buttonBar' id='buttonBar'  >";
 		if(isset($_SESSION['user_id'])){
 			echo "<button dojoType='dijit.form.Button' type='submit' name='loginBtn' onClick=\"this_submit_form('modify')\">Next&nbsp;&raquo;</button>";
 		}else{
@@ -236,14 +236,14 @@ $formgen->filter_selector();
 //generate help tips 
 include $help_file;
 $formgen->set_help_tips($help_array);
-echo "<script language='javascript'>";
+echo "<script type="text/javascript" >";
 echo $formgen->param_setter();
 echo "</script>";
 }
 
 ?>
 
-<script language='javascript'>
+<script type="text/javascript" >
 //If the user want to register with us direct him to email_verification page else direct him to donation type selection page
 function this_submit_form(action){
 	if(registration_type.checked){

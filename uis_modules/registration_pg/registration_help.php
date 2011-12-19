@@ -13,7 +13,7 @@ $help_array=array(
 /*
 'last_name'=>'Last name',
  */
-'NIC'=>'Without spaces<br/>NIC will also use as your password to login to the system',
+'NIC'=>'Without spaces<br>NIC will also use as your password to login to the system',
 /*
 'DOB'=>'Dob',
 'gender'=>'Gender',

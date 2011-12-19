@@ -100,7 +100,7 @@ if(isset($_REQUEST['form'])){
    echo $formgen->gen_data_grid($grid_array_long,null,$key1);
    echo $formgen->gen_filter();
    echo "
-      <script language='javascript'>
+      <script type="text/javascript" >
          function grid(){
             url='".gen_url().(isset($_REQUEST['filter_name'])?"&filter_name=".$_REQUEST['filter_name']:"")."&form=grid';
             open(url,'_self');

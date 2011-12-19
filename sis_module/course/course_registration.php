@@ -73,7 +73,7 @@ function gen_registration_form(){
    $report.= "</table>";
 
    //Sum of compulsory and already selected courses will be return in this hidden field
-   $report.="<input type='hidden' id='compulsory_credits' value='".($compulsory_credits+$registered_credits)."' />";
+   $report.="<input type='hidden' id='compulsory_credits' value='".($compulsory_credits+$registered_credits)."' >";
    echo $report;
 }
 
@@ -132,8 +132,8 @@ function gen_bulk_registration_form(){
    $report.= "</table>";
 
    //Sum of compulsory and already selected courses will be return in this hidden field
-   $report.= "<input type='hidden' id='compulsory_credits' value='".($compulsory_credits+$registered_credits)."' />";
-   $report.= "<input type='hidden' name='bulk' value='true' />";
+   $report.= "<input type='hidden' id='compulsory_credits' value='".($compulsory_credits+$registered_credits)."' >";
+   $report.= "<input type='hidden' name='bulk' value='true' >";
    echo  $report;
 }
 

@@ -24,7 +24,7 @@ echo $query;
 $result  = mysql_query($query, $GLOBALS['CONNECTION']);
 
 while($row = mysql_fetch_array($result)){
-   echo $row['Index_No'].",".$row['E2104'].",".$row['gpv']."<br/>";
+   echo $row['Index_No'].",".$row['E2104'].",".$row['gpv']."<br>";
 }
 
 ?>

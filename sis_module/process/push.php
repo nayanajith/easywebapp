@@ -53,7 +53,7 @@ function gen_push_list(){
       }
 
       if(!is_null($push_to)){
-         $report.= '<tr><td>'.$index_no.'</td><td>'.$gpad.'</td><td>'.$gpac.'</td><td>'.$push_to.'</td><td align="center"><input type="radio" name="index_no" value="'.$index_no.'" /></td></tr>';
+         $report.= '<tr><td>'.$index_no.'</td><td>'.$gpad.'</td><td>'.$gpac.'</td><td>'.$push_to.'</td><td align="center"><input type="radio" name="index_no" value="'.$index_no.'" ></td></tr>';
       }
    }
 
@@ -95,7 +95,7 @@ function try_to_push(){
       //echo "<tr><td>".implode($criteria,'</td><td>' )."</td></tr>";
       }
       echo "</table>";
-      echo "<br/>";
+      echo "<br>";
       echo "<table border='1' style='border-collapse:collapse'>
       <tr><th>KEY</th><th>Previous</th><th>Now</th></tr>
       <tr><td>GPV</td><td>".str_replace(';','</td><td>',$push_arr['gpv_push'])."</td></tr>

@@ -215,7 +215,7 @@ class Eligibility extends Student{
                   $satisfied=false;
                }elseif(array_sum($mark_arr) > getMinMarkC($grade)){
                   /*if the student have scored more than expected mark as passed*/
-                  //echo $course." [".$grade."] ok<br/>";
+                  //echo $course." [".$grade."] ok<br>";
                }else{/*Student should sit the shubject*/
 
                   /*set comment for the course*/

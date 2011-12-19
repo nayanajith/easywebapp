@@ -59,7 +59,7 @@ function gen_exam_summery(){
       if(isset($arr_grade_count_pr[$course_id])){
          foreach(getGradeGPVArr() as $grade => $gpa){
             if(isset($arr_grade_count_pr[$course_id][$grade])){
-               if($count%$in_row == 0)$report.="<br/>";
+               if($count%$in_row == 0)$report.="<br>";
                $report.= "$bar$grade:".$arr_grade_count_pr[$course_id][$grade];
                $bar='&nbsp;|&nbsp;';
                $count++;
@@ -101,7 +101,7 @@ function gen_exam_summery(){
       return;
    }elseif(isset($_REQUEST['action'])&&$_REQUEST['action']=='print'){
       echo  $report;
-      echo "<script language='javascript'>window.print();</script>";
+      echo "<script type="text/javascript" >window.print();</script>";
    }else{
       echo  $report;
    }
@@ -240,7 +240,7 @@ function print_lms_marks($course_ids){
 //Fill the available marks to the table while generating the table
 function gen_course_summery(){
    $report="
-<style>
+<style type="text/css">
 .report_table{
 }
 
@@ -287,7 +287,7 @@ function gen_course_summery(){
       return;
    }elseif(isset($_REQUEST['action'])&&$_REQUEST['action']=='print'){
       echo  $report;
-      echo "<script language='javascript'>window.print();</script>";
+      echo "<script type="text/javascript" >window.print();</script>";
    }else{
       echo  $report;
    }
@@ -394,7 +394,7 @@ d_r("dijit.form.DropDownButton");
 $submit_button="<center><button dojoType='dijit.form.Button' type='submit' onClick='handle_ttdialog()'>OK</button></center>";
 ?>
 
-<script language='javascript'>
+<script type="text/javascript" >
 dojo.addOnLoad(function() {
    //reference to our toolbar
    var toolbar = dijit.byId('toolbar');

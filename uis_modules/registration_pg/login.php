@@ -12,16 +12,16 @@
 	}else{
 		echo "
 		<h3>Login</h3>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
-		<br/>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
 		<center>
 		<h4>If you are not applied yet please <a href='javascript:open_page(\"registration_pg\",\"registration\")'>apply</a> for the postgradate degree program</h4>
 		<h4>Please enter your email as username and NIC number as the password to log in to the system if you are already applied</h4>";
 		echo before_login();
-		echo "<br/>";
+		echo "<br>";
 		echo "</center>";
 	}
 ?>

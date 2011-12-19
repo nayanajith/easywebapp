@@ -1,5 +1,5 @@
 <html>
-<style>
+<style type="text/css">
 p{
    text-align:justify;
 }
@@ -67,7 +67,7 @@ p{
          </ul>
       </ul>
 <!-- end of menu and starting of the documentation -->
-<hr/>
+<hr>
 
 <h2><a name='installation'>Installation</a>   </h2>
 <p>Installation is done by invoking /install/install.php script. This will open a form which request the Database host, Database root password, name for the new database, username for the new database, and the password for the new database. After entering the required information and accepting the license you can proceed with the installation. This will create the system database structure and the information of the database connection will be saved in /core/db_confg.php.  The user who runs php should be able to write to the /core directory to write the database configuration. The installation will create the default admin user with the username: admin and the password: admin. After the successful installation you have to reload the page to start the system</p>

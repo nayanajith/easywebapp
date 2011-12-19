@@ -4,7 +4,7 @@ Author: nayanajith mahendra laxaman -> nml@ucsc.lk
 */
 /*
 if($_SERVER['REMOTE_ADDR'] != '192.248.16.12'){
-   echo "<br/><br/><br/><center>Site down for maintenance!</center>";
+   echo "<br><br><br><center>Site down for maintenance!</center>";
    exit();
 }
 */

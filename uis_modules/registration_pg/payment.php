@@ -64,7 +64,7 @@ Colombo 07.
 </pre>
 ";
 
-	echo "<br/><br/><br/><div align='right' class='buttonBar' >";
+	echo "<br><br><br><div align='right' class='buttonBar' >";
 //if(isset($_SESSION['first_time'])&& $_SESSION['first_time']){
 if(isset($_SESSION['downloaded']) && !$_SESSION['downloaded']){
 	echo "<button dojoType='dijit.form.Button' type='submit' onClick=\"open_page('registration_pg','registration')\">&laquo;&nbsp;Edit my info</button>";
@@ -74,7 +74,7 @@ if($reg_arr['status'] == 'ACCEPTED' || $reg_arr['status'] == 'ACCEPTED' ){
 		echo "
 		<div align=left>
 		<h3>Online payment status</h3>
-		<span style='color:green'>You have successfully completed the payment online!</span><br/>
+		<span style='color:green'>You have successfully completed the payment online!</span><br>
 		</div>
 		";
 

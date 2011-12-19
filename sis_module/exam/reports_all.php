@@ -104,7 +104,7 @@ function find_repeat($examid,$indexno,$courseid){
    $ac_year    =(int)substr($examid,-2,1); 
    $reg_year   =substr($index,0,2);
 
-   //echo "cur:$cur_year,ac:$ac_year,reg:$reg_year<br/>";
+   //echo "cur:$cur_year,ac:$ac_year,reg:$reg_year<br>";
    if($indexno){
       $reg_year   =substr($indexno,0,2);
 

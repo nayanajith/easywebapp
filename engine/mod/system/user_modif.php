@@ -28,8 +28,8 @@ $password_custom='
    <div dojoType="dijit.TooltipDialog">
       <div dojoType="dojox.form.PasswordValidator" name="password_val" id="password_val" jsId="password_val">
          <table>
-            <tr><td>Password</td><td>:<input type="password" pwType="new" /></td></tr>
-            <tr><td>Validate</td><td>:<input type="password" pwType="verify" /></td></tr>
+            <tr><td>Password</td><td>:<input type="password" pwType="new" ></td></tr>
+            <tr><td>Validate</td><td>:<input type="password" pwType="verify" ></td></tr>
          </table>
       </div>
       <button dojoType="dijit.form.Button" type="submit">

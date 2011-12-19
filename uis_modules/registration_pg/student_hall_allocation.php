@@ -77,7 +77,7 @@ if(mysql_num_rows($first_run_res) >= 1){
 
 	
 foreach($exam_centers as $center => $center_id){
-	echo "CENTER:".$center."</br/>";
+	echo "CENTER:".$center."</br>";
 	$query="SELECT * FROM ".$GLOBALS['MOD_S_TABLES']['exam_hall']." WHERE center_id = '$center_id' ORDER BY ABS(hall_id)";
 	$res=exec_query($query,Q_RET_MYSQL_RES);
 
@@ -94,7 +94,7 @@ foreach($exam_centers as $center => $center_id){
 
 		/*If no space left in the hall continue with next rows*/
 		if($students_allocated >= $students_for_hall){
-			echo "hall ".$row['hall']." filled!<br/>";
+			echo "hall ".$row['hall']." filled!<br>";
 			continue;	
 		}
 
@@ -104,7 +104,7 @@ foreach($exam_centers as $center => $center_id){
 		/*Romms starts with 1 not 0*/
 		$room_no=1;
 
-		echo "HALL:".$row['hall']."</br/>";
+		echo "HALL:".$row['hall']."</br>";
 
 		/*Select valid students in given range*/
 		if($first_run){
@@ -130,7 +130,7 @@ foreach($exam_centers as $center => $center_id){
 			$res_hall_allocated=exec_query($query_hall_allocated,Q_RET_MYSQL_RES);
 			$row_hall_allocated=mysql_fetch_assoc($res_hall_allocated);
 			if($row_hall_allocated['hall_allocated'] == 1){
-				echo "Already added!<br/>";
+				echo "Already added!<br>";
 				continue;	
 			}
 			/*Find room number*/
@@ -142,8 +142,8 @@ foreach($exam_centers as $center => $center_id){
 
 			$program_code=$program_codes[$student_row['program']];
 
-			echo "ROOM:".$room_no."<br/>";
-			echo $student_row['registration_no']." | ".gen_exam_no($center_id,$hall_id,$sequence,$program_code)." | ".$student_row['last_name']."<br/>";	
+			echo "ROOM:".$room_no."<br>";
+			echo $student_row['registration_no']." | ".gen_exam_no($center_id,$hall_id,$sequence,$program_code)." | ".$student_row['last_name']."<br>";	
 			/*Generate exam_no and Alocate students*/
 			$query_alloc="INSERT INTO ".$GLOBALS['MOD_S_TABLES']['student_alloc']."(registration_no,exam_no,hall_id,room_no,center_id) values('".$student_row['registration_no']."','".gen_exam_no($center_id,$hall_id,$sequence,$program_code)."','".$hall_id."','".$room_no."','".$center_id."')";
 			$student_alloc_res=exec_query($query_alloc,Q_RET_MYSQL_RES);
@@ -156,13 +156,13 @@ foreach($exam_centers as $center => $center_id){
 				/*if insertion is ok setn new number of student allocated in each hall*/
 				$set_allocated="UPDATE ".$GLOBALS['MOD_S_TABLES']['exam_hall']." SET sutdents_allocated='$sequence' WHERE hall_id='".$hall_id."' AND center_id='".$center_id."'";
 				$bla=exec_query($set_allocated,Q_RET_MYSQL_RES);
-				echo "added...<br/>";	
+				echo "added...<br>";	
 			}
 			$sequence++;
 		}
 		/*Increase the affected students and provide new starting point for LIMIT in query*/
 		$affected_students+=$q_ret_students;
-		echo "AFFECTED:".$affected_students."<br/>";
+		echo "AFFECTED:".$affected_students."<br>";
 	}
 }
 
@@ -178,7 +178,7 @@ foreach($exam_centers as $center => $center_id){
 		action='<?php echo $GLOBALS['PAGE_GEN']; ?>';
 		method='GET'>
 
-	<script type="dojo/method" event="onSubmit">
+	<script type="text/javascript" type="dojo/method" event="onSubmit">
 	return true;
 	</script>
 <select name="center"  dojoType="dijit.form.ComboBox" > 
@@ -190,7 +190,7 @@ foreach($exam_centers as $center => $center_id){
 			echo "<option value='".$row['center']."'>".$row['center']."</option>";
 			/*
 			 echo '<input  name="'.$row['center'].'" dojoType="dijit.form.CheckBox" value="1" ></input>
-				    <label for="mycheck">'.$row['center'].'</label><br/>';
+				    <label for="mycheck">'.$row['center'].'</label><br>';
 			 */
 			}
 		?>
@@ -204,7 +204,7 @@ foreach($exam_centers as $center => $center_id){
 
 </div>
 
-<script language='javascript'>
+<script type="text/javascript" >
 function submit_form(action){
 	if(!confirm(dojo.toJson(dijit.byId('frm_attendance').getValues(), true))){
 		return;	

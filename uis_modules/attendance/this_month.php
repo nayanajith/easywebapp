@@ -30,7 +30,7 @@ $attendance->print_summery();
    </tr>
    <tr>
       <td colspan=2>
-      <hr />
+      <hr >
       </td>
    </tr>
    <tr>

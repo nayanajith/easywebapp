@@ -46,11 +46,11 @@ class MYPDF extends TCPDF {
 		/*
 		$header ="
 <h3>UNIVERSITY OF COLOMBO SCHOOL OF COMPUTING</h3>
-UNIVERSITY OF COLOMBO<br/>
-MASTER OF COMPUTER SCIENCE (MCS)<br/>
-SELECTION TEST - SEPTEMBER ".$this->header_info['year']."<br/>
+UNIVERSITY OF COLOMBO<br>
+MASTER OF COMPUTER SCIENCE (MCS)<br>
+SELECTION TEST - SEPTEMBER ".$this->header_info['year']."<br>
 <h3>ADDMISSION CARD</h3>
-<hr/>
+<hr>
 ";
 		 */
 		/*Header location from the top*/
@@ -200,14 +200,14 @@ class Admission{
 <td width="15%" align="center"><img src="file://'.A_IMG.'/uoc-logo.png"></td>
 <td align="center" width="70%">
 <h3>UNIVERSITY OF COLOMBO SCHOOL OF COMPUTING</h3>
-<b>UNIVERSITY OF COLOMBO</b><br/>
-'.$GLOBALS['PROGRAMS'][$row['program']].' ('.$row['program'].')<br/>
+<b>UNIVERSITY OF COLOMBO</b><br>
+'.$GLOBALS['PROGRAMS'][$row['program']].' ('.$row['program'].')<br>
 SELECTION TEST - '.strtoupper($day_arr['month'].' '.$day_arr['year']).'
 <h3>ADMISSION CARD</h3>
 </td>
 <td width="15%" align="center"><img src="file://'.A_IMG.'/ucsc-logo.png"></td>
 </tr></table>
-<hr/>
+<hr>
 ',
 
 /*Personal information of  the student*/
@@ -224,7 +224,7 @@ SELECTION TEST - '.strtoupper($day_arr['month'].' '.$day_arr['year']).'
 'signature'=>'
 <table border="1" cellpadding="2">
 	<tr><td>Date & Time of Examination</td><td>Exam Hall</td><td>Candidate\'s Signature</td><td>Invigilator\'s Signature</td></tr>
-	<tr><td>'.$this->date.'<br/>'.$this->duration.'</td><td>'.$row['hall'].'</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+	<tr><td>'.$this->date.'<br>'.$this->duration.'</td><td>'.$row['hall'].'</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>',
 
 /*Conditions that students should be aware when the students sit to the exam */
@@ -240,7 +240,7 @@ SELECTION TEST - '.strtoupper($day_arr['month'].' '.$day_arr['year']).'
 /*Further information student should aware when sitting the exam*/
 /*
 'note'=>'
-<style>
+<style type="text/css">
 .line{
 	border-bottom:1px dashed black;
 	height:30px;
@@ -252,17 +252,17 @@ SELECTION TEST - '.strtoupper($day_arr['month'].' '.$day_arr['year']).'
 </style>
 
 <table cellpadding="4">
-	<tr><td class="line" align="center"><img width="60px" src="file://'.A_IMG.'/ar_signature.png"/></td><td>&nbsp;</td><td class="line">Date :'.$this->issued_on.'</td></tr>
-	<tr><td>Assistant Registrar/Examination<br/><span style="text-decoration:line-through">/</span>Senior Assistant Registrar </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+	<tr><td class="line" align="center"><img width="60px" src="file://'.A_IMG.'/ar_signature.png"></td><td>&nbsp;</td><td class="line">Date :'.$this->issued_on.'</td></tr>
+	<tr><td>Assistant Registrar/Examination<br><span style="text-decoration:line-through">/</span>Senior Assistant Registrar </td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>',
  */
 'note'=>'
-<br/>
-<br/>
+<br>
+<br>
 <table cellpadding="4">
 <tr>
 <td align="right" width="15%">Issued By:</td>
-<td align="left" width="50%">Assistant Registrar / Examination<br/><span style="text-decoration:line-through">/</span>Senior Assistant Registrar</td>
+<td align="left" width="50%">Assistant Registrar / Examination<br><span style="text-decoration:line-through">/</span>Senior Assistant Registrar</td>
 <td align="right" width="10%">Date:</td>
 <td align="left" width="25%">'.$this->issued_on.'</td>
 </tr>
@@ -270,7 +270,7 @@ SELECTION TEST - '.strtoupper($day_arr['month'].' '.$day_arr['year']).'
 ',
 
 'attestation'=>'
-<style>
+<style type="text/css">
 .line{
 	border-bottom:1px dashed black;
 	height:30px;
@@ -286,7 +286,7 @@ SELECTION TEST - '.strtoupper($day_arr['month'].' '.$day_arr['year']).'
 	<tr><td colspan="3" align="left">I certify that I am the above named candidate bearing NIC/Passport number '.$row['NIC'].' and have placed my signature as indicated below.</td></tr>
 	<tr><td class="line">Date:</td><td>&nbsp;</td><td class="line"></td></tr>
 	<tr><td class="t_center">&nbsp;</td><td width="200px"></td><td class="t_center">Signature of candidate</td></tr>
-	<tr><td colspan="3"><hr/></td></tr>
+	<tr><td colspan="3"><hr></td></tr>
 	<tr><td colspan="3" align="left">I certify that the above named candidate who is known to me personally placed his/her signature in my presence.</td></tr>
 	<tr><td colspan="3" >&nbsp;</td></tr>
 	<tr><td colspan="3" align="center"><h4>ATTESTER\'S DETAILS</h4></td></tr>
@@ -298,10 +298,10 @@ SELECTION TEST - '.strtoupper($day_arr['month'].' '.$day_arr['year']).'
 </table>',
 
 'nb'=>'
-<br/>
-<br/>
-<br/>
-<hr/>
+<br>
+<br>
+<br>
+<hr>
 <div style="text-align:justify;font-size:30px">
 	* (Head or Retired Head of a Government/Director Managed approved  school, Grama Niladhari of the Division, Justice of Peace, Commissioner of Oaths, Attorney at Law, Notary Public, Commissioned Officer of the armed forces, Staff Officer of Govt./Corporation, the Chief Incumbent of the Buddhist Vihara, A religious Dignitary of standing of any other religion)	
 </div>'
@@ -324,7 +324,7 @@ $instructions='
 			<li>A Photograph in the absence of any of the above</li>
 		</ul>
 
-		<br/><b>(Please place your signature on the reverse of the photograph and your signature should be attested by an authorized person *)</b>
+		<br><b>(Please place your signature on the reverse of the photograph and your signature should be attested by an authorized person *)</b>
 		
 		<li>Your Index number for the Selection Test is given in the Admission Card.</li>
 		<li>You are required to be at the assigned examination center at least '.$this->reliaf.' minutes before the commencement of the examination on the examination day.</li>

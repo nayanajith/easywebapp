@@ -2,19 +2,19 @@
 if(isset($_REQUEST['fullscreen']) && $_REQUEST['fullscreen'] == 'true'){
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 
 <html>
    <head>
       <title><?php echo MODULE."&gt;".PAGE.":".$GLOBALS['TITLE']; ?></title>
-      <link rel="search" href="/search" />
+      <link rel="search" href="/search" >
 
 <!--_________________________________CSS_____________________________________-->
       <?php 
          include A_CORE."/style.php";
       ?>
 <!--______________________________FAVICON____________________________________-->
-      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" />
+      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" >
 
    </head>
    <body class="<?php echo $GLOBALS['THEME']; ?>">
@@ -24,7 +24,7 @@ if(isset($_REQUEST['fullscreen']) && $_REQUEST['fullscreen'] == 'true'){
 <!--header-->
    <tr>
       <td colspan=2 style>
-         <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=80px style='float:left'/>
+         <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=80px style='float:left'>
          <span style='float:left;font-size:26px;font-weight:bold;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE_LONG']; ?> <font color='green' >Help+Guide</font></span>
       </td>
    </tr>

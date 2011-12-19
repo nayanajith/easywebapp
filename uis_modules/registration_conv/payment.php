@@ -23,7 +23,7 @@ if($reg_arr['pay_online_status'] == 'ACCEPTED' || $reg_arr['pay_offline_status']
 }
 echo"</table>";
 
-echo "<br/><br/><br/><div align='right' class='buttonBar'  >
+echo "<br><br><br><div align='right' class='buttonBar'  >
 <button dojoType='dijit.form.Button' type='submit' onClick=\"open_page('registration','convocation')\">&laquo;&nbsp;Back</button>
 ";
 if($reg_arr['pay_online_status'] == 'ACCEPTED' || $reg_arr['pay_offline_status'] == 'ACCEPTED' ){

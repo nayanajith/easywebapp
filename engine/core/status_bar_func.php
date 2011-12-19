@@ -2,8 +2,8 @@
 d_r('dijit.Dialog');
 d_r('dijit.form.Button');
 ?>
-<script language='javascript'>
-   
+<script type="text/javascript" >
+<!--   
    /*Update status bar*/
    var max_status_length=100;
    var stausDialog;
@@ -42,8 +42,8 @@ d_r('dijit.form.Button');
       }
       <?php if($GLOBALS['LAYOUT']!='pub'){ ?>
       /*If the message too lengthy show it as a dialog*/
+      var status_bar = document.getElementById('status_bar') ;
       if(info.length < max_status_length){
-         var status_bar = document.getElementById('status_bar') ;
          status_bar.innerHTML=info;
          status_bar.title=orig_info;
       }else{
@@ -55,9 +55,10 @@ d_r('dijit.form.Button');
             });
          }
       
-         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide()\" >OK</button></center>";
+         var button="<br><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide();status_bar.innerHTML='Done.'\" >OK</button></center>";
          stausDialog.attr("content", info+button);
          stausDialog.show();
+         status_bar.innerHTML='...etc';
       }
       <?php }else{ ?>
          /*Create dialog only if not initialized*/
@@ -68,7 +69,7 @@ d_r('dijit.form.Button');
             });
          }
       
-         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide()\" >OK</button></center>";
+         var button="<br><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide()\" >OK</button></center>";
          stausDialog.attr("content", info+button);
          stausDialog.show();
       <?php } ?>
@@ -101,5 +102,5 @@ d_r('dijit.form.Button');
          }
       }
    }
-
+-->
 </script>

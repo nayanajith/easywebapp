@@ -26,7 +26,7 @@ $th     ="<tr><th>Courseid</th>";
          $th.="<th>$value</th>";
       }
    }
-$th.="<th>MAX</th><th>MIN</th><th>AVG</th><th>STD</th><th>Grades count</th><tr/>";
+$th.="<th>MAX</th><th>MIN</th><th>AVG</th><th>STD</th><th>Grades count</th><tr>";
 
 echo $th;
 
@@ -89,7 +89,7 @@ foreach($courses as $courseid){
    echo $th;
    echo "</table>";
    echo "
-<script>
+<script type="text/javascript">
 function print_area(id){
    print_text=document.getElementById(id).innerHTML;
    title=document.getElementById('summery_title').innerHTML;

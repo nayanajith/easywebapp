@@ -384,11 +384,11 @@ class Formgenerator {
          'dijit.form.Select'            =>"<select %s>%s</select>",
          'dijit.form.MultiSelect'      =>"<select %s>%s</select>",
          'dijit.form.SimpleTextarea'   =>"<textarea %s>%s</textarea>",
-         "dijit.form.NumberTextBox"      =>"<input %s/>",
-         "dijit.form.NumberSpinner"      =>"<input %s/>",
-         "dijit.form.ValidationTextBox"=>"<input %s/>",
-         "dijit.form.DateTextBox"      =>"<input %s constraints=\"{datePattern:'yyyy-MM-dd'}\" promptMessage='yyyy-MM-dd' invalidMessage='Invalid date. Please use yyyy-MM-dd format.' />",
-         "dijit.form.TimeTextBox"      =>"<input %s constraints=\"{'timePattern':'hh:mm:ss'}\" promptMessage='hh:mm:ss' invalidMessage='Invalid time. Please use hh:mm:ss format.' />",
+         "dijit.form.NumberTextBox"      =>"<input %s>",
+         "dijit.form.NumberSpinner"      =>"<input %s>",
+         "dijit.form.ValidationTextBox"=>"<input %s>",
+         "dijit.form.DateTextBox"      =>"<input %s constraints=\"{datePattern:'yyyy-MM-dd'}\" promptMessage='yyyy-MM-dd' invalidMessage='Invalid date. Please use yyyy-MM-dd format.' >",
+         "dijit.form.TimeTextBox"      =>"<input %s constraints=\"{'timePattern':'hh:mm:ss'}\" promptMessage='hh:mm:ss' invalidMessage='Invalid time. Please use hh:mm:ss format.' >",
          "dijit.form.CheckBox"         =>"<div %s ></div>",
          "dijit.form.RadioButton"      =>"<div %s ></div>",
          "dijit.InlineEditBox"         =>"<span %s ></span>"
@@ -676,11 +676,11 @@ submit the given form
                      break;
                      case 'top':
                      default:
-                        $entry         =$entry_div_start.$entry_label."<br/>".$entry.$entry_div_end;
+                        $entry         =$entry_div_start.$entry_label."<br>".$entry.$entry_div_end;
                      break;
                   }
                }else{
-                  $entry         =$entry_div_start.$entry_label."<br/>".$entry.$entry_div_end;
+                  $entry         =$entry_div_start.$entry_label."<br>".$entry.$entry_div_end;
                }
             }
          }
@@ -723,7 +723,7 @@ submit the given form
          }
 
 
-         $entry         =$section_start."<td style='padding-top:10px;'><label for='filter_$field'>".$field_array['label']."</label><br/>";
+         $entry         =$section_start."<td style='padding-top:10px;'><label for='filter_$field'>".$field_array['label']."</label><br>";
 
          /*generate form control structure to be filled bellow in sprintf()*/
          $form_control   =$this->form_controls[$field_array['dojoType']];
@@ -810,7 +810,7 @@ submit the given form
                $section         ="";
 
                if(isset($field_array['section'])){
-                  $section      ="</div><br/>";
+                  $section      ="</div><br>";
 
                   /*For first field remove </div>*/
                   if($field==$first){
@@ -838,7 +838,7 @@ submit the given form
 
                /*If the element is 'last' set section as end*/
                if($field==$last && !isset($field_array['section'])){
-                  $form.= "</div><br/>";
+                  $form.= "</div><br>";
                }
             }
          }
@@ -854,7 +854,7 @@ submit the given form
 
          //Buttons of the form
          $form.= "
-            <script language='javascript'>
+            <script type="text/javascript" >
             ".$this->form_submitter($table."_frm")."
             </script>
          ";
@@ -901,9 +901,9 @@ submit the given form
                 $dialog.= $this->gen_filter_field_entry($field);
                /*if checked exact value will be filterd else any value contained this phrase will be selected*/
                d_r('dijit.form.CheckBox');
-               $dialog.= "<td><label for='filter_".$field."_exact'>Exact:</label><input dojoType='dijit.form.CheckBox' value='on' jsId='filter_".$field."_exact' id='filter_".$field."_exact'i name='filter_".$field."_exact' /></td>";
+               $dialog.= "<td><label for='filter_".$field."_exact'>Exact:</label><input dojoType='dijit.form.CheckBox' value='on' jsId='filter_".$field."_exact' id='filter_".$field."_exact'i name='filter_".$field."_exact' ></td>";
                /*AND to the others or OR to the others*/
-               $dialog.= "<td><label for='filter_".$field."_exact'>And:</label><input dojoType='dijit.form.CheckBox'  value='on' jsId='filter_".$field."_and' id='filter_".$field."_and' name='filter_".$field."_and'/></td>";
+               $dialog.= "<td><label for='filter_".$field."_exact'>And:</label><input dojoType='dijit.form.CheckBox'  value='on' jsId='filter_".$field."_and' id='filter_".$field."_and' name='filter_".$field."_and'></td>";
                 $dialog.= "</tr>";
              }
           }
@@ -933,7 +933,7 @@ submit the given form
                   </table>
                  </div>   
             </div>   
-         <script>
+         <script type="text/javascript">
          /**/
          function show_dialog(){
             formDlg = dijit.byId('filterDialog');
@@ -1295,7 +1295,7 @@ submit the given form
          </thead>
          </table>";
             echo "
-            <script>
+            <script type="text/javascript">
             function displayLinks(e){
                var selectedValue = grid3.store.getValue(grid3.getItem(e.rowIndex),'".$key_array[0]."');
                //alert('selected cell Value is '+selectedValue);
@@ -1323,7 +1323,7 @@ submit the given form
       store='stateStore' 
       searchAttr='".$this->self['key']."' 
       name='state' 
-      id='stateInput' />";
+      id='stateInput' >";
       }
 
       /*
@@ -1373,7 +1373,7 @@ submit the given form
          jsId='".$js_function."_select_store'
          >
       </div>
-      Select ".$label."<br/>
+      Select ".$label."<br>
       <select dojoType='dijit.form.FilteringSelect' 
          store='".$js_function."_select_store' 
          searchAttr='".$key."' 
@@ -1485,7 +1485,7 @@ submit the given form
          }
 
          return "
-      <script type='text/javascript'>
+      <script type="text/javascript" type='text/javascript'>
       function $js_function(".$key.") {
          if(!(".$key." == '' || ".$key." == 'new')){
          dojo.xhrPost({
@@ -1768,7 +1768,7 @@ submit the given form
 
 
    function set_help_tips($help_array){
-      echo "<style>.helptt{max-width:400px;text-align:justify;color:green;}</style>";
+      echo "<style type="text/css">.helptt{max-width:400px;text-align:justify;color:green;}</style>";
       foreach( $help_array as $key => $value){
          if($value == '')continue;
          //possible positions of tooltio: before,above,after,below
@@ -1790,7 +1790,7 @@ if($GLOBALS['LAYOUT'] == 'pub')
 
 <!--_____________________________start filter select___________________________-->
 
-<script type="text/javascript">
+<script type="text/javascript" type="text/javascript">
 dojo.addOnLoad(function() {
    toolbar = new dijit.byId("toolbar");
    var filterStore = new dojox.data.QueryReadStore({

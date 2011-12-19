@@ -1,23 +1,4 @@
 <h3>News</h3>
-<style>
-.news_title{
-   font-size:150%;
-   color:blue;
-   font-weight:bold;
-}
-.news_body{
-   border-top:1px solid silver;
-   padding:10px;
-}
-.news_time{
-   border-bottom:1px solid silver;
-   font-style:italic;
-   font-size:80%;
-   color:silver;
-   color:blue;
-}
-</style>
-
 <table width="100%">
 <tr>
 <?php /*
@@ -28,7 +9,7 @@ Postgraduates Application <span style='color:red'>[Deadline Extended]</span>
 <tr>
 <td class="news_body">
 <h3>Deadline for the registration of masters programs has been extended until 30th August, 2011</h3>
-Application for the Postgraduate programs should be done <a href="javascript:open_page('registration_pg','registration')">online</a>.<br/>
+Application for the Postgraduate programs should be done <a href="javascript:open_page('registration_pg','registration')">online</a>.<br>
 Payments can by done either online using your credit cards or by making your payment to the nearest People's Bank using the payment vouchers generated in application process.
 <ul>
 <li>Application Form and the payment slip should be sent only under Registered Post to the Senior Assistant Registrar/Academic & Publications, UCSC, No: 35, Reid Avenue, Colombo 7 on or before <b>30th  August 2011</b>.</li>
@@ -42,7 +23,7 @@ Short term course registration
 </tr>
 <tr>
 <td class="news_body">
-Registration for the short term courses can be done <a href="javascript:open_page('ext_courses','registration')">online</a>.<br/>
+Registration for the short term courses can be done <a href="javascript:open_page('ext_courses','registration')">online</a>.<br>
 Payments can by done either online using your credit cards or by making your payment to the nearest People's Bank using the payment vouchers generated in application process.
 </td>
 

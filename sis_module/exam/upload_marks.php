@@ -78,7 +78,7 @@ function gen_mark_in_form(){
    }
 
       echo "
-<style>
+<style type="text/css">
 .cell{
    padding:0px;
    margin:0px;
@@ -136,7 +136,7 @@ function gen_mark_in_form(){
    echo "</table>";
 
    if(isset($_REQUEST['action'])&&$_REQUEST['action']=='print'){
-      echo "<script language='javascript'>window.print();</script>";
+      echo "<script type="text/javascript" >window.print();</script>";
    }
 }
 
@@ -160,7 +160,7 @@ $db_columns=array(
 );
    */
 
-   $arr=exec_query("SELECT index_no FROM ".$GLOBALS['P_TABLES']['marks']." WHERE  course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND state not in('AB','MC')",Q_RET_ARRAY);
+   $index_arr=exec_query("SELECT index_no FROM ".$GLOBALS['P_TABLES']['marks']." WHERE  course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND state not in('AB','MC')",Q_RET_ARRAY,null,'index_no');
    $studnt_count=get_num_rows();
 
    $query    ='';
@@ -211,40 +211,42 @@ $db_columns=array(
 
    //Insert marks to the database if exists with same keys replace with new values
    exec_query("REPLACE INTO ".$GLOBALS['P_TABLES']['marks']."(".$keys.")values".$values,Q_RET_NON);
-   $activity.=get_sql_error();
+   $activity.="<br>.".get_sql_error();
 
    //calculate grand_final_mark,grade and gpv for the uploaded marks
    $activity.='<li>Calculating grand_final, grade and gpv...';
-   exec_query("UPDATE bcsc_marks m,bcsc_grades g,bcsc_course c SET m.grand_final_mark=m.final_mark+m.push,m.grade=g.grade,m.gpv=g.gpv*(c.lecture_credits+c.practical_credits)  WHERE m.course_id=c.course_id AND (m.final_mark+m.push)=g.mark and exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."'",Q_RET_NON);
-   $activity.=get_sql_error();
+   exec_query("UPDATE bcsc_marks m,bcsc_grades g,bcsc_course c SET m.grand_final_mark=m.final_mark+m.push,m.grade=g.grade,m.gpv=g.gpv*(c.lecture_credits+c.practical_credits)  WHERE m.course_id=c.course_id AND (m.final_mark+m.push)=g.mark and m.exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND m.course_id='".$_SESSION[PAGE]['course_id']."'",Q_RET_NON);
+   $activity.="<br>.".get_sql_error();
 
 
    //Reset repeat_max
    $activity.='<li>Finding repeat max...';
-   exec_query("UPDATE bcsc_marks SET repeat_max=false WHERE course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."'",Q_RET_NON);
-   $activity.=get_sql_error();
+   exec_query("UPDATE bcsc_marks SET repeat_max=false WHERE course_id='".$_SESSION[PAGE]['course_id']."'",Q_RET_NON);
+   $activity.="<br>.".get_sql_error();
 
 
    //Find repeat max for the students in effect of current save
-   $query_repeat_max="UPDATE bcsc_marks m,(SELECT exam_hid, index_no, course_id, MAX(grand_final_mark) grand_final_mark,COUNT(*) count_ FROM bcsc_marks WHERE course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."'  GROUP BY index_no,course_id) r SET m.repeat_max=1 WHERE r.count_ > 1 AND m.exam_hid=r.exam_hid AND m.course_id=r.course_id AND m.index_no=r.index_no";
+   $query_repeat_max="UPDATE bcsc_marks m,(SELECT exam_hid, index_no, course_id, MAX(grand_final_mark) grand_final_mark,COUNT(*) count_ FROM bcsc_marks WHERE  course_id='".$_SESSION[PAGE]['course_id']."' GROUP BY index_no,course_id) r SET m.repeat_max=1 WHERE r.count_ > 1 AND m.exam_hid=r.exam_hid AND m.course_id=r.course_id AND m.index_no=r.index_no";
    exec_query($query_repeat_max,Q_RET_NON);
-   $activity.=get_sql_error();
+   $activity.="<br>.".get_sql_error();
 
-//TODO:
-
-   $calculate_gpa="select c.student_year,sum(m.gpv) gpv,sum(c.lecture_credits+c.practical_credits) credits from bcsc_marks m,bcsc_course c, bcsc_grades g where m.index_no='08001413' and m.course_id=c.course_id and m.grand_final_mark=g.mark and (isnull(c.non_grade) or c.non_grade!=true) and (isnull(c.non_credit) or c.non_credit!=true)  group by c.student_year";
+   //Calculating gpa for all students affected
+   $activity.='<li>Generating GPA for the affected students...';
+   $calculate_gpa="REPLACE INTO bcsc_gpa2(`index_no`,`year`,`gpv`,`credits`,`gpa`)(SELECT r.index_no,r.year,SUM(r.gpv),SUM(r.credits),(SUM(r.gpv)/SUM(r.credits)) FROM(SELECT m.index_no,MAX(m.gpv) gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM bcsc_marks m,bcsc_course c WHERE m.course_id=c.course_id AND index_no IN(SELECT index_no FROM ".$GLOBALS['P_TABLES']['marks']." WHERE  course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND state not in('AB','MC')) GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year);";
+   exec_query($calculate_gpa,Q_RET_NON);
+   $activity.="<br>.".get_sql_error();
 
 
    //Get grade count for the selected course in selected exam
    $arr_grade_count=exec_query("SELECT GROUP_CONCAT(grade) grades,GROUP_CONCAT(count) counts FROM(SELECT grade,COUNT(grade) count FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' AND NOT ISNULL(grade) GROUP BY grade) AS r;",Q_RET_ARRAY);
-   $activity.=get_sql_error();
+   $activity.="<br>.".get_sql_error();
    $arr_grade_count=array_combine(explode(',',$arr_grade_count[0]['grades']),explode(',',$arr_grade_count[0]['counts']));
    $grade_count_json=json_encode($arr_grade_count);
 
 
    //Get state count for selected course in  selected exam
    $arr_state_count=exec_query("SELECT GROUP_CONCAT(state) states,GROUP_CONCAT(count) counts FROM(SELECT state,COUNT(state) count FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' GROUP BY state) AS r;",Q_RET_ARRAY);
-   $activity.=get_sql_error();
+   $activity.="<br>.".get_sql_error();
    $arr_state_count=array_combine(explode(',',$arr_state_count[0]['states']),explode(',',$arr_state_count[0]['counts']));
    $arr_state=array(
       'PR'=>'0',
@@ -264,7 +266,7 @@ $db_columns=array(
    $activity.='<li>Updating statistics...';
    $update_stat_query="REPLACE INTO ".$GLOBALS['P_TABLES']['marks_stat']."(`exam_hid`,`course_id`,`std`,`avg`,`max`,`min`,`present`,`absent`,`medical`,`offended`,`grade_count`)values('".$_SESSION[PAGE]['exam_hid']."','".$_SESSION[PAGE]['course_id']."','".$arr_statistics['std']."','".$arr_statistics['avg']."','".$arr_statistics['max']."','".$arr_statistics['min']."','".$arr_state_count['PR']."','".$arr_state_count['AB']."','".$arr_state_count['MC']."','".$arr_state_count['EO']."','".$grade_count_json."')";
    exec_query($update_stat_query,Q_RET_NON);
-   $activity.=get_sql_error();
+   $activity.="<br>.".get_sql_error();
 
 
    //Return json status
@@ -353,7 +355,7 @@ if(isset($_SESSION[PAGE]['course_id'])&& $_SESSION[PAGE]['exam_hid']){
 </div>
 </div>
 
-<script language='javascript'>
+<script type="text/javascript" >
 
 // Grade ranges//
 /*

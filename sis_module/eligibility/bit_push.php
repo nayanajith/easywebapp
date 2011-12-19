@@ -403,7 +403,7 @@ print_r($_REQUEST);
 echo "</pre>";
 */
 ?>
-<script>
+<script type="text/javascript">
 dojo.require('dojo.parser');
 
 //form elements
@@ -432,13 +432,13 @@ dojo.require('dojo.data.ItemFileReadStore');
          action='<?php echo W_ROOT; ?>/index.php';
          method='GET'>
 
-<script type="dojo/method" event="onSubmit">
+<script type="text/javascript" type="dojo/method" event="onSubmit">
 return true;
 </script>
 
-<input type=hidden value='<?php echo MODULE; ?>' name=module />
-<input type=hidden value='<?php echo PAGE; ?>' name=page />
-<input type=hidden value='<?php echo PROGRAM; ?>' name=program />
+<input type=hidden value='<?php echo MODULE; ?>' name=module >
+<input type=hidden value='<?php echo PAGE; ?>' name=page >
+<input type=hidden value='<?php echo PROGRAM; ?>' name=program >
 <table><tr>
 <td>
 Study Year:<select dojoType='dijit.form.FilteringSelect' name=acc_year>
@@ -469,14 +469,14 @@ while($row=mysql_fetch_array($res)){
 </td></tr><tr><td>
 <?php
 $filter=array();
-echo "<br/>";
+echo "<br>";
 if(isset($_REQUEST['year_push'])&&$_REQUEST['year_push']=='on'){
    echo "<label for=year_push>Push to Next Year</label><input dojoType='dijit.form.CheckBox' id=year_push name=year_push checked >";
    $filter[]="Y2_PUSH";
 }else{
    echo "<label for=year_push>Push to Next Year</label><input dojoType='dijit.form.CheckBox' id=year_push name=year_push >";
 }
-echo "<br/>";
+echo "<br>";
 
 if(isset($_REQUEST['cert_push'])&&$_REQUEST['cert_push']=='on'){
    echo "<label for=cert_push>Push to Certificate</label><input dojoType='dijit.form.CheckBox' id=cert_push name=cert_push  checked >";
@@ -484,7 +484,7 @@ if(isset($_REQUEST['cert_push'])&&$_REQUEST['cert_push']=='on'){
 }else{
    echo "<label for=cert_push>Push to Certificate</label><input dojoType='dijit.form.CheckBox' id=cert_push name=cert_push>";
 }
-echo "<br/>";
+echo "<br>";
 
 if(isset($_REQUEST['year_pass'])&&$_REQUEST['year_pass']=='on'){
    echo "<label for=year_pass>Passed to Next Year</label><input dojoType='dijit.form.CheckBox' id=year_pass name=year_pass checked >";
@@ -492,7 +492,7 @@ if(isset($_REQUEST['year_pass'])&&$_REQUEST['year_pass']=='on'){
 }else{
    echo "<label for=year_pass>Passed to Next Year</label><input dojoType='dijit.form.CheckBox' id=year_pass name=year_pass >";
 }
-echo "<br/>";
+echo "<br>";
 
 if(isset($_REQUEST['cert_pass'])&&$_REQUEST['cert_pass']=='on'){
    echo "<label for=cert_pass>Passed Certificate</label><input dojoType='dijit.form.CheckBox' id=cert_pass name=cert_pass  checked >";
@@ -500,7 +500,7 @@ if(isset($_REQUEST['cert_pass'])&&$_REQUEST['cert_pass']=='on'){
 }else{
    echo "<label for=cert_pass>Passed Certificate</label><input dojoType='dijit.form.CheckBox' id=cert_pass name=cert_pass>";
 }
-echo "<br/>";
+echo "<br>";
 
 if(isset($_REQUEST['failed'])&&$_REQUEST['failed']=='on'){
    echo "<label for=failed>Failed</label><input dojoType='dijit.form.CheckBox' id=failed name=failed  checked >";
@@ -509,7 +509,7 @@ if(isset($_REQUEST['failed'])&&$_REQUEST['failed']=='on'){
 }else{
    echo "<label for=failed>Failed</label><input dojoType='dijit.form.CheckBox' id=failed name=failed>";
 }
-echo "<br/>";
+echo "<br>";
 
 
 ?>
@@ -527,7 +527,7 @@ CSV
 </tr>
 </table>
 </div>
-<br/>
+<br>
 
 
 <?php
@@ -634,7 +634,7 @@ while($row = mysql_fetch_array($result3)){
          echo "<td>".($row['gpa']+(1/32))."</td>";
          echo "<td>";
          foreach($pushed_courses as $course => $push_val){
-              echo $course."-".$row[str_replace("IT", "M", $course)]."+".$push_val."<br/>";
+              echo $course."-".$row[str_replace("IT", "M", $course)]."+".$push_val."<br>";
          }
          echo "</td>";
       }

@@ -33,8 +33,8 @@ if(empty($_GET['paper_id'])){
 </table>
 
 
-<input type="submit" name="submit" value="Generate Report" /> 
-<input type="submit" name="submit" value="Mark Answers" />
+<input type="submit" name="submit" value="Generate Report" > 
+<input type="submit" name="submit" value="Mark Answers" >
 </form>
       <?php
 }else{

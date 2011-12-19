@@ -1,4 +1,5 @@
 <script type="text/javascript"> 
+<!--
 /*
 parseOnLoad:true -> parse dojo while loading
 parseOnLoad:false -> dojo will not parse while loading 
@@ -6,11 +7,12 @@ It is possible to parse after loading using dojo.parser.parse();
 check in (index.php or loading.php)
 */
 
-   djConfig = {
-      isDebug:false, 
-      //locale:getLocale(),
-      parseOnLoad:true 
-   }; 
+djConfig = {
+   isDebug:false, 
+   //locale:getLocale(),
+   parseOnLoad:true 
+}; 
+-->
 </script>
 <!--script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js"  type="text/javascript"></script-->
 <script src="<?php echo JS; ?>/dojo/dojo.js" type="text/javascript"></script>
@@ -32,7 +34,8 @@ function parse_dojo(){
    }
 
 $html = <<<EOD
-<script>
+<script type="text/javascript">
+<!--
 /*----------------------Parse dojo after loading the page----------------------*/
 /*set djConfig=parseOnload:false and this will parse after loading*/
 $req
@@ -58,6 +61,7 @@ dojo.addOnLoad(function() {
    }, 250);
 });
 
+-->
 </script>
 EOD;
 
