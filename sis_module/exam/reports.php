@@ -101,7 +101,7 @@ function gen_exam_summery(){
       return;
    }elseif(isset($_REQUEST['action'])&&$_REQUEST['action']=='print'){
       echo  $report;
-      echo "<script type="text/javascript" >window.print();</script>";
+      echo "<script type='text/javascript' >window.print();</script>";
    }else{
       echo  $report;
    }
@@ -240,7 +240,7 @@ function print_lms_marks($course_ids){
 //Fill the available marks to the table while generating the table
 function gen_course_summery(){
    $report="
-<style type="text/css">
+<style type='text/css'>
 .report_table{
 }
 
@@ -287,7 +287,7 @@ function gen_course_summery(){
       return;
    }elseif(isset($_REQUEST['action'])&&$_REQUEST['action']=='print'){
       echo  $report;
-      echo "<script type="text/javascript" >window.print();</script>";
+      echo "<script type='text/javascript' >window.print();</script>";
    }else{
       echo  $report;
    }

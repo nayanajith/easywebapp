@@ -854,7 +854,7 @@ submit the given form
 
          //Buttons of the form
          $form.= "
-            <script type="text/javascript" >
+            <script type='text/javascript' >
             ".$this->form_submitter($table."_frm")."
             </script>
          ";
@@ -933,7 +933,7 @@ submit the given form
                   </table>
                  </div>   
             </div>   
-         <script type="text/javascript">
+         <script type='text/javascript'>
          /**/
          function show_dialog(){
             formDlg = dijit.byId('filterDialog');
@@ -1295,7 +1295,7 @@ submit the given form
          </thead>
          </table>";
             echo "
-            <script type="text/javascript">
+            <script type='text/javascript'>
             function displayLinks(e){
                var selectedValue = grid3.store.getValue(grid3.getItem(e.rowIndex),'".$key_array[0]."');
                //alert('selected cell Value is '+selectedValue);
@@ -1485,7 +1485,7 @@ submit the given form
          }
 
          return "
-      <script type="text/javascript" type='text/javascript'>
+      <script type='text/javascript' type='text/javascript'>
       function $js_function(".$key.") {
          if(!(".$key." == '' || ".$key." == 'new')){
          dojo.xhrPost({
@@ -1768,7 +1768,7 @@ submit the given form
 
 
    function set_help_tips($help_array){
-      echo "<style type="text/css">.helptt{max-width:400px;text-align:justify;color:green;}</style>";
+      echo "<style type='text/css'>.helptt{max-width:400px;text-align:justify;color:green;}</style>";
       foreach( $help_array as $key => $value){
          if($value == '')continue;
          //possible positions of tooltio: before,above,after,below
