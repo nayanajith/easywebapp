@@ -279,7 +279,7 @@ $program_table_schemas['gpa2']="CREATE TABLE `%sgpa2` (
   `credits`       int(11) DEFAULT NULL,
   `gpv`           float DEFAULT NULL,
   `gpa`           float DEFAULT NULL,
-  `class_degree`  enum('C','D') NOT NULL DEFAULT 'D',
+  `degree_class`  enum('C','D') NOT NULL DEFAULT 'D',
   PRIMARY KEY (`index_no`,`class_degree`,`year`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
