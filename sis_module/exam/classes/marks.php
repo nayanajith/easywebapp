@@ -14,25 +14,25 @@ if(isset($_SESSION['views'])){
 $_SESSION['host']=$_SERVER['REMOTE_ADDR'];
 ?>
 
-<script type="text/javascript" 
-type   ="text/javascript" 
+<script type='text/javascript' 
+type   ='text/javascript' 
 src   ="<?php echo W_MODULES."/".$modules[$module]."/js/spreadsheet.js"; ?>"
 </script>
 
-<script type="text/javascript" 
-type   ="text/javascript" 
+<script type='text/javascript' 
+type   ='text/javascript' 
 src   ="<?php echo W_MODULES."/".$modules[$module]."/js/ajaxtt.js"; ?>"
 </script>
 
-<script type="text/javascript" 
-type   ="text/javascript" 
+<script type='text/javascript' 
+type   ='text/javascript' 
 src   ="<?php echo W_MODULES."/".$modules[$module]."/js/xml.js"; ?>"
 </script>
 
 <link 
 rel   ="stylesheet" 
 href   ="<?php echo W_MODULES."/".$modules[$module]."/css/spreadsheet.css"; ?>" 
-type   ="text/css"
+type   ='text/css'
 media   =screen />
 
 <!-- display message -->
@@ -78,7 +78,7 @@ $input_array=array(
 
 
 echo "
-<script type="text/javascript">
+<script type='text/javascript'>
 
 function course_name(course){
    switch(course){
@@ -209,7 +209,7 @@ echo "</div>";
 <br />
 <br />
 <div id=status_bar><!-- Status bar --></div>
-<script type="text/javascript" >
+<script type='text/javascript' >
    init_element();
    calculate_all();
    sync.start();

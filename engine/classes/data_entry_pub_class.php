@@ -171,7 +171,7 @@ class Formgenerator_pub extends Formgenerator {
 
          //Buttons of the form
          $form.= "
-            <script type="text/javascript" >
+            <script type='text/javascript' >
             function submit_form(action){
                update_status_bar('OK','...');
                update_progress_bar(10);

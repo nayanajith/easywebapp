@@ -138,7 +138,7 @@ return;
          include A_CORE."/dojo_require.php";
          include A_CORE."/script.php";
       ?>
-<script type="text/javascript" >
+<script type='text/javascript' >
    //content:"<ul>"+msg+"</ul><br><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide();window.open('<?php echo W_ROOT;?>','_self')\" type='button'>OK</button></center>"
    function status_dialog(msg){
       stausDialog = new dijit.Dialog({
@@ -186,7 +186,7 @@ function show_dialog(){
 }
 
 </script>
-<style type="text/css">
+<style type='text/css'>
 .f_label{text-align:right;}
 .field{width:100px;}
 </style>

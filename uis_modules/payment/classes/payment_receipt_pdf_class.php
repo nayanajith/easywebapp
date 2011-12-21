@@ -224,7 +224,7 @@ class Admission{
 </table>',
 
 'attestation'=>'
-<style type="text/css">
+<style type='text/css'>
 .line{
 	border-bottom:1px dashed black;
 	height:40px;

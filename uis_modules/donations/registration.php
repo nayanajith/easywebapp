@@ -188,7 +188,7 @@ if(isset($_REQUEST['form'])){
 		echo $formgen->gen_filter();
 	}
 	echo "
-		<script type="text/javascript" >
+		<script type='text/javascript' >
 			function grid(){
 				url='".gen_url()."&form=grid';
 				open(url,'_self');
@@ -236,14 +236,14 @@ $formgen->filter_selector();
 //generate help tips 
 include $help_file;
 $formgen->set_help_tips($help_array);
-echo "<script type="text/javascript" >";
+echo "<script type='text/javascript' >";
 echo $formgen->param_setter();
 echo "</script>";
 }
 
 ?>
 
-<script type="text/javascript" >
+<script type='text/javascript' >
 //If the user want to register with us direct him to email_verification page else direct him to donation type selection page
 function this_submit_form(action){
 	if(registration_type.checked){

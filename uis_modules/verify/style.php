@@ -1,4 +1,4 @@
-<style type="text/css">
+<style type='text/css'>
 #browser_box{
    border: 1px solid #C9D7F1;
    width:800px;

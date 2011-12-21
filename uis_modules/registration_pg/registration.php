@@ -136,7 +136,7 @@ if(isset($_REQUEST['form'])){
 		echo $formgen->gen_filter();
 	}
 	echo "
-		<script type="text/javascript" >
+		<script type='text/javascript' >
 			function grid(){
 				url='".gen_url()."&form=grid';
 				open(url,'_self');
@@ -219,7 +219,7 @@ $formgen->filter_selector();
 include $help_file;
 $formgen->set_help_tips($help_array);
 /*
-echo "<script type="text/javascript" >";
+echo "<script type='text/javascript' >";
 echo $formgen->param_setter();
 echo "</script>";
 */

@@ -1,5 +1,5 @@
 <html>
-<style type="text/css">
+<style type='text/css'>
 p{
    text-align:justify;
 }

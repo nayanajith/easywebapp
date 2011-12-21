@@ -385,7 +385,7 @@ if(isset($_SESSION[PAGE]['course_id'])&& $_SESSION[PAGE]['exam_hid']){
 </div>
 </div>
 
-<script type="text/javascript" >
+<script type='text/javascript' >
 
 // Grade ranges//
 /*

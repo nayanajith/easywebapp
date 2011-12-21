@@ -114,7 +114,7 @@ function peyment_process($row,$pg_app_fee){
 		
 	//echo $request;
 	echo "
-	<script type="text/javascript" >
+	<script type='text/javascript' >
 	function iframe_open(){
 		//back_btn.setAttribute('disabled', true);
 		//proceed_btn.setAttribute('label', 'Reload');

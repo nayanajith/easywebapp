@@ -20,7 +20,7 @@ Redirecting...<br>
 <input type='hidden' name='receipt' value='' >
 Please press <input type='submit' value='redirect'> if not redirected automatically
 </form>
-<script type="text/javascript">
+<script type='text/javascript'>
 document.getElementById('m_form').submit();
 </script>
 ";
@@ -110,7 +110,7 @@ Redirecting...
 <input type='hidden' name='state' value='".$payment_arr['status']."' >
 <input type='hidden' name='tax' value='".$payment_arr['tax']."' >
 </form>
-<script type="text/javascript">
+<script type='text/javascript'>
 document.getElementById('m_form').submit();
 </script>
 ";
@@ -125,7 +125,7 @@ Redirecting...<br>
 <input type='hidden' name='receipt' value='".$receipt."' >
 Please press <input type='submit' value='redirect'> if not redirected automatically
 </form>
-<script type="text/javascript">
+<script type='text/javascript'>
 document.getElementById('m_form').submit();
 </script>
 ";

@@ -170,7 +170,7 @@ foreach($exam_centers as $center => $center_id){
 		action='<?php echo $GLOBALS['PAGE_GEN']; ?>';
 		method='GET'>
 
-	<script type="text/javascript" type="dojo/method" event="onSubmit">
+	<script type='text/javascript' type="dojo/method" event="onSubmit">
 	return true;
 	</script>
 <select name="center"  dojoType="dijit.form.ComboBox" > 
@@ -196,7 +196,7 @@ foreach($exam_centers as $center => $center_id){
 
 </div>
 
-<script type="text/javascript" >
+<script type='text/javascript' >
 function submit_form(action){
 	if(!confirm(dojo.toJson(dijit.byId('frm_attendance').getValues(), true))){
 		return;	

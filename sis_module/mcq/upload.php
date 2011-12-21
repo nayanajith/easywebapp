@@ -10,7 +10,7 @@ $sText.=' '.$kk.'='.$vv.'\n';
 ?>
 <html>
 <head>
-<script type="text/javascript">isLoaded = true;</script>
+<script type='text/javascript'>isLoaded = true;</script>
 </head>
 <body>
 <textarea>{'status':'Good','textdata':'<?php echo $sText; ?>'}</textarea>

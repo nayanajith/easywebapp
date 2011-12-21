@@ -192,7 +192,7 @@ The form to be presented if the parameters are not present
       action='<?php echo $GLOBALS['PAGE_GEN']; ?>';
       method='GET'>
 
-   <script type="text/javascript" type="dojo/method" event="onSubmit">
+   <script type='text/javascript' type="dojo/method" event="onSubmit">
    return true;
    </script>
    <input type=hidden name=module    value="<?php echo MODULE;    ?>" >
@@ -206,7 +206,7 @@ The form to be presented if the parameters are not present
       <tr><td><label for='root_pwd'>DB root password</label></td><td><input dojoType="dijit.form.TextBox" name='root_pwd' id='root_pwd' type='password'   ></td></tr>
    </table>
 </div>
-<script type="text/javascript">
+<script type='text/javascript'>
 function submit_form(){
 /*
      status_ = dijit.byId("status_bar");

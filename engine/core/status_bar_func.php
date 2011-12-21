@@ -2,7 +2,7 @@
 d_r('dijit.Dialog');
 d_r('dijit.form.Button');
 ?>
-<script type="text/javascript" >
+<script type='text/javascript' >
 <!--   
    /*Update status bar*/
    var max_status_length=100;

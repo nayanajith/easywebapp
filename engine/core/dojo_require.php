@@ -1,4 +1,4 @@
-<script type="text/javascript"> 
+<script type='text/javascript'> 
 <!--
 /*
 parseOnLoad:true -> parse dojo while loading
@@ -14,12 +14,12 @@ djConfig = {
 }; 
 -->
 </script>
-<!--script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js"  type="text/javascript"></script-->
-<script src="<?php echo JS; ?>/dojo/dojo.js" type="text/javascript"></script>
-<script src="<?php echo JS; ?>/dojo/ucscis.js" type="text/javascript"></script>
-<script src="<?php echo JS; ?>/dijit/ucscis.js" type="text/javascript"></script>
-<script src="<?php echo JS; ?>/dojox/ucscis.js" type="text/javascript"></script>
-<script src="<?php echo JS; ?>/common_js.php" type="text/javascript"></script>
+<!--script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6/dojo/dojo.xd.js"  type='text/javascript'></script-->
+<script src="<?php echo JS; ?>/dojo/dojo.js" type='text/javascript'></script>
+<script src="<?php echo JS; ?>/dojo/ucscis.js" type='text/javascript'></script>
+<script src="<?php echo JS; ?>/dijit/ucscis.js" type='text/javascript'></script>
+<script src="<?php echo JS; ?>/dojox/ucscis.js" type='text/javascript'></script>
+<script src="<?php echo JS; ?>/common_js.php" type='text/javascript'></script>
 <?php
 
 
@@ -34,7 +34,7 @@ function parse_dojo(){
    }
 
 $html = <<<EOD
-<script type="text/javascript">
+<script type='text/javascript'>
 <!--
 /*----------------------Parse dojo after loading the page----------------------*/
 /*set djConfig=parseOnload:false and this will parse after loading*/

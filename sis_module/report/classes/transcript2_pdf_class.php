@@ -233,7 +233,7 @@ class Transcript{
       $AR_name="A.B.C. def";
                
       $template=<<<EOS
-<style type="text/css">
+<style type='text/css'>
 *{
    font-size:100%;
    font-family:arial;

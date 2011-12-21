@@ -1,4 +1,4 @@
-<script type="text/javascript" >
+<script type='text/javascript' >
 function open_module(module){
    window.open('<?php echo $GLOBALS['PAGE_GEN']; ?>?module='+module+'&program=<?php echo PROGRAM; ?>','_parent');
 }

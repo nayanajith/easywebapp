@@ -1790,7 +1790,7 @@ if($GLOBALS['LAYOUT'] == 'pub')
 
 <!--_____________________________start filter select___________________________-->
 
-<script type="text/javascript" type="text/javascript">
+<script type='text/javascript' type='text/javascript'>
 dojo.addOnLoad(function() {
    toolbar = new dijit.byId("toolbar");
    var filterStore = new dojox.data.QueryReadStore({

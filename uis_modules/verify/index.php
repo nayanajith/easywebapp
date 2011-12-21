@@ -97,7 +97,7 @@ if($csv){
 <link 
    rel   ="stylesheet"
    href  ="<?php echo $GLOBALS['css']; ?>/common_css.php" 
-   type  ="text/css" 
+   type  ='text/css' 
 >
 
 <link 
@@ -109,13 +109,13 @@ if($csv){
 <SCRIPT 
    language ='javascript'
    src      ="<?php echo $GLOBALS['js']; ?>/validate.js" 
-   type     ="text/javascript"
+   type     ='text/javascript'
 ></script>
 
 <SCRIPT 
    language ='javascript'
 	src      ="<?php echo $GLOBALS['js']; ?>/common_js.php"
-   type     ="text/javascript"
+   type     ='text/javascript'
 ></script>
 
 </head>

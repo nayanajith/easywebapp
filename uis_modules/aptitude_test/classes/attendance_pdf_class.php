@@ -189,7 +189,7 @@ class Attendance_sheets{
 			for($room_no=1;$room_no <= $num_rooms; $room_no++){
 				/*Variable to store Attendance sheet html*/
 				$sheet_style="
-<style type="text/css">
+<style type='text/css'>
 th{
 	background-color:silver;
 	font-weight:bold;
@@ -220,7 +220,7 @@ attendance list in each packet.
 				$sheet_thead='<tr><th width="40px">Serial</th><th width="65px">Index No</th><th width="340px">Name</th><th width="75px">ID Number</th><th width="120px">Signature</th></tr>';
 
 				$sheet_footer='
-<style type="text/css">
+<style type='text/css'>
 .fill{
 	border-bottom:1px dashed black;
 	width:155px;

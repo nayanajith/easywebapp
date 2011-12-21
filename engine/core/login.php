@@ -214,6 +214,6 @@ if (isset($_SESSION['username'])) {
       $_SESSION['loged_module']    = MODULE;
    }else{
       //echo "<div style='float:left;padding:5px;color:brown;'>Invallid login please try again...</div>";
-      //echo "<script type="text/javascript" language=javascript>alert('Invalid login please try again...');</script>";
+      //echo "<script type='text/javascript' language=javascript>alert('Invalid login please try again...');</script>";
    }
 ?>

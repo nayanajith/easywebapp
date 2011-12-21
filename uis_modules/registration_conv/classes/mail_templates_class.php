@@ -34,7 +34,7 @@ class Mail_templates{
 	//HTML output of the invoice
 	function payment_invoice_html($user_info,$program_info,$pay_for_info){
 	return "
-		<style type="text/css"> td{border-bottom:1px dotted whitesmoke;}</style>
+		<style type='text/css'> td{border-bottom:1px dotted whitesmoke;}</style>
 		<table style='border:1px solid silver;'>
 			<tr><td colspan='2' align='center'><h3>PAYMENT RECEIPT</h3></td></tr>
 			<tr><td>Telephone</td><td>+94-11-2581245</td></tr> 

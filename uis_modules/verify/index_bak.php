@@ -5,7 +5,7 @@
 <?php
 include_once("style.php");
 ?>
-<style type="text/css">
+<style type='text/css'>
 .items a {
 	text-decoration: none;
 }

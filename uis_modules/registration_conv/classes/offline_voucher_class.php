@@ -139,7 +139,7 @@ class Voucher{
 	//Generate quadruples of vouchers using the information feeded in constructor
 	public function gen_voucher_quadruples(){
 		$student_info=<<<EOD
-		<style type="text/css">
+		<style type='text/css'>
 			.writing{
 				font-family:times;
 				font-style:italic;

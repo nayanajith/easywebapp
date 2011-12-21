@@ -144,7 +144,7 @@ class Writable_app_form{
 ?>
 
 
-<script type="text/javascript">
+<script type='text/javascript'>
 dojo.addOnLoad(function() {
 
    /*No toolbar for web_layout*/

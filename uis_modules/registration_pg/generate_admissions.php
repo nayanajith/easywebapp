@@ -57,7 +57,7 @@ while($row=mysql_fetch_assoc($res)){
 		action='<?php echo $GLOBALS['PAGE_GEN']; ?>';
 		method='GET'>
 
-	<script type="text/javascript" type="dojo/method" event="onSubmit">
+	<script type='text/javascript' type="dojo/method" event="onSubmit">
 	return true;
 	</script>
 <select name="center"  dojoType="dijit.form.ComboBox" > 
@@ -83,7 +83,7 @@ while($row=mysql_fetch_assoc($res)){
 
 </div>
 
-<script type="text/javascript" >
+<script type='text/javascript' >
 function submit_form(action){
 	if(!confirm(dojo.toJson(dijit.byId('frm_attendance').getValues(), true))){
 		return;	

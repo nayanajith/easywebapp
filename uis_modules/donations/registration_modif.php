@@ -9,7 +9,7 @@ $captcha="
 <p style='color:silver;'>Click on the image to load a new image</p>
 Enter the characters you se in above image:<br>
 <input type='text' dojoType='dijit.form.ValidationTextBox' name='captcha' required='true'>
-<script type="text/javascript" >
+<script type='text/javascript' >
 	function reload_captcha(){
 		document.getElementById('captcha_image').src='?module=donations&page=captcha&data=true&a='+Math.random();
 	}

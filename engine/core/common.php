@@ -301,16 +301,17 @@ function file_download($path,$fid){
  * convert table into csv TODO
  */
 
-function table_to_csv($table){
+function table_to_csv($table,$filename){
    $table=trim($table);
    $table=str_replace(array('</td><td>','</th><th>'),"','",$table);
    $table=str_replace(array('<tr><td>','<tr><th>'),"'",$table);
    $table=str_replace(array('</td></tr>','</th></tr>'),"'\n",$table);
 
    header('Content-Type', 'application/vnd.ms-excel');
-   header('Content-Disposition: attachment; filename='.$_SESSION[PAGE]['batch_id'].'-'.$_SESSION[PAGE]['eligibility'].'.csv');
+   header('Content-Disposition: attachment; filename='.$filename.'.csv');
    header("Pragma: no-cache");
    header("Expires: 0");
+   echo  $table;
    exit();
 }
 
@@ -347,10 +348,29 @@ function number_to_text($number){
       number_to_text($Hn) . " Hundred"; 
    } 
 
-   $ones = array("", "One", "Two", "Three", "Four", "Five", "Six", 
-       "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", 
-       "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eightteen", 
-       "Nineteen"); 
+   $ones = array(
+      "", 
+      "One", 
+      "Two", 
+      "Three", 
+      "Four", 
+      "Five", 
+      "Six", 
+      "Seven", 
+      "Eight", 
+      "Nine", 
+      "Ten", 
+      "Eleven", 
+      "Twelve", 
+      "Thirteen", 
+      "Fourteen", 
+      "Fifteen", 
+      "Sixteen", 
+      "Seventeen", 
+      "Eightteen", 
+      "Nineteen"
+   ); 
+
    $tens = array("", "", "Twenty", "Thirty", "Fourty", "Fifty", "Sixty", 
        "Seventy", "Eigthy", "Ninety"); 
 

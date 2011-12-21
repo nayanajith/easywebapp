@@ -57,7 +57,7 @@ $academic_year_arr=exec_query("SELECT DISTINCT academic_year FROM ".$GLOBALS['P_
 
 /*Form submit through AJAX using dojo xhrGet*/
 echo "
-<script type="text/javascript" >
+<script type='text/javascript' >
    function submit_form(){
       alert(dojo.toJson(dijit.byId('mark_book_frm').getValues(), true));
       if (dijit.byId('mark_book_frm').validate()) {

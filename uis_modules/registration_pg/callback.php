@@ -7,7 +7,7 @@ if(!isset($_SESSION['username'])){
 //Callback can be trapped inside an IFRAME, this javascript will exit from the iframe
 /*
 echo "
-<script type="text/javascript" >
+<script type='text/javascript' >
 	//if (top != self) top.location.href = location.href;
 if (top != self){
   	top.location.href = '?module=registration&page=pay_online';

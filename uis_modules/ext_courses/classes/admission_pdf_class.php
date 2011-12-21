@@ -240,7 +240,7 @@ SELECTION TEST - '.strtoupper($day_arr['month'].' '.$day_arr['year']).'
 /*Further information student should aware when sitting the exam*/
 /*
 'note'=>'
-<style type="text/css">
+<style type='text/css'>
 .line{
 	border-bottom:1px dashed black;
 	height:30px;
@@ -270,7 +270,7 @@ SELECTION TEST - '.strtoupper($day_arr['month'].' '.$day_arr['year']).'
 ',
 
 'attestation'=>'
-<style type="text/css">
+<style type='text/css'>
 .line{
 	border-bottom:1px dashed black;
 	height:30px;

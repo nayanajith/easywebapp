@@ -90,7 +90,7 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
 ...
 </div>
 
-<script type="text/javascript" >
+<script type='text/javascript' >
    function submit_form(action){
       update_status_bar('...');
       update_progress_bar(10);

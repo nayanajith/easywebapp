@@ -291,7 +291,8 @@ class Student{
     */
 
    protected $courses= array();
-   protected $regInfo=null;
+   protected $regInfo= array();
+   protected $gpaInfo= array();
 
    //Recalculate the gpa if TRUE
    protected $RECALCULATE=true;
@@ -304,7 +305,7 @@ class Student{
       /*Related tables*/
       $this->self['marks']    = $GLOBALS['P_TABLES']["marks"];
       $this->self['student']  = $GLOBALS['P_TABLES']["student"];
-      $this->self['gpa']      = $GLOBALS['P_TABLES']["gpa"];
+      $this->self['gpa2']      = $GLOBALS['P_TABLES']["gpa2"];
       //$this->self['grades']   = $GLOBALS['P_TABLES']["grades"];
       $this->self['course']   = $GLOBALS['P_TABLES']["course"];
 
@@ -549,26 +550,38 @@ public function getTranscript(){
 
    /*
     * Return Overall Grade Point Value
+    * +------+---------+-----------+-----------+------------+------------+
+    * | year | credits | class_gpv | class_gpa | degree_gpa | degree_gpv |
+    * +------+---------+-----------+-----------+------------+------------+
+    * | 1    |      31 |     94.25 |   3.04032 |    3.04032 |      94.25 |
+    * | 2    |      30 |       103 |   3.43333 |    3.43333 |        103 |
+    * | 3    |      30 |       103 |   3.43333 |    3.43333 |        103 |
+    * | 4    |      30 |     97.25 |   3.24167 |    3.24167 |      97.25 |
+    * | 4T   |     121 |     397.5 |   3.28512 |    3.28512 |      397.5 |
+    * +------+---------+-----------+-----------+------------+------------+
+    *
     */
-   public function getDGPV($year=null){
-      $year=is_null($year)?4:$year;
-      $gpv=0;
-      for($i=1;$i<=$year;$i++){
-         $gpv+=$this->getYearDGPV($i);
+
+   public function select_year($year=null){
+      if(!is_null($year)){
+         return $year;
+      }elseif(isset($this->gpaInfo['4T'])){
+         return '4T';
+      }elseif(isset($this->gpaInfo['3T'])){
+         return '3T';
       }
-      return $gpv;
+   }
+
+
+   public function getDGPV($year=null){
+      return round($this->gpaInfo[select_year($year)]['degree_gpv'],0);
    }
 
    /*
     * Return Overall Credits 
     */
    public function getTotalCredits($year=null){
-      $year=is_null($year)?4:$year;
-      $credits=0;
-      for($i=1;$i<=$year;$i++){
-         $credits+=$this->getYearCredits($i);
-      }
-      return $credits;
+      return $this->gpaInfo[select_year($year)]['credits'];
    }
 
 
@@ -577,67 +590,36 @@ public function getTranscript(){
     * Return Overall Grade Point Average
     */
    public function getDGPA($year=null){
-      $year=is_null($year)?4:$year;
-      $credits=$this->getTotalCredits($year);
-      if($credits > 0){
-         return $this->getDGPV($year)/$credits;
-      }else{
-         return 0;   
-      }
+      return round($this->gpaInfo[select_year($year)]['degree_gpa'],0);
    }
 
    /*
     * Return Overall Grade Point Value
     */
    public function getCGPV($year=null){
-      $year=is_null($year)?4:$year;
-      $gpv=0;
-      for($i=1;$i<=$year;$i++){
-         $gpv+=$this->getYearCGPV($i);
-      }
-      return $gpv;
+      return round($this->gpaInfo[select_year($year)]['class_gpv'],0);
    }
 
    /*
     * Return Overall Grade Point Average
     */
    public function getCGPA($year=null){
-      $year=is_null($year)?4:$year;
-      $credits=$this->getTotalCredits($year);
-      if($credits>0){
-         return ($this->getCGPV($year)/$credits);
-      }else{
-         return -1;
-      }
+      return round($this->gpaInfo[select_year($year)]['class_gpa'],0);
    }
-
-   
 
 
    /*
     * Return Total credits for the given year
     */
    public function getYearCredits($year){
-      $creditss=0;
-      foreach($this->courses as $course_id => $course){
-         if(courseYear($course_id)==$year && !isNonCredit($course_id)){
-            $creditss+=getCredits($course_id);
-         }
-      }
-      return $creditss;
+      return $this->gpaInfo[select_year($year)]['credits'];
    }
 
    /*
     * Return Degree GPV for a given year
     */
    public function getYearDGPV($year){
-      $gpv=0;
-      foreach($this->courses as $course_id => $course){
-         if(courseYear($course_id)==$year && !isNonGrade($course_id) && !isNonCredit($course_id)){
-            $gpv+=getGradeGpv($this->getDGrade($this->getRepeatMax($course_id)))*getCredits($course_id);
-         }
-      }
-      return $gpv;
+      return $this->gpaInfo[select_year($year)]['credits'];
    }
 
    /*
@@ -846,7 +828,7 @@ public function getTranscript(){
     */
    public function loadCourses(){
       $course     = null;
-      $query   =" SELECT course_id,exam_hid,state,final_mark,push,grand_final_mark,grade,gpv FROM ".$this->self['marks']." WHERE index_no ='".$this->self['index_no']."' AND can_release=true ORDER BY course_id";
+      $query   =" SELECT course_id,exam_hid,state,final_mark,push,grand_final_mark,degree_grade,degree_gpv,class_grade,class_gpv FROM ".$this->self['marks']." WHERE index_no ='".$this->self['index_no']."' AND can_release=true ORDER BY course_id";
 
       $result  = exec_query($query,Q_RET_MYSQL_RES);
       while($row = mysql_fetch_assoc($result)){
@@ -855,8 +837,10 @@ public function getTranscript(){
             'push'            =>$row['push'],
             'state'           =>$row['state'],
             'grand_final_mark'=>$row['grand_final_mark'],
-            'grade'           =>$row['grade'],
-            'gpv'             =>$row['gpv']
+            'class_grade'     =>$row['class_grade'],
+            'degree_grade'    =>$row['degree_grade'],
+            'class_gpv'       =>$row['class_gpv'],
+            'degree_gpv'      =>$row['degree_gpv']
          );
          if(!empty($this->courses[$row['course_id']]))
          {
@@ -877,8 +861,11 @@ public function getTranscript(){
    }
 
 
+   /** 
+    * loading gpa information of the student
+    */
    public function loadGPAData(){
-      $query   =" SELECT * FROM ".$this->self['gpa']." WHERE index_no ='".$this->self['index_no']."'";
+      $this->gpaInfo=exec_query("SELECT year,credits,class_gpv,class_gpa,degree_gpa,degree_gpv FROM ".$this->self['gpa2']." WHERE index_no ='".$this->self['index_no']."'",Q_RET_ARRAY,null,'year');
    
    }
 

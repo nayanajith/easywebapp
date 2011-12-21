@@ -61,7 +61,7 @@ if(isset($_REQUEST['form'])){
 	echo $formgen->gen_form(null,true);
 	echo $formgen->gen_filter();
 	echo "
-		<script type="text/javascript" >
+		<script type='text/javascript' >
 			function grid(){
 				url='".gen_url()."&form=grid';
 				open(url,'_self');

@@ -181,7 +181,7 @@ class Application{
 	public function gen_application(){
 		$row=$this->applier_info;
 		$content='
-<style type="text/css">
+<style type='text/css'>
 	th{
 		text-align:left;	
 		font-weight:bold;

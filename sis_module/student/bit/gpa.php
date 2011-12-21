@@ -2,7 +2,7 @@
 <html>
 <head>
 <link rel="stylesheet"
-   href="<?php echo CSS; ?>/common_css.php" type="text/css" >
+   href="<?php echo CSS; ?>/common_css.php" type='text/css' >
 </head>
 <body>
 <?php

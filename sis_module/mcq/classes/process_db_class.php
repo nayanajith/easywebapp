@@ -414,7 +414,7 @@ class MCQ_paper {
    }
 
    public function print_stat($stat_array) {
-    $table="<style type="text/css">*{font-size:92%;} .left{ float:left;} .right{float:right;text-align:right;} .emp{text-decoration:underline;font-weight:bold;} </style>";
+    $table="<style type='text/css'>*{font-size:92%;} .left{ float:left;} .right{float:right;text-align:right;} .emp{text-decoration:underline;font-weight:bold;} </style>";
     $table.="<div align='center'><h2>Item analysis report for course ".$this->paper['course_id']." of exam ".$this->paper['exam_id']." </h2>";
     $table.="<h3>No. of questions :".$this->paper['no_of_questions'].", No. of students :".$this->no_of_students." </h2></div>";
       $table.="<table cellpadding='3' border='1' style='border-collapse:collapse;' id='itemAnalysis' width='100%'>";

@@ -22,7 +22,7 @@
       include A_CORE."/loading.php";
    ?>
 <!--____________________________end loading ________________________________-->
-      <style type="text/css">
+      <style type='text/css'>
 .bContainer_modif{
    -moz-border-radius-bottomleft:0px;
    -moz-border-radius-bottomright:0px;

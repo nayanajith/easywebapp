@@ -188,7 +188,7 @@ class Index_list{
 			for($room_no=1;$room_no <= $num_rooms; $room_no++){
 				/*Variable to store Attendance sheet html*/
 				$sheet_style="
-<style type="text/css">
+<style type='text/css'>
 th{
 	background-color:silver;
 	font-weight:bold;

@@ -19,7 +19,7 @@ if($data==true){
    }
 }else{
 ?>
-<script type="text/javascript">
+<script type='text/javascript'>
 dojo.require("dojo.parser");
 
 //form elements

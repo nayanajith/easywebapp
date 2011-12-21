@@ -394,7 +394,7 @@ d_r("dijit.form.DropDownButton");
 $submit_button="<center><button dojoType='dijit.form.Button' type='submit' onClick='handle_ttdialog()'>OK</button></center>";
 ?>
 
-<script type="text/javascript" >
+<script type='text/javascript' >
 dojo.addOnLoad(function() {
    //reference to our toolbar
    var toolbar = dijit.byId('toolbar');

@@ -429,7 +429,7 @@ class Attendance{
 		 */
 		public function style(){
 		   echo "
-		   <style type="text/css">
+		   <style type='text/css'>
 		    .calendar{border-collapse:collapse;border-color:#C9D7F1;width:850px;}
 		    .title   {background:#C9D7F1;font-weight:bold;color:blue;border:1px solid silver;}
 		    .day     {background:whitesmoke;}

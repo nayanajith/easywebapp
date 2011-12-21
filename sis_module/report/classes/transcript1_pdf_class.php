@@ -211,7 +211,7 @@ class Transcript{
 
 
       $template=<<<EOS
-<style type="text/css">
+<style type='text/css'>
 *{
    font-size:94%;
    font-family:arial;
@@ -291,7 +291,7 @@ class Transcript{
 </table>
 EOS;
       $info=<<<EOS
-<style type="text/css">
+<style type='text/css'>
    .info{
       font-size:90%;
       font-weight:bold;

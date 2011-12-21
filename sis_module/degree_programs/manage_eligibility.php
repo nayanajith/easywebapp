@@ -119,7 +119,7 @@ echo $formgen->gen_form(false,true);
 if($GLOBALS['LAYOUT']='app'){
 echo $formgen->gen_filter();
 echo "
-      <script type="text/javascript" >
+      <script type='text/javascript' >
          function grid(){
             url='".gen_url().(isset($_REQUEST['filter_name'])?"&filter_name=".$_REQUEST['filter_name']:"")."&form=grid';
             open(url,'_self');
@@ -175,7 +175,7 @@ foreach($course as $key => $options){
    Ok
    </button>
    
-   <script type="text/javascript">
+   <script type='text/javascript'>
    var button = new dijit.form.Button({
           label: \"select\",
       onClick:function(){ 
@@ -189,7 +189,7 @@ foreach($course as $key => $options){
    ";
 }
 
-echo "<script type="text/javascript">
+echo "<script type='text/javascript'>
 function show_course_dialog(key){
    formDlg = dijit.byId('course_dialog_year'+key);
    /*extract values from textarea*/

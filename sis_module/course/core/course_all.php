@@ -89,7 +89,7 @@ foreach($courses as $courseid){
    echo $th;
    echo "</table>";
    echo "
-<script type="text/javascript">
+<script type='text/javascript'>
 function print_area(id){
    print_text=document.getElementById(id).innerHTML;
    title=document.getElementById('summery_title').innerHTML;

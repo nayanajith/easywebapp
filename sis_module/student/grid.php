@@ -1,4 +1,4 @@
-<style type="text/css">
+<style type='text/css'>
     @import "<?php echo JS; ?>/dojox/grid/resources/Grid.css";
     @import "<?php echo JS; ?>/dojox/grid/resources/claroGrid.css";
     .dojoxGrid table { margin: 0; } html, body { width: 100%; height: 100%;
@@ -6,7 +6,7 @@
 </style>
 
 
-<script type="text/javascript">
+<script type='text/javascript'>
    dojo.require("dojox.grid.DataGrid");
    dojo.require("dojo.data.ItemFileWriteStore");
 </script>

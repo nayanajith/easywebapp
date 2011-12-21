@@ -24,7 +24,7 @@ d_r('dijit.form.Button');
 Regenerate database
 </button>
 </form>
-<script type="text/javascript" >
+<script type='text/javascript' >
    function submit_form(action){
       update_status_bar('OK','...');
       update_progress_bar(10);

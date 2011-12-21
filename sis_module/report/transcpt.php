@@ -94,12 +94,12 @@ function transcript(){
       'index_no'   =>$_SESSION[PAGE]['index_no'],
       'fullname'   =>$student->getName(2),
       'RegNo'      =>$student->getRegNo(),
-      'DIssue'      =>date("Y-m-d"),
+      'DIssue'     =>date("Y-m-d"),
       'dgrad'      =>$trancpt_detail['YOA'],
-      'dreg'      =>$trancpt_detail['DOA'],
-          'DegreeName'=>$trancpt_detail['DEGREE'],
-        'DClass'      =>$trancpt_detail['CLASS'],
-        'GPA'         =>$trancpt_detail['GPA']
+      'dreg'       =>$trancpt_detail['DOA'],
+      'DegreeName' =>$trancpt_detail['DEGREE'],
+      'DClass'     =>$trancpt_detail['CLASS'],
+      'GPA'        =>$trancpt_detail['GPA']
    );
 
    //print students personal information

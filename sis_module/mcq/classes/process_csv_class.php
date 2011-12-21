@@ -245,7 +245,7 @@ class MCQ_paper {
 
    public function print_stat($stat_array) {
       //Statistics table
-      echo "<style type="text/css">
+      echo "<style type='text/css'>
    .left{
       float:left;
       font-size:9px;

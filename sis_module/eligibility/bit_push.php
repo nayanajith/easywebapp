@@ -403,7 +403,7 @@ print_r($_REQUEST);
 echo "</pre>";
 */
 ?>
-<script type="text/javascript">
+<script type='text/javascript'>
 dojo.require('dojo.parser');
 
 //form elements
@@ -432,7 +432,7 @@ dojo.require('dojo.data.ItemFileReadStore');
          action='<?php echo W_ROOT; ?>/index.php';
          method='GET'>
 
-<script type="text/javascript" type="dojo/method" event="onSubmit">
+<script type='text/javascript' type="dojo/method" event="onSubmit">
 return true;
 </script>
 

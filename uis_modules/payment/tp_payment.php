@@ -162,7 +162,7 @@ Redirecting...
 <input type='hidden' name='MerchantInvoice' value='".$invoice."' >
 Please press <input type='submit' value='redirect'> if not redirected automatically
 </form>
-<script type="text/javascript">
+<script type='text/javascript'>
 document.getElementById('m_form').submit();
 </script>
 ";

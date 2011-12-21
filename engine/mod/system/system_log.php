@@ -35,7 +35,7 @@ foreach ($lines as $line) {
 echo "</pre></div>";
 ?>
 
-<script type="text/javascript">
+<script type='text/javascript'>
 function get_lines(){
    var lines=document.getElementById('toolbar.numLines').value;
    url='<?php echo gen_url();?>&lines='+lines;
