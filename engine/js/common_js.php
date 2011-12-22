@@ -61,6 +61,9 @@ dojo.require('dojo.io.iframe');
 function download(url){
 	update_status_bar('OK','Processing...');
 
+   //desable after testing
+   window.open(url);return;
+
    //dojo iframe is creating to set the source of it   
 	var iframe = dojo.io.iframe.create("downloader");
 

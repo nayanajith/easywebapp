@@ -234,6 +234,11 @@ function print_footer(){
 
 //reg no format YYSSSSSC : Y-> year S-> sequence C-> check digit
 function gen_reg_no($sequence){
+
+   //rotate the numer in each  $SEQ_PER_YEAR
+   $SEQ_PER_YEAR=99999;
+   $sequence=$sequence%$SEQ_PER_YEAR;
+
    $reg_no_length   =8;
    $seq_length      =5;
    $year            =date("y");

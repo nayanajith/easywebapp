@@ -11,10 +11,11 @@ class MYPDF extends TCPDF {
    protected $AR_name   ='A.B.C. defghi';
 
    /*Set header infor*/
-   public function set_header_info(){
+   public function set_header_info($transcpt_id){
       /*Header information of the mark book*/
       $this->header_info['logo']            = A_IMG."/".$GLOBALS['LOGO'];
       $this->header_info['year']            ="2010/2011";
+      $this->header_info['transcpt_id']     =$transcpt_id;
    }
 
    /*Page header*/
@@ -62,29 +63,29 @@ class MYPDF extends TCPDF {
 
       /*Set font*/ 
       $this->SetFont('helvetica', '', 8);
-      $custom_footer="
-      <hr>
-      <br>
+      //TODO transcript id not aligning to right fix it
+      $custom_footer='
+      <div style="font-size:70%;border-top:1px solid black;" align="left">'.$this->header_info["transcpt_id"].'</div>
       <br>
       <table>
          <tr>
-            <td valign='bottom'>
+            <td valign="bottom">
                <table>
                   <tr><td >Prepared by</td><td> ...........................................</td></tr>
                   <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
                   <tr><td>Checked by</td><td> ...........................................</td></tr>
                </table>
             </td>
-            <td align='right'>
+            <td align="right">
                <br>
                <table>
-                  <tr><td align='center'>........................................................</td></tr>
-                  <tr><td align='center'>".$this->AR_name."<br>Assistant Registrar/Examination <br> for Registrar</td></tr>
+                  <tr><td align="center">........................................................</td></tr>
+                  <tr><td align="center">'.$this->AR_name.'<br>Assistant Registrar/Examination <br> for Registrar</td></tr>
                </table>
             </td>
          </tr>
       </table>
-      ";
+      ';
 
       $this->writeHTML(str_replace("'","\"",$custom_footer), true, false, false, false, 'C');
 
@@ -153,38 +154,111 @@ class Transcript{
 
    /*admission issued date by the AR/Exam*/
    protected $pdf;
+   protected $index_no;
+   protected $transcpt_id;
+   protected $with_marks;
+   protected $with_rank;
+   protected $note;
+   protected $awards;
 
    /*
     * @param page_format      : A4,A5,B4
     * @param page_orientation   : P,L 
     */
-   public function __construct($index_no,$with_marks){
+   public function __construct($index_no,$transcpt_id,$with_marks,$with_rank=null,$note=null,$awards=null){
+      $this->index_no   =$index_no;
+      $this->transcpt_id=$transcpt_id;
+      $this->with_marks =$with_marks;
+      $this->with_rank  =$with_rank;
+      $this->note       =$note;
+      $this->awards     =$awards;
+
+      
+   }
+
+   /**
+    * return the pdf of the transcript
+    */
+   public function getPDF(){
 
       /*Pdf generator page setup*/
       $PDF_PAGE_ORIENTATION='P';//(L,P)
-      $PDF_PAGE_FORMAT      ='A4';
+      $PDF_PAGE_FORMAT     ='LEGAL';
       $PDF_UNIT            ='mm';//mm,in,pt,cm
-      $UNICODE               =true; 
+      $UNICODE             =true; 
       $ENCODING            ='UTF-8'; 
-      $DISKCACHE            =false;//if TRUE reduce the RAM memory
+      $DISKCACHE           =false;//if TRUE reduce the RAM memory
 
       /*return pdf generation object*/
       $this->pdf = new MYPDF($PDF_PAGE_ORIENTATION, $PDF_UNIT, $PDF_PAGE_FORMAT, $UNICODE, $ENCODING, $DISKCACHE);
-      $this->pdf->set_header_info();
+      $this->pdf->set_header_info($this->transcpt_id);
       $this->pdf->transcript_config();
-      $this->generate_transcript($index_no,$with_marks);
-   }
+      $this->generate_transcript();
 
-   public function getPdf(){
       return $this->pdf;   
    }
 
+   /**
+    * return the pdf of the transcript
+    */
+   public function getHTML(){
+      $this->generate_transcript($thml=true);
+   }
 
-   public function generate_transcript($index_no,$with_marks){
+
+
+   /**
+    * Generate the transcript in html or pdf
+    */
+
+   public function generate_transcript($html=false){
       include A_CLASSES."/student_class.php";
-      $student=new Student($index_no);
+      $student       =new Student($this->index_no);
       $trancpt_detail=$student->getTranscript();
-   
+      $transcpt_id   =$this->transcpt_id;
+      $index_no      =$this->index_no;
+      $with_marks    =$this->with_marks;
+      $with_rank     =$this->with_rank; 
+      $note          =$this->note;       
+      $awards        =$this->awards;     
+
+
+
+
+      //Following  variables are also requred to the fill the template
+      $name          =$student->getName(2);
+      $degree        ='Bachelor of Science in Computer Science Degree';
+      $class         =$trancpt_detail['CLASS'];
+      $issue_on      =date("M d,y");
+      $reg_no        =$student->getRegNo();
+      $rank          =$student->getRank();
+      $DO_ADMIT      =$trancpt_detail['DOA'];
+      $DO_AWARD      =$trancpt_detail['YOA'];
+      $GPA           =$trancpt_detail['GPA'];
+
+
+
+      $warding="This is to certify that <b>$name</b> with <b>Registration No: $reg_no</b> sat for the <b>$degree</b> examination held under <b>index No: $index_no</b> and reached the standard required for a <b>$class</b>";
+
+      //dynamically change the font size of the course list
+      $course_count=@sizeof($student->getYearMarks(1))+sizeof($student->getYearMarks(2))+sizeof($student->getYearMarks(3))+sizeof($student->getYearMarks(4));
+
+      //Default font size
+      $course_font_size="font-size:80%;";
+      if($course_count >= 70){
+         $diff =$course_count-70;
+
+         //possible url param
+         $zoom_factor=2.3;
+         if(isset($_SESSION[PAGE]['zoom_factor'])){
+            $zoom_factor=$_SESSION[PAGE]['zoom_factor'];
+         }
+
+         //give some exponential variation
+         $diff =$diff-round($diff/$zoom_factor,0);
+         $course_font_size=(80-$diff)."%";
+      }
+
       //generate studetns socoring on each course in each year
       $year_title      ="<tr><td colspan='5' align='center' class='year'>YEAR %s</td></tr>";
       $course         ='';
@@ -193,7 +267,7 @@ class Transcript{
          $course.=sprintf($year_title,$i);
          foreach($student->getYearMarks($i) as $key => $course_arr ){
             $course.="<tr>";
-            if($with_marks){
+            if($this->with_marks){
                $course.="<td>".$course_arr['course_id']."</td><td>".$course_arr['coursename']."</td><td>".$course_arr['credit']."</td><td>".$course_arr['mark']." - ".$course_arr['grade']."</td><td>".$course_arr['exam']."</td>";   
             }else{
                $course.="<td>".$course_arr['course_id']."</td><td>".$course_arr['coursename']."</td><td>".$course_arr['credit']."</td><td>".$course_arr['grade']."</td><td>".$course_arr['exam']."</td>";   
@@ -203,17 +277,7 @@ class Transcript{
          }
       }
 
-      //Following  variables are used to the fill the template
-      $name            =$student->getName(2);
-      $degree         ='Bachelor of Science in Computer Science Degree';
-      $class         =$trancpt_detail['CLASS'];
-      $issue_on      =date("M d,y");
-      $reg_no         =$student->getRegNo();
-      $DO_ADMIT      =$trancpt_detail['DOA'];
-      $DO_AWARD      =$trancpt_detail['YOA'];
-      $GPA            =$trancpt_detail['GPA'];
-
-
+      
       //TODO: this array should be global fix this
       $gradeGpv = getGradeGPVArr();
 
@@ -228,7 +292,8 @@ class Transcript{
             <tr><td width='35mm'>First class</td><td>3.5 and above</td></tr>
             <tr><td>Second class Upper</td><td>from 3.25 to 3.5</td></tr>
             <tr><td>Second class lower</td><td>from 3 to 3.25</td></tr>
-            <tr><td>Pass</td><td>from 2 to 3</td></tr>";
+            <tr><td>Pass</td><td>from 2 to 3</td></tr>
+            <tr><td>Fail</td><td>below 2</td></tr>";
 
       $AR_name="A.B.C. def";
                
@@ -267,7 +332,7 @@ td{
 }
 
 .trans_body{
-   font-size:80%;
+    font-size:$course_font_size;
 }
 
 .trans_body th{
@@ -301,7 +366,7 @@ A4
 </style>
 <table align='center'  width='185mm' cellpadding='5'>
    <tr><td colspan='2' align='center' class='trans_title'><h3>BACHELOR OF SCIENCE IN COMPUTER SCIENCE</h3></td></tr>
-   <tr><td colspan='2' align='justify' class='paragraph'>This is to certify that <b>$name</b> sat for the <b>$degree</b> examination held under <b>index No: $index_no</b> and reached the standard required for a <b>$class</b></td></tr>
+   <tr><td colspan='2' align='justify' class='paragraph'>$warding</td></tr>
    <tr><td colspan='2' style='height:5mm;'>&nbsp;</td></tr>
    <tr>
       <td class='section_title' width='125mm'>
@@ -321,6 +386,9 @@ Grade Point and Important Dates
                $course
             </tbody>
          </table>
+         <div class='awards'>
+           $awards 
+         </div>
       </td>
       <td valign='top' width='60mm' >
          <table class='info'>
@@ -347,14 +415,20 @@ Grade Point and Important Dates
    </tr>
 </table>
 EOS;
-      /*Add a page to the sheet*/
-      $this->pdf->SetFont('helvetica', '', 9);
 
-      //replace ' with " which does not support tcpdf
-      $content=str_replace("'","\"",$template);
+      if($html){
+         echo $template;
+      }else{
+         /*Add a page to the sheet*/
+         $this->pdf->SetFont('helvetica', '', 9);
+      
+         //replace ' with " which does not support tcpdf
+         $content=str_replace("'","\"",$template);
+      
+         /*write table to the sheet*/
+         $this->pdf->writeHTML($content, true, false, false, false, 'L');
 
-      /*write table to the sheet*/
-      $this->pdf->writeHTML($content, true, false, false, false, 'L');
+      }
    }
 }
 ?>

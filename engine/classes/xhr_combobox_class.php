@@ -18,8 +18,12 @@ class XHR_Combobox{
       echo $query_read_store->gen_json_data();
    }
 
-   function get_val($param_name){
-      return isset($_SESSION[PAGE][$param_name])?$_SESSION[PAGE][$param_name]:'';
+   /**
+    * return the current value for parameter
+    */
+   function get_val($param_name,$default=null){
+      $default=is_null($default)?'':$default;
+      return isset($_SESSION[PAGE][$param_name])?$_SESSION[PAGE][$param_name]:$default;
    }
    
    /*
@@ -57,6 +61,35 @@ class XHR_Combobox{
          });
       ";
    }
+
+   /*
+    *Generate a checkbox which will be inserted in the toolbar
+    */
+     function check_box($id,$value,$html,$source_array,$target){
+      //if html true request html other than setting parameter
+      $onchange="set_param('$id',this.checked)";
+      if($html){
+         $onchange="set_param('$id',this.value);source_array=new Array('".implode("','",$source_array)."');request_html('$target',source_array,null)";
+      }
+
+      $selected="checked:false,";
+      if($value == 'true' ){
+         $selected="checked:true,";
+      }
+
+      d_r('dijit.form.CheckBox');
+      echo  "
+       var ".$id."_checkbox = new dijit.form.CheckBox({
+         jsId:'$id',
+         id:'$id',
+         name:'$id',
+         $selected
+         onChange:function(){".$onchange.";},
+      },'".$id."_checkbox');
+      ";
+      return $id."_checkbox";
+   }
+
    
    /*
     *Generate a combobox which will be inserted in the toolbar
@@ -261,5 +294,18 @@ class XHR_Combobox{
              $this->add_to_toolbar($this->combo_box($id,$page_size,$value,$width,false,null,null));
       }
    }
+
+   /**
+    * CHeck box which sends data when changed
+    */
+   function gen_checkbox($id,$label,$value,$source_array=null,$target=null){
+      $this->add_to_toolbar($this->label($id,$label));
+      if(is_array($source_array)){
+         $this->add_to_toolbar($this->check_box($id,$value,true,$source_array,$target));
+      }else{
+             $this->add_to_toolbar($this->check_box($id,$value,false,null,null));
+      }
+   }
+
 }    
 ?>

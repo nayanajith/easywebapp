@@ -22,19 +22,11 @@ if(isset($_REQUEST['form'])){
       if(isset($_REQUEST['action'])){
          switch($_REQUEST['action']){
          case 'transcript':
-            transcript();
+         case 'print':
+         case 'html':
+            transcript(true);
          break;
          case 'pdf':
-            transcript_pdf();
-         break;
-         case 'cert':
-            gen_certificate();
-         break;
-         case 'print':
-            transcript();
-         break;
-         case 'html':
-            $_SESSION[PAGE]['index_no']=$_REQUEST['index_no'];
             transcript();
          break;
          case 'store':
@@ -54,9 +46,9 @@ if(isset($_REQUEST['form'])){
       break;
    }
 }else{
-   echo "<div><div id='attendance_frm' jsId='attendance_frm' dojoType='dijit.form.Form' >";
+   echo "<div><div id='transcpt_frm' jsId='transcpt_frm' dojoType='dijit.form.Form' >";
    if(isset($_SESSION[PAGE]['index_no'])){
-      transcript();
+      transcript($html=true);
    }   
    echo "</div></div>";
 
@@ -65,25 +57,36 @@ if(isset($_REQUEST['form'])){
 
    //function gen_xhr_combobox($id,$label,$value,$width,$page_size,$source_array=null,$target=null);
    //$xhr_combobox->gen_xhr_combobox('student_year',"Student Year",$xhr_combobox->get_val('student_year'),30,20,null,null);
-   $item_array=array('FORMAT_L','FORMAT_P');
-   $xhr_combobox->gen_xhr_static_combo('transcpt_format','Format',$xhr_combobox->get_val('transcpt_format'),100,$item_array,null,null);
+   //$item_array=array('FORMAT_L','FORMAT_P');
+   //$xhr_combobox->gen_xhr_static_combo('transcpt_format','Format',$xhr_combobox->get_val('transcpt_format'),100,$item_array,null,null);
 
-   $xhr_combobox->gen_xhr_combobox('index_no',"Index No",$xhr_combobox->get_val('index_no'),80,20,array('index_no'),'attendance_frm');
-   //Different report types to be select
-   $item_array=array('WITH_MARKS','WITHOUT_MARKS');
-   $xhr_combobox->gen_xhr_static_combo('transcpt_marks','Marks',$xhr_combobox->get_val('transcpt_marks'),120,$item_array,array('index_no','transcpt_marks'),'attendance_frm');
+   $xhr_combobox->gen_xhr_combobox('index_no',"Index No",$xhr_combobox->get_val('index_no'),80,20,array('index_no'),'transcpt_frm');
 
+   //If selected note will be printed
    $item_array=array('SUBJECT_TO_APPROVED_BY_THE_SENNATE','PENDING');
-   $xhr_combobox->gen_xhr_static_combo('transcpt_note','Note',$xhr_combobox->get_val('transcpt_note'),210,$item_array,array('index_no','transcpt_marks'),'attendance_frm');
+   $xhr_combobox->gen_xhr_static_combo('transcpt_note','Note',$xhr_combobox->get_val('transcpt_note'),210,$item_array,array('index_no','with_marks'),'transcpt_frm');
+
+   $item_array=array(2,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3);
+   $xhr_combobox->gen_xhr_static_combo('zoom_factor','Zoom factor',$xhr_combobox->get_val('zoom_factor','2.3'),40,$item_array,array('index_no','with_marks','zoom_factor'),'transcpt_frm');
+
+
+   //If selected print the report with marks
+   $xhr_combobox->gen_checkbox('with_marks','With marks',$xhr_combobox->get_val('with_marks'),null,null);
+
+   //If selected print the report with rank
+   $xhr_combobox->gen_checkbox('show_rank','Show rank',$xhr_combobox->get_val('show_rank'),null,null);
+
+
 
    $xhr_combobox->param_setter();$xhr_combobox->html_requester();
    echo "});";
-   $xhr_combobox->form_submitter('attendance_frm');
+   $xhr_combobox->form_submitter('transcpt_frm');
    echo "</script>";
 }
 
 
 
+/*
 function transcript(){
    include A_CLASSES."/student_class.php";
    $student = new Student($_SESSION[PAGE]['index_no']);
@@ -125,49 +128,18 @@ function transcript(){
       echo "</table>";
    }
 }
+ */
 
-function transcript_id(){
-	//get next transaction for the day for the program
-	$next_arr=exec_query("SELECT count(*)+1 next FROM ".$GLOBALS['P_TABLES']['transcript']." WHERE DATE(init_time)=CURRENT_DATE()",Q_RET_ARRAY);
-	$trans_id=$next_arr[0]['next'];
-
-	/*current date in 25032011 format*/
-	$date				=date("dmy");
-	
-	$composite_no='';
-
-	/*Fill zeros for program_id*/
-	/*
-	for($j=$this->program_id_digits;$j>strlen($program_id);$j--){
-		$composite_no.='0';
-	}
-	$composite_no.=$program_id;
-	*/
-
-	/*Fill zeros for transaction_id*/
-   /*
-	for($j=$this->trans_id_digits;$j>strlen($trans_id);$j--){
-		$composite_no.='0';
-	}
-	$composite_no.=$trans_id;
-	$composite_no.=$date;
-    */
-
-   /*
-	$check=0;
-	foreach(str_split($composite_no) as $digit){
-		$check+=(int)$digit;
-	}
-	$check=($check%$this->modulus);
-    */
-	/*Complete transaction id*/
-	//return $program_code.$this->code_seperator.$pay_for_code.$this->code_seperator.$tp_ref_id.$this->code_seperator.$composite_no.$check;
-	//return $program_code.$this->code_seperator.$pay_for_code.$this->code_seperator.$tp_ref_id.$this->code_seperator.$composite_no;
-
-}
 
 //Pdf version of transcript will be returend  in selected format
-function transcript_pdf(){
+function transcript($html=false){
+	//get next transaction for the day for the program
+   $next=exec_query("SELECT MAX(rec_id)+1 next FROM ".$GLOBALS['P_TABLES']['transcript'],Q_RET_ARRAY);
+	$trans_id=$next[0]['next'];
+   $transcpt_id='TC-'.gen_reg_no($trans_id).'-'.$_SESSION['user_id'].'-'.date('dmy');
+
+
+
    if(isset($_SESSION[PAGE]['transcpt_format'])&&$_SESSION[PAGE]['transcpt_format']=='FORMAT_L'){
       include(MOD_CLASSES."/transcript1_pdf_class.php");
    }else{
@@ -176,26 +148,43 @@ function transcript_pdf(){
 
    //Generate the transcript
    $with_marks =false;
+   $with_rank  =false;
    $note       ="";
-   if(isset($_SESSION[PAGE]['transcpt_marks']) && $_SESSION[PAGE]['transcpt_marks'] == 'WITH_MARKS'){
-      $with_marks=true;
+   $awards     ="";
+
+   if(isset($_SESSION[PAGE]['with_marks'])){
+      $with_marks=$_SESSION[PAGE]['with_marks'];
+   }
+
+   if(isset($_SESSION[PAGE]['with_rank'])){
+      $with_rank=style_text($_SESSION[PAGE]['with_rank']);
    }
 
    if(isset($_SESSION[PAGE]['transcpt_note'])){
-      $note=$_SESSION[PAGE]['transcpt_note'];
+      $note=style_text($_SESSION[PAGE]['transcpt_note']);
    }
 
-   $transcript=new Transcript($_SESSION[PAGE]['index_no'],$with_marks,style_text($note));
+   if(isset($_SESSION[PAGE]['awards'])){
+      $awards=style_text($_SESSION[PAGE]['awards']);
+   }
 
-   //Acquire pdf document
-   $pdf=$transcript->getPdf();
 
-   $pdf->Output($_SESSION[PAGE]['index_no'].'-transcript.pdf', 'I');
-   //$pdf->Output(TMP."/".$_SESSION[PAGE]['index_no']."_transcript.pdf", 'F');
-   //return $pdf_file;
+
+   $transcript=new Transcript($_SESSION[PAGE]['index_no'],$transcpt_id,$with_marks,$with_rank,$note,$awards);
+
+   if($html){
+      //Acquire html document
+      echo "<div style='font-size:70%;'>";
+      $transcript->getHTML();
+      echo "</div>";
+   }else{
+      //Acquire pdf document
+      $pdf=$transcript->getPDF();
+
+      $pdf->Output($_SESSION[PAGE]['index_no'].'-transcript.pdf', 'I');
+      //$pdf->Output(TMP."/".$_SESSION[PAGE]['index_no']."_transcript.pdf", 'F');
+      //return $pdf_file;
+   }
 }
 
-function gen_certificate(){
-   echo "cert";
-}
 ?>

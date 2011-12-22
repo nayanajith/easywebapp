@@ -224,11 +224,13 @@ function get_examids($batch){
 /*
  * Return array of exam ids for a given batch
  */
+$course_exam_arr=array();
 
 function getExamYear($examid){
    //grab first tow chars of the batch
    //exam_hid -> 2011-01-01:4:1
-   $reg    =substr($examid,0,10);
+   //$reg    =substr($examid,0,10);
+   $reg    =substr($examid,0,4);
    return  $reg;
 }
 
@@ -331,6 +333,12 @@ class Student{
 
    public function getBatch(){
       return $this->self['batch'];
+   }
+
+   public function getRank(){
+      $rank_query="SELECT rank FROM(SELECT index_no,degree_gpa,@rownum:=@rownum+1 rank FROM ".$this->self['gpa2'].",(SELECT @rownum:=0) r WHERE year='3' AND index_no LIKE CONCAT(LEFT('".$this->self['index_no']."',2),'%') ORDER BY degree_gpa) AS r WHERE index_no='".$this->self['index_no']."'";
+      $rank_array=exec_query($rank_query,Q_RET_ARRAY);
+      return $rank_array[0]['rank'];
    }
 
    /*
@@ -574,14 +582,14 @@ public function getTranscript(){
 
 
    public function getDGPV($year=null){
-      return round($this->gpaInfo[select_year($year)]['degree_gpv'],0);
+      return round($this->gpaInfo[$this->select_year($year)]['degree_gpv'],0);
    }
 
    /*
     * Return Overall Credits 
     */
    public function getTotalCredits($year=null){
-      return $this->gpaInfo[select_year($year)]['credits'];
+      return $this->gpaInfo[$this->select_year($year)]['credits'];
    }
 
 
@@ -590,21 +598,21 @@ public function getTranscript(){
     * Return Overall Grade Point Average
     */
    public function getDGPA($year=null){
-      return round($this->gpaInfo[select_year($year)]['degree_gpa'],0);
+      return round($this->gpaInfo[$this->select_year($year)]['degree_gpa'],0);
    }
 
    /*
     * Return Overall Grade Point Value
     */
    public function getCGPV($year=null){
-      return round($this->gpaInfo[select_year($year)]['class_gpv'],0);
+      return round($this->gpaInfo[$this->select_year($year)]['class_gpv'],0);
    }
 
    /*
     * Return Overall Grade Point Average
     */
    public function getCGPA($year=null){
-      return round($this->gpaInfo[select_year($year)]['class_gpa'],0);
+      return round($this->gpaInfo[$this->select_year($year)]['class_gpa'],0);
    }
 
 
@@ -612,14 +620,14 @@ public function getTranscript(){
     * Return Total credits for the given year
     */
    public function getYearCredits($year){
-      return $this->gpaInfo[select_year($year)]['credits'];
+      return $this->gpaInfo[$this->select_year($year)]['credits'];
    }
 
    /*
     * Return Degree GPV for a given year
     */
    public function getYearDGPV($year){
-      return $this->gpaInfo[select_year($year)]['credits'];
+      return $this->gpaInfo[$this->select_year($year)]['credits'];
    }
 
    /*

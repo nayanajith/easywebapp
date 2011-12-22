@@ -22,6 +22,7 @@ $program_tables=array(
    'filter'             =>'%sfilter',         
    'marks'              =>'%smarks',       
    'marks_stat'         =>'%smarks_stat',       
+   'transcript'         =>'%stranscript',       
    'student'            =>'%sstudent',
    'course_selection'   =>'%scourse_selection',
    'state'              =>'%sstate',
