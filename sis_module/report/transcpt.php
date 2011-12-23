@@ -66,17 +66,17 @@ if(isset($_REQUEST['form'])){
    $item_array=array('SUBJECT_TO_APPROVED_BY_THE_SENNATE','PENDING');
    $xhr_combobox->gen_xhr_static_combo('transcpt_note','Note',$xhr_combobox->get_val('transcpt_note'),210,$item_array,array('index_no','with_marks'),'transcpt_frm');
 
+   $item_array=array('A4','LEGAL');
+   $xhr_combobox->gen_xhr_static_combo('paper','Paper type',$xhr_combobox->get_val('paper','LEGAL'),60,$item_array,array('index_no','paper'),'transcpt_frm');
+
    $item_array=array(2,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3);
    $xhr_combobox->gen_xhr_static_combo('zoom_factor','Zoom factor',$xhr_combobox->get_val('zoom_factor','2.3'),40,$item_array,array('index_no','with_marks','zoom_factor'),'transcpt_frm');
-
 
    //If selected print the report with marks
    $xhr_combobox->gen_checkbox('with_marks','With marks',$xhr_combobox->get_val('with_marks'),null,null);
 
    //If selected print the report with rank
-   $xhr_combobox->gen_checkbox('show_rank','Show rank',$xhr_combobox->get_val('show_rank'),null,null);
-
-
+   $xhr_combobox->gen_checkbox('with_rank','Show rank',$xhr_combobox->get_val('with_rank'),null,null);
 
    $xhr_combobox->param_setter();$xhr_combobox->html_requester();
    echo "});";
@@ -136,8 +136,14 @@ function transcript($html=false){
 	//get next transaction for the day for the program
    $next=exec_query("SELECT MAX(rec_id)+1 next FROM ".$GLOBALS['P_TABLES']['transcript'],Q_RET_ARRAY);
 	$trans_id=$next[0]['next'];
-   $transcpt_id='TC-'.gen_reg_no($trans_id).'-'.$_SESSION['user_id'].'-'.date('dmy');
 
+   $user_id_len=3;
+   $user_id=$_SESSION['user_id'];
+   for($j=$user_id_len;$j>=strlen($user_id);$j--){
+      $user_id='0'.$user_id;
+   }
+
+   $transcpt_id=gen_reg_no($trans_id).'-'.$user_id.'-'.date('dm');
 
 
    if(isset($_SESSION[PAGE]['transcpt_format'])&&$_SESSION[PAGE]['transcpt_format']=='FORMAT_L'){
@@ -149,8 +155,9 @@ function transcript($html=false){
    //Generate the transcript
    $with_marks =false;
    $with_rank  =false;
-   $note       ="";
-   $awards     ="";
+   $note       =null;
+   $awards     =null;
+   $paper      ='LEGAL';
 
    if(isset($_SESSION[PAGE]['with_marks'])){
       $with_marks=$_SESSION[PAGE]['with_marks'];
@@ -164,13 +171,19 @@ function transcript($html=false){
       $note=style_text($_SESSION[PAGE]['transcpt_note']);
    }
 
+   if(isset($_SESSION[PAGE]['note'])){
+      $awards=style_text($_SESSION[PAGE]['note']);
+   }
+
    if(isset($_SESSION[PAGE]['awards'])){
       $awards=style_text($_SESSION[PAGE]['awards']);
    }
 
+   if(isset($_SESSION[PAGE]['paper'])){
+      $paper=style_text($_SESSION[PAGE]['paper']);
+   }
 
-
-   $transcript=new Transcript($_SESSION[PAGE]['index_no'],$transcpt_id,$with_marks,$with_rank,$note,$awards);
+   $transcript=new Transcript($_SESSION[PAGE]['index_no'],$transcpt_id,$with_marks,$with_rank,$note,$awards,$paper);
 
    if($html){
       //Acquire html document

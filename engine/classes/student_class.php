@@ -336,7 +336,7 @@ class Student{
    }
 
    public function getRank(){
-      $rank_query="SELECT rank FROM(SELECT index_no,degree_gpa,@rownum:=@rownum+1 rank FROM ".$this->self['gpa2'].",(SELECT @rownum:=0) r WHERE year='3' AND index_no LIKE CONCAT(LEFT('".$this->self['index_no']."',2),'%') ORDER BY degree_gpa) AS r WHERE index_no='".$this->self['index_no']."'";
+      $rank_query="SELECT rank FROM(SELECT index_no,degree_gpa,@rownum:=@rownum+1 rank FROM ".$this->self['gpa2'].",(SELECT @rownum:=0) r WHERE year='3' AND index_no LIKE CONCAT(LEFT('".$this->self['index_no']."',2),'%') ORDER BY degree_gpa DESC) AS r WHERE index_no='".$this->self['index_no']."'";
       $rank_array=exec_query($rank_query,Q_RET_ARRAY);
       return $rank_array[0]['rank'];
    }
