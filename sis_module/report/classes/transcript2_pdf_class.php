@@ -592,10 +592,10 @@ p{
 The following letter codes/symbols may be used to identify the type of course.
    <ul>
       <table>
-         <tr><td width="10%">ENH</td><td width="90%">- Enhancement Courses</td></tr>
-         <tr><td>*</td><td>- Non GPA contributing Courses</td></tr>
-         <tr><td>SCS</td><td>- Computer Science</td></tr>
-         <tr><td>ICT</td><td>- Information & Communication Technology</td></tr>
+         <tr><th width="10%">ENH</th><td width="90%">- Enhancement Courses</td></tr>
+         <tr><th>*</th><td>- Non GPA contributing Courses</td></tr>
+         <tr><th>SCS</th><td>- Computer Science</td></tr>
+         <tr><th>ICT</th><td>- Information & Communication Technology</td></tr>
       </table>
    </ul>
 </p>
@@ -612,16 +612,16 @@ The following letter codes/symbols may be used to identify the type of course.
    </ul>
 </p>
 
-
 <h3>GPA POLICY</h3>
 <p>
    When calculating the Grade Point Average (GPA), all course units contributing to GPA are weighted according to their corresponding credit values. Grades of all registered course units in a study program are taken into account when calculating the GPA.
+<br><br><br>
 </p>
-
 
 <h3>DEGREE PROGRAM</h3>
 <p>
    The University of Colombo School of Computing offers a 3-year Bachelor's Degree in Computer Science (BCSc), or a 3-year Bachelor's Degree in Information and Communication Technology (BICT), a 4-year Bachelor of Science Degree in Computer Science (BSc(Computer Science)) and a 4-year Bachelor of Science Degree in Information and Communication Technology (BSc (Information & Communication Technology)). The minimum number of credits  for a 3-year degree program is 90 and that for a 4-year program is 120.
+<br><br><br>
 </p>
 
 <h3>ACADEMIC CALENDER</h3>
@@ -656,8 +656,8 @@ The following letter codes/symbols may be used to identify the type of course.
 <h3>MEDIUM OF INSTRUCTIONS</h3>
 <p>
    All lectures and examinations of the course units are conducted in the English language
+<br><br><br>
 </p>
-
 
 <h3>AUTHENTICITY</h3>
 <p>
