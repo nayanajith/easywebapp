@@ -134,8 +134,11 @@ function transcript(){
 //Pdf version of transcript will be returend  in selected format
 function transcript($html=false){
 	//get next transaction for the day for the program
+   $trans_id=1;
    $next=exec_query("SELECT MAX(rec_id)+1 next FROM ".$GLOBALS['P_TABLES']['transcript'],Q_RET_ARRAY);
-	$trans_id=$next[0]['next'];
+   if($next){
+	   $trans_id=$next[0]['next'];
+   }
 
    $user_id_len=3;
    $user_id=$_SESSION['user_id'];

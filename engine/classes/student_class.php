@@ -307,7 +307,7 @@ class Student{
       /*Related tables*/
       $this->self['marks']    = $GLOBALS['P_TABLES']["marks"];
       $this->self['student']  = $GLOBALS['P_TABLES']["student"];
-      $this->self['gpa2']      = $GLOBALS['P_TABLES']["gpa2"];
+      $this->self['gpa']      = $GLOBALS['P_TABLES']["gpa"];
       //$this->self['grades']   = $GLOBALS['P_TABLES']["grades"];
       $this->self['course']   = $GLOBALS['P_TABLES']["course"];
 
@@ -336,7 +336,7 @@ class Student{
    }
 
    public function getRank(){
-      $rank_query="SELECT rank FROM(SELECT index_no,degree_gpa,@rownum:=@rownum+1 rank FROM ".$this->self['gpa2'].",(SELECT @rownum:=0) r WHERE year='3' AND index_no LIKE CONCAT(LEFT('".$this->self['index_no']."',2),'%') ORDER BY degree_gpa DESC) AS r WHERE index_no='".$this->self['index_no']."'";
+      $rank_query="SELECT rank FROM(SELECT index_no,degree_gpa,@rownum:=@rownum+1 rank FROM ".$this->self['gpa'].",(SELECT @rownum:=0) r WHERE year='3' AND index_no LIKE CONCAT(LEFT('".$this->self['index_no']."',2),'%') ORDER BY degree_gpa DESC) AS r WHERE index_no='".$this->self['index_no']."'";
       $rank_array=exec_query($rank_query,Q_RET_ARRAY);
       return $rank_array[0]['rank'];
    }
@@ -582,7 +582,7 @@ public function getTranscript(){
 
 
    public function getDGPV($year=null){
-      return round($this->gpaInfo[$this->select_year($year)]['degree_gpv'],0);
+      return round($this->gpaInfo[$this->select_year($year)]['degree_gpv'],2);
    }
 
    /*
@@ -598,21 +598,21 @@ public function getTranscript(){
     * Return Overall Grade Point Average
     */
    public function getDGPA($year=null){
-      return round($this->gpaInfo[$this->select_year($year)]['degree_gpa'],0);
+      return round($this->gpaInfo[$this->select_year($year)]['degree_gpa'],2);
    }
 
    /*
     * Return Overall Grade Point Value
     */
    public function getCGPV($year=null){
-      return round($this->gpaInfo[$this->select_year($year)]['class_gpv'],0);
+      return round($this->gpaInfo[$this->select_year($year)]['class_gpv'],2);
    }
 
    /*
     * Return Overall Grade Point Average
     */
    public function getCGPA($year=null){
-      return round($this->gpaInfo[$this->select_year($year)]['class_gpa'],0);
+      return round($this->gpaInfo[$this->select_year($year)]['class_gpa'],2);
    }
 
 
@@ -873,7 +873,7 @@ public function getTranscript(){
     * loading gpa information of the student
     */
    public function loadGPAData(){
-      $this->gpaInfo=exec_query("SELECT year,credits,class_gpv,class_gpa,degree_gpa,degree_gpv FROM ".$this->self['gpa2']." WHERE index_no ='".$this->self['index_no']."'",Q_RET_ARRAY,null,'year');
+      $this->gpaInfo=exec_query("SELECT year,credits,class_gpv,class_gpa,degree_gpa,degree_gpv FROM ".$this->self['gpa']." WHERE index_no ='".$this->self['index_no']."'",Q_RET_ARRAY,null,'year');
    
    }
 

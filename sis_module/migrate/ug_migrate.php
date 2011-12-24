@@ -4,9 +4,15 @@ $source   ="courseadmin";
 $dest      ="sis";
 $pc      ="cs";
 $cc      ="SCS";
-if($program_ == 'bict'){
-   $pc="it";
-   $cc="ICT";
+switch($program_){
+   case 'bict':
+      $pc="it";
+      $cc="ICT";
+   break;
+   case 'bit':
+      $pc="bit";
+      $cc="IT";
+   break;
 }
 $source   =isset($_REQUEST['source_db'])?$_REQUEST['source_db']:'';
 $dest      =isset($_REQUEST['dest_db'])?$_REQUEST['dest_db']:'';
@@ -14,17 +20,23 @@ $dest      =isset($_REQUEST['dest_db'])?$_REQUEST['dest_db']:'';
 $migrate_queries=array(
    //If the tables are filled with any data clean all
    "prepare1"   =>"DELETE FROM ".$program_."_student",
-   "prepare2"   =>"DELETE FROM  ".$program_."_marks",
+   "prepare2"   =>"DELETE FROM ".$program_."_marks",
    "prepare3"   =>"DELETE FROM ".$program_."_exam",
    "prepare4"   =>"DELETE FROM ".$program_."_batch",
    "prepare5"   =>"DELETE FROM ".$program_."_gpa",
    "prepare6"   =>"DELETE FROM ".$program_."_course",
+   "prepare7"   =>"DELETE FROM ".$program_."_student_state",
 
    //Reset auto increment numbers
    "prepare7"   =>"ALTER TABLE ".$program_."_exam AUTO_INCREMENT = 1",
    
    //migrate student information
    "student"   =>"REPLACE INTO ".$program_."_student(index_no,registration_no,initials,last_name,full_name,date_of_regist,date_of_graduation,date_of_birth,status,batch_id) SELECT IndexNo,RegNo,Initials,Name,fullname,dreg,dgrad,dob,upper(Status),LEFT(IndexNo,2) FROM ".$source.".".$pc."student",
+
+   //Migrate course information
+   "course"      =>"REPLACE INTO ".$program_."_course(course_id,student_year,semester,course_name,prerequisite,lecture_credits,practical_credits,maximum_students,compulsory,alt_course_id,offered_by,non_grade) SELECT CourseId,SYear,Semester,CourseName,Prerequisite,Credits_L,Credits_P,MaxStudents,Compulsory,AltCourseId,OfferedBy,GPACon FROM ".$source.".courses where courseid like '".$cc."%' or courseid like 'ENH%'",
+
+   "course2"   =>"UPDATE ".$program_."_course c,(SELECT MIN(course_id) course_id,course_name FROM ".$program_."_course GROUP BY course_name ORDER BY course_name,course_id) AS r SET c.alt_course_id=r.course_id WHERE c.course_name=r.course_name",
 
    //Migrate student marks
    "marks1"      =>"REPLACE INTO ".$program_."_marks(exam_hid,index_no,course_id,assignment_mark,paper_mark,final_mark,push) SELECT concat('20',LEFT(ExamId,2),'-01-01',':',LEFT(RIGHT(ExamId,2),1),':',RIGHT(ExamId,1)),IndexNo,CourseId,Marks1,Marks2,Marks3,Adjustment FROM ".$source.".".$pc."marks WHERE ".$source.".".$pc."marks.final NOT IN('NA','WH','CH','AB','MC','EO')  ",
@@ -42,18 +54,20 @@ $migrate_queries=array(
    //Extract batch ids from student information table
    "batch"      =>"REPLACE INTO ".$program_."_batch(batch_id,admission_year) SELECT DISTINCT LEFT(index_no,2),CONCAT('20',LEFT(index_no,2)) FROM ".$program_."_student",
 
-   //Migrate gpa information of the students
-   "gpa"         =>"REPLACE INTO ".$program_."_gpa(index_no,degree_class,GPV1,credits1,GPA1,GPV2,credits2,GPA2,GPV3,credits3,GPA3,GPV4,credits4,GPA4,GPV,GPA,credits) SELECT IndexNo,Tag,GPV1,credits1,GPA1,GPV2,credits2,GPA2,GPV3,credits3,GPA3,GPV4,credits4,GPA4,GPVT,GPAT,CreditsT FROM ".$source.".".$pc."gpv",
-
-   //Migrate course information
-   "course"      =>"REPLACE INTO ".$program_."_course(course_id,student_year,semester,course_name,prerequisite,lecture_credits,practical_credits,maximum_students,compulsory,alt_course_id,offered_by,non_grade) SELECT CourseId,SYear,Semester,CourseName,Prerequisite,Credits_L,Credits_P,MaxStudents,Compulsory,AltCourseId,OfferedBy,GPACon FROM ".$source.".courses where courseid like '".$cc."%' or courseid like 'ENH%'",
-
+   //Generate gpv information of the students
    "final_grade_gpv" =>"UPDATE ".$program_."_marks m,".$program_."_grades g,".$program_."_course c SET m.grand_final_mark=m.final_mark+m.push,m.grade=g.grade,m.gpv=g.gpv*(c.lecture_credits+c.practical_credits)  WHERE m.course_id=c.course_id AND (m.final_mark+m.push)=g.mark",
 
+   //Generate gpa information of the students
+   "gpa2"=>"REPLACE INTO ".$program_."_gpa(`index_no`,`year`,`degree_gpv`,`credits`,`degree_gpa`)(SELECT r.index_no,r.year,SUM(r.degree_gpv),SUM(r.credits),(SUM(r.degree_gpv)/SUM(r.credits)) FROM(SELECT m.index_no,MAX(m.degree_gpv) degree_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$program_."_marks m,".$program_."_course c WHERE m.course_id=c.course_id GROUP BY m.index_no,c.alt_course_id,c.student_year) as r group by r.index_no,r.year)",
 
-   "gpa2"=>"REPLACE INTO ".$program_."_gpa2(`index_no`,`year`,`gpv`,`credits`,`gpa`)(SELECT r.index_no,r.year,SUM(r.gpv),SUM(r.credits),(SUM(r.gpv)/SUM(r.credits)) FROM(SELECT m.index_no,MAX(m.gpv) gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$program_."_marks m,".$program_."_course c WHERE m.course_id=c.course_id AND index_no IN(SELECT index_no FROM ".$program_."_marks GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year)",
+   "gpa3"=>"REPLACE INTO ".$program_."_gpa(`index_no`,`credits`,`degree_gpv`,`degree_gpa`,`year`)(SELECT index_no,SUM(credits) credits ,SUM(degree_gpv) degree_gpv ,SUM(degree_gpv)/SUM(credits) degree_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year FROM ".$program_."_gpa WHERE year NOT IN('4T','3T') GROUP BY index_no HAVING(SUM(year) >=6))";
 
 );
+
+//Special case for BIT
+if($program_ == 'bit'){
+   $migrate_queries['student']  ="REPLACE INTO ".$program_."_student(index_no,registration_no,initials,last_name,full_name,batch_id) SELECT IndexNo,RegNo,Initials,Name,FName,LEFT(IndexNo,2) FROM ".$source.".".$pc."student";
+}
 
 $error='';
 
@@ -129,9 +143,10 @@ d_r('dijit.form.Button');
 </tr>
 </tr>
 <td>Program:</td><td>
-<select dojoType='dijit.form.ComboBox' name='program' >
-<option value='bcsc'>bcsc</option>
-<option value='bict'>bict</option>
+<select dojoType='dijit.form.Select' name='program' >
+<option value='bcsc'>BCSC</option>
+<option value='bict'>BICT</option>
+<option value='bit'>BIT</option>
 </select>
 </td></tr></table>
 </form>

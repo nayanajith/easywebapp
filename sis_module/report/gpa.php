@@ -104,7 +104,7 @@ function print_gpa(){
    }
 
 
-   $arr=exec_query("SELECT ".implode($row,",")." FROM ".$GLOBALS['P_TABLES']['gpa2']." WHERE index_no LIKE '".$_SESSION[PAGE]['batch_id']."%' $year $order_by",Q_RET_ARRAY);
+   $arr=exec_query("SELECT ".implode($row,",")." FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE index_no LIKE '".$_SESSION[PAGE]['batch_id']."%' $year $order_by",Q_RET_ARRAY);
 
    $report= "<tr><th>#</th><th>".implode($row,"</th><th>")."</th></tr>";
    $no=1;

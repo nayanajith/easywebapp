@@ -226,25 +226,25 @@ $db_columns=array(
 
    //Calculating gpa for all students affected
    $activity.='<li>Generating degree GPA...';
-   $calculate_gpa="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa2']."(`index_no`,`year`,`degree_gpv`,`credits`,`degree_gpa`)(SELECT r.index_no,r.year,SUM(r.degree_gpv),SUM(r.credits),(SUM(r.degree_gpv)/SUM(r.credits)) FROM(SELECT m.index_no,MAX(m.degree_gpv) degree_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c WHERE m.course_id=c.course_id GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year);";
+   $calculate_gpa="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`year`,`degree_gpv`,`credits`,`degree_gpa`)(SELECT r.index_no,r.year,SUM(r.degree_gpv),SUM(r.credits),(SUM(r.degree_gpv)/SUM(r.credits)) FROM(SELECT m.index_no,MAX(m.degree_gpv) degree_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c WHERE m.course_id=c.course_id GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year);";
    exec_query($calculate_gpa,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
 
    $activity.='<li>Generating degreee GPAT...';
-   $calculate_gpat="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa2']."(`index_no`,`credits`,`degree_gpv`,`degree_gpa`,`year`)(SELECT index_no,SUM(credits) credits ,SUM(degree_gpv) degree_gpv ,SUM(degree_gpv)/SUM(credits) degree_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year FROM ".$GLOBALS['P_TABLES']['gpa2']." WHERE year NOT IN('4T','3T') GROUP BY index_no HAVING(SUM(year) >=6));";
+   $calculate_gpat="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`credits`,`degree_gpv`,`degree_gpa`,`year`)(SELECT index_no,SUM(credits) credits ,SUM(degree_gpv) degree_gpv ,SUM(degree_gpv)/SUM(credits) degree_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE year NOT IN('4T','3T') GROUP BY index_no HAVING(SUM(year) >=6));";
    exec_query($calculate_gpat,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
    //Calculating class gpa for all students affected
    $activity.='<li>Generating class GPA for the affected students...';
-   $calculate_gpa="UPDATE ".$GLOBALS['P_TABLES']['gpa2']." AS g,(SELECT r.index_no,r.year,SUM(r.class_gpv) class_gpv,SUM(r.credits) credits,(SUM(r.class_gpv)/SUM(r.credits)) class_gpa FROM(SELECT m.index_no,MAX(m.class_gpv) class_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c WHERE m.course_id=c.course_id GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year) AS p SET g.class_gpv=p.class_gpv,g.class_gpa=p.class_gpa WHERE g.index_no=p.index_no AND g.year=p.year;";
+   $calculate_gpa="UPDATE ".$GLOBALS['P_TABLES']['gpa']." AS g,(SELECT r.index_no,r.year,SUM(r.class_gpv) class_gpv,SUM(r.credits) credits,(SUM(r.class_gpv)/SUM(r.credits)) class_gpa FROM(SELECT m.index_no,MAX(m.class_gpv) class_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c WHERE m.course_id=c.course_id GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year) AS p SET g.class_gpv=p.class_gpv,g.class_gpa=p.class_gpa WHERE g.index_no=p.index_no AND g.year=p.year;";
    exec_query($calculate_gpa,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
 
    $activity.='<li>Generating class GPAT for the affected students...';
-   $calculate_gpat="UPDATE ".$GLOBALS['P_TABLES']['gpa2']." AS g,(SELECT index_no,SUM(credits) credits ,SUM(class_gpv) class_gpv ,SUM(class_gpv)/SUM(credits) class_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year,'C' FROM ".$GLOBALS['P_TABLES']['gpa2']." WHERE year NOT IN('4T','3T') GROUP BY index_no HAVING(SUM(year) >=6)) AS p SET g.class_gpv=p.class_gpv, g.class_gpa=p.class_gpa WHERE g.year=p.year AND g.index_no=p.index_no";
+   $calculate_gpat="UPDATE ".$GLOBALS['P_TABLES']['gpa']." AS g,(SELECT index_no,SUM(credits) credits ,SUM(class_gpv) class_gpv ,SUM(class_gpv)/SUM(credits) class_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year,'C' FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE year NOT IN('4T','3T') GROUP BY index_no HAVING(SUM(year) >=6)) AS p SET g.class_gpv=p.class_gpv, g.class_gpa=p.class_gpa WHERE g.year=p.year AND g.index_no=p.index_no";
    exec_query($calculate_gpat,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
@@ -255,13 +255,13 @@ $db_columns=array(
 
    //Calculating gpa for all students affected
    $activity.='<li>Generating class GPA for the affected students...';
-   $calculate_class_gpa="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa2']."(`index_no`,`year`,`gpv`,`credits`,`gpa`,`degree_class`)(SELECT r.index_no,r.year,SUM(r.class_gpv),SUM(r.credits),(SUM(r.class_gpv)/SUM(r.credits)),'C' FROM(SELECT m.index_no,MAX(m.class_gpv) class_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c WHERE m.course_id=c.course_id AND index_no IN(select index_no from ".$GLOBALS['P_TABLES']['marks']." WHERE  course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND class_gpv > 0 AND state NOT IN('AB','MC')) GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year);";
+   $calculate_class_gpa="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`year`,`gpv`,`credits`,`gpa`,`degree_class`)(SELECT r.index_no,r.year,SUM(r.class_gpv),SUM(r.credits),(SUM(r.class_gpv)/SUM(r.credits)),'C' FROM(SELECT m.index_no,MAX(m.class_gpv) class_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c WHERE m.course_id=c.course_id AND index_no IN(select index_no from ".$GLOBALS['P_TABLES']['marks']." WHERE  course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND class_gpv > 0 AND state NOT IN('AB','MC')) GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year);";
    exec_query($calculate_class_gpa,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
 
    $activity.='<li>Generating class GPAT for the affected students...';
-   $calculate_class_gpat="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa2']."(`index_no`,`credits`,`gpv`,`gpa`,`year`,`degree_class`)(SELECT index_no,SUM(credits) credits ,SUM(gpv) gpv ,SUM(gpv)/SUM(credits) gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year,'C' FROM ".$GLOBALS['P_TABLES']['gpa2']." WHERE index_no IN(SELECT index_no FROM ".$GLOBALS['P_TABLES']['marks']." WHERE  course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND state NOT IN('AB','MC')) GROUP BY index_no HAVING(SUM(year) >=6));";
+   $calculate_class_gpat="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`credits`,`gpv`,`gpa`,`year`,`degree_class`)(SELECT index_no,SUM(credits) credits ,SUM(gpv) gpv ,SUM(gpv)/SUM(credits) gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year,'C' FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE index_no IN(SELECT index_no FROM ".$GLOBALS['P_TABLES']['marks']." WHERE  course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND state NOT IN('AB','MC')) GROUP BY index_no HAVING(SUM(year) >=6));";
    exec_query($calculate_class_gpat,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 

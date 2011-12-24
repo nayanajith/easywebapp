@@ -12,23 +12,18 @@ Tables for the program
 $program_tables=array(
    'eligibility'         =>'%seligibility',
    'course'               =>'%scourse',
-   'course_reg'         =>'%scourse_reg',
    'exam'               =>'%sexam',        
    'rubric'               =>'%srubric',        
    'paper'               =>'%spaper',        
    'push'               =>'%spush',        
    'gpa'                  =>'%sgpa',         
-   'gpa2'                  =>'%sgpa2',         
    'log'                  =>'%slog',         
    'filter'               =>'%sfilter',         
    'marks'               =>'%smarks',       
    'transcript'          =>'%stranscript',       
    'student'            =>'%sstudent',
-   'course_selection'   =>'%scourse_selection',
-   'state'               =>'%sstate',
+   'student_state'        =>'%sstudent_state',
    'batch'               =>'%sbatch',
-   'mcq_marking_logic'   =>'%smcq_marking_logic',
-   'staff'               =>'%sstaff'
 );     
 
 $GLOBALS['P_TABLES']=$program_tables;

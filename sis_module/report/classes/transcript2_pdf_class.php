@@ -83,7 +83,7 @@ class MYPDF extends TCPDF {
       $this->Ln(-4);
       //write1DBarcode($code, $type, $x='', $y='', $w='', $h='', $xres='', $style='', $align='')
 		//$this->write1DBarcode($this->header_info["transcpt_id"], 'CODABAR', '165', '', '40', '6.5', 0.4, $style, 'N');
-		$this->write1DBarcode($this->header_info["transcpt_id"], 'CODABAR', '10', '', '40', '6.5', 0.4, $style, 'N');
+		$this->write1DBarcode($this->header_info["transcpt_id"], 'CODABAR', '12', '', '50', '7', 0.4, $style, 'N');
 
 	   //Set font
       $this->SetFont('helvetica', '', 8);
@@ -449,13 +449,13 @@ Grade Point and Important Dates
          <br>
          <div class='section_title'>Key to Grades</div>
          <br>
-         &nbsp;&nbsp;<table border='1' style='border-collapse:collapse;' class='grade info' width='30mm' >
+         &nbsp;&nbsp;<table border='1' style='border-collapse:collapse;' class='grade' width='30mm' >
             $grades
          </table>
          <br>
          <div class='section_title'>Key to Other Codes Used</div>
          <br>
-         &nbsp;&nbsp;<table border='1' style='border-collapse:collapse;' class='grade info' width='50mm' >
+         &nbsp;&nbsp;<table border='1' style='border-collapse:collapse;' class='grade' width='50mm' >
             $other_codes
          </table>
          <br>
@@ -470,7 +470,7 @@ Grade Point and Important Dates
 EOS;
 
 
-      $transcript_back=<<<EOS
+      $transcript_back_old=<<<EOS
 <style>
 h3{
    text-align:center;
@@ -482,7 +482,6 @@ td{
 th{
    font-weight:bold;
 }
-
 </style>
 <table align='center'  width='185mm' cellpadding='5' border='1'>
    <tr>
@@ -571,9 +570,6 @@ EOS;
 
       $transcript_back=<<<EOS
 <style>
-h3{
-}
-
 td{
    text-align:justify;
 }
@@ -583,6 +579,11 @@ th{
 }
 p{
    text-align:justify;
+   margin:0px;
+   padding:0px;
+}
+ul{
+   margin:0px;
 }
 
 </style>
@@ -590,90 +591,85 @@ p{
 <h3>COURSE CODES</h3>
 <p>
 The following letter codes/symbols may be used to identify the type of course.
-   <ul>
-      <table>
-         <tr><th width="10%">ENH</th><td width="90%">- Enhancement Courses</td></tr>
-         <tr><th>*</th><td>- Non GPA contributing Courses</td></tr>
-         <tr><th>SCS</th><td>- Computer Science</td></tr>
-         <tr><th>ICT</th><td>- Information & Communication Technology</td></tr>
-      </table>
-   </ul>
 </p>
+<ul>
+<table>
+   <tr><th width="10%">ENH</th><td width="90%">- Enhancement Courses</td></tr>
+   <tr><th>*</th><td>- Non GPA contributing Courses</td></tr>
+   <tr><th>SCS</th><td>- Computer Science</td></tr>
+   <tr><th>ICT</th><td>- Information & Communication Technology</td></tr>
+</table>
+</ul>
 
 <h3>COURSE NUMBER SYSTEM</h3>
-<p>
-   <ul>
-      <table width="200px">
-         <tr><th>1001-1999</th><td>Year 1 Courses</td></tr>
-         <tr><th>2001-2999</th><td>Year 2 Courses</td></tr>
-         <tr><th>3001-3999</th><td>Year 3 Courses</td></tr>
-         <tr><th>4001-4999</th><td>Year 4 Courses</td></tr>
-      </table>
-   </ul>
-</p>
+<ul>
+<table width="200px">
+   <tr><th>1001-1999</th><td>Year 1 Courses</td></tr>
+   <tr><th>2001-2999</th><td>Year 2 Courses</td></tr>
+   <tr><th>3001-3999</th><td>Year 3 Courses</td></tr>
+   <tr><th>4001-4999</th><td>Year 4 Courses</td></tr>
+</table>
+</ul>
 
 <h3>GPA POLICY</h3>
 <p>
    When calculating the Grade Point Average (GPA), all course units contributing to GPA are weighted according to their corresponding credit values. Grades of all registered course units in a study program are taken into account when calculating the GPA.
-<br><br><br>
+<br>
 </p>
 
 <h3>DEGREE PROGRAM</h3>
 <p>
-   The University of Colombo School of Computing offers a 3-year Bachelor's Degree in Computer Science (BCSc), or a 3-year Bachelor's Degree in Information and Communication Technology (BICT), a 4-year Bachelor of Science Degree in Computer Science (BSc(Computer Science)) and a 4-year Bachelor of Science Degree in Information and Communication Technology (BSc (Information & Communication Technology)). The minimum number of credits  for a 3-year degree program is 90 and that for a 4-year program is 120.
-<br><br><br>
+   The University of Colombo School of Computing offers a 3-year Bachelor`s Degree in Computer Science (BCSc), or a 3-year Bachelor`s Degree in Information and Communication Technology (BICT), a 4-year Bachelor of Science Degree in Computer Science (BSc(Computer Science)) and a 4-year Bachelor of Science Degree in Information and Communication Technology (BSc (Information & Communication Technology)). The minimum number of credits  for a 3-year degree program is 90 and that for a 4-year program is 120.
+<br>
 </p>
 
 <h3>ACADEMIC CALENDER</h3>
-<p>
-   <ul>
-      <table width="300px">
-         <tr>
-            <th width="40%">&nbsp;</th><th  width="25%">Semester 1</th><th width="25%">Semester 2</th>
-         </tr>
-         <tr>
-            <th>First half</th><td>10 weeks</td><td>5 weeks</td>
-         </tr>
-         <tr>
-            <th>Semester break</th><td>1 week</td><td>1 week</td>
-         </tr>
-         <tr>
-            <th>Second half</th><td>5 weeks</td><td>10 weeks</td>
-         </tr>
-         <tr>
-            <th>Study leave</th><td>1 week</td><td>1 week</td>
-         </tr>
-         <tr>
-            <th>Examination</th><td>5 weeks</td><td>5 weeks</td>
-         </tr>
-         <tr>
-            <th>Vacation</th><td>2 weeks</td><td>4 weeks</td>
-         </tr>
-   </table>
-   </ul>
-</p>
+<ul>
+<table width="300px">
+   <tr>
+      <th width="40%">&nbsp;</th><th  width="25%">Semester 1</th><th width="25%">Semester 2</th>
+   </tr>
+   <tr>
+      <th>First half</th><td>10 weeks</td><td>5 weeks</td>
+   </tr>
+   <tr>
+      <th>Semester break</th><td>1 week</td><td>1 week</td>
+   </tr>
+   <tr>
+      <th>Second half</th><td>5 weeks</td><td>10 weeks</td>
+   </tr>
+   <tr>
+      <th>Study leave</th><td>1 week</td><td>1 week</td>
+   </tr>
+   <tr>
+      <th>Examination</th><td>5 weeks</td><td>5 weeks</td>
+   </tr>
+   <tr>
+      <th>Vacation</th><td>2 weeks</td><td>4 weeks</td>
+   </tr>
+</table>
+</ul>
 
 <h3>MEDIUM OF INSTRUCTIONS</h3>
 <p>
    All lectures and examinations of the course units are conducted in the English language
-<br><br><br>
+<br>
 </p>
 
 <h3>AUTHENTICITY</h3>
 <p>
    Authenticity of certificates can be verified by contacting the following officials
    <ul>
-      Address:<br>
-      Assistant Registrar UCSC<br>
-      35, Reid Avenue,<br>
-      Colombo 07, <br>
-      Sri Lanka.<br>
-      <br>
-      FAX:0112587239<br>
-      TEL:0112581245/7
+   Address:<br>
+   Assistant Registrar UCSC<br>
+   35, Reid Avenue,<br>
+   Colombo 07, <br>
+   Sri Lanka.<br>
+   <br>
+   FAX:0112587239<br>
+   TEL:0112581245/7
    </ul>
 </p>
-
 EOS;
 
 

@@ -59,7 +59,7 @@ $header ='
    </tr>
    <tr>
       <td style="font-size:25px;">
-      Academic Year '.$this->header_info["academic_year"].' - '.num_to_text($this->header_info["student_year"]).' Year Examination - Semester '.($this->header_info["student_year"]).' & '.($this->header_info["student_year"]+1).'
+      Academic Year '.$this->header_info["academic_year"].' - '.number_to_text($this->header_info["student_year"]).' Year Examination - Semester '.($this->header_info["student_year"]).' & '.($this->header_info["student_year"]+1).'
       </td>
    </tr>
    <tr>
