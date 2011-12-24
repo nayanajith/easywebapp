@@ -175,6 +175,7 @@ $program_table_schemas['marks_stat']="CREATE TABLE `%smarks_stat` (
   `medical`          int(3)         NOT NULL,
   `offended`         int(3)         NOT NULL,
   `grade_count`      varchar(150)   NOT NULL,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    PRIMARY KEY (`exam_hid`,`course_id`),
    FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`) ON UPDATE CASCADE ON DELETE SET NULL,
    FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL

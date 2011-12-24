@@ -1,13 +1,13 @@
 <?php
 
 $menu_array  = array(
-   "gpa"          =>"GPA",
+   "process"      =>"Process ALL",
    "push"         =>"Push students"
 );
 
 $toolbar   =array(
-   "gpa"         =>array(
-      'Generate'      =>array('action'=>'submit_form("gen")'),
+   "process"         =>array(
+      'Process'      =>array('action'=>'submit_form("process")'),
    ),
    "push"  =>array(
       'CSV'   =>array('icon'=>'Database','action'=>'submit_form("csv")'),
