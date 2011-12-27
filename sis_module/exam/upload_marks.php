@@ -215,70 +215,128 @@ $db_columns=array(
 
    //calculate grand_final_mark, degree_grade and degree_gpv for the uploaded marks
    $activity.='<li>Calculating grand_final, degree_grade and degree_gpv...';
-   exec_query("UPDATE ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['grades']." g,".$GLOBALS['P_TABLES']['course']." c SET m.grand_final_mark=m.final_mark+m.push,m.degree_grade=g.grade,m.degree_gpv=g.gpv*(c.lecture_credits+c.practical_credits),m.class_grade=g.grade,class_gpv=g.gpv*(c.lecture_credits+c.practical_credits) WHERE m.course_id=c.course_id AND (m.final_mark+m.push)=g.mark",Q_RET_NON);
+   $calculate_grand_final="
+      UPDATE ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['grades']." g,".$GLOBALS['P_TABLES']['course']." c 
+      SET m.grand_final_mark=m.final_mark+m.push,m.degree_grade=g.grade,m.degree_gpv=g.gpv*(c.lecture_credits+c.practical_credits),m.class_grade=g.grade,class_gpv=g.gpv*(c.lecture_credits+c.practical_credits) 
+      WHERE NOT ISNULL(m.final_mark) AND m.course_id=c.course_id AND (m.final_mark+m.push)=g.mark AND m.exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND m.course_id='".$_SESSION[PAGE]['course_id']."'";
+   exec_query($calculate_grand_final,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
    //calculate class_final_mark,class_grade and class_gpv for the uploaded marks
    $activity.='<li>Calculating class_final, class_grade and class_gpv...';
-   exec_query("UPDATE ".$GLOBALS['P_TABLES']['marks']." m,(SELECT exam_hid, index_no, course_id, g.gpv class_gpv, g.grade class_grade FROM(SELECT exam_hid, index_no, course_id, MAX(grand_final_mark) grand_final_mark,IF(grand_final_mark>=50,50,grand_final_mark) class_final_mark FROM ".$GLOBALS['P_TABLES']['marks']." GROUP BY index_no,course_id HAVING(COUNT(*) >= 2)) r,".$GLOBALS['P_TABLES']['grades']." g WHERE g.mark=r.class_final_mark) r,".$GLOBALS['P_TABLES']['course']." c SET  m.class_grade=r.class_grade, m.class_gpv=(r.class_gpv*(c.lecture_credits+practical_credits)) WHERE m.exam_hid=r.exam_hid AND m.index_no=r.index_no AND m.course_id=r.course_id AND m.course_id=c.course_id;",Q_RET_NON);
+   $calculate_class_final="
+   UPDATE ".$GLOBALS['P_TABLES']['marks']." m,(
+      SELECT exam_hid, index_no, course_id, g.gpv class_gpv, g.grade class_grade 
+      FROM(
+         SELECT m.exam_hid, m.index_no, m.course_id, MAX(m.grand_final_mark) grand_final_mark,IF(m.grand_final_mark>=50,50,m.grand_final_mark) class_final_mark 
+         FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c
+         WHERE m.course_id=c.course_id
+         GROUP BY m.index_no,c.alt_course_id 
+         HAVING(COUNT(*) >= 2)
+      ) r,".$GLOBALS['P_TABLES']['grades']." g 
+      WHERE g.mark=r.class_final_mark
+   ) r,".$GLOBALS['P_TABLES']['course']." c 
+   SET m.class_grade=r.class_grade, m.class_gpv=(r.class_gpv*(c.lecture_credits+practical_credits)) 
+   WHERE m.exam_hid=r.exam_hid AND m.index_no=r.index_no AND m.course_id=r.course_id AND m.course_id=c.course_id AND m.exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND m.course_id='".$_SESSION[PAGE]['course_id']."'";
+   exec_query($calculate_class_final,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
 
-   //Calculating gpa for all students affected
-   $activity.='<li>Generating degree GPA...';
-   $calculate_gpa="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`year`,`degree_gpv`,`credits`,`degree_gpa`)(SELECT r.index_no,r.year,SUM(r.degree_gpv),SUM(r.credits),(SUM(r.degree_gpv)/SUM(r.credits)) FROM(SELECT m.index_no,MAX(m.degree_gpv) degree_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c WHERE m.course_id=c.course_id GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year);";
-   exec_query($calculate_gpa,Q_RET_NON);
-   $activity.="<br>.".get_sql_error();
+   //Calculating degree GPA for all students affected
+   if($_SESSION[PAGE]['gpa']){
+      $activity.='<li>Generating degree GPA...';
+      $calculate_gpa="
+         REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`year`,`degree_gpv`,`credits`,`degree_gpa`)(
+            SELECT r.index_no,r.year,SUM(r.degree_gpv),SUM(r.credits),(SUM(r.degree_gpv)/SUM(r.credits)
+            )FROM(
+               SELECT m.index_no,MAX(m.degree_gpv) degree_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits 
+               FROM ".$GLOBALS['P_TABLES']['marks']." m, ".$GLOBALS['P_TABLES']['course']." c, ".$GLOBALS['P_TABLES']['gpa']." g 
+               WHERE  NOT ISNULL(m.degree_gpv) AND m.course_id=c.course_id AND m.index_no=g.index_no AND m.timestamp > g.timestamp 
+               GROUP BY m.index_no,c.alt_course_id,c.student_year
+            ) as r group by r.index_no,r.year
+         )";
+      exec_query($calculate_gpa,Q_RET_NON);
+      $activity.="<br>.".get_sql_error();
+   }
 
 
+   //Calculating degree GPAT for all students affected
    $activity.='<li>Generating degreee GPAT...';
-   $calculate_gpat="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`credits`,`degree_gpv`,`degree_gpa`,`year`)(SELECT index_no,SUM(credits) credits ,SUM(degree_gpv) degree_gpv ,SUM(degree_gpv)/SUM(credits) degree_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE year NOT IN('4T','3T') GROUP BY index_no HAVING(SUM(year) >=6));";
+   $calculate_gpat="
+      REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`credits`,`degree_gpv`,`degree_gpa`,`year`)(
+         SELECT index_no,SUM(credits) credits ,SUM(degree_gpv) degree_gpv ,SUM(degree_gpv)/SUM(credits) degree_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year 
+         FROM ".$GLOBALS['P_TABLES']['gpa']." 
+         WHERE year NOT IN('4T','3T') 
+         GROUP BY index_no 
+         HAVING(SUM(year) >=6)
+      )";
    exec_query($calculate_gpat,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
-   //Calculating class gpa for all students affected
+   //Calculating class GPA for all students affected
    $activity.='<li>Generating class GPA for the affected students...';
-   $calculate_gpa="UPDATE ".$GLOBALS['P_TABLES']['gpa']." AS g,(SELECT r.index_no,r.year,SUM(r.class_gpv) class_gpv,SUM(r.credits) credits,(SUM(r.class_gpv)/SUM(r.credits)) class_gpa FROM(SELECT m.index_no,MAX(m.class_gpv) class_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c WHERE m.course_id=c.course_id GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year) AS p SET g.class_gpv=p.class_gpv,g.class_gpa=p.class_gpa WHERE g.index_no=p.index_no AND g.year=p.year;";
+   $calculate_gpa="
+      UPDATE ".$GLOBALS['P_TABLES']['gpa']." AS g,(
+         SELECT r.index_no,r.year,SUM(r.class_gpv) class_gpv,SUM(r.credits) credits,(SUM(r.class_gpv)/SUM(r.credits)) class_gpa 
+         FROM(
+            SELECT m.index_no,MAX(m.class_gpv) class_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits 
+            FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c 
+            WHERE m.course_id=c.course_id 
+            GROUP BY m.index_no,m.course_id,c.student_year
+         ) as r 
+         GROUP BY r.index_no,r.year
+      ) AS p 
+      SET g.class_gpv=p.class_gpv,g.class_gpa=p.class_gpa 
+      WHERE g.index_no=p.index_no AND g.year=p.year;";
    exec_query($calculate_gpa,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
 
+   //Calculating class GPAT for all students affected
    $activity.='<li>Generating class GPAT for the affected students...';
-   $calculate_gpat="UPDATE ".$GLOBALS['P_TABLES']['gpa']." AS g,(SELECT index_no,SUM(credits) credits ,SUM(class_gpv) class_gpv ,SUM(class_gpv)/SUM(credits) class_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year,'C' FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE year NOT IN('4T','3T') GROUP BY index_no HAVING(SUM(year) >=6)) AS p SET g.class_gpv=p.class_gpv, g.class_gpa=p.class_gpa WHERE g.year=p.year AND g.index_no=p.index_no";
+   $calculate_gpat="
+      UPDATE ".$GLOBALS['P_TABLES']['gpa']." AS g,(
+         SELECT index_no,SUM(credits) credits ,SUM(class_gpv) class_gpv ,SUM(class_gpv)/SUM(credits) class_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year,'C' 
+         FROM ".$GLOBALS['P_TABLES']['gpa']." 
+         WHERE year NOT IN('4T','3T') 
+         GROUP BY index_no 
+         HAVING(SUM(year) >=6)
+      ) AS p 
+      SET g.class_gpv=p.class_gpv, g.class_gpa=p.class_gpa 
+      WHERE g.year=p.year AND g.index_no=p.index_no";
    exec_query($calculate_gpat,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
-
-
-/*
-
-
-   //Calculating gpa for all students affected
-   $activity.='<li>Generating class GPA for the affected students...';
-   $calculate_class_gpa="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`year`,`gpv`,`credits`,`gpa`,`degree_class`)(SELECT r.index_no,r.year,SUM(r.class_gpv),SUM(r.credits),(SUM(r.class_gpv)/SUM(r.credits)),'C' FROM(SELECT m.index_no,MAX(m.class_gpv) class_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['course']." c WHERE m.course_id=c.course_id AND index_no IN(select index_no from ".$GLOBALS['P_TABLES']['marks']." WHERE  course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND class_gpv > 0 AND state NOT IN('AB','MC')) GROUP BY m.index_no,m.course_id,c.student_year) as r group by r.index_no,r.year);";
-   exec_query($calculate_class_gpa,Q_RET_NON);
-   $activity.="<br>.".get_sql_error();
-
-
-   $activity.='<li>Generating class GPAT for the affected students...';
-   $calculate_class_gpat="REPLACE INTO ".$GLOBALS['P_TABLES']['gpa']."(`index_no`,`credits`,`gpv`,`gpa`,`year`,`degree_class`)(SELECT index_no,SUM(credits) credits ,SUM(gpv) gpv ,SUM(gpv)/SUM(credits) gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year,'C' FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE index_no IN(SELECT index_no FROM ".$GLOBALS['P_TABLES']['marks']." WHERE  course_id='".$_SESSION[PAGE]['course_id']."' AND exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND state NOT IN('AB','MC')) GROUP BY index_no HAVING(SUM(year) >=6));";
-   exec_query($calculate_class_gpat,Q_RET_NON);
-   $activity.="<br>.".get_sql_error();
-
- */
 
    //Get grade count for the selected course in selected exam
-   $arr_grade_count=exec_query("SELECT GROUP_CONCAT(grade) grades,GROUP_CONCAT(count) counts FROM(SELECT degree_grade grade ,COUNT(degree_grade) count FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' AND NOT ISNULL(degree_grade) GROUP BY degree_grade) AS r;",Q_RET_ARRAY);
-   $activity.="<br>.".get_sql_error();
-   $arr_grade_count=@array_combine(explode(',',$arr_grade_count[0]['grades']),explode(',',$arr_grade_count[0]['counts']));
-   $grade_count_json=json_encode($arr_grade_count);
+   $grade_count="
+      SELECT GROUP_CONCAT(grade) grades,GROUP_CONCAT(count) counts 
+      FROM(
+         SELECT degree_grade grade ,COUNT(degree_grade) count 
+         FROM ".$GLOBALS['P_TABLES']['marks']." 
+         WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' AND NOT ISNULL(degree_grade) 
+         GROUP BY degree_grade
+      ) AS r";
+   $arr_grade_count  =exec_query($grade_count,Q_RET_ARRAY);
+   $activity        .="<br>.".get_sql_error();
+   $arr_grade_count  =@array_combine(explode(',',$arr_grade_count[0]['grades']),explode(',',$arr_grade_count[0]['counts']));
+   $grade_count_json =json_encode($arr_grade_count);
 
 
    //Get state count for selected course in  selected exam
-   $arr_state_count=exec_query("SELECT GROUP_CONCAT(state) states,GROUP_CONCAT(count) counts FROM(SELECT state,COUNT(state) count FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' GROUP BY state) AS r;",Q_RET_ARRAY);
-   $activity.="<br>.".get_sql_error();
-   $arr_state_count=array_combine(explode(',',$arr_state_count[0]['states']),explode(',',$arr_state_count[0]['counts']));
-   $arr_state=array(
+   $state_count="
+      SELECT GROUP_CONCAT(state) states,GROUP_CONCAT(count) counts 
+      FROM(
+         SELECT state,COUNT(state) count 
+         FROM ".$GLOBALS['P_TABLES']['marks']." 
+         WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' 
+         GROUP BY state
+      ) AS r";
+
+   $arr_state_count  =exec_query($state_count,Q_RET_ARRAY);
+   $activity        .="<br>.".get_sql_error();
+   $arr_state_count  =array_combine(explode(',',$arr_state_count[0]['states']),explode(',',$arr_state_count[0]['counts']));
+   $arr_state        =array(
       'PR'=>'0',
       'AB'=>'0',
       'MC'=>'0',
@@ -288,25 +346,24 @@ $db_columns=array(
 
 
    //Get the statistics of selected course of the selected exam
-   $arr_statistics=exec_query("SELECT MAX(grand_final_mark) max,MIN(grand_final_mark) min,ROUND(AVG(grand_final_mark),2) avg,ROUND(STD(grand_final_mark),2) std FROM ".$GLOBALS['P_TABLES']['marks']." WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' AND state='PR';",Q_RET_ARRAY);
-   $arr_statistics=$arr_statistics[0];
+   $statistics="
+      SELECT MAX(grand_final_mark) max,MIN(grand_final_mark) min,ROUND(AVG(grand_final_mark),2) avg,ROUND(STD(grand_final_mark),2) std 
+      FROM ".$GLOBALS['P_TABLES']['marks']." 
+      WHERE exam_hid='".$_SESSION[PAGE]['exam_hid']."' AND course_id='".$_SESSION[PAGE]['course_id']."' AND state='PR'";
+   $arr_statistics   =exec_query($statistics,Q_RET_ARRAY);
+   $arr_statistics   =$arr_statistics[0];
 
 
    //Update the satistics data  of this course in this exam
    $activity.='<li>Updating statistics...';
-   $update_stat_query="REPLACE INTO ".$GLOBALS['P_TABLES']['marks_stat']."(`exam_hid`,`course_id`,`std`,`avg`,`max`,`min`,`present`,`absent`,`medical`,`offended`,`grade_count`)values('".$_SESSION[PAGE]['exam_hid']."','".$_SESSION[PAGE]['course_id']."','".$arr_statistics['std']."','".$arr_statistics['avg']."','".$arr_statistics['max']."','".$arr_statistics['min']."','".$arr_state_count['PR']."','".$arr_state_count['AB']."','".$arr_state_count['MC']."','".$arr_state_count['EO']."','".$grade_count_json."')";
+   $update_stat_query="
+      REPLACE INTO ".$GLOBALS['P_TABLES']['marks_stat']."(`exam_hid`,`course_id`,`std`,`avg`,`max`,`min`,`present`,`absent`,`medical`,`offended`,`grade_count`)VALUES(
+         '".$_SESSION[PAGE]['exam_hid']."','".$_SESSION[PAGE]['course_id']."','".$arr_statistics['std']."','".$arr_statistics['avg']."','".$arr_statistics['max']."','".$arr_statistics['min']."','".$arr_state_count['PR']."','".$arr_state_count['AB']."','".$arr_state_count['MC']."','".$arr_state_count['EO']."','".$grade_count_json."'
+      )";
    exec_query($update_stat_query,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
-
-   //Return json status
-   /*
-   if(trim($activity) != '' ){
-      return_status_json('ERROR',$activity);
-   }else{
-    */
-      return_status_json('OK',$activity."</ol>");
-   //}
+    return_status_json('OK',$activity."</ol>");
 }
 
 //id table mapper array

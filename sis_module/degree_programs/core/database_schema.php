@@ -135,12 +135,14 @@ PR->Present
 AB->ABsent
 MC->Medical
 EO->Exam offence
+CN->Cancel
+NA->Not Applied
 */
 
 $program_table_schemas['marks']="CREATE TABLE `%smarks` (
-  `exam_hid`         varchar(20)       NOT NULL,
+  `exam_hid`         varchar(20)   NOT NULL,
   `course_id`        char(10)      NOT NULL,
-  `index_no`         varchar(8)       NOT NULL,
+  `index_no`         varchar(8)    NOT NULL,
   `paper_mark`       int(3)        unsigned DEFAULT null,
   `assignment_mark`  int(3)        unsigned DEFAULT null,
   `final_mark`       varchar(3)    DEFAULT null,
@@ -150,16 +152,37 @@ $program_table_schemas['marks']="CREATE TABLE `%smarks` (
   `degree_gpv`       float         DEFAULT NULL,
   `class_grade`      varchar(2)    DEFAULT null,
   `class_gpv`        float         DEFAULT NULL,
-  `state`            enum('PR','AB','MC','EO') default 'PR',
+  `repeat_max`       int(1)        DEFAULT 0,
+  `state`            enum('PR','AB','MC','EO','CN','NA') default 'PR',
   `can_release`      boolean       DEFAULT true,
-  `deleted`          boolean     DEFAULT false,
-  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `note`             varchar(300)    DEFAULT NULL,
+  `deleted`          boolean        DEFAULT false,
+  `timestamp`        timestamp NOT  NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `note`             varchar(300)   DEFAULT NULL,
    PRIMARY KEY (`exam_hid`,`course_id`,`index_no`),
    FOREIGN KEY (`exam_hid`) REFERENCES %sexam(`exam_hid`) ON UPDATE CASCADE ON DELETE SET NULL,
    FOREIGN KEY (`course_id`) REFERENCES %scourse(`course_id`) ON UPDATE CASCADE ON DELETE SET NULL,
    FOREIGN KEY (`index_no`) REFERENCES %sstudent(`index_no`) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+$program_table_schemas['marks_course_view']="CREATE OR REPLACE VIEW %smarks_course_view AS 
+   SELECT 
+   index_no,
+   exam_hid,
+   course_id,
+   base_course_id,
+   semester,
+   student_year,
+   lecture_credits+practical_credits AS credits,
+   final_mark,
+   grand_final_mark,
+   class_gpv,
+   degree_gpv,
+   class_grade,
+   degree_grade,
+   state
+   FROM bit_marks 
+   INNER JOIN bit_course 
+   USING(course_id)";
 
 
 //Course_ID STD   AVG   MAX   MIN   PRESENT  ABSENT   MEDICAL  OFFENDED GRADE_COUNT
@@ -235,26 +258,28 @@ $program_table_schemas['student']="CREATE TABLE `%sstudent`(
 )ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
 $program_table_schemas['student_state']="CREATE TABLE `%sstudent_state` (
-  `index_no`         varchar(8)    DEFAULT NULL,
-  `current_year`     char(1)       DEFAULT NULL,
-  `status`           varchar(300)  DEFAULT NULL,
-  `comment_year1`    text          DEFAULT NULL,
-  `date_year1`       date          DEFAULT NULL,
-  `comment_year2`    text          DEFAULT NULL,
-  `date_year2`       date          DEFAULT NULL,
-  `comment_year3`    text          DEFAULT NULL,
-  `date_year3`       date          DEFAULT NULL,
-  `comment_year4`    text          DEFAULT NULL,
-  `date_year4`       date          DEFAULT NULL,
-  `deleted`          boolean       DEFAULT false,
-  `timestamp`        timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `note`             varchar(300)  DEFAULT NULL
+  `index_no`         varchar(8) DEFAULT NULL,
+  `current_year`     char(1) DEFAULT NULL,
+  `status`           varchar(300) DEFAULT NULL,
+  `year1_state`      text,
+  `year1_date`       varchar(20) DEFAULT NULL,
+  `year2_state`      text,
+  `year2_date`       varchar(20) DEFAULT NULL,
+  `year3_state`      text,
+  `year3_date`       varchar(20) DEFAULT NULL,
+  `year4_state`      text,
+  `year4_date`       varchar(20) DEFAULT NULL,
+  `deleted`          tinyint(1) DEFAULT '0',
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `note`             varchar(300) DEFAULT NULL
+   FOREIGN KEY (`index_no`) REFERENCES %sstudent(`index_no`) ON UPDATE CASCADE ON DELETE SET NULL,
+  PRIMARY KEY (`index_no`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 //new gpa table
 $program_table_schemas['gpa']="CREATE TABLE `%s_gpa` (
   `index_no`      varchar(8) NOT NULL,
-  `year`          enum('1','2','3','4','3T','4T') NOT NULL,
+  `year`          enum('1','2','3','4','2T','3T','4T') NOT NULL,
   `credits`       int(11) DEFAULT NULL,
   `class_gpv`     float DEFAULT NULL,
   `class_gpa`     float DEFAULT NULL,

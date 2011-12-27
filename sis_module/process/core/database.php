@@ -10,24 +10,20 @@ $system_tables=array(
 Tables for the program
 */
 $program_tables=array(
-   'eligibility'         =>'%seligibility',
-   'course'               =>'%scourse',
-   'course_reg'         =>'%scourse_reg',
-   'exam'               =>'%sexam',        
-   'rubric'               =>'%srubric',        
-   'paper'               =>'%spaper',        
-   'push'               =>'%spush',        
-   'gpa'                  =>'%sgpa',         
-   'log'                  =>'%slog',         
-   'filter'               =>'%sfilter',         
-   'marks'               =>'%smarks',       
-   'marks_stat'          =>'%smarks_stat',       
-   'student'            =>'%sstudent',
-   'course_selection'   =>'%scourse_selection',
-   'student_state'       =>'%sstudent_state',
-   'batch'               =>'%sbatch',
-   'mcq_marking_logic'   =>'%smcq_marking_logic',
-   'staff'               =>'%sstaff'
+   'eligibility'     =>'%seligibility',
+   'course'          =>'%scourse',
+   'exam'            =>'%sexam',        
+   'rubric'          =>'%srubric',        
+   'paper'           =>'%spaper',        
+   'gpa'             =>'%sgpa',         
+   'log'             =>'%slog',         
+   'filter'          =>'%sfilter',         
+   'marks'           =>'%smarks',       
+   'marks_stat'      =>'%smarks_stat',       
+   'student'         =>'%sstudent',
+   'student_state'   =>'%sstudent_state',
+   'batch'           =>'%sbatch',
+   'grades'          =>'%sgrades'
 );     
 
 $GLOBALS['P_TABLES']=$program_tables;
