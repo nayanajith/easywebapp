@@ -1,0 +1,7 @@
+{
+identifier:'user_id',
+label: 'user_id',
+items: [
+{user_id:'1',email:''}
+]
+}
