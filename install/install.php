@@ -136,7 +136,6 @@ return;
       <?php 
          include A_CORE."/loading.php";
          include A_CORE."/dojo_require.php";
-         include A_CORE."/script.php";
       ?>
 <script type='text/javascript' >
    //content:"<ul>"+msg+"</ul><br><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide();window.open('<?php echo W_ROOT;?>','_self')\" type='button'>OK</button></center>"
