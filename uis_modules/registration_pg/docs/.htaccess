@@ -1,4 +1,0 @@
-<FilesMatch "\.pdf$">  
-	Order Allow,Deny
-	Allow from All
-</FilesMatch>
