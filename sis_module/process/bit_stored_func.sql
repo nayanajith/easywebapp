@@ -29,12 +29,16 @@ BEGIN
    DECLARE effective_date     DATE;
    -- Minumum GPA to pass year-2
    DECLARE min_gpa            FLOAT; 
+   -- Minumum credits to pass year-2
+   DECLARE min_credits        INT(3); 
    -- Students current GPA
    DECLARE gpa                FLOAT; 
+   -- Students current credits
+   DECLARE credits            INT(3); 
    -- to hold wether student passwd the year or not
    DECLARE pass               BOOLEAN; 
    -- to hold wether student eligible for HDIT
-   DECLARE DIG_DIP            VARCHAR(10); 
+   DECLARE dig_dip            VARCHAR(10); 
 
 
    -- passing the optional lms courses is not required to get the HDIT
@@ -42,6 +46,9 @@ BEGIN
 
    -- minimum gpa to pass year2
    SET min_gpa          = 1.5; 
+
+   -- minimum credits to pass year2
+   SET min_credits      = 30; 
 
    -- get the latest revision number used currently for the courses
    SELECT MAX(revision) INTO revision_ FROM bit_course WHERE student_year=year_;
@@ -54,7 +61,7 @@ BEGIN
    SELECT count(*) INTO comp_all_count_ FROM bit_course WHERE student_year=year_ AND revision=revision_  AND compulsory;
 
    -- year-3 total gpa of the student 
-   SELECT class_gpa INTO gpa FROM bit_gpa WHERE index_no=index_no_ AND year='1';
+   SELECT class_gpa,credits INTO gpa,credits FROM bit_gpa WHERE index_no=index_no_ AND year='1';
 
    -- count the number of lms asessments passed 'CM'
    SELECT count(*) INTO lms_count_ FROM bit_marks INNER JOIN bit_course USING(course_id) WHERE index_no=index_no_ AND student_year=year_ AND final_mark = 'CM' ;
@@ -63,20 +70,20 @@ BEGIN
    SELECT MAX(LEFT(exam_hid,10)) INTO effective_date FROM bit_marks INNER JOIN bit_course USING(course_id) WHERE index_no=index_no_ AND student_year=year_ AND repeat_max >= 1;
 
    -- Checking the pass criteria of year-2
-   IF gpa >= min_gpa THEN
+   IF gpa >= min_gpa && credits >= min_credits THEN
       SET pass=TRUE;
    ELSE
-      SET pass=false;
+      SET pass=FALSE;
    END IF;
 
    -- If the student satisfy all the conditions make an entry for HDIT
-   IF lms_count_ >= to_sit_lms_min_ AND  to_sit_comp_count_ = 0 THEN
+   IF NOT ISNULL(lms_count_) AND lms_count_ >= to_sit_lms_min_ AND NOT ISNULL(to_sit_comp_count_) AND  to_sit_comp_count_ = 0 THEN
       IF index_no_ LIKE '01%' OR  index_no_ LIKE '02%' OR index_no_ LIKE '03%' OR index_no_ LIKE '04%' OR index_no_ LIKE '05%' OR index_no_ LIKE '06%' THEN
-         SET DIG_DIP ='CIT'; 
+         SET dig_dip ='CIT'; 
       ELSE
-         SET DIG_DIP ='DIT'; 
+         SET dig_dip ='DIT'; 
       END IF;
-      REPLACE INTO bit_student_state(`index_no`,`year1_state`,`year1_pass`,`year1_date`)values(index_no_,DIG_DIP,pass,effective_date);
+      REPLACE INTO bit_student_state(`index_no`,`student_year`,`status`,`comment`,`effective_date`)values(index_no_,1,pass,dig_dip,effective_date);
    ELSE
       -- Prepare the comment for the compulsory courses
       IF to_sit_comp_count_ = 0 THEN
@@ -98,11 +105,11 @@ BEGIN
 
 
        -- update the database with the information found
-      REPLACE INTO bit_student_state(`index_no`,`year1_state`,year1_pass)values(index_no_,CONCAT_WS(',',to_sit_comp_,to_sit_lms_),pass);
+      REPLACE INTO bit_student_state(`index_no`,`student_year`,`comment`,`status`)values(index_no_,1,CONCAT_WS(',',to_sit_comp_,to_sit_lms_),pass);
    END IF;
    
    -- return some information to the query 
-   RETURN CONCAT_WS(', ',to_sit_comp_,to_sit_lms_,pass,'DIT:',DIG_DIP,lms_count_,to_sit_comp_count_);
+   RETURN CONCAT_WS(', ',to_sit_comp_,to_sit_lms_,pass,'DIT:',dig_dip,lms_count_,to_sit_comp_count_);
 
 END;             
 ||
@@ -150,7 +157,7 @@ BEGIN
    -- to hold wether student passwd the year or not
    DECLARE pass               BOOLEAN; 
    -- to hold wether student eligible for HDIT
-   DECLARE DIG_DIP            VARCHAR(10); 
+   DECLARE dig_dip            VARCHAR(10); 
 
 
    -- 4 optional course should be passed ('C') to get the HDIT 
@@ -202,11 +209,11 @@ BEGIN
    -- If the student satisfy all the conditions make an entry for HDIT
    IF lms_count_ >= to_sit_lms_min_ AND  opt_count_ >= to_sit_opt_min_ AND to_sit_comp_count_ = 0 THEN
       IF index_no_ LIKE '01%' OR  index_no_ LIKE '02%' OR index_no_ LIKE '03%' OR index_no_ LIKE '04%' OR index_no_ LIKE '05%' OR index_no_ LIKE '06%' OR index_no_ LIKE '07%' THEN
-         SET DIG_DIP ='ACIT'; 
+         SET dig_dip ='ACIT'; 
       ELSE
-         SET DIG_DIP ='HDIT'; 
+         SET dig_dip ='HDIT'; 
       END IF;
-      REPLACE INTO bit_student_state(`index_no`,`year2_state`,`year2_pass`,`year2_date`)values(index_no_,DIG_DIP,pass,effective_date);
+      REPLACE INTO bit_student_state(`index_no`,`year2_state`,`year2_pass`,`year2_date`)values(index_no_,dig_dip,pass,effective_date);
    ELSE
       -- Prepare the comment for the compulsory courses
       IF to_sit_comp_count_ = 0 THEN
@@ -238,7 +245,7 @@ BEGIN
    END IF;
    
    -- return some information to the query 
-   RETURN CONCAT_WS(', ',to_sit_comp_,to_sit_opt_,to_sit_lms_,pass,'HDIT:',DIG_DIP,lms_count_,opt_count_,to_sit_comp_count_);
+   RETURN CONCAT_WS(', ',to_sit_comp_,to_sit_opt_,to_sit_lms_,pass,'HDIT:',dig_dip,lms_count_,opt_count_,to_sit_comp_count_);
 
 END;             
 ||
@@ -329,7 +336,7 @@ BEGIN
 
    -- If the student satisfy all the conditions make an entry for HDIT
    IF opt_count_ >= to_sit_opt_min_ AND to_sit_comp_count_ = 0 THEN
-      REPLACE INTO bit_student_state(`index_no`,`year2_state`,`year2_pass`,`year2_date`)values(index_no_,HDIT,pass,effective_date);
+      REPLACE INTO bit_student_state(`index_no`,`year3_state`,`year3_pass`,`year3_date`)values(index_no_,'BIT',pass,effective_date);
    ELSE
       -- Prepare the comment for the compulsory courses
       IF to_sit_comp_count_ = 0 THEN
@@ -354,14 +361,20 @@ BEGIN
    END IF;
    
    -- return some information to the query 
-   RETURN CONCAT_WS(', ',to_sit_comp_,to_sit_opt_,pass,'HDIT:',HDIT,to_sit_comp_count_);
+   RETURN CONCAT_WS(', ',to_sit_comp_,to_sit_opt_,pass,'HDIT:',pass,to_sit_comp_count_);
 
 END;             
 ||
 
 delimiter ;
 
-
+SELECT m.index_no,process_y1(m.index_no,1) tosit
+FROM  bit_marks AS m
+INNER JOIN bit_course AS c
+USING(course_id)
+WHERE c.student_year=1
+AND m.index_no LIKE '03%'
+GROUP BY index_no
 
 /*
 SELECT m.index_no,process_y2(m.index_no,2) tosit
@@ -370,16 +383,15 @@ INNER JOIN bit_course AS c
 USING(course_id)
 WHERE c.student_year=2
 GROUP BY index_no
-*/
 
 SELECT m.index_no,process_y3(m.index_no,3) tosit
 FROM  bit_marks AS m
 INNER JOIN bit_course AS c
 USING(course_id)
 WHERE c.student_year=3
-AND index_no LIKE '06%'
 GROUP BY index_no
 
+*/
 
 
 /*

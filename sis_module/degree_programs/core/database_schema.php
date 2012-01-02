@@ -259,19 +259,12 @@ $program_table_schemas['student']="CREATE TABLE `%sstudent`(
 
 $program_table_schemas['student_state']="CREATE TABLE `%sstudent_state` (
   `index_no`         varchar(8) DEFAULT NULL,
-  `current_year`     char(1) DEFAULT NULL,
+  `student_year`     char(1) DEFAULT NULL,
   `status`           varchar(300) DEFAULT NULL,
-  `year1_state`      text,
-  `year1_date`       varchar(20) DEFAULT NULL,
-  `year2_state`      text,
-  `year2_date`       varchar(20) DEFAULT NULL,
-  `year3_state`      text,
-  `year3_date`       varchar(20) DEFAULT NULL,
-  `year4_state`      text,
-  `year4_date`       varchar(20) DEFAULT NULL,
-  `deleted`          tinyint(1) DEFAULT '0',
+  `comment`          text DEFAULT NULL,
+  `effective_date`   varchar(20) DEFAULT NULL,
   `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `note`             varchar(300) DEFAULT NULL
+  `note`             varchar(300) DEFAULT NULL,
    FOREIGN KEY (`index_no`) REFERENCES %sstudent(`index_no`) ON UPDATE CASCADE ON DELETE SET NULL,
   PRIMARY KEY (`index_no`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";

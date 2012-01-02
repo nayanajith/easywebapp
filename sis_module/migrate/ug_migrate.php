@@ -54,6 +54,7 @@ $migrate_queries=array(
    //Extract batch ids from student information table
    "batch"      =>"REPLACE INTO ".$program_."_batch(batch_id,admission_year) SELECT DISTINCT LEFT(index_no,2),CONCAT('20',LEFT(index_no,2)) FROM ".$program_."_student",
 
+   /*
    //Generate gpv information of the students
    "final_grade_gpv" =>"UPDATE ".$program_."_marks m,".$program_."_grades g,".$program_."_course c SET m.grand_final_mark=m.final_mark+m.push,m.grade=g.grade,m.gpv=g.gpv*(c.lecture_credits+c.practical_credits)  WHERE m.course_id=c.course_id AND (m.final_mark+m.push)=g.mark AND m.state='PR'",
 
@@ -61,6 +62,7 @@ $migrate_queries=array(
    "gpv2"=>"REPLACE INTO ".$program_."_gpa(`index_no`,`year`,`degree_gpv`,`credits`,`degree_gpa`)(SELECT r.index_no,r.year,SUM(r.degree_gpv),SUM(r.credits),(SUM(r.degree_gpv)/SUM(r.credits)) FROM(SELECT m.index_no,MAX(m.degree_gpv) degree_gpv,c.student_year year,c.lecture_credits+c.practical_credits credits FROM ".$program_."_marks m,".$program_."_course c WHERE m.state='PR' AND m.course_id=c.course_id GROUP BY m.index_no,c.alt_course_id,c.student_year) as r group by r.index_no,r.year)",
 
    "gpv3"=>"REPLACE INTO ".$program_."_gpa(`index_no`,`credits`,`degree_gpv`,`degree_gpa`,`year`)(SELECT index_no,SUM(credits) credits ,SUM(degree_gpv) degree_gpv ,SUM(degree_gpv)/SUM(credits) degree_gpa, if(SUM(year)=6,'3T',if(SUM(year)=10,'4T',0)) year FROM ".$program_."_gpa WHERE year NOT IN('4T','3T') GROUP BY index_no HAVING(SUM(year) >=6))",
+    */
 
 );
 
@@ -68,6 +70,13 @@ $migrate_queries=array(
 if($program_ == 'bit'){
    $migrate_queries['student']  ="REPLACE INTO ".$program_."_student(index_no,registration_no,initials,last_name,full_name,batch_id) SELECT IndexNo,RegNo,Initials,Name,FName,LEFT(IndexNo,2) FROM ".$source.".".$pc."student";
    $migrate_queries['course']   ="REPLACE INTO ".$program_."_course(course_id,student_year,semester,course_name,prerequisite,lecture_credits,practical_credits,maximum_students,compulsory,alt_course_id,offered_by,non_grade) SELECT CourseId,SYear,Semester,CourseName,Prerequisite,Credits_L,Credits_P,MaxStudents,Compulsory,AltCourseId,OfferedBy,GPACon FROM ".$source.".courses where courseid like '".$cc."%' or courseid like 'LMS%'";
+   $migrate_queries['course1']  ="UPDATE ".$program_."_course SET lecture_credits=4,practical_credits=0 WHERE course_id LIKE '".$cc."%'";
+   $migrate_queries['course2']  ="UPDATE ".$program_."_course SET lecture_credits=0,practical_credits=12 WHERE course_id='IT6103'";
+   $migrate_queries['course3']  ="UPDATE ".$program_."_course SET compulsory=1 WHERE student_year=1";
+   $migrate_queries['course4']  ="UPDATE ".$program_."_course SET compulsory=1 WHERE course_id like 'IT31%' OR course_id LIKE  'IT32%' OR course_id LIKE  'IT41%' OR course_id LIKE  'IT42%'";
+   $migrate_queries['course5']  ="UPDATE ".$program_."_course SET compulsory=1 WHERE course_id like 'IT51%' OR course_id LIKE  'IT52%' OR course_id LIKE  'IT61%'";
+   $migrate_queries['course6']  ="UPDATE ".$program_."_course SET compulsory=0 WHERE NOT compulsory=1";
+   $migrate_queries['course7']  ="UPDATE ".$program_."_course SET revision=right(course_id,2)";
 }
 
 $error='';

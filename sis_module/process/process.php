@@ -72,34 +72,6 @@ if(isset($_REQUEST['form'])){
 function process_all(){
    $activity="";
 
-   //Selecting repeat max for all courses in all exams for all students
-   $activity.='<li>Selecting repeat max for all courses in all exams for all students...';
-   exec_query("UPDATE ".$GLOBALS['P_TABLES']['marks']."  SET repeat_max=0",Q_RET_NON);
-   $set_repeat_max="
-      UPDATE ".$GLOBALS['P_TABLES']['marks']." m,(
-         SELECT m.exam_hid, m.index_no, m.base_course_id, m.grand_final_mark, (
-            SELECT COUNT(base_course_id) 
-            FROM ".$GLOBALS['P_TABLES']['marks']." 
-            WHERE index_no=m.index_no AND base_course_id=m.base_course_id
-            GROUP BY base_course_id
-         ) AS count
-         FROM ".$GLOBALS['P_TABLES']['marks']." m
-         WHERE m.state='PR' 
-            AND m.exam_hid=(
-               SELECT exam_hid 
-               FROM ".$GLOBALS['P_TABLES']['marks']." 
-               WHERE index_no=m.index_no AND base_course_id=m.base_course_id 
-               ORDER BY grand_final_mark DESC 
-               LIMIT 1
-            )
-         GROUP BY m.index_no,m.base_course_id
-      ) AS r
-      SET m.repeat_max=r.count
-      WHERE m.exam_hid=r.exam_hid AND m.index_no=r.index_no AND m.base_course_id=r.base_course_id
-   ";
-   exec_query($set_repeat_max,Q_RET_NON);
-   $activity.="<br>.".get_sql_error();
-
    //calculate grand_final_mark, degree_grade and degree_gpv for the uploaded marks
    $activity.='<li>Calculating grand_final, degree_grade and degree_gpv...';
    $calculate_grand_final="
@@ -107,6 +79,37 @@ function process_all(){
       SET m.grand_final_mark=m.final_mark+m.push,m.degree_grade=g.grade,m.degree_gpv=g.gpv*(c.lecture_credits+c.practical_credits),m.class_grade=g.grade,class_gpv=g.gpv*(c.lecture_credits+c.practical_credits) 
       WHERE NOT ISNULL(m.final_mark) AND m.course_id=c.course_id AND (m.final_mark+m.push)=g.mark AND m.state='PR'";
    exec_query($calculate_grand_final,Q_RET_NON);
+   $activity.="<br>.".get_sql_error();
+
+
+   //Selecting repeat max for all courses in all exams for all students
+   $activity.='<li>Selecting repeat max for all courses in all exams for all students...';
+   exec_query("UPDATE ".$GLOBALS['P_TABLES']['marks']."  SET repeat_max=0",Q_RET_NON);
+   $set_repeat_max="
+      UPDATE ".$GLOBALS['P_TABLES']['marks']." m,(
+         SELECT m.exam_hid, m.index_no, m.course_id, m.grand_final_mark, (
+            SELECT COUNT(c.alt_course_id) 
+            FROM ".$GLOBALS['P_TABLES']['marks']." mm
+            INNER JOIN ".$GLOBALS['P_TABLES']['course']." c
+            USING (course_id)
+            WHERE mm.index_no=m.index_no AND c.course_id=m.course_id
+            GROUP BY c.alt_course_id
+         ) AS count
+         FROM ".$GLOBALS['P_TABLES']['marks']." m
+         WHERE m.state='PR' 
+            AND m.exam_hid=(
+               SELECT exam_hid 
+               FROM ".$GLOBALS['P_TABLES']['marks']." 
+               WHERE index_no=m.index_no AND course_id=m.course_id 
+               ORDER BY grand_final_mark DESC 
+               LIMIT 1
+            )
+         GROUP BY m.index_no,m.course_id
+      ) AS r
+      SET m.repeat_max=r.count
+      WHERE m.exam_hid=r.exam_hid AND m.index_no=r.index_no AND m.course_id=r.course_id
+   ";
+   exec_query($set_repeat_max,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
 
    //calculate class_final_mark,class_grade and class_gpv for the uploaded marks
@@ -192,21 +195,6 @@ function process_all(){
       WHERE g.year=p.year AND g.index_no=p.index_no";
    exec_query($calculate_gpat,Q_RET_NON);
    $activity.="<br>.".get_sql_error();
-
-
-
-   /*year 1 pass*/
-   $year1_pass="SELECT index_no,class_gpa,(SELECT MAX(exam_hid) FROM ".$GLOBALS['P_TABLES']['marks_course_view']." WHERE index_no=bit_gpa.index_no AND student_year=1) FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE year=1 AND class_gpa >= 1.5";
-
-   /*YEAR 2 pass*/
-   $year2_pass="SELECT index_no,class_gpa,(SELECT MAX(exam_hid) FROM ".$GLOBALS['P_TABLES']['marks_course_view']." WHERE index_no=bit_gpa.index_no AND student_year=2) FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE year='2T' AND class_gpa >= 1.5";
-
-   /*YEAR 3 pass*/
-   $bit_pass="SELECT index_no,class_gpa,(SELECT MAX(exam_hid) FROM ".$GLOBALS['P_TABLES']['marks_course_view']." WHERE index_no=bit_gpa.index_no AND student_year=3) FROM ".$GLOBALS['P_TABLES']['gpa']." WHERE year='3T' AND class_gpa >= 2";
-
-
-
-
 
    return_status_json('OK',$activity);
 }
