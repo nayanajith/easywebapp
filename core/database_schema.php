@@ -35,7 +35,7 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   `theme`             varchar(20) DEFAULT NULL,
   `layout`             varchar(20) DEFAULT NULL,
   `homeroom`          varchar(5) DEFAULT NULL,
-  `programs`          varchar(255) DEFAULT NULL,
+  `programs`          text DEFAULT NULL,
   `last_login`       timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `failed_login`       decimal(10,0) DEFAULT NULL,
   `profile_id`       decimal(10,0) DEFAULT NULL,
