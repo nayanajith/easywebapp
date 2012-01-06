@@ -104,7 +104,7 @@ function after_login() {
    return "
    <div dojoType='dijit.form.Form' id='myForm' jsId='myForm' encType='multipart/form-data' 
    action='".$GLOBALS['PAGE_GEN']."?page=".PAGE."&module=".MODULE."' method='REQUEST' >
-   <span>Welcome ".$_SESSION['fullname']."</span>
+   <span>Loged in as ".$_SESSION['fullname']."</span>
    <button dojoType='dijit.form.Button' style='color:black;' type=submit name=logout value=logout>Logout</button>
    </div>";
 }
