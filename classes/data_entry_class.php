@@ -113,7 +113,7 @@ class Formgenerator {
          }
 
          if(is_array($key)){
-            $this->self['key']      = $key[0];
+            $this->self['key']      = $key[key($key)];
             $this->self['keys']      = $key;
          }else{
             $this->self['key']      = $key;
