@@ -49,8 +49,9 @@ ini_set('memory_limit','1024M');
 ini_set('max_execution_time','600');
 ini_set('max_input_time','120');
 
-/*-----------------------Load basic config and needs -------------------------*/
+/*-------------------Load configuration and common needs ---------------------*/
 include "config.php";
+include A_CORE."/common.php";
 
 /*--------------------------Set global error log -----------------------------*/
 ini_set('error_log',ERROR_LOG);
@@ -62,13 +63,14 @@ if(file_exists(DB_CONF)){
    include INSTALLER;
    exit();   
 }
-include A_CORE."/database.php";
-include A_CORE."/common.php";
-include A_CORE."/permission.php";
 /*--------------------------Prevent SQL injection ----------------------------*/
 include A_CORE."/security.php";
 $secure = new Secure();
 $secure->secureGlobals();
+
+/*-----------------Load permission and database functions --------------------*/
+include A_CORE."/permission.php";
+include A_CORE."/database.php";
 
 /*-----------------Check availability of the database-------------------------*/
 if(!opendb()){
