@@ -1,16 +1,4 @@
 <!DOCTYPE html> 
-<?php
-$GLOBALS['VIEW']=array(
-   'CSS'       =>'',
-   'JS'        =>'',
-   'LOADING'   =>'',
-   'LOGIN'     =>'',
-   'BREADCRUMB'=>'',
-   'BODY'      =>'',
-   'MODULE'    =>'',
-   'FOOTER'    =>''
-);
-?>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 
 <html>
@@ -20,15 +8,14 @@ $GLOBALS['VIEW']=array(
 
 <!--_________________________________CSS_____________________________________-->
       <?php 
-         include A_CORE."/style.php";
+         echo $GLOBALS['VIEW']['CSS'];
       ?>
 <!--______________________________FAVICON____________________________________-->
       <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>" type="image/x-icon" >
 
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
-         include A_CORE."/dojo_require.php";
-         include A_CORE."/status_bar_func.php";
+         echo $GLOBALS['VIEW']['JS'];
       ?>
    </head>
 
@@ -37,7 +24,7 @@ $GLOBALS['VIEW']=array(
 
 <!--__________________________start loading ________________________________-->
    <?php
-      include A_CORE."/loading.php";
+      echo $GLOBALS['VIEW']['LOADING'];
    ?>
 <!--____________________________end loading ________________________________-->
 
@@ -50,20 +37,8 @@ $GLOBALS['VIEW']=array(
             <div style='float:right;padding:20px;'>
 <!--__________________________end Login form ________________________________-->
             <?php 
-               if (isset($_SESSION['username'])){
-                  /*
-                  if($_SESSION['reg_type']='GUEST'){
-                     echo "You are loged in as GUEST with ".$_SESSION['username']." <br>";
-                  }else{
-                  */
-                  //   echo "You are loged in as ".$_SESSION['username']."<br>";
-                  //}
-                  echo "You are loged in as ".$_SESSION['username']."<br>";
-                  echo "<a href=\"?page=".PAGE."&module=".MODULE."&logout=logout\">Logout</a>";
-               }else{
-                  //echo "You can <a href=\"?page=login&module=".MODULE."\">login</a> here";
-               }
-            ?>
+               echo $GLOBALS['VIEW']['LOGIN'];
+               ?>
 <!--______________________________end Login form ____________________________-->
 
 <!--_________________________start Program selector__________________________-->
@@ -83,7 +58,7 @@ $GLOBALS['VIEW']=array(
 <!--breadcrumb-->
 <div style='padding:0px;padding-left:5px;color:black;font-weight:bold;background-color:gray;' class='round'>
    <?php
-      include A_CORE."/breadcrumb.php";
+      echo $GLOBALS['VIEW']['BREADCRUMB'];
    ?>
 </div>
 </td>
@@ -103,14 +78,8 @@ $GLOBALS['VIEW']=array(
 ?>
 <!--________________________start data_body area_____________________________-->
        <?php 
-          //include page in module
-               if(!file_exists(A_MODULES."/".MODULE."/".PAGE.".php")){
-                include "error.php";
-                }else{
-                include A_MODULES."/".MODULE."/".PAGE.".php";
-               }
-
-       ?>
+          echo $GLOBALS['VIEW']['MAIN'];
+          ?>
 <!--_________________________end data_body area______________________________-->
 </div>
 </td>
@@ -118,7 +87,7 @@ $GLOBALS['VIEW']=array(
 <td width='20%' style='vertical-align:top;valign:top;padding:10px;padding-left:5px;' >
    <div style='min-height:350px;padding:10px;border:1px solid #C9D7F1;border-top:3px solid #C9D7F1;'class='bgBottom round' >
    <?php
-      include A_CORE."/module_link_list.php";
+      echo $GLOBALS['VIEW']['NAVIGATOR'];
    ?>
    </div>
 </td>
@@ -128,7 +97,7 @@ $GLOBALS['VIEW']=array(
 <div style='padding:10px;height:50px;position:relative'>
 <!--______________________________start footer_______________________________-->
             <?php
-               include A_CORE."/footer.php";
+               echo $GLOBALS['VIEW']['FOOTER'];
             ?>
 <!--_______________________________end footer________________________________-->
 </div>

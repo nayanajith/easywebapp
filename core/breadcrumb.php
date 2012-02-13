@@ -1,6 +1,6 @@
 <?php
 $mod_arr      = $GLOBALS['MODULES'];
-$page_arr     = $menu_array;
+$page_arr     = $GLOBALS['MENU_ARRAY'];
 $page         ='';
 
 if(isset($_SESSION['BREADCRUMB'][MODULE])){

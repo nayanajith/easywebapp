@@ -120,6 +120,8 @@ define('MODULE'   , $module);
 
 /*-------------------include menu  of the the active module-------------------*/
 include (A_MODULES."/".MODULE."/menu.php");
+//Set the meny array as a global array
+$GLOBALS['MENU_ARRAY']=$menu_array;
 
 /*-----If th page is blank load the first permitted page of the module--------*/
 if ($page == '' && $menu_array){
@@ -213,10 +215,12 @@ if(isset($_SESSION['REDIRECT']) && $_SESSION['REDIRECT'] != ''){
    header("Location:".$redirect);
 }
 
+include A_CORE."/assembler.php";
+
+
 /*----------------Nothing will printed/echoed above this line-----------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------HTML started below------------------------------*/
-
 /*--------------start output buffering for html compression-------------------*/
 if(COMPRESS=='YES'){
    ob_start('ob_gzhandler');
@@ -224,13 +228,6 @@ if(COMPRESS=='YES'){
 
 /*---------------------include layout web,app or pub--------------------------*/
 include A_CORE."/".$GLOBALS['LAYOUT']."_layout.php";
-/*
-if(isset($_SESSION['username'])){
-   include A_CORE."/".$GLOBALS['LAYOUT']."_layout.php";
-}else{
-   include A_CORE."/"."welcome.php";
-}
-*/
 
 /*------------IF compression enabled compress the page and out----------------*/
 if(COMPRESS=='YES'){

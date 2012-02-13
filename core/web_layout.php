@@ -1,76 +1,4 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<?php
-$GLOBALS['VIEW']=array(
-   'CSS'       =>'',
-   'JS'        =>'',
-   'LOADING'   =>'',
-   'LOGIN'     =>'',
-   'PROGRAM'   =>'',
-   'BREADCRUMB'=>'',
-   'BODY'      =>'',
-   'NAVIGATOR' =>'',
-   'TOOLBAR'   =>'',
-   'STATUSBAR' =>'',
-   'FOOTER'    =>''
-);
-
-/**
- * Include the file and generated contet will be putting in global view array
- */
-function fill_view($key,$file){
-   if(isset($GLOBALS['VIEW'][$key])){
-      ob_start();
-      //ob_start('view');
-      include $file;
-      $GLOBALS['VIEW'][$key] .= ob_get_contents();
-      ob_end_clean();
-   }else{
-      return "key[$key] error!"; 
-   }
-}
-
-
-fill_view('FOOTER',A_CORE."/footer.php");
-fill_view('TOOLBAR',A_CORE."/toolbar.php");
-fill_view('STATUSBAR',A_CORE."/status_bar.php");
-
-$body='';
-if(!isset($_SESSION['username'])){
-   if(file_exists(A_MODULES."/".MODULE."/about.php")){
-      $body=A_MODULES."/".MODULE."/about.php";
-   }else{
-      $body="error.php";
-   }
-}elseif(!file_exists(A_MODULES."/".MODULE."/".PAGE.".php")){
-   $body="error.php";
-}else{
-   $body=A_MODULES."/".MODULE."/".PAGE.".php";
-}
-
-
-ob_start();
-program_select($program); 
-$GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
-ob_end_clean();
-
-fill_view('NAVIGATOR', A_CORE."/module_tab_bar.php");
-fill_view('BODY',$body);
-
-ob_start();
-if (isset($_SESSION['username'])){
-   echo after_login();
-}else{
-   echo before_login();
-}
-$GLOBALS['VIEW']['LOGIN'] .= ob_get_contents();
-ob_end_clean();
-
-fill_view('LOADING', A_CORE."/loading.php");
-fill_view('JS', A_CORE."/dojo_require.php");
-fill_view('JS', A_CORE."/status_bar_func.php");
-fill_view('CSS', A_CORE."/style.php");
-?>
-
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <html>
    <head>
@@ -80,7 +8,6 @@ fill_view('CSS', A_CORE."/style.php");
 <!--_________________________________CSS_____________________________________-->
       <?php 
          echo $GLOBALS['VIEW']['CSS'];
-         //include A_CORE."/style.php";
       ?>
 <!--______________________________FAVICON____________________________________-->
       <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" >
@@ -88,10 +15,6 @@ fill_view('CSS', A_CORE."/style.php");
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
          echo $GLOBALS['VIEW']['JS'];
-         /*
-         include A_CORE."/dojo_require.php";
-         include A_CORE."/status_bar_func.php";
-          */
       ?>
    </head>
 <!--_____________________BODY with dojo border container_____________________-->
@@ -116,7 +39,6 @@ bottom:      Tool bar
 <!--__________________________start loading ________________________________-->
    <?php
       echo $GLOBALS['VIEW']['LOADING'];
-      //include A_CORE."/loading.php";
    ?>
 <!--____________________________end loading ________________________________-->
       <div dojoType="dijit.layout.BorderContainer" class='bgTop bContainer'    gutters="false" liveSplitters="true" >
@@ -131,24 +53,13 @@ This contains the login box from core/login.php and program selector from core/p
             <div style='float:right;'>
 <!--__________________________end Login form ________________________________-->
             <?php 
-
                echo $GLOBALS['VIEW']['LOGIN'];
-
-               /*
-               if (isset($_SESSION['username'])){
-                  echo after_login();
-               }else{
-                  echo before_login();
-               }
-               */
             ?>
 <!--______________________________end Login form ____________________________-->
 
 <!--_________________________start Program selector__________________________-->
             <?php 
-               echo "Change Program:";
                echo $GLOBALS['VIEW']['PROGRAM'];
-               //program_select($program); 
             ?>
 <!--__________________________end Program selector___________________________-->
             </div>
@@ -169,7 +80,6 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                      <?php
                         d_r("dijit.layout.BorderContainer");
                         echo $GLOBALS['VIEW']['NAVIGATOR'];
-                        //include A_CORE."/module_tab_bar.php";
                      ?>
                   </div>
                   <!--end TOP box of BorderContainer-2 (BorderContainer-3)-->
@@ -178,8 +88,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <div dojoType="dijit.layout.ContentPane" region="center" id="data_body" class="bgBottom" style="padding:5px;">
 <!--________________________start data_body area_____________________________-->
                      <?php 
-
-                     echo $GLOBALS['VIEW']['BODY'];
+                     echo $GLOBALS['VIEW']['MAIN'];
                      //include page in module
                      /*
                      if(!isset($_SESSION['username'])){
