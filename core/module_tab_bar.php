@@ -23,16 +23,17 @@ tab bar genertion for the modules
    //$modules_array=gen_module_array();
    $modules_array=gen_visible_module_array();
 
+
    /*Parent tabcontainer*/
-   d_r('dijit.layout.TabContainer');
-   echo "<div dojoType='dijit.layout.TabContainer' style='width: 400px; border:0px;'>";
+  d_r('dijit.layout.TabContainer');
+  echo "<div dojoType='dijit.layout.TabContainer' style='width: 400px; border:0px;'>";
 
    /*Add nested tab contgainers for each module*/
    foreach($modules_array as $module => $pages){
-      $module_label=$modules[$module];
+      $module_label=$GLOBALS['MODULES'][$module];
 
       //If $module is an array this will do 
-      if(is_array($modules[$module]))$module_label=$modules[$module]['MODULE'];
+      if(is_array($GLOBALS['MODULES'][$module]))$module_label=$GLOBALS['MODULES'][$module]['MODULE'];
 
       /*Active module is selected*/
       if(MODULE == $module){

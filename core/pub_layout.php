@@ -1,4 +1,16 @@
 <!DOCTYPE html> 
+<?php
+$GLOBALS['VIEW']=array(
+   'CSS'       =>'',
+   'JS'        =>'',
+   'LOADING'   =>'',
+   'LOGIN'     =>'',
+   'BREADCRUMB'=>'',
+   'BODY'      =>'',
+   'MODULE'    =>'',
+   'FOOTER'    =>''
+);
+?>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 
 <html>

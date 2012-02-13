@@ -106,7 +106,7 @@ if (!isset($module)){
    }else{
       //$module = "Home";
       //In any arror first permitted module will be loaded by default
-      foreach($modules as $mod => $arr){
+      foreach($GLOBALS['MODULES'] as $mod => $arr){
          if(is_module_permitted($mod)){
             $module = $mod;
             break;   

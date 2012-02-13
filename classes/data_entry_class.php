@@ -35,6 +35,7 @@ class Formgenerator {
 
    protected $modifier      ="_modif.php";
    protected $help_file     ="_help.php";
+   protected $template      ="_tpl.php";
    protected $data_json     ="_data.json";
 
    /*
@@ -42,40 +43,40 @@ class Formgenerator {
     */
 
    protected $types=array(
-      "TINYINT(1)"   =>"dijit.form.CheckBox",
-      "TINYINT"   =>"dijit.form.NumberTextBox",
-      "SMALLINT"   =>"dijit.form.NumberSpinner",
+      "TINYINT(1)"  =>"dijit.form.CheckBox",
+      "TINYINT"     =>"dijit.form.NumberTextBox",
+      "SMALLINT"    =>"dijit.form.NumberSpinner",
       "MEDIUMINT"   =>"dijit.form.NumberTextBox",
       "INT"         =>"dijit.form.NumberTextBox",
-      "INTEGER"   =>"dijit.form.NumberTextBox",
+      "INTEGER"     =>"dijit.form.NumberTextBox",
       "BIGINT"      =>"dijit.form.NumberTextBox",
 
-      "FLOAT"      =>"dijit.form.ValidationTextBox",
+      "FLOAT"       =>"dijit.form.ValidationTextBox",
       "DOUBLE"      =>"dijit.form.ValidationTextBox",
       "PRECISION"   =>"dijit.form.ValidationTextBox",
-      "REAL"      =>"dijit.form.ValidationTextBox",
-      "DECIMAL"   =>"dijit.form.ValidationTextBox",
-      "NUMERIC"   =>"dijit.form.ValidationTextBox",
+      "REAL"        =>"dijit.form.ValidationTextBox",
+      "DECIMAL"     =>"dijit.form.ValidationTextBox",
+      "NUMERIC"     =>"dijit.form.ValidationTextBox",
 
-      "DATE"      =>"dijit.form.DateTextBox",
-      "DATETIME"   =>"dijit.form.ValidationTextBox",
+      "DATE"        =>"dijit.form.DateTextBox",
+      "DATETIME"    =>"dijit.form.ValidationTextBox",
       "TIMESTAMP"   =>"dijit.form.ValidationTextBox",
-      "TIME"      =>"dijit.form.TimeTextBox",
-      "YEAR"      =>"dijit.form.DateTextBox",
+      "TIME"        =>"dijit.form.TimeTextBox",
+      "YEAR"        =>"dijit.form.DateTextBox",
 
-      "CHAR"      =>"dijit.form.ValidationTextBox",
-      "VARCHAR"   =>"dijit.form.ValidationTextBox",
+      "CHAR"        =>"dijit.form.ValidationTextBox",
+      "VARCHAR"     =>"dijit.form.ValidationTextBox",
 
-      "TINYBLOB"   =>"dijit.form.ValidationTextBox",
-      "BLOB"      =>"dijit.form.ValidationTextBox",
-      "MEDIUMBLOB"=>"dijit.form.ValidationTextBox",
-      "LONGBLOB"   =>"dijit.form.ValidationTextBox",
+      "TINYBLOB"    =>"dijit.form.ValidationTextBox",
+      "BLOB"        =>"dijit.form.ValidationTextBox",
+      "MEDIUMBLOB"  =>"dijit.form.ValidationTextBox",
+      "LONGBLOB"    =>"dijit.form.ValidationTextBox",
 
-      "TINYTEXT"   =>"dijit.form.ValidationTextBox",
-      "TEXT"      =>"dijit.form.SimpleTextarea",
-      "MEDIUMTEXT"=>"dijit.form.ValidationTextBox",
-      "LONGTEXT"   =>"dijit.form.SimpleTextarea",
-      "ENUM"      =>"dijit.form.ValidationTextBox",
+      "TINYTEXT"    =>"dijit.form.ValidationTextBox",
+      "TEXT"        =>"dijit.form.SimpleTextarea",
+      "MEDIUMTEXT"  =>"dijit.form.ValidationTextBox",
+      "LONGTEXT"    =>"dijit.form.SimpleTextarea",
+      "ENUM"        =>"dijit.form.ValidationTextBox",
       "SET"         =>"dijit.form.ValidationTextBox"
       );
 
@@ -83,11 +84,11 @@ class Formgenerator {
 
       /**/
       protected $self=array(
-         "table"      =>"",    //effective teble
-         "key"         =>"",      //key/primary key field of the table
-         "multi_key"   =>"false",      //true/false if multikey table set this to true
+         "table"      =>"",      //effective teble
+         "key"        =>"",      //key/primary key field of the table
+         "multi_key"  =>"false", //true/false if multikey table set this to true
          "modifier"   =>"",      //modifer script of the form
-         "help_file"   =>""      //help file of the form
+         "help_file"  =>""       //help file of the form
       );
 
       /*Form will be pre filled with the data correspond to this key*/
@@ -113,21 +114,23 @@ class Formgenerator {
          }
 
          if(is_array($key)){
-            $this->self['key']      = $key[key($key)];
-            $this->self['keys']      = $key;
+            $this->self['key']  = $key[key($key)];
+            $this->self['keys'] = $key;
          }else{
-            $this->self['key']      = $key;
+            $this->self['key']  = $key;
          }   
 
 
          
          /*Check and aply custom file name to save modifier and help files to save*/
          if(isset($file_name) && $file_name != null ){
-            $this->self['modifier']   = A_MODULES."/".MODULE."/".$file_name.$this->modifier;
-            $this->self['help_file']   = A_MODULES."/".MODULE."/".$file_name.$this->help_file;
+            $this->self['modifier']     = A_MODULES."/".MODULE."/".$file_name.$this->modifier;
+            $this->self['help_file']    = A_MODULES."/".MODULE."/".$file_name.$this->help_file;
+            $this->self['template']     = A_MODULES."/".MODULE."/".$file_name.$this->template;
          }else{
-            $this->self['modifier']   = A_MODULES."/".MODULE."/".$table.$this->modifier;
-            $this->self['help_file']   = A_MODULES."/".MODULE."/".$table.$this->help_file;
+            $this->self['modifier']     = A_MODULES."/".MODULE."/".$table.$this->modifier;
+            $this->self['help_file']    = A_MODULES."/".MODULE."/".$table.$this->help_file;
+            $this->self['template']     = A_MODULES."/".MODULE."/".$table.$this->template;
          }
 
          $this->load_modifier();
@@ -213,19 +216,19 @@ class Formgenerator {
                if($row['Extra']!='auto_increment'){
                   $this->fields[$row['Field']]=array(
                   "length"      =>$this->get_field_width($row['Type'],false),
-                  "dojoType"   =>$this->get_field_type($row['Type']),
-                  "required"   =>($row['Null']=='YES')?"false":"true",
-                  "label"      =>style_text($row['Field']),
-                  "label_pos" =>$this->get_label_pos($this->get_field_type($row['Type']))
+                  "dojoType"    =>$this->get_field_type($row['Type']),
+                  "required"    =>($row['Null']=='YES')?"false":"true",
+                  "label"       =>style_text($row['Field']),
+                  "label_pos"   =>$this->get_label_pos($this->get_field_type($row['Type']))
                   );
                }else{
                   $this->fields[$row['Field']]=array(
                   "length"      =>$this->get_field_width($row['Type'],false),
-                  "dojoType"   =>$this->get_field_type($row['Type']),
-                  "type"      =>"hidden",
-                  "required"   =>($row['Null']=='YES')?"false":"true",
-                  "label"      =>style_text($row['Field']),
-                  "label_pos" =>$this->get_label_pos($this->get_field_type($row['Type']))
+                  "dojoType"    =>$this->get_field_type($row['Type']),
+                  "type"        =>"hidden",
+                  "required"    =>($row['Null']=='YES')?"false":"true",
+                  "label"       =>style_text($row['Field']),
+                  "label_pos"   =>$this->get_label_pos($this->get_field_type($row['Type']))
                   );
                }
             }
@@ -262,7 +265,6 @@ class Formgenerator {
             fwrite($file_handler, "\t\n);\n");
             fwrite($file_handler, "?>\n");
 
-            //fwrite($file_handler,json_encode($this->fields));
             fclose($file_handler);
          }
       }
@@ -380,18 +382,18 @@ class Formgenerator {
 
       protected $form_controls=array(
          'dijit.form.FilteringSelect'   =>"<select %s>%s</select>",
-         'dijit.form.ComboBox'         =>"<select %s>%s</select>",
+         'dijit.form.ComboBox'          =>"<select %s>%s</select>",
          'dijit.form.Select'            =>"<select %s>%s</select>",
-         'dijit.form.MultiSelect'      =>"<select %s>%s</select>",
-         'dijit.form.SimpleTextarea'   =>"<textarea %s>%s</textarea>",
-         "dijit.form.NumberTextBox"      =>"<input %s>",
-         "dijit.form.NumberSpinner"      =>"<input %s>",
-         "dijit.form.ValidationTextBox"=>"<input %s>",
-         "dijit.form.DateTextBox"      =>"<input %s constraints=\"{datePattern:'yyyy-MM-dd'}\" promptMessage='yyyy-MM-dd' invalidMessage='Invalid date. Please use yyyy-MM-dd format.' >",
-         "dijit.form.TimeTextBox"      =>"<input %s constraints=\"{'timePattern':'hh:mm:ss'}\" promptMessage='hh:mm:ss' invalidMessage='Invalid time. Please use hh:mm:ss format.' >",
-         "dijit.form.CheckBox"         =>"<div %s ></div>",
-         "dijit.form.RadioButton"      =>"<div %s ></div>",
-         "dijit.InlineEditBox"         =>"<span %s ></span>"
+         'dijit.form.MultiSelect'       =>"<select %s>%s</select>",
+         'dijit.form.SimpleTextarea'    =>"<textarea %s>%s</textarea>",
+         "dijit.form.NumberTextBox"     =>"<input %s>",
+         "dijit.form.NumberSpinner"     =>"<input %s>",
+         "dijit.form.ValidationTextBox" =>"<input %s>",
+         "dijit.form.DateTextBox"       =>"<input %s constraints=\"{datePattern:'yyyy-MM-dd'}\" promptMessage='yyyy-MM-dd' invalidMessage='Invalid date. Please use yyyy-MM-dd format.' >",
+         "dijit.form.TimeTextBox"       =>"<input %s constraints=\"{'timePattern':'hh:mm:ss'}\" promptMessage='hh:mm:ss' invalidMessage='Invalid time. Please use hh:mm:ss format.' >",
+         "dijit.form.CheckBox"          =>"<div %s ></div>",
+         "dijit.form.RadioButton"       =>"<div %s ></div>",
+         "dijit.InlineEditBox"          =>"<span %s ></span>"
       );
 
 /*
@@ -770,7 +772,6 @@ submit the given form
       }
 
 
-
       /*
        return :Form  for the provided table with using custom configuration of each field
        */
@@ -779,6 +780,15 @@ submit the given form
 
          if($this->data_load_key != null){
             $this->get_data();
+         }
+
+         if(file_exists($this->self['template'])){
+            $ctrl=array();
+            foreach($this->fields as $field => $field_array){
+                $ctrl[$field]=$this->gen_field_entry($field);
+            }
+            include $this->self['template'];
+            return;
          }
 
          d_r('dijit.form.Form');

@@ -41,7 +41,7 @@ if(is_array($page)){
 }
 
 //Help header
-echo "<h2>Help and Guide for the <font color='green' size='15px' >".$page."</font> page of the <font color='green'>".$modules[MODULE]."</font> module</h2>";
+echo "<h2>Help and Guide for the <font color='green' size='15px' >".$page."</font> page of the <font color='green'>".$GLOBALS['MODULES'][MODULE]."</font> module</h2>";
 
 $help_file=A_MODULES."/".MODULE."/".PAGE."_help.php";
 if(file_exists($help_file)){
