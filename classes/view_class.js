@@ -21,7 +21,7 @@ function set_param(url,key,value) {
 /**
 request html from the backend
 */
-function request_html(url,target,source_array) {
+function request_html(url,target,source_array,action_) {
    var content_obj   =document.getElementById(target);
    var param='';   
    for(var i=0;i<sourse_array.length;i++){
@@ -30,12 +30,23 @@ function request_html(url,target,source_array) {
       param+='&'+sourse_array[i]+'='+tmp_val;
    }
 
+   //Action will be html by default unless it is set explicitly
+   var action='html';
+   if(action_){
+      action=action_;
+   }
+
+   //Update the progress bar 
+   update_status_bar('OK','Processing...');
+   update_progress_bar(10);
+
    //If index number is blank return 
    dojo.xhrPost({
-      url      : url+'&form=main&data=json&action=html'+param,
+      url      : url+'&form=main&data=json&action='+action+param,
       handleAs :'text',
       load     : function(response, ioArgs) {        
          update_status_bar('OK','Done');
+         update_progress_bar(100);
          content_obj.innerHTML=response;
          dojo.parser.parse(content_obj);
       },
@@ -50,12 +61,26 @@ function request_html(url,target,source_array) {
 */
 
 function submit_form(url,action,form,target_module,target_page){
-   if(action=='csv'||action=='pdf'){
-      download(url+'&form=main&action='+action);
-      return;
+   switch(action){
+      case 'print':
+         window.open(url+'&form=main&action='+action,'width=800px,height=600px');
+         return;
+      break;   
+      case 'csv':
+      case 'pdf':
+         download(url+'&form=main&action='+action);
+         return;
+      break;   
+      case 'reload':
+         request_html(form,source_array);
+         return;
+      break;   
+      case 'delete':
+      break;   
    }
 
-   update_status_bar('OK','...');
+
+   update_status_bar('OK','Processing...');
    update_progress_bar(10);
 
    /*User should confirm deletion*/

@@ -160,21 +160,20 @@ $labeld_types=array(
 echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
 //Adding help button to the toolbar
 echo "<div dojoType='dijit.form.Button' label='Help' showLabel='true' iconClass='dijitIcon dijitIconDocuments' onClick='help_dialog()'></div>";
-
-if(!isset($toolbar[PAGE])){
+if(!isset($GLOBALS['TOOLBAR_ITEMS'])){
    //toolbar is empty
 }else{
-   foreach($toolbar[PAGE] as $label => $attrib ){
+   foreach($GLOBALS['TOOLBAR_ITEMS'] as $label => $attrib ){
       /*
          Set of attributes associated with each button of the toolbar   
       */
       $cur_attrib=array(
-         'dojoType'   =>'dijit.form.Button',
-         'id'         =>'act'.str_replace(array(" "),array("_"),$label),
-         'iconClass'   =>'dijitIcon',
+         'dojoType'  =>'dijit.form.Button',
+         'id'        =>'act'.str_replace(array(" "),array("_"),$label),
+         'iconClass' =>'dijitIcon',
          'icon'      =>'dijitIconFunction',
-         'action'      =>'alert("Not yet configured!")',
-         'label'      =>$label,
+         'action'    =>'alert("Not yet configured!")',
+         'label'     =>$label,
          'element'   =>''
       );
 

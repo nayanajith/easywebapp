@@ -17,24 +17,25 @@ $GLOBALS['VIEW']=array(
 );
 
 /**
- * Include the file and generated contet will be putting in global view array
+ * Include the file and generated contet will placed in global view array
  */
-function fill_view($key,$file){
-   if(isset($GLOBALS['VIEW'][$key])){
+function fill_view($view_id,$file){
+   if(isset($GLOBALS['VIEW'][$view_id])){
       ob_start();
-      //ob_start('view');
       include $file;
-      $GLOBALS['VIEW'][$key] .= ob_get_contents();
+      $content=ob_get_contents();
+
+      $GLOBALS['VIEW'][$view_id] .= $content;
       ob_end_clean();
    }else{
-      return "key[$key] error!"; 
+      return "key[$view_id] error!"; 
    }
 }
 
 //main page selection logic
 $main='';
 
-if($GLOBALS['LAYOUT']){
+if($GLOBALS['LAYOUT']=='pub'){
    if(!file_exists(A_MODULES."/".MODULE."/".PAGE.".php")){
       $main="error.php";
    }else{
@@ -63,8 +64,6 @@ fill_view('MAIN',       $main);
 //Page footer
 fill_view('FOOTER',     A_CORE."/footer.php");
 
-//Tool bar for web/app layouts
-fill_view('TOOLBAR',    A_CORE."/toolbar.php");
 
 //Status bar  for seb/app layouts
 fill_view('STATUSBAR',  A_CORE."/status_bar.php");
@@ -99,6 +98,23 @@ case 'pub':
 
 break;
 case 'app':
+   //Program selector
+   ob_start();
+   echo "Change Program:";
+   program_select($program); 
+   $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
+   ob_end_clean();
+
+   //login/logout 
+   ob_start();
+   if (isset($_SESSION['username'])){
+      echo after_login();
+   }else{
+      echo before_login();
+   }
+   $GLOBALS['VIEW']['LOGIN'] .= ob_get_contents();
+   ob_end_clean();
+
    //Navigator tree
    fill_view('NAVIGATOR',A_CORE."/module_tree.php");
 
@@ -107,6 +123,9 @@ case 'app':
 
    //WIdgetst column
    fill_view('WIDGETS',  A_CORE."/widget_column.php");
+
+   //Tool bar for web/app layouts
+   fill_view('TOOLBAR',  A_CORE."/toolbar.php");
 break;
 case 'web':
    //Program selector
@@ -126,10 +145,11 @@ case 'web':
    $GLOBALS['VIEW']['LOGIN'] .= ob_get_contents();
    ob_end_clean();
 
-
    //Navigator for web layout is a tab bar
    fill_view('NAVIGATOR',  A_CORE."/module_tab_bar.php");
 
+   //Tool bar for web/app layouts
+   fill_view('TOOLBAR',    A_CORE."/toolbar.php");
 break;
 }
 
