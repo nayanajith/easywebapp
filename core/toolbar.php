@@ -1,8 +1,3 @@
-<?php
-/*
-This will include in to $GLOBALS['PAGE_GEN']
-*/
-?>
 <?php 
 $dijitIcons=array(
       "dijitIconSave",
@@ -157,7 +152,6 @@ $labeld_types=array(
    'dijit.form.NumberTextBox',
    'dijit.form.TextBox'
 );
-echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
 //Adding help button to the toolbar
 echo "<div dojoType='dijit.form.Button' label='Help' showLabel='true' iconClass='dijitIcon dijitIconDocuments' onClick='help_dialog()'></div>";
 if(!isset($GLOBALS['TOOLBAR_ITEMS'])){
@@ -254,5 +248,4 @@ if(!isset($GLOBALS['TOOLBAR_ITEMS'])){
 }
 
 //END toolbar
-echo "</div>";
 ?>

@@ -3,25 +3,35 @@
  *
  */
 
-class View(){
-   //The extention in which page specific model file should be created
-   protected $view        ="_viw.php";
+class View{
+   //The view file
+   protected $view   ="_viw.php";
 
-   //To store variouse class variables easily use this array
-   protected $self        =array();
+   //The model file
+   protected $model  ="_mdl.php";
+   protected $fields =array();
+
+   //Table 
+   protected $table;
+
+   //Key to load data 
+   protected $data_load_key;
 
    /** Constructor of model class
     * 
     */
-   function __construct($table=null,$file_name=null) {
-
-        $this->self['table']=$table;
-
-        if(isset($file_name) && $file_name != null ){
-           $this->self['view']    = A_MODULES."/".MODULE."/".$file_name.$this->view;
+   function __construct($table=null,$name=null) {
+        $this->table=$table;
+        if(isset($name) && $name != null ){
+           $this->view = A_MODULES."/".MODULE."/".$name.$this->view;
+           $this->model = A_MODULES."/".MODULE."/".$name.$this->model;
         }else{
-           $this->self['view']    = A_MODULES."/".MODULE."/".$table.$this->view;
+           $this->view = A_MODULES."/".MODULE."/".$table.$this->view;
+           $this->model = A_MODULES."/".MODULE."/".$name.$this->model;
         }
+
+        include $this->model;
+        $this->fields=$fields;
    }
 
    //Mapping interlel html chuncks for each dojo type
@@ -167,26 +177,27 @@ class View(){
    Generating form for using ghe fields array which was generated in model-class 
    */
    public function gen_form($captchar=null,$filter_selector=null){
-      $table=$this->self['table'];
+      $table=$this->table;
 
       if($this->data_load_key != null){
          $this->get_data();
       }
 
-      if(file_exists($this->self['template'])){
+      if(file_exists($this->view)){
          $ctrl=array();
          foreach($this->fields as $field => $field_array){
              $ctrl[$field]=$this->gen_field_entry($field);
          }
-         include $this->self['template'];
+
+         echo "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >";
+         include $this->view;
+         echo "</div>";
          return;
       }
 
       d_r('dijit.form.Form');
-      $form= "<div dojoType='dijit.form.Form' id='".$table."_frm' jsId='$table'_frm
-         encType='multipart/form-data'
-         method='GET' >";
-
+      //$form= "<div dojoType='dijit.form.Form' id='".$table."_frm' jsId='$table'_frm encType='multipart/form-data' method='POST' >";
+      $form= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >";
       $form.="<div >Required fields marked as <font color='red'>*</font>";
 
       /*Find first and last elements of the fields array*/
@@ -417,55 +428,7 @@ class View(){
                </table>
               </div>   
          </div>   
-      <script type='text/javascript'>
-      /**/
-      function show_dialog(){
-         formDlg = dijit.byId('filterDialog');
-         formDlg.show();
-      }
-
-      /*clear the form first*/
-      function clear_form(frm){
-         dojo.forEach(dijit.byId(frm).getDescendants(),function(widget){
-            widget.attr('value', null);
-          });
-      }   
-
-      /*
-      Sending filter data as json   
-      */
-      function dialog_submit(arg_form,action){
-         /*User should confirm deletion*/
-         if(action=='delete'&&!confirm('Confirm deletion!')){
-            return;
-         }
-         if(arg_form.validate()){
-            var json_req=dojo.toJson(arg_form.getValues(), true);
-            dojo.xhrPost({
-               url: '".gen_url()."&xhr=true&form=filter&filter='+json_req+'&action='+action, 
-               handleAs:'text',
-               handle: function(response){
-                  update_status_bar('OK',response.info);
-               },
-   
-               load: function(response) {
-                  update_status_bar('OK','form successfully submitted');
-               }, 
-               error: function() {
-                  update_status_bar('ERROR','error on submission');
-               }
-            });
-   
-            /*
-            for(var key in arg_array){
-               update_status_bar(key);   
-            }
-            */
-         }else{
-            update_status_bar('ERROR','found invalid filed values');      
-         }
-      }
-      </script>";
+   ";
       return $dialog;
    }
 
@@ -540,93 +503,6 @@ class View(){
          }
       </script>";
    }
-
-
-
-
-   /*
-    Generate the realtime form filler with dojo.xhrPost
-    @key            : key value to be filtered from the database
-    @table         : the table which should generate
-    @js_function   : rename javascript function to be used in the onChange of the select
-
-    @return         : form filler javascript code
-    */
-   public function gen_xhr_form_filler($js_function,$table=null,$key=null,$filter=null){
-      $key      =$key==null?$this->self['key']:$key;
-      $table   =$table==null?$this->self['table']:$table;
-      $form      =$filter==null?'&form=main':'&form=filter';
-
-      $id_prefix="";
-
-      if($filter){
-         $id_prefix="'filter_'+";
-      }
-
-      return "
-   <script type='text/javascript' type='text/javascript'>
-   function $js_function(".$key.") {
-      if(!(".$key." == '' || ".$key." == 'new')){
-      dojo.xhrPost({
-         url       : '".gen_url()."&data=json&id='+".$key."+'$form',
-         handleAs :'json',
-         load       : function(response, ioArgs) {        
-            if(response.status && response.status == 'ERROR'){
-               update_status_bar(response.status,response.info);
-               update_progress_bar(50);
-               return;
-            }
-
-              //dijit.byId('".$table."_frm').attr('value', response); 
-              //dijit.byId('".$table."_frm').setValues(response); 
-            /*reset form*/
-            dojo.forEach(dijit.byId('".$table."_frm').getDescendants(), function(widget) {
-               if(!widget.store){
-                  widget.attr('value', null);
-               }
-            });
-            /*fill the form with returned values from json*/
-            for(var key in response){
-               if(response[key]){
-                  if(response[key]['_type']=='Date'){
-                     //Convert ISO standard date string to javascript Date object
-                         dijit.byId(key).setValue(dojo.date.stamp.fromISOString(response[key]['_value'])); 
-                  }else{
-                     //Handle different types of fields
-                     switch(dijit.byId(key).type){
-                        case 'checkbox':
-                           switch(response[key]){
-                              case '1':
-                              case 'on':
-                                 dijit.byId(key).attr('checked',true); 
-                              break;
-                              case '0':
-                              case 'off':
-                              default:
-                                 dijit.byId(key).attr('checked',false); 
-                              break;
-                           }
-                        break;
-                        case 'radio':
-                        break;
-                        default:
-                           dijit.byId(key).setValue(response[key]); 
-                        break;
-                     }
-                  }
-               }
-            }
-         },
-         error : function(response, ioArgs) {
-              update_status_bar('ERROR',response);
-         }
-      });
-      }
-   }
-   </script>
-   ";
-   }
-
 
 
    /*

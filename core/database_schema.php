@@ -4,7 +4,7 @@ System Database tables
 */
          
 $system_table_schemas['program']="CREATE TABLE `program` (
-  `id`               int(3) unsigned NOT NULL AUTO_INCREMENT,
+  `rid`               int(3) unsigned NOT NULL AUTO_INCREMENT,
   `short_name`       varchar(20) NOT NULL,
   `full_name`        varchar(300) NOT NULL,
   `logo`             varchar(300) NOT NULL,
@@ -15,7 +15,7 @@ $system_table_schemas['program']="CREATE TABLE `program` (
   `table_prefix`     varchar(100) NOT NULL,
   `deleted`          boolean     DEFAULT false,
   `note`             varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`rid`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['users']="CREATE TABLE `users` (
@@ -47,6 +47,7 @@ $system_table_schemas['users']="CREATE TABLE `users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['permission']="CREATE TABLE `permission`(
+  `rid`               INT unsigned NOT NULL AUTO_INCREMENT,
   `user_id`          varchar(100) NOT NULL,
   `module`             varchar(100) NOT NULL,
   `page`             varchar(100) NOT NULL,
@@ -57,7 +58,7 @@ $system_table_schemas['permission']="CREATE TABLE `permission`(
 
 
 $system_table_schemas['log']="CREATE TABLE `log` (
-  `id`                bigint(10) unsigned NOT NULL AUTO_INCREMENT,
+  `rid`                bigint(10) unsigned NOT NULL AUTO_INCREMENT,
   `proto`             varchar(5) DEFAULT NULL,
   `timestamp`          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id`          INT NOT NULL,
@@ -73,10 +74,11 @@ $system_table_schemas['log']="CREATE TABLE `log` (
   `agent`             text DEFAULT NULL,
   `deleted`          boolean     DEFAULT false,
   `note`             varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`rid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['filter']="CREATE TABLE `filter` (
+  `rid`               INT unsigned NOT NULL AUTO_INCREMENT,
   `filter_name`       varchar(50) DEFAULT NULL,
   `table_name`       varchar(50) DEFAULT NULL,
   `user_id`          INT NOT NULL,

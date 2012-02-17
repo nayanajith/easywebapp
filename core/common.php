@@ -1,4 +1,87 @@
 <?php
+/*--create and fill view global array which contains all parts of the fintend-*/
+$GLOBALS['VIEW']=array(
+   'MAIN'      =>'',
+   'CSS'       =>'',
+   'JS'        =>'',
+   'LOADING'   =>'',
+   'LOGIN'     =>'',
+   'PROGRAM'   =>'',
+   'BREADCRUMB'=>'',
+   'NAVIGATOR' =>'',
+   'WIDGETS'   =>'',
+   'MENUBAR'   =>'',
+   'TOOLBAR'   =>'',
+   'STATUSBAR' =>'',
+   'FOOTER'    =>''
+);
+
+/*
+ * View_id : one of the ids in above array
+ * contet   : any html/css/js content or a include file which will generate any of the contet
+ */
+
+function add_to_view($view_id,$content){
+   //IF the contet is a file then include and get the output to array using ob_func
+   if(isset($GLOBALS['VIEW'][$view_id])){
+      if(is_file($content)){
+         ob_start();
+         include $content;
+         $content=ob_get_contents();
+         $GLOBALS['VIEW'][$view_id] .= $content;
+         ob_end_clean();
+      }elseif(!is_null($content) || $content != ''){
+         $GLOBALS['VIEW'][$view_id] .= $content;
+      }
+   }else{
+      return "key[$view_id] error!"; 
+   }
+}
+
+/**
+ * Wrapper function to make it easy to add a contet to each section of the view
+ */
+function add_to_main($content){
+   add_to_view('MAIN',$content);
+}
+function add_to_css($content){
+   add_to_view('CSS',$content);
+}
+function add_to_js($content){
+   add_to_view('JS',$content);
+}
+function add_to_loading($content){
+   add_to_view('LOADING',$content);
+}
+function add_to_login($content){
+   add_to_view('LOGIN',$content);
+}
+function add_to_program($content){
+   add_to_view('PROGRAM',$content);
+}
+function add_to_breadcrumb($content){
+   add_to_view('BREADCRUMB',$content);
+}
+function add_to_navigator($content){
+   add_to_view('NAVIGATOR',$content);
+}
+function add_to_widgets($content){
+   add_to_view('WIDGETS',$content);
+}
+function add_to_menubar($content){
+   add_to_view('MENUBAR',$content);
+}
+function add_to_toolbar($content){
+   add_to_view('TOOLBAR',$content);
+}
+function add_to_statusbar($content){
+   add_to_view('STATUSBAR',$content);
+}
+function add_to_footer($content){
+   add_to_view('FOOTER',$content);
+}
+
+
 /*Return staus as json for XHR request or io.iframe request */
 /*
 Possible status

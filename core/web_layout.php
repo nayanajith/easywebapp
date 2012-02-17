@@ -115,11 +115,13 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
 <!--___________________________start statusbar_______________________________-->
                      <?php
                         d_r("dijit.layout.ContentPane");
+                        d_r("dijit.Toolbar");
 
+                        echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
                         echo $GLOBALS['VIEW']['TOOLBAR'];
+                        echo "</div>";
+
                         echo $GLOBALS['VIEW']['STATUSBAR'];
-                        //include A_CORE."/toolbar.php";
-                        //include A_CORE."/status_bar.php";
                      ?>
 <!--___________________________end statusbar_________________________________-->
                   </div>
@@ -134,7 +136,6 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
 <!--______________________________start footer_______________________________-->
             <?php
                echo $GLOBALS['VIEW']['FOOTER'];
-               //include A_CORE."/footer.php";
             ?>
 <!--_______________________________end footer________________________________-->
             </div>
