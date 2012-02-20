@@ -37,6 +37,19 @@ function add_to_view($view_id,$content){
       return "key[$view_id] error!"; 
    }
 }
+/**
+ * Clear the view with blank
+ */
+
+function clear_view($view_id){
+   if(isset($GLOBALS['VIEW'][$view_id])){
+      $GLOBALS['VIEW'][$view_id] = '';
+   }else{
+      return "key[$view_id] error!"; 
+   }
+}
+
+
 
 /**
  * Wrapper function to make it easy to add a contet to each section of the view
@@ -79,6 +92,50 @@ function add_to_statusbar($content){
 }
 function add_to_footer($content){
    add_to_view('FOOTER',$content);
+}
+
+
+/**
+ * Wrapper function to make it easy to clear each section
+ */
+function clear_main(){
+   clear_view('MAIN');
+}
+function clear_css(){
+   clear_view('CSS');
+}
+function clear_js(){
+   clear_view('JS');
+}
+function clear_loading(){
+   clear_view('LOADING');
+}
+function clear_login(){
+   clear_view('LOGIN');
+}
+function clear_program(){
+   clear_view('PROGRAM');
+}
+function clear_breadcrumb(){
+   clear_view('BREADCRUMB');
+}
+function clear_navigator(){
+   clear_view('NAVIGATOR');
+}
+function clear_widgets(){
+   clear_view('WIDGETS');
+}
+function clear_menubar(){
+   clear_view('MENUBAR');
+}
+function clear_toolbar(){
+   clear_view('TOOLBAR');
+}
+function clear_statusbar(){
+   clear_view('STATUSBAR');
+}
+function clear_footer(){
+   clear_view('FOOTER');
 }
 
 

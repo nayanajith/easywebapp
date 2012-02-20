@@ -33,9 +33,9 @@ dojo.isChrome);
 
 
 /*--help viewer--*/
-function help_dialog(){
+function show_help_dialog(){
 	dojo.xhrPost({
-      url 		: '?module='+get_request_value('module')+'&page='+get_request_value('page')+'&help=true',
+      url 		: gen_url()+'&help=true',
   	   handleAs :'text',
   	   load 		: function(response, ioArgs) {	     
          help_Dialog = new dijit.Dialog({
@@ -356,7 +356,7 @@ function dialog_submit(arg_form,action){
    if(arg_form.validate()){
       var json_req=dojo.toJson(arg_form.getValues(), true);
       dojo.xhrPost({
-         url: gen_url()+"&xhr=true&form=filter&filter='+json_req+'&action='+action, 
+         url: gen_url()+'&xhr=true&form=filter&filter='+json_req+'&action='+action, 
          handleAs:'text',
          handle: function(response){
             update_status_bar('OK',response.info);
