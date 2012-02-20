@@ -120,7 +120,12 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
 
 <!--___________________________start toolbar_________________________________-->
                            <?php
+                              d_r("dijit.layout.ContentPane");
+                              d_r("dijit.Toolbar");
+ 
+                              echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
                               echo $GLOBALS['VIEW']['TOOLBAR'];
+                              echo "</div>";
                            ?>
 <!--___________________________end toolbar___________________________________-->
 

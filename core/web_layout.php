@@ -11,7 +11,6 @@
       ?>
 <!--______________________________FAVICON____________________________________-->
       <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" >
-
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
          echo $GLOBALS['VIEW']['JS'];

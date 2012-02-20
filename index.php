@@ -119,7 +119,7 @@ $GLOBALS['module']   =$module;
 define('MODULE'   , $module);
 
 /*-----If th page is blank load the first permitted page of the module--------*/
-if ($page == '' && $menu_array){
+if ($page == '' && isset($menu_array)){
    foreach($menu_array as $pg => $arr){
       if(is_page_permitted($module,$pg)){
          $page = $pg;
@@ -128,6 +128,7 @@ if ($page == '' && $menu_array){
    }
    reset($menu_array);
 }
+
 //Define  page 
 define('PAGE'   , $page);
 
