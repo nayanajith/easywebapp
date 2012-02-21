@@ -59,7 +59,7 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
          break;
       }
    }
-}else{
+}elseif(!isset($_REQUEST['id'])){
    include A_CLASSES."/view_class.php";
    $view = new View($GLOBALS['PAGE']['table'],$GLOBALS['PAGE']['name']);
    $view->gen_form();

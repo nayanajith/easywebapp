@@ -183,7 +183,7 @@ class Model{
                   "length"      =>$this->get_field_width($row['Type'],false),
                   "dojoType"    =>$this->get_field_type($row['Type']),
                   "type"        =>"hidden",
-                  "required"    =>($row['Null']=='YES')?"false":"true",
+                  "required"    =>"false",
                   "label"       =>style_text($row['Field']),
                   "label_pos"   =>$this->get_label_pos($this->get_field_type($row['Type']))
                   );
@@ -206,8 +206,8 @@ class Model{
             fwrite($file_handler, "<?php\n");
             fwrite($file_handler, "//Kyes\n");
             fwrite($file_handler, "\$keys=array(\n");
-            fwrite($file_handler, "'PRIMARY_KEY'=>'".$this->keys['PRIMARY_KEY'].",\n");
-            fwrite($file_handler, "'UNIQUE_KEY'=>array('".implode("','",$this->keys['UNIQUE_KEY']."')\n");
+            fwrite($file_handler, "'PRIMARY_KEY'=>'".$this->keys['PRIMARY_KEY']."',\n");
+            fwrite($file_handler, "'UNIQUE_KEY'=>array('".implode("','",$this->keys['UNIQUE_KEY'])."')");
             fwrite($file_handler, "\t\n);\n");
             
             fwrite($file_handler, "//FIelds\n");

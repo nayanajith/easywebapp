@@ -274,10 +274,14 @@ function submit_form(action,target_module,target_page){
 /**
  * Populate the data in form for the selected key
  */
-function form_filler(key,form) {
+function fill_form(key,form) {
+   if(!form){
+      form='main';
+   }
+
    if(!(key == '' || key == 'new')){
    dojo.xhrPost({
-      url       : gen_url()+"&data=json&id='+"+key+"form="+form,
+      url       : gen_url()+'&data=json&id='+key+'&form='+form,
       handleAs :'json',
       load       : function(response, ioArgs) {        
          if(response.status && response.status == 'ERROR'){
@@ -287,7 +291,7 @@ function form_filler(key,form) {
          }
 
          /*reset form*/
-         dojo.forEach(dijit.byId('".$table."_frm').getDescendants(), function(widget) {
+         dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
             if(!widget.store){
                widget.attr('value', null);
             }

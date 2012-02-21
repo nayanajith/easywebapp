@@ -76,10 +76,10 @@ class View{
          $field_array['value']=$fill;
       }
 
-      /*entry for the given field will be filled to this var*/
-      $entry         ="";
-      $form_control  ="";
-      $options       ="";
+      /*html for the given field will be filled to this var*/
+      $html         ="";
+      $form_control ="";
+      $options      ="";
 
       /*inner value of the field (innerhtml)*/
       $inner   =isset($field_array['inner'])?$field_array['inner']:"";
@@ -92,7 +92,8 @@ class View{
 
       //If the field require a stor add a store
       if(isset($field_array['store'])){
-         echo "
+         d_r('dojox.data.QueryReadStore');
+         $html .="
          <span dojoType='dojox.data.QueryReadStore' 
             url='".gen_url()."&data=json&action=combo&form=main&id=".$field_array['searchAttr']."'
             jsId='".$field_array['store']."'
@@ -102,11 +103,11 @@ class View{
 
       /*Handl custom form input method or generic one*/
       if(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
-         $entry         ="<div id='td_$field' jsId='td_$field' style='padding:10px;'>";
-         $entry         .="<label for='$field' >".$field_array['label']."$required</label>";
-         $entry         .=$inner;
-         $entry         =sprintf($entry,$fill);
-         $entry         .="<div id='td_in_$field'></div></div>\n";
+         $html.="<div id='td_$field' jsId='td_$field' style='padding:10px;'>";
+         $html.="<label for='$field' >".$field_array['label']."$required</label>";
+         $html.=$inner;
+         $html.=sprintf($html,$fill);
+         $html.="<div id='td_in_$field'></div></div>\n";
       }else{
          d_r($field_array['dojoType']);
          $form_control   =$this->form_controls[$field_array['dojoType']];
@@ -125,52 +126,52 @@ class View{
 
          //hidden fields make not visible
          if(isset($field_array['type']) && $field_array['type'] == "hidden"){
-            $options     .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
-            $entry       .=sprintf($form_control,$options,$inner);
+            $options .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
+            $html .=sprintf($form_control,$options,$inner);
          }else{
 
             //Set style and length of the field
-            $style        ="";
+            $style ="";
             if(isset($field_array['length']) && $field_array['dojoType'] != 'dijit.form.CheckBox' ){
-               $style         .="width:".$field_array['length']."px;";
+               $style .="width:".$field_array['length']."px;";
             }
 
             //custum style is applied 
             if(isset($field_array['style'])){
-               $style         .=$field_array['style'];
+               $style .=$field_array['style'];
             }
 
             //additional style is applied
             if($style != ''){
-               $options            .="style='".$style."'";
+               $options .="style='".$style."'";
             }
 
             //combining the dojo type mapping in above array with the generated content
-            $entry            =sprintf($form_control,$options,$inner);
-            $entry_div_start   ="<div id='td_$field' jsId='td_$field' style='padding:10px;'>";
-            $entry_div_end      ="<div id='td_in_$field'></div></div>";
+            $html            .=sprintf($form_control,$options,$inner);
+            $field_div_start   ="<div id='td_$field' jsId='td_$field' style='padding:10px;'>";
+            $field_div_end     ="<div id='td_in_$field'></div></div>";
 
             //Set label position
-            $entry_label   ="<label for='$field' >".$field_array['label']."$required</label>";
+            $field_label   ="<label for='$field' >".$field_array['label']."$required</label>";
             if(isset($field_array['label_pos'])){
                switch($field_array['label_pos']){
                   case 'left':
-                     $entry         =$entry_div_start.$entry_label.$entry.$entry_div_end;
+                     $html =$field_div_start.$field_label.$html.$field_div_end;
                   break;
                   case 'right':
-                     $entry         =$entry_div_start.$entry.$entry_label.$entry_div_end;
+                     $html =$field_div_start.$html.$field_label.$field_div_end;
                   break;
                   case 'top':
                   default:
-                     $entry         =$entry_div_start.$entry_label."<br>".$entry.$entry_div_end;
+                     $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
                   break;
                }
             }else{
-               $entry         =$entry_div_start.$entry_label."<br>".$entry.$entry_div_end;
+               $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
             }
          }
       }
-      return $entry;
+      return $html;
    }
 
    /*
@@ -189,16 +190,16 @@ class View{
              $ctrl[$field]=$this->gen_field_entry($field);
          }
 
-         echo "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >";
+         add_to_main("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
          include $this->view;
-         echo "</div>";
+         add_to_main("</div>");
          return;
       }
 
       d_r('dijit.form.Form');
-      //$form= "<div dojoType='dijit.form.Form' id='".$table."_frm' jsId='$table'_frm encType='multipart/form-data' method='POST' >";
-      $form= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >";
-      $form.="<div >Required fields marked as <font color='red'>*</font>";
+      //$html= "<div dojoType='dijit.form.Form' id='".$table."_frm' jsId='$table'_frm encType='multipart/form-data' method='POST' >";
+      $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >";
+      $html.="<div >Required fields marked as <font color='red'>*</font>";
 
       /*Find first and last elements of the fields array*/
       reset($this->fields);
@@ -206,20 +207,20 @@ class View{
       $first   =current($keys);
       $last    =end($keys);
 
-      /*Set form table background and padding/spacing*/
+      /*Set html table background and padding/spacing*/
       foreach($this->fields as $field => $field_array){
 
          if($field != ""){
             
             /*IF the section ended in previouse field drow section header*/
-            /*IF the field is the first field of the form drow section header*/
+            /*IF the field is the first field of the html drow section header*/
             if($field==$first && !isset($field_array['section'])){
                $field_array['section']=' ';
             }
 
                         
             /*Set section header/footer as requested*/
-            $section         ="";
+            $section="";
 
             if(isset($field_array['section'])){
                $section      ="</div><br>";
@@ -245,33 +246,19 @@ class View{
                }
             }
          
-            $form.=$section;
-            $form.= $this->gen_field_entry($field);
+            $html.=$section;
+            $html.= $this->gen_field_entry($field);
 
             /*If the element is 'last' set section as end*/
             if($field==$last && !isset($field_array['section'])){
-               $form.= "</div><br>";
+               $html.= "</div><br>";
             }
          }
       }
       
-      if($filter_selector){
-         $form=$this->gen_xhr_form_filler('fill_form').$form;
-         $form=$this->gen_xhr_filtering_select('fill_form').$form;
-      }
-
-      //form ends hear
-      $form.= "</div>";
-      
-
-      //Buttons of the form
-      $form.= "
-         <script type='text/javascript' >
-         ".$this->form_submitter($table."_frm")."
-         </script>
-      ";
-
-      return $form;
+      //html ends hear
+      $html.= "</div>";
+      return $html;
    }
 
 
@@ -310,7 +297,7 @@ class View{
       }
 
 
-      $entry         =$section_start."<td style='padding-top:10px;'><label for='filter_$field'>".$field_array['label']."</label><br>";
+      $html =$section_start."<td style='padding-top:10px;'><label for='filter_$field'>".$field_array['label']."</label><br>";
 
       /*generate form control structure to be filled bellow in sprintf()*/
       $form_control   =$this->form_controls[$field_array['dojoType']];
@@ -320,7 +307,7 @@ class View{
       $options         ="id='filter_$field' name='filter_$field'";
 
       /*if the form_control accepted inner html this string will placed in there*/
-      $inner         =isset($field_array['inner'])?$field_array['inner']:"";
+      $inner=isset($field_array['inner'])?$field_array['inner']:"";
 
       /*Fields to bypass when creating forms*/
       $bypass=array('inner','label','section','disabled','label_pos','type');
@@ -335,25 +322,22 @@ class View{
       //Set style and length of the field
       $style      ="";
       if(isset($field_array['length'])){
-         $style   .="width:".$field_array['length']."px;";
+         $style.="width:".$field_array['length']."px;";
       }
 
       if(isset($field_array['style'])){
-         $style   .=$field_array['style'];
+         $style.=$field_array['style'];
       }
 
 
       if($style != ''){
-         $options .="style='".$style."'";
+         $options.="style='".$style."'";
       }
 
-
-
-      $entry         .=sprintf($form_control,$options,$inner);
-
-      //$entry         .="<button dojoType='dijit.form.Button' iconClass='dijitEditorIcon dijitEditorIconSave' showLabel='false' onClick='alert($field)'>help</button>";
-      $entry         .="</td>\n".$section_end;
-      return $entry;
+      $html.=sprintf($form_control,$options,$inner);
+      //$html         .="<button dojoType='dijit.form.Button' iconClass='dijitEditorIcon dijitEditorIconSave' showLabel='false' onClick='alert($field)'>help</button>";
+      $html.="</td>\n".$section_end;
+      return $html;
    }
 
 
@@ -427,26 +411,24 @@ class View{
                    </tr>
                </table>
               </div>   
-         </div>   
-   ";
+         </div>";
       return $dialog;
    }
 
-
-
  
    function set_help_tips($help_array){
-      echo "<style type='text/css'>.helptt{max-width:400px;text-align:justify;color:green;}</style>";
+      $html="<style type='text/css'>.helptt{max-width:400px;text-align:justify;color:green;}</style>";
       foreach( $help_array as $key => $value){
          if($value == '')continue;
          //possible positions of tooltio: before,above,after,below
-         echo "<div dojoType='dijit.Tooltip' connectId='$key' position='after' >
+         $html.="<div dojoType='dijit.Tooltip' connectId='$key' position='after' >
          <!--b>HELP:</b-->
          <div class='helptt'>
             $value
          </div>
          </div>";
       }
+      return $html;
    }
 
    /*
@@ -454,16 +436,14 @@ class View{
     json_file: data from the server
     return: data grid containing the key fields provided in $key_array
     */
-   public function gen_data_grid($key_array,$json_url,$key=null){
-      if($key==null){
-         $key=$this->self['key'];
-      }
+   public function gen_data_grid($field_array,$csv_url,$key=null){
+      $html="";
       //d_r('dojo.data.ItemFileWriteStore');
       d_r('dojox.data.CsvStore');
       d_r('dojox.widget.PlaceholderMenuItem');
       d_r('dojox.grid.DataGrid');
-      //echo "<span dojoType='dojo.data.ItemFileWriteStore' jsId='store3' url='$json_url'></span>
-      echo "<span dojoType='dojox.data.CsvStore' jsId='store3' url='".gen_url()."&form=grid&data=csv'></span>
+      // $html.="<span dojoType='dojo.data.ItemFileWriteStore' jsId='store3' url='$json_url'></span>
+      $html.="<span dojoType='dojox.data.CsvStore' jsId='store3' url='".gen_url()."&form=grid&data=csv'></span>
       <div dojoType='dijit.Menu' jsid='gridMenu' id='gridMenu' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>
@@ -472,7 +452,7 @@ class View{
          dojoType='dojox.grid.DataGrid' 
          jsId='grid3' 
          store='store3' 
-         query='{ ".$key_array[0].": \"*\" }'
+         query='{ ".$field_array[0].": \"*\" }'
          rowsPerPage='40' 
          clientSort='true' 
          style='width:100%;height:400px' 
@@ -484,24 +464,25 @@ class View{
       <thead>
          <tr>";
          /*Set labels for the table header if available in fileds array*/
-         foreach($key_array as $h_key){
-            echo "<th width='auto' field='$h_key'>
+         foreach($field_array as $h_key){
+            $html.= "<th width='auto' field='$h_key'>
                ".(isset($this->fields[$h_key]['label'])?$this->fields[$h_key]['label']:$h_key)."
             </th>";
          }
          //<th width='auto' field='sex' cellType='dojox.grid.cells.Select' options='Male,Female' editable='true'>Sex</th>
-         echo "</tr>
+         $html.= "</tr>
       </thead>
       </table>";
-         echo "
+         $html.= "
          <script type='text/javascript'>
          function displayLinks(e){
-            var selectedValue = grid3.store.getValue(grid3.getItem(e.rowIndex),'".$key_array[0]."');
+            var selectedValue = grid3.store.getValue(grid3.getItem(e.rowIndex),'".$field_array[0]."');
             //alert('selected cell Value is '+selectedValue);
             //fill_form(selectedValue);
             dijit.byId('fs_$key').setValue(selectedValue);
          }
       </script>";
+      return $html;
    }
 
 
@@ -512,9 +493,9 @@ class View{
     Note   : This will generate [key]_query_read_store.php to realtime provide the data to the selection box
     */
    public function gen_xhr_filtering_select($js_function,$key=null,$filter=null){
-      $key      =$key==null?$this->self['key']:$key;
+      $key     =$key==null?$this->self['key']:$key;
       $label   =$key==null?$this->fields[$this->self['key']]['label']:$key;
-      $form      =$filter==null?'&form=main':'&form=filter';
+      $form    =$filter==null?'&form=main':'&form=filter';
       $value   =isset($_REQUEST[$key])?$_REQUEST[$key]:'';
 
       /*If filter is attached to the url procede with the filter*/
@@ -546,20 +527,6 @@ class View{
    </select>
    </div>";
    }
-
-   /** Toolbar label to be added to toolbar
-    *    
-    */
-   function toolbar_label($id,$label){
-      echo  "
-      var ".$id."_label=new dijit.form.Button({
-            label: '$label',
-          disabled:true,
-      });
-      ";
-      return $id."_label";
-   }
-
 }
 
 ?>
