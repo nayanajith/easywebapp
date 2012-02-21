@@ -6,8 +6,8 @@ class Query_read_store{
    protected $pre_filter= "";
    protected $start      = 1;
    protected $count      = 10;
-   protected $max_count   = 50;
-   protected $key         = "IndexNo";
+   protected $max_count  = 50;
+   protected $key        = "IndexNo";
    protected $table      = "csstudent";
    protected $order_by   = null;
  
@@ -15,11 +15,24 @@ class Query_read_store{
    Constructor of the query read store
    */
    public function __construct($table,$key,$filter='',$order_by=null,$id=null) {
-      $this->key         =$key;   
+      $this->key        =$key;   
       $this->table      =$table;
-      $this->pre_filter   =$filter;
+      $this->pre_filter =$filter;
       $this->order_by   =$order_by;
       $this->id         =$id;   
+      if(is_array($key)){
+         $this->key_a        =$key;   
+         if(key($key) === 0){ //distinguish associative arrays
+            $this->key =$key[0];  //hidden field of the select box 
+         }else{
+            $this->key =key($key);  //hidden field of the select box 
+            if(is_array($key[key($key)])){
+               $this->id  =',CONCAT('.implode(',"+",',$key[key($key)]).")";   //displaying field of the select box
+            }else{
+               $this->id  =','.$key[key($key)];   //displaying field of the select box
+            }
+         }
+      }
       
    }
       
@@ -58,8 +71,7 @@ class Query_read_store{
       if(is_null($this->order_by)){
          $this->order_by="ORDER BY $this->key";
       }
-
-   return "SELECT DISTINCT $this->key $this->id FROM $this->table $this->filter $this->order_by LIMIT $this->start,$this->count";
+      return "SELECT DISTINCT $this->key $this->id label FROM $this->table $this->filter $this->order_by LIMIT $this->start,$this->count";
    }
 
 
@@ -68,17 +80,17 @@ class Query_read_store{
    */
    public function gen_json_data(){
       $res=exec_query($this->_gen_query());
-      
-      //add new to the front of the array
-      //array_unshift($res,array($this->key=>'new'));
-      //Return as JSON formatted data
-      //log_msg('log_json',json_encode(array('items'=>$res)));
-      //header('Content-Type', 'application/json');
-      if(is_null($this->id)){
-         return json_encode(array("identifier"=>$this->key,"label"=>$this->key,"items"=>$res));
+      if(isset($this->key_a) && is_array($this->key_a)){
+         if(is_array($this->key_a[key($this->key_a)])){
+            $res[]=array(key($this->key_a)=>'NULL','label'=>'-none-');
+         }else{
+            $res[]=array(key($this->key_a)=>'NULL','label'=>'-none-');
+         }
       }else{
-         return json_encode(array("identifier"=>$this->id,"label"=>$this->id,"items"=>$res));
+      
       }
+      //Return as JSON formatted data
+      return json_encode(array("identifier"=>$this->key,"label"=>"label","items"=>$res));
    }
 }
 

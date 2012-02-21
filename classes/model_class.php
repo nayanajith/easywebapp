@@ -615,19 +615,34 @@ class Model{
        @$key: custom key to be presented
        @$filter: custom filter to be applied
        */
-      public function xhr_filtering_select_data($table=null,$key=null,$filter=null,$order_by=null){
-         $key   =$key==null?$this->primary_key:$key;
-         if($this->primary_key != $key)
-         {
-            $this->self['key2']=$key;
+      //public function xhr_filtering_select_data($table=null,$key=null,$filter=null,$order_by=null){
+      public function xhr_filtering_select_data($key){
+         $vid=null;
+         $key_=null;
+         if(isset($this->fields[$key]['vid'])){
+            $key_=array($key=>$this->fields[$key]['vid']);
+         }else{
+            $key_=$key; 
          }
-         $table=$table==null?$this->table:$table;
-         //$filter=$filter==null?"":" AND table_name='".$this->table."' ";
-         $filter=$filter==null?"":" AND $filter";
+
+         $table   =null;
+         if(isset($this->fields[$key]['ref_table'])){
+            $table   =$this->fields[$key]['ref_table'];
+         }
+
+         $filter  =null;
+         if(isset($this->fields[$key]['filter'])){
+            $filter=$this->fields[$key]['filter'];
+         }
+
+         $order_by  =null;
+         if(isset($this->fields[$key]['order_by'])){
+            $order_by=$this->fields[$key]['order_by'];
+         }
 
          header('Content-Type', 'application/json');
          include 'qread_store_class.php';
-         $query_read_store = new Query_read_store($table,$key,$filter,$order_by);
+         $query_read_store = new Query_read_store($table,$key_,$filter,$order_by);
          echo $query_read_store->gen_json_data();
       }
       /*

@@ -95,7 +95,7 @@ class View{
          d_r('dojox.data.QueryReadStore');
          $html .="
          <span dojoType='dojox.data.QueryReadStore' 
-            url='".gen_url()."&data=json&action=combo&form=main&id=".$field_array['searchAttr']."'
+            url='".gen_url()."&data=json&action=combo&form=main&id=".$field."'
             jsId='".$field_array['store']."'
             >
          </span>";
@@ -114,7 +114,7 @@ class View{
          $options         =" jsId='$field' id='$field' name='$field' ";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','label','section','style','label_pos','type');
+         $bypass=array('inner','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -310,7 +310,7 @@ class View{
       $inner=isset($field_array['inner'])?$field_array['inner']:"";
 
       /*Fields to bypass when creating forms*/
-      $bypass=array('inner','label','section','disabled','label_pos','type');
+       $bypass=array('inner','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
 
       /*all paremeters will be inserted to the options string*/
       foreach($field_array as $key => $value){
