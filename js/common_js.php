@@ -279,7 +279,7 @@ function fill_form(rid,form) {
       form='main';
    }
 
-   if(!(rid == '' || rid == 'new')){
+   if(!(rid == '' || rid == 'new' || rid == "-none-")){
    dojo.xhrPost({
       url       : gen_url()+'&data=json&id='+rid+'&form='+form,
       handleAs :'json',
@@ -332,6 +332,13 @@ function fill_form(rid,form) {
            update_status_bar('ERROR',response);
       }
    });
+   }else{
+      /*reset form*/
+      dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
+         if(!widget.store){
+            widget.attr('value', null);
+         }
+      });
    }
 }
 

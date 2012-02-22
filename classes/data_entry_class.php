@@ -1497,7 +1497,7 @@ submit the given form
          return "
       <script type='text/javascript' type='text/javascript'>
       function $js_function(".$key.") {
-         if(!(".$key." == '' || ".$key." == 'new')){
+         if(!(".$key." == '' || ".$key." == 'new' || ".$key." == '-none-')){
          dojo.xhrPost({
             url       : '".gen_url()."&data=json&id='+".$key."+'$form',
             handleAs :'json',
@@ -1552,6 +1552,13 @@ submit the given form
                  update_status_bar('ERROR',response);
             }
          });
+         }else{
+             /*reset form*/
+               dojo.forEach(dijit.byId('".$table."_frm').getDescendants(), function(widget) {
+                  if(!widget.store){
+                     widget.attr('value', null);
+                  }
+               });
          }
       }
       </script>

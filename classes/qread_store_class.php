@@ -27,9 +27,9 @@ class Query_read_store{
          }else{
             $this->key =key($key);  //hidden field of the select box 
             if(is_array($key[key($key)])){
-               $this->id  =',CONCAT('.implode(',"+",',$key[key($key)]).")";   //displaying field of the select box
+               $this->id  =',CONCAT('.implode('," > ",',$key[key($key)]).") label";   //displaying field of the select box
             }else{
-               $this->id  =','.$key[key($key)];   //displaying field of the select box
+               $this->id  =','.$key[key($key)].' label';   //displaying field of the select box
             }
          }
       }
@@ -71,7 +71,7 @@ class Query_read_store{
       if(is_null($this->order_by)){
          $this->order_by="ORDER BY $this->key";
       }
-      return "SELECT DISTINCT $this->key $this->id label FROM $this->table $this->filter $this->order_by LIMIT $this->start,$this->count";
+      return "SELECT DISTINCT $this->key $this->id FROM $this->table $this->filter $this->order_by LIMIT $this->start,$this->count";
    }
 
 
@@ -87,7 +87,7 @@ class Query_read_store{
             $res[]=array(key($this->key_a)=>'NULL','label'=>'-none-');
          }
       }else{
-      
+         $res[]=array($this->key=>'-none-');
       }
       //Return as JSON formatted data
       return json_encode(array("identifier"=>$this->key,"label"=>"label","items"=>$res));
