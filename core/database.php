@@ -300,13 +300,15 @@ db to csv data export function for non root users
 function db_to_csv_nr($query,$csv_file,$db=null){
    log_msg('db_to_csv_nr',$query);
    $res    = exec_query($query,Q_RET_MYSQL_RES,$db);
-
+   set_file_header($csv_file);
+   /*
    header('Content-Type', 'application/vnd.ms-excel');
    header('Content-Disposition: attachment; filename='.$csv_file);
    //header("Content-type: application/octet-stream");
    //header("Content-Disposition: attachment; filename=your_desired_name.xls");
    header("Pragma: no-cache");
    header("Expires: 0");
+    */
 
 
    $header=false;

@@ -32,6 +32,13 @@ class View{
 
         include $this->model;
         $this->fields=$fields;
+
+        /**
+         * Set toolbar fields to class variable
+         */
+        if(isset($tb_fields)){
+            $this->tb_fields=$tb_fields;
+        }
    }
 
    //Mapping interlel html chuncks for each dojo type
@@ -173,7 +180,6 @@ class View{
       }
       return $html;
    }
-
    /*
    Generating form for using ghe fields array which was generated in model-class 
    */
@@ -261,158 +267,18 @@ class View{
       return $html;
    }
 
-
-   /*
-   Generate fields for the search dialogbox
-   */
-   public function gen_filter_field_entry($field){
-      $field_array;
-
-      /*custom field array can be provied to the function else retrieve it from fields array*/
-      if(is_array($field)){
-         $field_array=$field;
-         $field=$field_array['jsId'];
-      }else{
-         $field_array=$this->fields[$field];
-         /*filtering fields can be empty*/
-         $field_array['required']="false";
-      }
-
-      /*Set section header/footer as requested*/
-      $section_start         ="";
-      $section_end         ="";
-      if(isset($field_array['section'])){
-         switch($field_array['section']){
-            case 'start':
-               if(isset($field_array['section_label']) && $field_array['section_label']){
-                  $section_start      ="<td>".$field_array['section_label']."</td>";
-               }else{
-                  $section_start      ="<td>SECTION</td>";
-               }
-            break;
-            case 'end':
-                  $section_end      ="<td>SECTION</td>";
-            break;
-         }
-      }
-
-
-      $html =$section_start."<td style='padding-top:10px;'><label for='filter_$field'>".$field_array['label']."</label><br>";
-
-      /*generate form control structure to be filled bellow in sprintf()*/
-      $form_control   =$this->form_controls[$field_array['dojoType']];
-      d_r($field_array['dojoType']);
-
-      /*option string will be inserted to form control below in sprintf()*/
-      $options         ="id='filter_$field' name='filter_$field'";
-
-      /*if the form_control accepted inner html this string will placed in there*/
-      $inner=isset($field_array['inner'])?$field_array['inner']:"";
-
-      /*Fields to bypass when creating forms*/
-       $bypass=array('inner','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
-
-      /*all paremeters will be inserted to the options string*/
-      foreach($field_array as $key => $value){
-         if(!in_array($key,$bypass)){
-            $options.=$key."='$value'\n";
-         }
-      }
-
-      //Set style and length of the field
-      $style      ="";
-      if(isset($field_array['length'])){
-         $style.="width:".$field_array['length']."px;";
-      }
-
-      if(isset($field_array['style'])){
-         $style.=$field_array['style'];
-      }
-
-
-      if($style != ''){
-         $options.="style='".$style."'";
-      }
-
-      $html.=sprintf($form_control,$options,$inner);
-      //$html         .="<button dojoType='dijit.form.Button' iconClass='dijitEditorIcon dijitEditorIconSave' showLabel='false' onClick='alert($field)'>help</button>";
-      $html.="</td>\n".$section_end;
-      return $html;
+   /**
+    * Generate the toolbar entries
+    */
+   function gen_toolbar_entry(){
+   
    }
 
-
-   /*
-   generate the filter dialog box to be used with the above table
-   the grid will be generated according to the filter
-
-   return: filter dialog
-   */
-   public function gen_filter(){
-      d_r('dijit.Dialog');
-      d_r('dijit.form.Form');
-      d_r('dijit.form.ValidationTextBox');
-      $dialog="
-      <div dojoType='dijit.Dialog' id='filterDialog' jsId='filterDialog' title='Filter' >
-      ".$this->gen_xhr_filtering_select('fill_filter','filter_name',true)
-       .$this->gen_xhr_form_filler('fill_filter','filter','filter_name',true);
+   /**
+    * Generate toolbar entries and add them to toolbar
+    */
+   function gen_toolbar(){
    
-       $dialog.="
-      <div dojoType='dijit.form.Form' jsId='filter_frm' id='filter_frm'>
-         <table cellspacing='0px' cellspacing='0px'>";
-   
-       /*alien field from the original table to hold the meaningful filter name */
-      $filter_name=array(
-         "length"=>"70",
-         "dojoType"=>"dijit.form.ValidationTextBox",
-         "required"=>"true",
-         "label"=>"Filter name",
-         "value"=>"",
-         "jsId"=>"filter_name",
-         );
-       $dialog.= "<tr>".$this->gen_filter_field_entry($filter_name)."</tr>";
-
-       /*generate filter table according to the original table*/
-       foreach($this->fields as $field => $arr){
-
-         /*Ignore blank and custom fields*/
-          if(!($field == ""  || (isset($this->fields[$field]['custom']) && $this->fields[$field]['custom'] == 'true'))){
-             $dialog.= "<tr>";
-             $dialog.= $this->gen_filter_field_entry($field);
-            /*if checked exact value will be filterd else any value contained this phrase will be selected*/
-            d_r('dijit.form.CheckBox');
-            $dialog.= "<td><label for='filter_".$field."_exact'>Exact:</label><input dojoType='dijit.form.CheckBox' value='on' jsId='filter_".$field."_exact' id='filter_".$field."_exact'i name='filter_".$field."_exact' ></td>";
-            /*AND to the others or OR to the others*/
-            $dialog.= "<td><label for='filter_".$field."_exact'>And:</label><input dojoType='dijit.form.CheckBox'  value='on' jsId='filter_".$field."_and' id='filter_".$field."_and' name='filter_".$field."_and'></td>";
-             $dialog.= "</tr>";
-          }
-       }
-   
-       $dialog.=  "<tr>
-                       <td align='center' colspan='2' >
-                            <button dojoType='dijit.form.Button'  onClick='dialog_submit(filter_frm.getValues(),\"select\");'>
-                               Select
-                           </button>
-                           <button dojoType='dijit.form.Button'  onClick='dialog_submit(filter_frm,\"add\");'>
-                               Add
-                           </button>
-                           <button dojoType='dijit.form.Button' onClick='dialog_submit(filterDialog,\"modify\");'>
-                               Modify
-                           </button>
-                           <button dojoType='dijit.form.Button'  onClick='dialog_submit(fill_filter_frm,\"delete\");'>
-                               Delete
-                           </button>
-                           <button dojoType='dijit.form.Button' type='button' onClick='dijit.byId(\"filterDialog\").hide();'>
-                               Cancel
-                           </button>
-                           <button dojoType='dijit.form.Button' type='button' onClick='clear_form(filterDialog)'>
-                              Clear
-                           </button>
-                       </td>
-                   </tr>
-               </table>
-              </div>   
-         </div>";
-      return $dialog;
    }
 
  

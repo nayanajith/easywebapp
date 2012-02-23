@@ -138,6 +138,48 @@ function clear_footer(){
    clear_view('FOOTER');
 }
 
+/**
+ * Different headers are required by files generation
+ * $file_name : name of the file with the extention;
+ */
+function set_file_header($file_name){
+   $ext=explode('.',$file_name);
+   $ext=$ext[1];
+   $content_type=null;
+   switch($ext){
+   case 'csv':
+      //$content_type="application/octet-stream";
+      $content_type='application/vnd.ms-excel';
+   break;
+   case 'json':
+      $content_type='application/json';
+   break;
+   case 'pdf':
+      $content_type='application/pdf';
+   break;
+   case 'jpg':
+      $content_type='image/jpg';
+   break;
+   case 'png':
+      $content_type='image/png';
+   break;
+   default:
+      $content_type='text/json';
+   break;
+   }
+
+  header('Content-Type',$content_type );
+  header('Content-Disposition: attachment; filename='.$file_name);
+  //header("Content-type: application/octet-stream");
+  //header("Content-Disposition: attachment; filename=your_desired_name.xls");
+  //header("Content-Length: ".@filesize($file));
+  //header("Content-Transfer-Encoding: binary");
+  header("Pragma: no-cache");
+  header("Expires: 0");
+}
+
+
+
 
 /*Return staus as json for XHR request or io.iframe request */
 /*
@@ -452,10 +494,7 @@ function table_to_csv($table,$filename){
    $table=str_replace(array('<tr><td>','<tr><th>'),"'",$table);
    $table=str_replace(array('</td></tr>','</th></tr>'),"'\n",$table);
 
-   header('Content-Type', 'application/vnd.ms-excel');
-   header('Content-Disposition: attachment; filename='.$filename.'.csv');
-   header("Pragma: no-cache");
-   header("Expires: 0");
+   set_file_header($filename.".csv");
    echo  $table;
    exit();
 }
