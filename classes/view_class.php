@@ -30,8 +30,12 @@ class View{
            $this->model = A_MODULES."/".MODULE."/".$name.$this->model;
         }
 
-        include $this->model;
-        $this->fields=$fields;
+        if(file_exists($this->model)){
+        include_once $this->model;
+         if(isset($GLOBALS['MODEL'])){
+           $this->fields=$GLOBALS['MODEL']['FORM'];
+         }
+        }
 
         /**
          * Set toolbar fields to class variable

@@ -29,7 +29,7 @@ if($_SERVER['HTTP_HOST']!="ucsc.lk"){
 session_start();
 
 //timezone fix for old php versions
-//date_default_timezone_set('UTC');
+date_default_timezone_set('UTC');
 
 /*-----------Dummy session for testing comment at deployment------------------*/
 /*

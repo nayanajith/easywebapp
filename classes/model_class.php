@@ -147,8 +147,8 @@ class Model{
          $config=$this->model;
          if(file_exists($config)){
             require_once($config);
-            foreach($fields as $field => $value){
-               $this->fields[$field]=$value;
+            if(isset($GLOBALS['MODEL'])){
+               $this->fields=$GLOBALS['MODEL']['FORM'];
             }
          }else{
             $res=exec_query("SHOW COLUMNS FROM ".$this->table,Q_RET_ARRAY);
