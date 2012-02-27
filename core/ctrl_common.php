@@ -44,10 +44,22 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
            return $model->delete_record(true);
          break;
          case 'combo':
+            //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
+            $br=explode(':',$_REQUEST['id']);
+            if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
+               $_REQUEST['id']=$br[1];
+            }
+
              $model->xhr_filtering_select_data($_REQUEST['id']);
          break;
          case 'param':
-            $_SESSION[PAGE][$_REQUEST['param']]=$_REQUEST[$_REQUEST['param']];
+            //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
+            $br=explode(':',$_REQUEST['param']);
+            if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
+               $param=$br[1];
+            }
+            //Set session variable corresponding to the value changed in front end
+            $_SESSION[PAGE][$param]=$_REQUEST[$_REQUEST['param']];
             return_status_json('OK',"Set ".$_REQUEST['param']."=".$_REQUEST[$_REQUEST['param']]);
          }
    break;
@@ -69,6 +81,11 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
 }else{
    include A_CLASSES."/view_class.php";
    $view = new View($GLOBALS['PAGE']['table'],$GLOBALS['PAGE']['name']);
+
+   //Generate form
    $view->gen_form();
+
+   //Generate toolbar
+   $view->gen_toolbar();
 }
 ?>

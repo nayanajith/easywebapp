@@ -4,9 +4,9 @@ ini_set('display_errors',1);
 ini_set('memory_limit','512M');
 error_reporting(E_ALL|E_STRICT);
 
-include A_CORE."/common.php";
-include A_CORE."/database_schema.php";
-include A_CORE."/database.php";
+include_once A_CORE."/common.php";
+include_once A_CORE."/database_schema.php";
+include_once A_CORE."/database.php";
 
 /*If the databse configuration files already available do not do enything but show this message and return*/
 if(file_exists(DB_CONF)){

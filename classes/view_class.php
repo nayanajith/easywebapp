@@ -69,18 +69,15 @@ class View{
     select-> data for select box/combo box
     data-> data for text area
    */
-   public function gen_field_entry($field){
+   public function gen_field_entry($field,$field_array){
       /*fill data from data array*/
-      $fill            ="";
+      $fill ="";
 
       if($this->data_load_key != null){
          if($field != 'password' && isset($this->data[$field])){
             $fill=$this->data[$field];
          }
       }
-
-      /*filed parameter arry for current field*/
-      $field_array=$this->fields[$field];
 
       /*set fill externelly when loading with data*/
       if($fill != ''){
@@ -184,6 +181,7 @@ class View{
       }
       return $html;
    }
+
    /*
    Generating form for using ghe fields array which was generated in model-class 
    */
@@ -197,7 +195,7 @@ class View{
       if(file_exists($this->view)){
          $ctrl=array();
          foreach($this->fields as $field => $field_array){
-             $ctrl[$field]=$this->gen_field_entry($field);
+             $ctrl[$field]=$this->gen_field_entry($field,$field_array);
          }
 
          add_to_main("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
@@ -271,18 +269,139 @@ class View{
       return $html;
    }
 
-   /**
-    * Generate the toolbar entries
-    */
-   function gen_toolbar_entry(){
-   
+   /*
+    Generate entry for the given table field
+    select-> data for select box/combo box
+    data-> data for text area
+   */
+   public function gen_toolbar_entry($field,$field_array){
+      //Add toolbar prefix to identify the ids in toolbar
+
+      /*fill data from data array*/
+      $fill ="";
+
+      if(isset($_SESSION[PAGE]) && isset($_SESSION[PAGE][$field])){
+         $fill=$_SESSION[PAGE][$field];
+      }
+
+      $field="toolbar:".$field;
+
+      log_msg('toolbar_entry_fill',$fill);
+
+      /*set fill externelly when loading with data*/
+      if($fill != ''){
+         $field_array['value']=$fill;
+      }
+
+      /*html for the given field will be filled to this var*/
+      $html         ="";
+      $form_control ="";
+      $options      ="";
+
+      /*inner value of the field (innerhtml)*/
+      $inner   =isset($field_array['inner'])?$field_array['inner']:"";
+
+      /*if required=true put  * by the label */
+      $required      ="";
+      if(isset($field_array['required']) && $field_array['required'] == "true"){
+         $required      ="<font color='red'>*</font>";
+      }
+
+      //If the field require a stor add a store
+      if(isset($field_array['store'])){
+         d_r('dojox.data.QueryReadStore');
+         $html .="
+         <span dojoType='dojox.data.QueryReadStore' 
+            url='".gen_url()."&data=json&action=combo&form=main&id=".$field."'
+            jsId='".$field_array['store']."'
+            >
+         </span>";
+      }
+
+      /*Handl custom form input method or generic one*/
+      if(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
+         $html.="<div id='td_$field' jsId='td_$field' >";
+         $html.="<label for='$field' >".$field_array['label']."$required</label>";
+         $html.=$inner;
+         $html.=sprintf($html,$fill);
+         $html.="<div id='td_in_$field'></div></div>\n";
+      }else{
+         d_r($field_array['dojoType']);
+         $form_control   =$this->form_controls[$field_array['dojoType']];
+         $options         =" jsId='$field' id='$field' name='$field' ";
+
+         /*Fields to bypass when creating forms*/
+         $bypass=array('inner','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
+
+         /*all paremeters will be inserted to the options string*/
+         foreach($field_array as $key => $value){
+            if(!in_array($key,$bypass)){
+               $options.=$key."='$value'\n";
+            }
+         }
+
+
+         //hidden fields make not visible
+         if(isset($field_array['type']) && $field_array['type'] == "hidden"){
+            $options .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
+            $html .=sprintf($form_control,$options,$inner);
+         }else{
+
+            //Set style and length of the field
+            $style ="";
+            if(isset($field_array['length']) && $field_array['dojoType'] != 'dijit.form.CheckBox' ){
+               $style .="width:".$field_array['length']."px;";
+            }
+
+            //custum style is applied 
+            if(isset($field_array['style'])){
+               $style .=$field_array['style'];
+            }
+
+            //additional style is applied
+            if($style != ''){
+               $options .="style='".$style."'";
+            }
+
+            //combining the dojo type mapping in above array with the generated content
+            $html            .=sprintf($form_control,$options,$inner);
+            $field_div_start   ="<div id='td_$field' jsId='td_$field'>";
+            $field_div_end     ="<div id='td_in_$field'></div></div>";
+            $field_div_start   ="";
+            $field_div_end     ="";
+
+
+            //Set label position
+            $field_label   ="<label for='$field' >".$field_array['label']."$required</label>";
+            if(isset($field_array['label_pos'])){
+               switch($field_array['label_pos']){
+                  case 'left':
+                     $html =$field_div_start.$field_label.$html.$field_div_end;
+                  break;
+                  case 'right':
+                     $html =$field_div_start.$html.$field_label.$field_div_end;
+                  break;
+                  case 'top':
+                  default:
+                     $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
+                  break;
+               }
+            }else{
+               $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
+            }
+         }
+      }
+      return $html;
    }
+
 
    /**
     * Generate toolbar entries and add them to toolbar
     */
    function gen_toolbar(){
-   
+      foreach($GLOBALS['MODEL']['TOOLBAR'] as $field => $field_array){
+         add_to_toolbar($this->gen_toolbar_entry($field,$field_array));
+      }
    }
 
  

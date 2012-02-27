@@ -28,7 +28,7 @@ $backgrounds=array(
 ?>
 /*-------------------------Common styles------------------------------*/
 *{
-   font-size:12px;
+   font-size:11px;
    font-family:Arial,Verdana,'Bitstream Vera Sans',Helvetica,sans-serif;
 }
 
