@@ -54,6 +54,7 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
          break;
          case 'param':
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
+            $param=$_REQUEST['param'];
             $br=explode(':',$_REQUEST['param']);
             if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
                $param=$br[1];
