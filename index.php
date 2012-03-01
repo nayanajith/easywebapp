@@ -222,8 +222,11 @@ if(isset($_SESSION['REDIRECT']) && $_SESSION['REDIRECT'] != ''){
    header("Location:".$redirect);
 }
 
+/*-----------------------------------------------------------------------------*/
+/**
+ * Process the request related to page and insert into view array which will be used in layouts
+ */
 include A_CORE."/assembler.php";
-
 
 /*----------------Nothing will printed/echoed above this line-----------------*/
 /*----------------------------------------------------------------------------*/
