@@ -1,7 +1,6 @@
 <?php
 /*--create and fill view global array which contains all parts of the fintend-*/
 $GLOBALS['VIEW']=array(
-   'MAIN'      =>'',
    'CSS'       =>'',
    'JS'        =>'',
    'LOADING'   =>'',
@@ -9,6 +8,7 @@ $GLOBALS['VIEW']=array(
    'PROGRAM'   =>'',
    'BREADCRUMB'=>'',
    'NAVIGATOR' =>'',
+   'MAIN'      =>'',
    'WIDGETS'   =>'',
    'MENUBAR'   =>'',
    'TOOLBAR'   =>'',
@@ -208,10 +208,112 @@ function dojo_require($module){
    }
 }
 
+//simplyfied version of dojo_require
 function d_r($module){
    dojo_require($module);
 }
 
+//dojo have set of icons which can used with buttons and so on
+$dijitIcons=array(
+   "Save",
+   "Print",
+   "Cut",
+   "Copy",
+   "Clear",
+   "Delete",
+   "Undo",
+   "Edit",
+   "NewTask",
+   "EditTask",
+   "EditProperty",
+   "Task",
+   "Filter",
+   "Configure",
+   "Search",
+   "Application",
+   "Bookmark",
+   "Chart",
+   "Connector",
+   "Database",
+   "Documents",
+   "Mail",
+   "File",
+   "Function",
+   "Key",
+   "Package",
+   "Sample",
+   "Table",
+   "Users",
+   "FolderClosed",
+   "FolderOpen"
+);
+
+//Editor icons
+$dijitEditorIcons=array(
+   "Sep",
+   "Save",
+   "Print",
+   "Cut",
+   "Copy",
+   "Paste",
+   "Delete",
+   "Cancel",
+   "Undo",
+   "Redo",
+   "SelectAll",
+   "Bold",
+   "Italic",
+   "Underline",
+   "Strikethrough",
+   "Superscript",
+   "Subscript",
+   "JustifyCenter",
+   "JustifyFull",
+   "JustifyLeft",
+   "JustifyRight",
+   "Indent",
+   "Outdent",
+   "ListBulletIndent",
+   "ListBulletOutdent",
+   "ListNumIndent",
+   "ListNumOutdent",
+   "TabIndent",
+   "LeftToRight",
+   "RightToLeft",
+   "ToggleDir",
+   "BackColor",
+   "ForeColor",
+   "HiliteColor",
+   "NewPage",
+   "InsertImage",
+   "InsertTable",
+   "Space",
+   "InsertHorizontalRule",
+   "InsertOrderedList",
+   "InsertUnorderedList",
+   "CreateLink",
+   "Unlink",
+   "ViewSource",
+   "RemoveFormat",
+   "FullScreen",
+   "Wikiword"
+);
+
+/**
+ * return the css classes which represent the relevent button icon
+ */
+function get_icon_class($name){
+   global $dijitEditorIcons;
+   global $dijitIcons;
+   $name=ucfirst($name); 
+   if(array_search($name,$dijitIcons)){
+      return 'dijitIcon dijitIcon'.$name;
+   }elseif(array_search($name,$dijitEditorIcons)){
+      return 'dijitEditorIcon dijitEditorIcon'.$name;   
+   }else{
+      return 'dijitIcon dijitIconFunction';   
+   }
+}
 
 /*vefiry captcha by matching code submitted by the user  and avail in session*/
 function verify_captcha($custom_param=null){

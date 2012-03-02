@@ -34,6 +34,7 @@ Tables of the system
 $system_tables=array(
    'program'         =>'program',          
    'users'           =>'users',              
+   'groups'          =>'groups',              
    'permission'      =>'permission',              
    'filter'          =>'filter',         
    'log'             =>'log'              

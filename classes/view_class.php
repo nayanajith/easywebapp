@@ -32,9 +32,13 @@ class View{
 
         if(file_exists($this->model)){
         include_once $this->model;
+
+        /*
          if(isset($GLOBALS['MODEL'])){
-           $this->fields=$GLOBALS['MODEL']['FORM'];
+           $GLOBALS['MODEL']['MAIN']=$GLOBALS['MODEL']['MAIN'];
          }
+         */
+
         }
 
         /**
@@ -59,7 +63,8 @@ class View{
        "dijit.form.TimeTextBox"       =>"<input %s constraints=\"{'timePattern':'hh:mm:ss'}\" promptMessage='hh:mm:ss' invalidMessage='Invalid time. Please use hh:mm:ss format.' >",
        "dijit.form.CheckBox"          =>"<div %s ></div>",
        "dijit.form.RadioButton"       =>"<div %s ></div>",
-       "dijit.InlineEditBox"          =>"<span %s ></span>"
+       "dijit.InlineEditBox"          =>"<span %s ></span>",
+       "dijit.form.Button"          =>"<button %s>%s</button>",
    );
 
 
@@ -122,7 +127,7 @@ class View{
          $options         =" jsId='$field' id='$field' name='$field' ";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
+         $bypass=array('inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -194,7 +199,7 @@ class View{
 
       if(file_exists($this->view)){
          $ctrl=array();
-         foreach($this->fields as $field => $field_array){
+         foreach($GLOBALS['MODEL']['MAIN'] as $field => $field_array){
              $ctrl[$field]=$this->gen_field_entry($field,$field_array);
          }
 
@@ -210,13 +215,13 @@ class View{
       $html.="<div >Required fields marked as <font color='red'>*</font>";
 
       /*Find first and last elements of the fields array*/
-      reset($this->fields);
-      $keys    =array_keys($this->fields);
+      reset($GLOBALS['MODEL']['MAIN']);
+      $keys    =array_keys($GLOBALS['MODEL']['MAIN']);
       $first   =current($keys);
       $last    =end($keys);
 
       /*Set html table background and padding/spacing*/
-      foreach($this->fields as $field => $field_array){
+      foreach($GLOBALS['MODEL']['MAIN'] as $field => $field_array){
 
          if($field != ""){
             
@@ -255,7 +260,7 @@ class View{
             }
          
             $html.=$section;
-            $html.= $this->gen_field_entry($field);
+            $html.= $this->gen_field_entry($field,$field_array);
 
             /*If the element is 'last' set section as end*/
             if($field==$last && !isset($field_array['section'])){
@@ -275,6 +280,11 @@ class View{
     data-> data for text area
    */
    public function gen_toolbar_entry($field,$field_array){
+
+      //if the entry/control type is a button the execute gen_toolbar_button instead
+      if($field_array['dojoType']=='dijit.form.Button'){
+         return $this->gen_goolbar_button($field,$field_array);
+      }
       //Add toolbar prefix to identify the ids in toolbar
 
       /*fill data from data array*/
@@ -286,7 +296,6 @@ class View{
 
       $field="toolbar:".$field;
 
-      log_msg('toolbar_entry_fill',$fill);
 
       /*set fill externelly when loading with data*/
       if($fill != ''){
@@ -304,7 +313,7 @@ class View{
       /*if required=true put  * by the label */
       $required      ="";
       if(isset($field_array['required']) && $field_array['required'] == "true"){
-         $required      ="<font color='red'>*</font>";
+         //$required      ="<font color='red'>*</font>";
       }
 
       //If the field require a stor add a store
@@ -319,7 +328,9 @@ class View{
       }
 
       /*Handl custom form input method or generic one*/
-      if(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
+      if($field_array['dojoType'] == 'dijit.form.Button' ){
+         d_r($field_array['dojoType']);
+      }elseif(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
          $html.="<div id='td_$field' jsId='td_$field' >";
          $html.="<label for='$field' >".$field_array['label']."$required</label>";
          $html.=$inner;
@@ -331,7 +342,7 @@ class View{
          $options         =" jsId='$field' id='$field' name='$field' ";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
+         $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -392,6 +403,25 @@ class View{
          }
       }
       return $html;
+   }
+
+   function gen_goolbar_button($field,$field_array){
+      if($field_array['dojoType']=='dijit.form.Button'){
+
+         /*all paremeters will be inserted to the options string*/
+         $inner   ='';
+         //$inner   =$field_array['label'];
+         $options ='';
+         $bypass=array('inner','section','style','label_pos','type','vid','filter','ref_table','order_by');
+         foreach($field_array as $key => $value){
+            if(!in_array($key,$bypass)){
+               $options.=$key."='$value'\n";
+            }
+         }      
+
+        $form_control=$this->form_controls[$field_array['dojoType']];
+        return sprintf($form_control,$options,$inner);
+      }
    }
 
 
@@ -455,7 +485,7 @@ class View{
          /*Set labels for the table header if available in fileds array*/
          foreach($field_array as $h_key){
             $html.= "<th width='auto' field='$h_key'>
-               ".(isset($this->fields[$h_key]['label'])?$this->fields[$h_key]['label']:$h_key)."
+               ".(isset($GLOBALS['MODEL']['MAIN'][$h_key]['label'])?$GLOBALS['MODEL']['MAIN'][$h_key]['label']:$h_key)."
             </th>";
          }
          //<th width='auto' field='sex' cellType='dojox.grid.cells.Select' options='Male,Female' editable='true'>Sex</th>
@@ -483,7 +513,7 @@ class View{
     */
    public function gen_xhr_filtering_select($js_function,$key=null,$filter=null){
       $key     =$key==null?$this->self['key']:$key;
-      $label   =$key==null?$this->fields[$this->self['key']]['label']:$key;
+      $label   =$key==null?$GLOBALS['MODEL']['MAIN'][$this->self['key']]['label']:$key;
       $form    =$filter==null?'&form=main':'&form=filter';
       $value   =isset($_REQUEST[$key])?$_REQUEST[$key]:'';
 

@@ -44,13 +44,17 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
            return $model->delete_record(true);
          break;
          case 'combo':
+            //Section of the model to reffered by the filering select data
+            $section='MAIN';
+
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
             $br=explode(':',$_REQUEST['id']);
-            if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
+            if(isset($br[1])){
+               $section=strtoupper($br[0]);
                $_REQUEST['id']=$br[1];
             }
 
-             $model->xhr_filtering_select_data($_REQUEST['id']);
+            $model->xhr_filtering_select_data($_REQUEST['id'],$section);
          break;
          case 'param':
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id

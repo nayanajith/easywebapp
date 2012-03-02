@@ -148,7 +148,7 @@ class Model{
          if(file_exists($config)){
             require_once($config);
             if(isset($GLOBALS['MODEL'])){
-               $this->fields=$GLOBALS['MODEL']['FORM'];
+               $GLOBALS['MODEL']['MAIN']=$GLOBALS['MODEL']['MAIN'];
             }
          }else{
             $res=exec_query("SHOW COLUMNS FROM ".$this->table,Q_RET_ARRAY);
@@ -171,7 +171,7 @@ class Model{
                   $this->keys['UNIQUE_KEY'][]=$row['Field'];
                }
                if(strtoupper($row['Extra'])!='AUTO_INCREMENT'){
-                  $this->fields[$row['Field']]=array(
+                  $GLOBALS['MODEL']['MAIN'][$row['Field']]=array(
                   "length"      =>$this->get_field_width($row['Type'],false),
                   "dojoType"    =>$this->get_field_type($row['Type']),
                   "required"    =>($row['Null']=='YES')?"false":"true",
@@ -179,7 +179,7 @@ class Model{
                   "label_pos"   =>$this->get_label_pos($this->get_field_type($row['Type']))
                   );
                }else{
-                  $this->fields[$row['Field']]=array(
+                  $GLOBALS['MODEL']['MAIN'][$row['Field']]=array(
                   "length"      =>$this->get_field_width($row['Type'],false),
                   "dojoType"    =>$this->get_field_type($row['Type']),
                   "type"        =>"hidden",
@@ -204,30 +204,38 @@ class Model{
             $file_handler = fopen($config, 'w');
 
             fwrite($file_handler, "<?php\n");
-            fwrite($file_handler, "//Kyes\n");
-            fwrite($file_handler, "\$keys=array(\n");
+            fwrite($file_handler, "\$GLOBALS['MODEL']=array(\n");
+            fwrite($file_handler, "//-----------------KEY FIELDS OF THE MODEL----------------------\n");
+            fwrite($file_handler, "'KEYS'=>array(\n");
             fwrite($file_handler, "'PRIMARY_KEY'=>'".$this->keys['PRIMARY_KEY']."',\n");
             fwrite($file_handler, "'UNIQUE_KEY'=>array('".implode("','",$this->keys['UNIQUE_KEY'])."')");
-            fwrite($file_handler, "\t\n);\n");
+            fwrite($file_handler, "\t\n),\n");
+            fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN FORM-------------------\n");
+            fwrite($file_handler, "//---------------THIS ALSO REFLECT THE TABLE--------------------\n");
+
             
-            fwrite($file_handler, "//FIelds\n");
-            fwrite($file_handler, "\$fields=array(\n");
+            //write in to form related fields which reflect the form
+            fwrite($file_handler, "\t'MAIN'=>array(\n");
 
             $comma1="";
-            foreach($this->fields as $field => $arr){
+            foreach($GLOBALS['MODEL']['MAIN'] as $field => $arr){
                $comma2="";
-               fwrite($file_handler, $comma1."\t\n\"".$field."\"=>array(");
+               fwrite($file_handler, $comma1."\t\t\n\"".$field."\"=>array(");
                foreach($arr as $key => $value){
-                  fwrite($file_handler, $comma2."\n\t\t\"".$key."\"=>\"".$value."\"");
+                  fwrite($file_handler, $comma2."\n\t\t\t\"".$key."\"=>\"".$value."\"");
                   $comma2=",";
                }
-               fwrite($file_handler, ",\n\t\t\"value\"=>\"\")");
+               fwrite($file_handler, ",\n\t\t\t\"value\"=>\"\")");
                $comma1=",";
             }
 
-            fwrite($file_handler, "\t\n);\n");
-            fwrite($file_handler, "?>\n");
+            fwrite($file_handler, "\t\t\n),\n");
+            fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------\n");
 
+            //write the toolbar related fields
+            fwrite($file_handler, "'TOOLBAR'=>array(\n),\n");
+            fwrite($file_handler, "'WIDGETS'=>array(\n),\n);");
+            fwrite($file_handler, "\n?>\n");
             fclose($file_handler);
          }
       }
@@ -243,7 +251,7 @@ class Model{
             fwrite($file_handler, "\$help_array=array(");
 
             $comma="";
-            foreach($this->fields as $field => $arr){
+            foreach($GLOBALS['MODEL']['MAIN'] as $field => $arr){
                fwrite($file_handler, $comma."\n'$field'=>'".$arr['label']."'");
                $comma=",";
             }
@@ -333,7 +341,7 @@ class Model{
          $res=exec_query("SELECT * FROM ".$this->table." $where",Q_RET_ARRAY);
          if(isset($res[0])){
             $row=$res[0];
-            foreach($this->fields as $field => $value ){
+            foreach($GLOBALS['MODEL']['MAIN'] as $field => $value ){
                /*Ignore custom field names*/
                if(isset($row[$field])){
                   $this->data[$field]=$row[$field];
@@ -616,28 +624,36 @@ class Model{
        @$filter: custom filter to be applied
        */
       //public function xhr_filtering_select_data($table=null,$key=null,$filter=null,$order_by=null){
-      public function xhr_filtering_select_data($key){
-         $vid=null;
-         $key_=null;
-         if(isset($this->fields[$key]['vid'])){
-            $key_=array($key=>$this->fields[$key]['vid']);
+      public function xhr_filtering_select_data($key,$section=null){
+         $vid        =null;
+         $key_       =null;
+         $field_array=null;
+  
+         if(!is_null($section)){
+            $field_array=$GLOBALS['MODEL'][$section][$key];
+         }else{
+            $field_array=$GLOBALS['MODEL']['MAIN'][$key];
+         }
+
+         if(isset($field_array['vid'])){
+            $key_=array($key=>$field_array['vid']);
          }else{
             $key_=$key; 
          }
 
          $table   =null;
-         if(isset($this->fields[$key]['ref_table'])){
-            $table   =$this->fields[$key]['ref_table'];
+         if(isset($field_array['ref_table'])){
+            $table   =$field_array['ref_table'];
          }
 
          $filter  =null;
-         if(isset($this->fields[$key]['filter'])){
-            $filter=$this->fields[$key]['filter'];
+         if(isset($field_array['filter'])){
+            $filter=$field_array['filter'];
          }
 
          $order_by  =null;
-         if(isset($this->fields[$key]['order_by'])){
-            $order_by=$this->fields[$key]['order_by'];
+         if(isset($field_array['order_by'])){
+            $order_by=$field_array['order_by'];
          }
 
          header('Content-Type', 'application/json');
@@ -666,7 +682,7 @@ class Model{
          $cols="";
 
          //Dates request formatted from MySQL
-         foreach( $this->fields as $key => $arr){
+         foreach( $GLOBALS['MODEL']['MAIN'] as $key => $arr){
             if(isset($arr['custom']) || isset($arr['store'])){
                continue;
             }else{
@@ -690,7 +706,7 @@ class Model{
          }
          $row=$res[0];
          $ret_array=array();
-         foreach( $this->fields as $key => $arr){
+         foreach( $GLOBALS['MODEL']['MAIN'] as $key => $arr){
             if(isset($arr['custom']) || isset($arr['store'])){
                continue;   
             }else{
@@ -766,7 +782,7 @@ class Model{
             $values   =""; //value for each column of the table
             $comma   ="";
             /*set columns and values for each column*/
-            foreach( $this->fields as $key => $arr){
+            foreach( $GLOBALS['MODEL']['MAIN'] as $key => $arr){
                /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
                //if( !( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
                if( !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
@@ -846,7 +862,7 @@ class Model{
             $values   =""; //valus to be changes in the tupple
             $comma   ="";
             /*generate values string*/
-            foreach( $this->fields as $key => $arr){
+            foreach( $GLOBALS['MODEL']['MAIN'] as $key => $arr){
 
                /*Trying to ignore auto incrementing fields*/
                //if(!( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){

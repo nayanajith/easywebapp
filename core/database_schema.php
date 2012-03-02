@@ -15,7 +15,8 @@ $system_table_schemas['program']="CREATE TABLE `program` (
   `table_prefix`     varchar(100) NOT NULL,
   `deleted`          boolean     DEFAULT false,
   `note`             varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`rid`)
+  PRIMARY KEY (`rid`),
+  UNIQUE KEY (`short_name`)
 )ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['users']="CREATE TABLE `users` (
@@ -47,46 +48,59 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$system_table_schemas['permission']="CREATE TABLE `permission`(
-  `rid`               INT unsigned NOT NULL AUTO_INCREMENT,
-  `user_id`          varchar(100) NOT NULL,
-  `module`             varchar(100) NOT NULL,
-  `page`             varchar(100) NOT NULL,
-  `access_right`       enum('DENIED','READ','WRITE') NOT NULL DEFAULT 'DENIED',
-  primary key (`user_id`,`module`,`page`)
+$system_table_schemas['groups']="CREATE TABLE `groups`(
+  `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
+  `group_name`       varchar(100) NOT NULL COMMENT 'A short name to identify the group',
+  `file_prefix`      varchar(10) NOT NULL COMMENT 'The prefix for the group related files',
+  `description`      varchar(300) NOT NULL COMMENT 'Description about the group',
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`rid`),
+  UNIQUE KEY (`group_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 
+$system_table_schemas['permission']="CREATE TABLE `permission`(
+  `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
+  `user_id`          varchar(100) NOT NULL,
+  `module`           varchar(100) NOT NULL,
+  `page`             varchar(100) NOT NULL,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `access_right`     enum('DENIED','READ','WRITE') NOT NULL DEFAULT 'DENIED',
+   PRIMARY KEY (`rid`),
+   UNIQUE KEY (`user_id`,`module`,`page`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['log']="CREATE TABLE `log` (
-  `rid`                bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `proto`             varchar(5) DEFAULT NULL,
-  `timestamp`          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `rid`              bigint(10) unsigned NOT NULL AUTO_INCREMENT,
+  `proto`            varchar(5) DEFAULT NULL,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id`          INT NOT NULL,
-  `ip`                varchar(15) NOT NULL DEFAULT '',
-  `module`             varchar(50) NOT NULL DEFAULT '',
+  `ip`               varchar(15) NOT NULL DEFAULT '',
+  `module`           varchar(50) NOT NULL DEFAULT '',
   `page`             varchar(50) NOT NULL DEFAULT '',
   `cmid`             bigint(10) unsigned NOT NULL DEFAULT '0',
-  `action`             varchar(40) NOT NULL DEFAULT '',
-  `url`                varchar(100) NOT NULL DEFAULT '',
+  `action`           varchar(40) NOT NULL DEFAULT '',
+  `url`              varchar(100) NOT NULL DEFAULT '',
   `host`             varchar(100) DEFAULT NULL,
   `request`          text DEFAULT NULL,
   `info`             text DEFAULT NULL,
-  `agent`             text DEFAULT NULL,
+  `agent`            text DEFAULT NULL,
   `deleted`          boolean     DEFAULT false,
   `note`             varchar(300) DEFAULT NULL,
   PRIMARY KEY (`rid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['filter']="CREATE TABLE `filter` (
-  `rid`               INT unsigned NOT NULL AUTO_INCREMENT,
-  `filter_name`       varchar(50) DEFAULT NULL,
+  `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
+  `filter_name`      varchar(50) DEFAULT NULL,
   `table_name`       varchar(50) DEFAULT NULL,
+  `timestamp`        timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id`          INT NOT NULL,
-  `filter`             text,
+  `filter`           text,
   `deleted`          boolean     DEFAULT false,
-   `note`             varchar(300) DEFAULT NULL,
-   PRIMARY KEY (`filter_name`,`table_name`,`user_id`)
+  `note`             varchar(300) DEFAULT NULL,
+   PRIMARY KEY (`rid`),
+   UNIQUE KEY (`filter_name`,`table_name`,`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 
