@@ -47,7 +47,6 @@ if(isset($_REQUEST['form'])){
          }else{
             if(isset($_REQUEST['data'])&&$_REQUEST['data']=='json'){
                if(isset($_REQUEST['id'])){
-                  
                   $formgen->xhr_form_filler_data($_REQUEST['id']);
                }else{
                   $formgen->xhr_filtering_select_data(null,null,$filter_string);

@@ -111,7 +111,7 @@ function gen_permission_tree(){
    global $modules;
    d_r('dijit.form.ComboBox');
    d_r('dijit.form.Form');
-   foreach ($modules as $mod_key => $mod) {
+   foreach ($GLOBALS['MODULES'] as $mod_key => $mod) {
       $module_menu_file   =A_MODULES."/".$mod_key."/menu.php";
       if(is_array($mod)){
          $mod=$mod['MODULE'];

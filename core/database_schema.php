@@ -45,7 +45,9 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   `rollover_id`      decimal(10,0) DEFAULT NULL,
   `deleted`          boolean     DEFAULT false,
   `note`             varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY (`username`),
+  UNIQUE KEY (`ldap_user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['groups']="CREATE TABLE `groups`(

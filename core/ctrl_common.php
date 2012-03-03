@@ -82,7 +82,7 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
       }
    }
 }elseif(isset($_REQUEST['id'])){
-   $model->xhr_form_filler_data($_REQUEST['id'],null,'batch_id');
+   $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['PAGE']['primary_key']);
 }else{
    include A_CLASSES."/view_class.php";
    $view = new View($GLOBALS['PAGE']['table'],$GLOBALS['PAGE']['name']);
