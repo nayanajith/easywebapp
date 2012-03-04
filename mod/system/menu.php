@@ -4,6 +4,7 @@ $menu_array  = array(
    "manage_users"       =>"Users",
    "groups"             =>"Groups",
    "manage_permission"  =>"Users/Group Permission",
+   "common_lists"       =>"Common Lists",
    "activity"           =>"Activity Log",
    "system_log"         =>"System Log",
    "init_db"            =>">Regenerate Database<"

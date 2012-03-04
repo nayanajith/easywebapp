@@ -339,12 +339,34 @@ function verify_captcha($custom_param=null){
 }
 
 /**
+ * return a commen list array with title according to the common list_name
+ */
+function get_common_list($list_name){
+   $arr=exec_query("SELECT list_title,json FROM ".$GLOBALS['S_TABLES']['common_lists']." WHERE list_name='".$list_name."'",Q_RET_ARRAY);
+   if(isset($arr[0])){
+      return array(
+         'title'  =>$arr[0]['list_title'],
+         'list'   =>json_decode($arr[0]['json'])
+      );
+   }
+}
+
+/**
  * Generate a Select box for a given array of values and return the html
  * arr: associative array with key=>value
  */
-function gen_select_inner($arr,$label=null){
+function gen_select_inner($arr,$label=null,$without_none=false){
+   //validation  $arr must be an array
+   if(!is_array($arr)){
+      return null;
+   }
+
    $select='<option value="NULL">-none-</option>';
-   if(isset($arr[key($arr)])){
+   if($without_none){
+      $select='';
+   }
+
+   if( isset($arr[key($arr)])){
       //Direct compatibility with  returning array of exec_query
       if(is_array($arr[key($arr)])){
          foreach($arr as $key=>$value ){
@@ -709,5 +731,16 @@ function number_to_text($number){
    return $res; 
 } 
 
+/**
+ * In order to indent the generated code given number of tabs generated
+ */
+function tab($num){
+   $tab='   ';
+   $ret='';
+   for($i=0;$i<$num;$i++){
+      $ret.=$tab;
+   }
+   return $ret;
+}
 
 ?>

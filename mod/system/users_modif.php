@@ -36,7 +36,8 @@ $program_inner  =gen_select_inner($res,'short_name');
 $permission_inner =gen_select_inner(array("ADMIN","STAFF","STUDENT","GUEST"));
 $theme_inner      =gen_select_inner(array('claro','nihilo','soria','tundra'));
 $layout_inner     =gen_select_inner(array('web','app','pub'));
-$title_inner      =gen_select_inner(array('MR',"MS","DR","PROF"));
+$title_list       =get_common_list('title');
+$title_inner      =gen_select_inner($title_list['list'],null,true);
 
 $syear_inner="";
 $curr_year=date("Y");

@@ -163,12 +163,18 @@ class Model{
                //Find the primary key
                if(strtoupper($row['Key'])=='PRI'){
                   $this->keys['PRIMARY_KEY']=$row['Field'];
-               }elseif(strtoupper($row['Key'])=='MUL'){
-               //Find the unique key
+               }elseif(strtoupper($row['Key'])=='UNI'){
+                  //Find the unique key
                   if(!isset($this->keys['UNIQUE_KEY'])){
                      $this->keys['UNIQUE_KEY']=array();
                   }
                   $this->keys['UNIQUE_KEY'][]=$row['Field'];
+               }elseif(strtoupper($row['Key'])=='MUL'){
+                  //Find the multiple key
+                  if(!isset($this->keys['UNIQUE_KEY'])){
+                     $this->keys['MULTY_KEY']=array();
+                  }
+                  $this->keys['MULTY_KEY'][]=$row['Field'];
                }
                if(strtoupper($row['Extra'])!='AUTO_INCREMENT'){
                   $GLOBALS['MODEL']['MAIN'][$row['Field']]=array(
@@ -206,35 +212,36 @@ class Model{
             fwrite($file_handler, "<?php\n");
             fwrite($file_handler, "\$GLOBALS['MODEL']=array(\n");
             fwrite($file_handler, "//-----------------KEY FIELDS OF THE MODEL----------------------\n");
-            fwrite($file_handler, "'KEYS'=>array(\n");
-            fwrite($file_handler, "'PRIMARY_KEY'=>'".$this->keys['PRIMARY_KEY']."',\n");
-            fwrite($file_handler, "'UNIQUE_KEY'=>array('".implode("','",$this->keys['UNIQUE_KEY'])."')");
-            fwrite($file_handler, "\t\n),\n");
+            fwrite($file_handler, tab(1)."'KEYS'=>array(\n");
+            fwrite($file_handler, tab(2)."'PRIMARY_KEY'\t=>'".$this->keys['PRIMARY_KEY']."',\n");
+            fwrite($file_handler, tab(2)."'UNIQUE_KEY'\t=>array('".(isset($this->keys['UNIQUE_KEY'])?implode("','",$this->keys['UNIQUE_KEY']):'')."'),\n");
+            fwrite($file_handler, tab(2)."'MULTY_KEY'\t=>array('".(isset($this->keys['MULTY_KEY'])?implode("','",$this->keys['MULTY_KEY']):'')."'),\n");
+            fwrite($file_handler, tab(1)."),\n");
+
             fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN FORM-------------------\n");
             fwrite($file_handler, "//---------------THIS ALSO REFLECT THE TABLE--------------------\n");
-
-            
             //write in to form related fields which reflect the form
-            fwrite($file_handler, "\t'MAIN'=>array(\n");
+            fwrite($file_handler, tab(1)."'MAIN'=>array(");
 
             $comma1="";
             foreach($GLOBALS['MODEL']['MAIN'] as $field => $arr){
                $comma2="";
-               fwrite($file_handler, $comma1."\t\t\n\"".$field."\"=>array(");
+               fwrite($file_handler, $comma1."\n".tab(2)."\"".$field."\"=>array(");
                foreach($arr as $key => $value){
-                  fwrite($file_handler, $comma2."\n\t\t\t\"".$key."\"=>\"".$value."\"");
+                  fwrite($file_handler, $comma2."\n".tab(3)."\"".$key."\"\t=>\"".$value."\"");
                   $comma2=",";
                }
-               fwrite($file_handler, ",\n\t\t\t\"value\"=>\"\")");
+               fwrite($file_handler, ",\n".tab(3)."\"value\"=>\"\"\n".tab(2).")");
                $comma1=",";
             }
+            fwrite($file_handler, "\n".tab(1)."),\n");
 
-            fwrite($file_handler, "\t\t\n),\n");
+            
             fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------\n");
-
             //write the toolbar related fields
-            fwrite($file_handler, "'TOOLBAR'=>array(\n),\n");
-            fwrite($file_handler, "'WIDGETS'=>array(\n),\n);");
+            fwrite($file_handler, tab(1)."'TOOLBAR'=>array(\n".tab(1)."),\n");
+            fwrite($file_handler, tab(1)."'WIDGETS'=>array(\n".tab(1)."),\n");
+            fwrite($file_handler, ");");
             fwrite($file_handler, "\n?>\n");
             fclose($file_handler);
          }

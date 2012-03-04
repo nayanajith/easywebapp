@@ -36,6 +36,7 @@ $system_tables=array(
    'users'           =>'users',              
    'groups'          =>'groups',              
    'permission'      =>'permission',              
+   'common_lists'    =>'common_lists',         
    'filter'          =>'filter',         
    'log'             =>'log'              
 );

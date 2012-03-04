@@ -198,9 +198,9 @@ class View{
       }
 
       if(file_exists($this->view)){
-         $ctrl=array();
+         $MAIN=array();
          foreach($GLOBALS['MODEL']['MAIN'] as $field => $field_array){
-             $ctrl[$field]=$this->gen_field_entry($field,$field_array);
+             $MAIN[$field]=$this->gen_field_entry($field,$field_array);
          }
 
          add_to_main("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
@@ -222,9 +222,7 @@ class View{
 
       /*Set html table background and padding/spacing*/
       foreach($GLOBALS['MODEL']['MAIN'] as $field => $field_array){
-
          if($field != ""){
-            
             /*IF the section ended in previouse field drow section header*/
             /*IF the field is the first field of the html drow section header*/
             if($field==$first && !isset($field_array['section'])){
@@ -260,7 +258,7 @@ class View{
             }
          
             $html.=$section;
-            $html.= $this->gen_field_entry($field,$field_array);
+            $html.=$this->gen_field_entry($field,$field_array);
 
             /*If the element is 'last' set section as end*/
             if($field==$last && !isset($field_array['section'])){
@@ -271,7 +269,8 @@ class View{
       
       //html ends hear
       $html.= "</div>";
-      return $html;
+      $html.= "</div>";
+      add_to_main($html);
    }
 
    /*

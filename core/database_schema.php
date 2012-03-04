@@ -108,13 +108,10 @@ $system_table_schemas['filter']="CREATE TABLE `filter` (
 $system_table_schemas['common_lists']="CREATE TABLE `common_lists`(
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
   `list_name`        VARCHAR(100) NOT NULL,
+  `list_label`       VARCHAR(300) NOT NULL,
   `json`             TEXT NOT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    PRIMARY KEY (`rid`),
    UNIQUE KEY (`list_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-
-
-
 ?>
