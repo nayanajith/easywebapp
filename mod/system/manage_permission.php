@@ -1,7 +1,7 @@
 <?php
 include A_CLASSES."/data_entry_class.php";
 $table            ='users';
-$key1               ='username';
+$key1             ='username';
 $formgen          = new Formgenerator($table,$key1);
 
 if(isset($_REQUEST['data'])&&$_REQUEST['data']=='json'){
@@ -108,26 +108,26 @@ exit();
 
 
 function gen_permission_tree(){
-   global $modules;
    d_r('dijit.form.ComboBox');
+   d_r('dijit.form.Select');
    d_r('dijit.form.Form');
    foreach ($GLOBALS['MODULES'] as $mod_key => $mod) {
       $module_menu_file   =A_MODULES."/".$mod_key."/menu.php";
       if(is_array($mod)){
          $mod=$mod['MODULE'];
       }
-      echo "<table border=0 style='border-collapse:collapse;width:200px;border:1px solid silver;'>
+      echo "<table border=0 style='border-collapse:collapse;width:400px;'>
       <tr>
       <th align='left'>Module/Page</th>
-      <th align='left'>PERMISSION</th>
+      <th align='right'>PERMISSION</th>
       </tr>
       <tr>
-      <td style='background-color:silver' >".$mod."</td>
+      <td style='background-color:silver' >".$mod." (module)</td>
       <td style='background-color:silver' align='right'>
-      <select dojoType='dijit.form.ComboBox' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px' >
-         <option value='D'>DENIED</option>
-         <option value='R'>READ</option>
-         <option value='W'>WRITE</option>
+      <select dojoType='dijit.form.Select' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px' >
+         <option value='DENIED'><font color='red'>DENIED</font></option>
+         <option value='READ'>READ</option>
+         <option value='WRITE'>WRITE</option>
       </select>
       </td>
       </tr>\n";
@@ -141,12 +141,12 @@ function gen_permission_tree(){
             }
 
             echo "<tr>
-            <td style='background-color:whitesmoke'>".$page."</td>
+            <td style='background-color:whitesmoke'>&nbsp;-".$page."</td>
             <td style='background-color:whitesmoke' align='right'>
             <select dojoType='dijit.form.ComboBox' name='P#".$mod_key."#".$page_key."' id='DP#".$mod_key."#".$page_key."' value='DENIED' style='width:70px' >
-               <option value='D'>DENIED</option>
-               <option value='R'>READ</option>
-               <option value='W'>WRITE</option>
+               <option value='DENIED'>DENIED</option>
+               <option value='READ'>READ</option>
+               <option value='WRITE'>WRITE</option>
             </select>   
             </td>
             </tr>\n";
@@ -156,17 +156,25 @@ function gen_permission_tree(){
    }
 
 }
+echo "<p>Select group or user to assign permission </p>";
 echo "<div  align='center'>";
 echo  "<div dojoType='dijit.form.Form' id='permission_frm' jsId='permission_frm'
          encType='multipart/form-data'
          action='".$GLOBALS['PAGE_GEN']."';
          method='GET' >
          ";
-
-echo "Select User: <select name='username' id='username' dojoType='dijit.form.ComboBox' jsId='username' onChange='fill_form(this.get(\"displayedValue\"));'
+echo "Select User: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.get(\"displayedValue\"));'
 >";
 
-echo "<option value='none'>-select-</option>";
+//List of groups
+echo "<option value='none'>-groups-</option>";
+$res=exec_query("SELECT group_name FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_MYSQL_RES);
+while($row=mysql_fetch_assoc($res)){
+echo "<option value='".$row['group_name']."'>".$row['group_name']."</option>";
+}
+
+//List of users
+echo "<option value='none'>-users-</option>";
 $res=exec_query("SELECT username FROM ".$GLOBALS['S_TABLES']['users'],Q_RET_MYSQL_RES);
 while($row=mysql_fetch_assoc($res)){
 echo "<option value='".$row['username']."'>".$row['username']."</option>";

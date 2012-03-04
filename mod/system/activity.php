@@ -1,18 +1,18 @@
 <?php
 include A_CLASSES."/data_entry_class.php";
-$super_table      ='log';
-$filter_super_table      ='filter';
-$key1               ='id';
-$grid_array         =array('user_id','action');
-$grid_array_long   =array('user_id','timestamp','ip','module','page','action');
+$super_table         ='log';
+$filter_super_table  ='filter';
+$key1                ='rid';
+$grid_array          =array('user_id','action');
+$grid_array_long     =array('user_id','timestamp','ip','module','page','action');
 
-$table            =$super_table;
-$filter_table      =$filter_super_table;
-$formgen          = new Formgenerator($table,$key1,$super_table,null,$filter_table);
-$help_file         =$super_table."_help.php";
-$modif_file         =$super_table."_modif.php";
+$table               =$super_table;
+$filter_table        =$filter_super_table;
+$formgen             = new Formgenerator($table,$key1,$super_table,null,$filter_table);
+$help_file           =$super_table."_help.php";
+$modif_file          =$super_table."_modif.php";
 
-$filter_string      ="";
+$filter_string       ="";
 
 /*Extract filter according to the filter_id in request string*/
 if(isset($_REQUEST['filter_name']) && $_REQUEST['filter_name'] != ''){

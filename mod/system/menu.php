@@ -1,9 +1,9 @@
 <?php
 
 $menu_array  = array(
-   "manage_users"       =>"System Users",
-   "groups"              =>"System Groups",
-   "manage_permission"  =>"System Users Permission",
+   "manage_users"       =>"Users",
+   "groups"             =>"Groups",
+   "manage_permission"  =>"Users/Group Permission",
    "activity"           =>"Activity Log",
    "system_log"         =>"System Log",
    "init_db"            =>">Regenerate Database<"

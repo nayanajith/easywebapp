@@ -338,6 +338,33 @@ function verify_captcha($custom_param=null){
    }
 }
 
+/**
+ * Generate a Select box for a given array of values and return the html
+ * arr: associative array with key=>value
+ */
+function gen_select_inner($arr,$label=null){
+   $select='<option value="NULL">-none-</option>';
+   if(isset($arr[key($arr)])){
+      //Direct compatibility with  returning array of exec_query
+      if(is_array($arr[key($arr)])){
+         foreach($arr as $key=>$value ){
+            $select.="<option value=\"$key\">$value[$label]</option>";
+         }
+      }else{
+         //Associative array with ke=>value
+         foreach($arr as $key=>$value ){
+            $select.="<option value=\"$key\">$value</option>";
+         }
+      }
+   }else{
+      //1D array with values
+      foreach($arr as $value ){
+         $select.="<option value=\"$value\">$value</option>";
+      }
+   }
+   return $select;
+}
+
 
 /*
 Return prefix url
