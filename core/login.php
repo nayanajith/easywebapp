@@ -38,21 +38,13 @@ function before_login() {
       $page=$GLOBALS['MOD_TBL_LOGIN']['target'];
    }
    return '
-    <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data"
-        action="http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST">
+   <div dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" encType="multipart/form-data"
+   action="http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST"
+   onSubmit="if(loginForm.validate()){return true;}else{return false}"
+   >
 '.
 (isset($_REQUEST['user'])?'<div style="padding:5px;color:red;">Invallid login please try again...</div>':"")
 .'
-            <script type="text/javascript" type="dojo/method" event="onSubmit">
-                if (this.validate()) {
-                    //return confirm("Form is valid, press OK to submit");
-                    return true;
-                } else {
-                    alert("Form contains invalid data.  Please correct first");
-                    return false;
-                }
-                return true;
-            </script>
             <input type="hidden" name="module" value="'.MODULE.'" >
             <input type="hidden" name="page" value="'.$page.'" >
             <table cellpadding=0 cellspacing=0 >
@@ -64,6 +56,7 @@ function before_login() {
                     <td>
                         <input type="text" id="user" name="user" required="true" style="color:black;width:60px" 
                         dojoType="dijit.form.ValidationTextBox"
+                        value="'.($_REQUEST['user']?$_REQUEST['user']:"").'"
                         >
                     </td>
                     <td>
@@ -73,6 +66,7 @@ function before_login() {
                     <td>
                         <input type="password" id="password" name="password" required="true" style="color:black;width:60px" 
                         dojoType="dijit.form.ValidationTextBox"
+                        value="'.($_REQUEST['password']?$_REQUEST['password']:"").'"
                         >
                     </td>
                     <td>
@@ -102,7 +96,7 @@ function after_login() {
    d_r("dijit.form.Button");
 
    return "
-   <div dojoType='dijit.form.Form' id='myForm' jsId='myForm' encType='multipart/form-data' 
+   <div dojoType='dijit.form.Form' id='loginForm' jsId='loginForm' encType='multipart/form-data' 
    action='".$GLOBALS['PAGE_GEN']."?page=".PAGE."&module=".MODULE."' method='REQUEST' >
    <span>Loged in as ".$_SESSION['fullname']."</span>
    <button dojoType='dijit.form.Button' style='color:black;' type=submit name=logout value=logout>Logout</button>
