@@ -1,6 +1,7 @@
 <?php
 
 $menu_array  = array(
+//   "modules"            =>"Modules",
    "manage_users"       =>"Users",
    "groups"             =>"Groups",
    "manage_permission"  =>"Users/Group Permission",
