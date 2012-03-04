@@ -56,7 +56,7 @@ function before_login() {
                     <td>
                         <input type="text" id="user" name="user" required="true" style="color:black;width:60px" 
                         dojoType="dijit.form.ValidationTextBox"
-                        value="'.($_REQUEST['user']?$_REQUEST['user']:"").'"
+                        value="'.(isset($_REQUEST['user'])?$_REQUEST['user']:"").'"
                         >
                     </td>
                     <td>
@@ -66,7 +66,7 @@ function before_login() {
                     <td>
                         <input type="password" id="password" name="password" required="true" style="color:black;width:60px" 
                         dojoType="dijit.form.ValidationTextBox"
-                        value="'.($_REQUEST['password']?$_REQUEST['password']:"").'"
+                        value="'.(isset($_REQUEST['password'])?$_REQUEST['password']:"").'"
                         >
                     </td>
                     <td>

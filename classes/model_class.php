@@ -204,7 +204,36 @@ class Model{
        Write configuration of current table to a php file which can be customized by the user for
 
        */
+
+
       public function write_config(){
+         $common_toolbar_buttons=<<<EOE
+      "add"=>array(
+         "dojoType"=>"dijit.form.Button",
+         "label"=>"Add",
+         "label_pos"=>"left",
+         "iconClass"=>get_icon_class('NewPage'),
+         "showLabbel"=>'false',
+         "onClick"=>'submit_form("add")',
+      ),  
+      "modify"=>array(
+         "dojoType"=>"dijit.form.Button",
+         "label"=>"Modify",
+         "label_pos"=>"left",
+         "iconClass"=>get_icon_class('Save'),
+         "showLabbel"=>'false',
+         "onClick"=>'submit_form("modify")',
+      ),  
+      "remove"=>array(
+         "dojoType"=>"dijit.form.Button",
+         "label"=>"Delete",
+         "label_pos"=>"left",
+         "iconClass"=>get_icon_class('Delete'),
+         "showLabbel"=>'false',
+         "onClick"=>'submit_form("delete")',
+      ),
+EOE;
+    
          $config=$this->model;
          if(!file_exists($config)){
             $file_handler = fopen($config, 'w');
@@ -239,7 +268,7 @@ class Model{
             
             fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------\n");
             //write the toolbar related fields
-            fwrite($file_handler, tab(1)."'TOOLBAR'=>array(\n".tab(1)."),\n");
+            fwrite($file_handler, tab(1)."'TOOLBAR'=>array(\n".$common_toolbar_buttons."\n".tab(1)."),\n");
             fwrite($file_handler, tab(1)."'WIDGETS'=>array(\n".tab(1)."),\n");
             fwrite($file_handler, ");");
             fwrite($file_handler, "\n?>\n");

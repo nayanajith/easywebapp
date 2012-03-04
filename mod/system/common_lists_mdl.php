@@ -38,7 +38,6 @@ $GLOBALS['MODEL']=array(
          "length"	=>"100",
          "dojoType"	=>"dijit.form.SimpleTextarea",
          "required"	=>"true",
-         "section"=>"ll",
          "label"	=>"Json",
          "label_pos"	=>"top",
          "value"=>""
@@ -54,6 +53,48 @@ $GLOBALS['MODEL']=array(
    ),
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'TOOLBAR'=>array(
+      "rid"=>array(
+         "length"	   =>"70",
+         "dojoType"	=>"dijit.form.FilteringSelect",
+         "required"	=>"false",
+         "label"	   =>"List name",
+         "label_pos"	=>"left",
+
+         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',
+         "searchAttr"=>"label",
+         "pageSize"=>"10",
+         "store"=>"rid_store",
+
+         "filter"=>null,
+         "ref_table"=>$GLOBALS['S_TABLES']['common_lists'],
+         "order_by"=>'ORDER BY list_title DESC',
+         "vid"=>array('list_title'),
+      ),
+
+      "add"=>array(
+         "dojoType"=>"dijit.form.Button",
+         "label"=>"Add",
+         "label_pos"=>"left",
+         "iconClass"=>get_icon_class('NewPage'),
+         "showLabbel"=>'false',
+         "onClick"=>'submit_form("add")',
+      ),  
+      "modify"=>array(
+         "dojoType"=>"dijit.form.Button",
+         "label"=>"Modify",
+         "label_pos"=>"left",
+         "iconClass"=>get_icon_class('Save'),
+         "showLabbel"=>'false',
+         "onClick"=>'submit_form("modify")',
+      ),  
+      "remove"=>array(
+         "dojoType"=>"dijit.form.Button",
+         "label"=>"Delete",
+         "label_pos"=>"left",
+         "iconClass"=>get_icon_class('Delete'),
+         "showLabbel"=>'false',
+         "onClick"=>'submit_form("delete")',
+      ),
    ),
    'WIDGETS'=>array(
    ),

@@ -5,6 +5,7 @@ $menu_array  = array(
    "groups"             =>"Groups",
    "manage_permission"  =>"Users/Group Permission",
    "common_lists"       =>"Common Lists",
+   "reset_password"     =>array("PAGE"=>"Reset Password","VISIBLE"=>"false"),
    "activity"           =>"Activity Log",
    "system_log"         =>"System Log",
    "init_db"            =>">Regenerate Database<"
