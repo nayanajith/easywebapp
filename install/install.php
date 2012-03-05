@@ -48,6 +48,14 @@ if(isset($_REQUEST['action']) && $_REQUEST['action']=='install'){
       }
       */
 
+      /*
+      //finding the absolute path if it is symlink
+      $A_ROOT="";
+      if(is_link(A_ROOT)){
+         $A_ROOT=dirname(A_ROOT)."/".readlink(A_ROOT);
+      }
+       */
+
       /*Check file permission to write*/
       if(!is_writable(A_ROOT)){
          $user_info=posix_getpwuid(posix_getuid());

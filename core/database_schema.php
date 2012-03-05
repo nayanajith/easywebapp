@@ -34,7 +34,7 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   `ldap_user_id`     VARCHAR(100) DEFAULT NULL,
   `user_type`        enum('AC','AS','NA') COMMENT 'AC:academic, AS:academic support, NA:nonacademic',
   `permission`       enum('SUPER','NORMAL') NOT NULL DEFAULT 'NORMAL',
-  `group`            VARCHAR(100) DEFAULT 'DATA_ENTRY' COMMENT 'ADMIN,DATA_ENTRY,HEADS,EXAMINATION,STUDENT',
+  `group_id`         VARCHAR(100) DEFAULT 'DATA_ENTRY' COMMENT 'ADMIN,DATA_ENTRY,HEADS,EXAMINATION,STUDENT',
   `theme`            VARCHAR(20) DEFAULT NULL,
   `layout`           VARCHAR(20) DEFAULT NULL,
   `homeroom`         VARCHAR(5) DEFAULT NULL,
@@ -63,9 +63,10 @@ $system_table_schemas['groups']="CREATE TABLE `groups`(
 
 $system_table_schemas['permission']="CREATE TABLE `permission`(
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
-  `user_id`          VARCHAR(100) NOT NULL,
+  `group_user_id`    VARCHAR(100) NOT NULL,
   `module`           VARCHAR(100) NOT NULL,
   `page`             VARCHAR(100) NOT NULL,
+  `is_user`          BOOLEAN NOT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `access_right`     enum('DENIED','READ','WRITE') NOT NULL DEFAULT 'DENIED',
    PRIMARY KEY (`rid`),
