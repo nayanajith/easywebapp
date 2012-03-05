@@ -207,8 +207,8 @@ if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
 if(isset($_SESSION['username']) && isset($_SESSION['loged_module']) && $_SESSION['loged_module'] =='home'){
    $layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['users']." WHERE username='".$_SESSION['username']."'",Q_RET_ARRAY);
 
-   $GLOBALS['THEME']=isset($layout_theme[0]['theme'])&&$layout_theme[0]['theme']!=''?$layout_theme[0]['theme']:$GLOBALS['THEME'];
-   $GLOBALS['LAYOUT']=isset($layout_theme[0]['layout'])&&$layout_theme[0]['layout']!=''?$layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
+   $GLOBALS['THEME']=isset($layout_theme[0]['theme'])&&$layout_theme[0]['theme']!='NULL'&&$layout_theme[0]['theme']!=''?$layout_theme[0]['theme']:$GLOBALS['THEME'];
+   $GLOBALS['LAYOUT']=isset($layout_theme[0]['layout'])&&$layout_theme[0]['layout']!='NULL'&&$layout_theme[0]['layout']!=''?$layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
 }
 
 /*custom layout can be set from url for testing*/

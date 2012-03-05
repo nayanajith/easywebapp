@@ -19,7 +19,7 @@ $GLOBALS['MODEL']=array(
          "value"=>""
       ),
       "list_name"=>array(
-         "length"	=>"350",
+         "length"	=>"150",
          "dojoType"	=>"dijit.form.ValidationTextBox",
          "required"	=>"true",
          "label"	=>"List name",
@@ -29,27 +29,19 @@ $GLOBALS['MODEL']=array(
       "list_title"=>array(
          "length"	=>"350",
          "dojoType"	=>"dijit.form.ValidationTextBox",
-         "required"	=>"false",
+         "required"	=>"true",
          "label"	=>"List title",
          "label_pos"	=>"top",
          "value"=>""
       ),
       "json"=>array(
-         "length"	=>"100",
+         "length"	=>"350",
          "dojoType"	=>"dijit.form.SimpleTextarea",
          "required"	=>"true",
          "label"	=>"Json",
          "label_pos"	=>"top",
          "value"=>""
       ),
-      "timestamp"=>array(
-         "length"	=>"100",
-         "dojoType"	=>"dijit.form.ValidationTextBox",
-         "required"	=>"true",
-         "label"	=>"Timestamp",
-         "label_pos"	=>"top",
-         "value"=>""
-      )
    ),
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'TOOLBAR'=>array(
@@ -67,8 +59,8 @@ $GLOBALS['MODEL']=array(
 
          "filter"=>null,
          "ref_table"=>$GLOBALS['S_TABLES']['common_lists'],
-         "order_by"=>'ORDER BY list_title DESC',
-         "vid"=>array('list_title'),
+         "order_by"=>'ORDER BY list_name DESC',
+         "vid"=>array('list_name'),
       ),
 
       "add"=>array(

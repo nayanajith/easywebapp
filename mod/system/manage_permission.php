@@ -163,7 +163,7 @@ echo  "<div dojoType='dijit.form.Form' id='permission_frm' jsId='permission_frm'
          action='".$GLOBALS['PAGE_GEN']."';
          method='GET' >
          ";
-echo "Select User: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.get(\"displayedValue\"));'
+echo "Select User/Group: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.get(\"displayedValue\"));'
 >";
 
 //List of groups

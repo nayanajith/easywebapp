@@ -8,9 +8,17 @@ function get_permission(){
    if(isset($_SESSION['permission']) && $_SESSION['permission'] == 'SUPER'){
       return;
    }
-   if(isset($_SESSION['username'])){
-      $arr=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE user_id='".$_SESSION['username']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
+
+   //permission inherited from the users group
+   if(isset($_SESSION['group'])){
+      $arr['GROUP']=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=false && group_user_user_id='".$_SESSION['group']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
    }
+
+   //Permission will override from the users permission
+   if(isset($_SESSION['username'])){
+      $arr['USER']=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE  is_user=true && group_user_id='".$_SESSION['username']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
+   }
+   
    return $arr;
 }
 
