@@ -27,10 +27,10 @@ $password_custom='
 </div>
 ';
 
-$res=exec_query("SELECT group_name FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_ARRAY,null,null,'rid');
-$group_inner      =gen_select_inner($res,'group_name');
+$res=exec_query("SELECT group_name,rid FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_ARRAY,null,'group_name');
+$group_inner      =gen_select_inner(array_keys($res));
 
-$res=exec_query("SELECT short_name FROM ".$GLOBALS['S_TABLES']['program'],Q_RET_ARRAY,null,null,'rid');
+$res=exec_query("SELECT short_name,rid FROM ".$GLOBALS['S_TABLES']['program'],Q_RET_ARRAY,null,'rid');
 $program_inner  =gen_select_inner($res,'short_name');
 
 $permission_inner =gen_select_inner(array("ADMIN","STAFF","STUDENT","GUEST"));

@@ -4,9 +4,15 @@ $table            ='users';
 $key1             ='username';
 $formgen          = new Formgenerator($table,$key1);
 
+//Generate the json related to the user/group permission
 if(isset($_REQUEST['data'])&&$_REQUEST['data']=='json'){
+   $user_group_id   =explode(':',$_REQUEST['id']);
+   $is_user    =0;
+   if($user_group_id[0]=='U')$is_user=1;
+   $user_group   =$user_group_id[1];
+
    /*Select permission information for the given user from the db*/
-   $arr=exec_query("SELECT * FROM ".$GLOBALS['S_TABLES']['permission']." WHERE user_id='".$_REQUEST['id']."'", Q_RET_ARRAY);
+   $arr=exec_query("SELECT * FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=$is_user && group_user_id='".$user_group."'", Q_RET_ARRAY);
    $return_array=array();
 
    /*Convert permission into form ids at the frontend*/
@@ -37,10 +43,15 @@ if(isset($_REQUEST['form'])){
             unset($permission_array[$key]);   
          }
 
+         $user_group_id   =explode(':',$_REQUEST['username']);
+         $is_user    =0;
+         if($user_group_id[0]=='U')$is_user=1;
+         $user_group   =$user_group_id[1];
+
          /*Save json*/
          //$res=exec_query("UPDATE ".$GLOBALS['S_TABLES']['users']." SET permission='".json_encode($permission_array)."' WHERE username='".$_REQUEST['username']."' ",Q_RET_MYSQL_RES);
          /*Delete all permission before set new settings TODO: recovery plan*/
-         if(!exec_query("DELETE FROM ".$GLOBALS['S_TABLES']['permission']." WHERE user_id='".$_REQUEST['username']."'", Q_RET_MYSQL_RES)){
+         if(!exec_query("DELETE FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=$is_user && group_user_id='".$user_group."'", Q_RET_MYSQL_RES)){
             return_status_json('ERROR','error resetting permission');
             return;
          }
@@ -67,7 +78,7 @@ if(isset($_REQUEST['form'])){
             switch($break_down[0]){
                case "M":
                   $modules_permitted[$module]=$value;   
-                  if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(user_id,module,page,access_right) values('".$_REQUEST['username']."','$module','*','$value')",Q_RET_MYSQL_RES)){
+                  if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','*','$value',$is_user)",Q_RET_MYSQL_RES)){
                      return_status_json('ERROR','error updating permission');
                      return;
                   }
@@ -77,13 +88,13 @@ if(isset($_REQUEST['form'])){
                   if(isset($modules_permitted[$module])){
                      /*Prevent redundent permission ruls eg: module->w then page should not re assign 'w'*/
                      if($modules_permitted[$module] != $value){
-                        if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(user_id,module,page,access_right) values('".$_REQUEST['username']."','$module','$page','$value')",Q_RET_MYSQL_RES)){
+                        if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','$page','$value',$is_user)",Q_RET_MYSQL_RES)){
                            return_status_json('ERROR','error updating permission');
                            return;
                         }
                      }
                   }else{
-                     if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(user_id,module,page,access_right) values('".$_REQUEST['username']."','$module','$page','$value')",Q_RET_MYSQL_RES)){
+                     if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','$page','$value',$is_user)",Q_RET_MYSQL_RES)){
                         return_status_json('ERROR','error updating permission');
                         return;
                      }
@@ -163,21 +174,20 @@ echo  "<div dojoType='dijit.form.Form' id='permission_frm' jsId='permission_frm'
          action='".$GLOBALS['PAGE_GEN']."';
          method='GET' >
          ";
-echo "Select User/Group: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.get(\"displayedValue\"));'
->";
+echo "Select User/Group: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.value);'>";
 
 //List of groups
 echo "<option value='none'>-groups-</option>";
 $res=exec_query("SELECT group_name FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_MYSQL_RES);
 while($row=mysql_fetch_assoc($res)){
-echo "<option value='".$row['group_name']."'>".$row['group_name']."</option>";
+echo "<option value='G:".$row['group_name']."'>".$row['group_name']."</option>";
 }
 
 //List of users
 echo "<option value='none'>-users-</option>";
 $res=exec_query("SELECT username FROM ".$GLOBALS['S_TABLES']['users'],Q_RET_MYSQL_RES);
 while($row=mysql_fetch_assoc($res)){
-echo "<option value='".$row['username']."'>".$row['username']."</option>";
+echo "<option value='U:".$row['username']."'>".$row['username']."</option>";
 }
 
 echo "</select><br><br>";

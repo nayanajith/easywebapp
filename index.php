@@ -69,8 +69,8 @@ $secure = new Secure();
 $secure->secureGlobals();
 
 /*-----------------Load permission and database functions --------------------*/
-include A_CORE."/permission.php";
 include A_CORE."/database.php";
+include A_CORE."/permission.php";
 
 /*-----------------Check availability of the database-------------------------*/
 if(!opendb()){

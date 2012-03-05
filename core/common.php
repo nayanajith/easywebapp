@@ -352,6 +352,14 @@ function get_common_list($list_name){
 }
 
 /**
+ * Check if the array is associtated array
+ */
+function is_assoc_array($arr){
+       return array_keys($arr) !== range(0, count($arr) - 1);
+}
+
+
+/**
  * Generate a Select box for a given array of values and return the html
  * arr: associative array with key=>value
  */
@@ -366,7 +374,7 @@ function gen_select_inner($arr,$label=null,$without_none=false){
       $select='';
    }
 
-   if( isset($arr[key($arr)])){
+   if(is_assoc_array($arr)){
       //Direct compatibility with  returning array of exec_query
       if(is_array($arr[key($arr)])){
          foreach($arr as $key=>$value ){

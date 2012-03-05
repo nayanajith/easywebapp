@@ -3,7 +3,10 @@
 example json: {"P#student_hall_allocation#download_manager":"DENIED/READ/WRITE","M#payment":"DENIED/READ/WRITE"}
 */
 function get_permission(){
-   $arr=array();
+   $arr=array(
+      'USER'=>array(),
+      'GROUP'=>array(),
+   );
    //There are towo levels of permissions,from users.permission feld and from permission table. If you set the users.permission parameter to ADMIN that user will have supper power
    if(isset($_SESSION['permission']) && $_SESSION['permission'] == 'SUPER'){
       return;
@@ -18,7 +21,6 @@ function get_permission(){
    if(isset($_SESSION['username'])){
       $arr['USER']=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE  is_user=true && group_user_id='".$_SESSION['username']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
    }
-   
    return $arr;
 }
 
@@ -32,6 +34,7 @@ Array (
 */
 
 $permission=get_permission();
+
 
 /*--------------------------permission ovrrides from /-------------------------------*/
 
