@@ -109,9 +109,10 @@ $LOGIN      =false;
 
 if (isset($_SESSION['username'])) {
    if ($logout == "logout") {
-      $_SESSION['username']    = null;
+      $_SESSION['username']   = null;
       $_SESSION['permission'] = null;
-      $_SESSION['fullname']    = null;
+      $_SESSION['group']      = null;
+      $_SESSION['fullname']   = null;
       $_SESSION['user_id']    = null;
       $_SESSION['login_module']    = null;
       session_destroy();

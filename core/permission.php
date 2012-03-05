@@ -10,8 +10,8 @@ function get_permission(){
    }
 
    //permission inherited from the users group
-   if(isset($_SESSION['group'])){
-      $arr['GROUP']=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=false && group_user_user_id='".$_SESSION['group']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
+   if(isset($_SESSION['group_id'])){
+      $arr['GROUP']=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=false && group_user_id='".$_SESSION['group_id']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
    }
 
    //Permission will override from the users permission
@@ -32,7 +32,6 @@ Array (
 */
 
 $permission=get_permission();
-
 
 /*--------------------------permission ovrrides from /-------------------------------*/
 
@@ -55,7 +54,17 @@ function is_module_permitted($module){
    }
 
    global $permission;
-   foreach($permission as $arr)
+
+   //checking for user permission
+   foreach($permission['USER'] as $arr)
+   {
+      if($arr['module'] == $module && $arr['access_right'] != 'DENIED'){
+         return true;
+      }
+   }
+
+   //checking for group permission
+   foreach($permission['GROUP'] as $arr)
    {
       if($arr['module'] == $module && $arr['access_right'] != 'DENIED'){
          return true;
@@ -72,8 +81,20 @@ function is_page_permitted($module,$page){
    global $permission;
    $denied=false;
    $allowd=false;
-   foreach($permission as $arr)
-   {
+
+
+   //Checking for user permission
+   foreach($permission['USER'] as $arr){
+      if($arr['module'] == $module && $arr['page'] == $page && $arr['access_right'] == 'DENIED'){
+         $denied=true;
+      }
+      if($arr['module'] == $module && ($arr['page'] == $page || $arr['page'] == '*')){
+         $allowd=true;
+      }
+   }
+
+   //Checking for group permission
+   foreach($permission['GROUP'] as $arr){
       if($arr['module'] == $module && $arr['page'] == $page && $arr['access_right'] == 'DENIED'){
          $denied=true;
       }

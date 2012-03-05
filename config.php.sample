@@ -53,11 +53,12 @@ $GLOBALS['CONNECTION']  = null;
 
 /*-----------------------configure login system--------------------------------*/
 $GLOBALS['TBL_LOGIN']   = array(
-   'table'      =>'users', 
-   'username'   =>'username',
-   'password'   =>'password',
-   'fullname'   =>'username',
+   'table'     =>'users', 
+   'username'  =>'username',
+   'password'  =>'password',
+   'fullname'  =>'username',
    'user_id'   =>'user_id',
+   'group_id'  =>'group_id',
    'permission'=>'permission'       
 );
 $GLOBALS['AUTH_MOD']       ='MYSQL'; //authentication modes: LDAP,MYSQL,PASSWD
