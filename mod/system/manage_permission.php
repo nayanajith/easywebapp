@@ -127,15 +127,15 @@ function gen_permission_tree(){
       if(is_array($mod)){
          $mod=$mod['MODULE'];
       }
-      echo "<table border=0 style='border-collapse:collapse;width:400px;'>
+      echo "<table border=0 style='border-collapse:collapse;width:400px;font:inherit'>
       <tr>
-      <th align='left'>Module/Page</th>
-      <th align='right'>PERMISSION</th>
+      <th align='left' style='font:inherit;font-weight:bold'>Module/Page</th>
+      <th align='right' style='font:inherit;font-weight:bold'>PERMISSION</th>
       </tr>
       <tr>
-      <td style='background-color:silver' >".$mod." (module)</td>
-      <td style='background-color:silver' align='right'>
-      <select dojoType='dijit.form.Select' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px' >
+      <td style='background-color:silver;font:inherit' >".$mod." (module)</td>
+      <td style='background-color:silver;font:inherit' align='right'>
+      <select dojoType='dijit.form.Select' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px;font:inherit' >
          <option value='DENIED'><font color='red'>DENIED</font></option>
          <option value='READ'>READ</option>
          <option value='WRITE'>WRITE</option>
@@ -152,9 +152,9 @@ function gen_permission_tree(){
             }
 
             echo "<tr>
-            <td style='background-color:whitesmoke'>&nbsp;-".$page."</td>
-            <td style='background-color:whitesmoke' align='right'>
-            <select dojoType='dijit.form.ComboBox' name='P#".$mod_key."#".$page_key."' id='DP#".$mod_key."#".$page_key."' value='DENIED' style='width:70px' >
+            <td style='background-color:whitesmoke;font:inherit'>&nbsp;-".$page."</td>
+            <td style='background-color:whitesmoke;font:inherit' align='right'>
+            <select dojoType='dijit.form.ComboBox' name='P#".$mod_key."#".$page_key."' id='DP#".$mod_key."#".$page_key."' value='DENIED' style='width:70px;font:inherit' >
                <option value='DENIED'>DENIED</option>
                <option value='READ'>READ</option>
                <option value='WRITE'>WRITE</option>
@@ -260,8 +260,8 @@ function submit_form(action){
       },
 
       load: function(response) {
-         update_status_bar('OK','rquest sent successfully');
-         update_progress_bar(50);
+         //update_status_bar('OK','rquest sent successfully');
+         //update_progress_bar(50);
       }, 
       error: function() {
          update_status_bar('ERROR','error on submission');
