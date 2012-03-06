@@ -355,7 +355,7 @@ function get_common_list($list_name){
  * Check if the array is associtated array
  */
 function is_assoc_array($arr){
-   if(sizeof($arr)>0){
+   if(is_array($arr) && sizeof($arr)>0){
       return array_keys($arr) !== range(0, count($arr) - 1);
    }else{
       return false;

@@ -143,13 +143,13 @@ function set_param(key,value) {
       url       : url+'&form=main&action=param&data=json&param='+key+'&'+key+'='+value,
         handleAs :'json',
         load       : function(response, ioArgs) {        
-         update_status_bar(response.status,response.info);
+            update_status_bar(response.status,response.info);
             if(response.status == 'OK'){
                update_progress_bar(100);
             }
          },
          error : function(response, ioArgs) {
-            update_status_bar('ERROR',response);
+            update_status_bar(response.status,response.info);
          }
    });
 }   

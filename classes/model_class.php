@@ -671,6 +671,10 @@ EOE;
             $field_array=$GLOBALS['MODEL']['MAIN'][$key];
          }
 
+         if(isset($field_array['ref_key'])){
+            $key=$field_array['ref_key'];
+         }
+
          if(isset($field_array['vid'])){
             $key_=array($key=>$field_array['vid']);
          }else{

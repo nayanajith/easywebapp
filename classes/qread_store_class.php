@@ -13,6 +13,21 @@ class Query_read_store{
  
    /*
    Constructor of the query read store
+   $key can hold different types
+   $Key -> 'string'
+   $key -> array('id','label')
+   $key -> array(
+      'id'=array('label1','label2')
+   )
+
+   Eg:
+   $key -> Array(
+      [rid] => Array(
+         [0] => ministry_title
+         [1] => ministry_address 
+      )
+   )
+
    */
    public function __construct($table,$key,$filter='',$order_by=null,$id=null) {
       $this->key        =$key;   
@@ -20,16 +35,20 @@ class Query_read_store{
       $this->pre_filter =$filter;
       $this->order_by   =$order_by;
       $this->id         =$id;   
+      $this->searchAttr =null;
       if(is_array($key)){
          $this->key_a        =$key;   
-         if(key($key) === 0){ //distinguish associative arrays
+         if(key($key)===0){ //distinguish associative arrays
             $this->key =$key[0];  //hidden field of the select box 
+            $this->searchAttr =$key[0];
          }else{
             $this->key =key($key);  //hidden field of the select box 
             if(is_array($key[key($key)])){
-               $this->id  =',CONCAT('.implode('," > ",',$key[key($key)]).") label";   //displaying field of the select box
+               $this->id  =',CONCAT('.implode(',"/",',$key[key($key)]).") label";   //displaying field of the select box
+               $this->searchAttr =$key[key($key)][0];
             }else{
                $this->id  =','.$key[key($key)].' label';   //displaying field of the select box
+               $this->searchAttr =$key[key($key)];
             }
          }
       }
@@ -45,12 +64,12 @@ class Query_read_store{
    );
    */
    public function _gen_query(){
-      if (array_key_exists($this->key, $_REQUEST)) {
-         $this->filter = $_REQUEST[$this->key];
+      if (array_key_exists('label', $_REQUEST)) {
+         $this->filter = $_REQUEST['label'];
          $this->filter = str_replace("*", "%", $this->filter);
-         $this->filter="WHERE $this->key LIKE '".$this->filter."' ".$this->pre_filter;
+         $this->filter="WHERE $this->searchAttr LIKE '".$this->filter."' ".$this->pre_filter;
       }else{
-         $this->filter="WHERE $this->key LIKE '%' ".$this->pre_filter;
+         $this->filter="WHERE $this->searchAttr LIKE '%' ".$this->pre_filter;
       }
 
       //Fetch the starting index of the query

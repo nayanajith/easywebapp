@@ -411,6 +411,40 @@ function drop_tables($tables){
    return $state;
 }
 
+/*
+ * Generic mysql function creation function
+ */
+function create_functions($schemas=null){
+   $state=true;
+
+   foreach($schemas as $key=>$schema){
+      if(exec_query($schema,Q_RET_MYSQL_RES)){
+         log_msg('create_functions',"Creating function:$key");
+      }else{
+         log_msg('create_functions',get_sql_error());
+         $state=false;
+      }
+   }
+   return $state;
+}
+
+/*
+ * Delete triggers 
+ */
+function drop_functions($schemas){
+   $state=true;
+   foreach($schemas as $name=>$sql){
+     if(exec_query("DROP TRIGGER ".$name,Q_RET_MYSQL_RES)){
+        log_msg('drop_system_tables',"Drop table:$name");
+     }else{
+        log_msg('drop_system_tables',get_sql_error());
+        $state=false;
+     }   
+   }
+   return $state;
+}
+
+
 /**
 This function will create all the tables required to manage a program eg: BIT,BICT, BCSC
 

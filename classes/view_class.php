@@ -127,7 +127,7 @@ class View{
          $options         =" jsId='$field' id='$field' name='$field' ";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
+         $bypass=array('inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -341,7 +341,7 @@ class View{
          $options         =" jsId='$field' id='$field' name='$field' ";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','order_by');
+         $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){

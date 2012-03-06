@@ -63,9 +63,16 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
             if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
                $param=$br[1];
             }
+
+            if($_REQUEST[$_REQUEST['param']] == 'NULL'){
+               //rest the session variable corresponding to the given value if  it is NULL
+               unset($_SESSION[PAGE][$param]);
+               return_status_json('OK',"Reset ".$_REQUEST['param']);
+            }else{
             //Set session variable corresponding to the value changed in front end
-            $_SESSION[PAGE][$param]=$_REQUEST[$_REQUEST['param']];
-            return_status_json('OK',"Set ".$_REQUEST['param']."=".$_REQUEST[$_REQUEST['param']]);
+               $_SESSION[PAGE][$param]=$_REQUEST[$_REQUEST['param']];
+               return_status_json('OK',"Set ".$_REQUEST['param']."=".$_REQUEST[$_REQUEST['param']]);
+            }
          }
    break;
    case 'filter':

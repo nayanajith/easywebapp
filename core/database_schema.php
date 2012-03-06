@@ -70,7 +70,7 @@ $system_table_schemas['permission']="CREATE TABLE `permission`(
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `access_right`     enum('DENIED','READ','WRITE') NOT NULL DEFAULT 'DENIED',
    PRIMARY KEY (`rid`),
-   UNIQUE KEY (`user_id`,`module`,`page`)
+   UNIQUE KEY (`group_user_id`,`module`,`page`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['log']="CREATE TABLE `log` (
