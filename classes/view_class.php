@@ -64,7 +64,7 @@ class View{
        "dijit.form.CheckBox"          =>"<div %s ></div>",
        "dijit.form.RadioButton"       =>"<div %s ></div>",
        "dijit.InlineEditBox"          =>"<span %s ></span>",
-       "dijit.form.Button"          =>"<button %s>%s</button>",
+       "dijit.form.Button"            =>"<button %s>%s</button>",
    );
 
 
@@ -295,11 +295,11 @@ class View{
 
       $field="toolbar:".$field;
 
-
       /*set fill externelly when loading with data*/
       if($fill != ''){
          $field_array['value']=$fill;
       }
+
 
       /*html for the given field will be filled to this var*/
       $html         ="";

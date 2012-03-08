@@ -86,6 +86,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <!--CENTER box of BorderContainer-2-->
                   <div dojoType="dijit.layout.ContentPane" region="center" id="data_body" class="bgBottom" style="padding:5px;">
 <!--________________________start data_body area_____________________________-->
+<div>
                      <?php 
                      echo $GLOBALS['VIEW']['MAIN'];
                      //include page in module
@@ -105,6 +106,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                       */
                   ?>
 
+</div>
 <!--_________________________end data_body area______________________________-->
                   </div>
                   <!--end CENTER box of BorderContainer-2-->
