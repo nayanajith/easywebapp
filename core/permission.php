@@ -8,8 +8,8 @@ function get_permission(){
       'GROUP'=>array(),
    );
    //There are towo levels of permissions,from users.permission feld and from permission table. If you set the users.permission parameter to ADMIN that user will have supper power
-   if(isset($_SESSION['permission']) && $_SESSION['permission'] == 'SUPER'){
-      return;
+   if(isset($_SESSION['group_id']) && $_SESSION['group_id'] == 'SUPER'){
+      return $arr;
    }
 
    //permission inherited from the users group
@@ -52,7 +52,7 @@ function get_page_access_right($module, $page){
 
 function is_module_permitted($module){
    //At the first place, if the user is an admin, provide supper power
-   if(isset($_SESSION['permission']) && $_SESSION['permission']=='SUPER'){
+   if(isset($_SESSION['group_id']) && $_SESSION['group_id']=='SUPER'){
       return true;
    }
 
@@ -78,7 +78,7 @@ function is_module_permitted($module){
 
 function is_page_permitted($module,$page){
    //At the first place, if the user is an admin, provide supper power
-   if(isset($_SESSION['permission']) && $_SESSION['permission']=='SUPER'){
+   if(isset($_SESSION['group_id']) && $_SESSION['group_id']=='SUPER'){
       return true;
    }
    global $permission;

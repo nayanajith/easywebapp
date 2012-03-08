@@ -108,10 +108,11 @@ class View{
          d_r('dojox.data.QueryReadStore');
          $html .="
          <span dojoType='dojox.data.QueryReadStore' 
-            url='".gen_url()."&data=json&action=combo&form=main&id=".$field."'
+            url='".gen_url()."&data=json&action=combo&form=main&field=".$field."'
             jsId='".$field_array['store']."'
             >
-         </span>";
+            </span>
+                 ";
       }
 
       /*Handl custom form input method or generic one*/
@@ -293,7 +294,11 @@ class View{
          $fill=$_SESSION[PAGE][$field];
       }
 
-      $field="toolbar:".$field;
+      //original field id
+      $field_=$field;
+
+      //toolbar field id
+      $field="toolbar__".$field;
 
       /*set fill externelly when loading with data*/
       if($fill != ''){
@@ -320,10 +325,11 @@ class View{
          d_r('dojox.data.QueryReadStore');
          $html .="
          <span dojoType='dojox.data.QueryReadStore' 
-            url='".gen_url()."&data=json&action=combo&form=main&id=".$field."'
+            url='".gen_url()."&data=json&action=combo&form=main&field=".$field."'
             jsId='".$field_array['store']."'
             >
-         </span>";
+         </span>
+";
       }
 
       /*Handl custom form input method or generic one*/
@@ -331,14 +337,14 @@ class View{
          d_r($field_array['dojoType']);
       }elseif(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
          $html.="<div id='td_$field' jsId='td_$field' >";
-         $html.="<label for='$field' >".$field_array['label']."$required</label>";
+         //$html.="<label for='$field' >".$field_array['label']."$required</label>";
          $html.=$inner;
          $html.=sprintf($html,$fill);
          $html.="<div id='td_in_$field'></div></div>\n";
       }else{
          d_r($field_array['dojoType']);
          $form_control   =$this->form_controls[$field_array['dojoType']];
-         $options         =" jsId='$field' id='$field' name='$field' ";
+         $options         =" jsId='$field' id='$field' name='$field'  title='".$field_array['label']."'";
 
          /*Fields to bypass when creating forms*/
          $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by');
@@ -382,25 +388,28 @@ class View{
 
 
             //Set label position
-            $field_label   ="<label for='$field' >".$field_array['label']."$required</label>";
-            if(isset($field_array['label_pos'])){
-               switch($field_array['label_pos']){
-                  case 'left':
-                     $html =$field_div_start.$field_label.$html.$field_div_end;
-                  break;
-                  case 'right':
-                     $html =$field_div_start.$html.$field_label.$field_div_end;
-                  break;
-                  case 'top':
-                  default:
-                     $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
-                  break;
-               }
-            }else{
-               $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
-            }
+            $html =$field_div_start.$html.$field_div_end;
          }
       }
+      if(isset($field_array['dojoType']['store']) && ($field_array['dojoType'] == 'dijit.form.FilteringSelect' || $field_array['dojoType'] == 'dijit.form.Select' || $field_array['dojoType'] == 'dijit.form.Select')){
+      $html.="
+<script>
+//Set the previouse value in drop down box
+dojo.ready(function(){
+   var valueSet = false;
+   $field.store.fetch({
+      query:{ $field_:'*' },
+      onItem : function(item, request) {
+        if (!valueSet && request.store.getValue(item, '$field_') == '$fill') {
+            $field.setValue(request.store.getValue(item, '$field_'));
+            valueSet = true;
+        }
+    }
+   });
+});
+</script> ";
+      }
+
       return $html;
    }
 

@@ -35,7 +35,7 @@ class Query_read_store{
       $this->pre_filter =$filter;
       $this->order_by   =$order_by;
       $this->id         =$id;   
-      $this->searchAttr =null;
+      $this->searchAttr =$key;
       if(is_array($key)){
          $this->key_a        =$key;   
          if(key($key)===0){ //distinguish associative arrays

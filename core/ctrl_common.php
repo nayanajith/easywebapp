@@ -48,18 +48,18 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
             $section='MAIN';
 
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
-            $br=explode(':',$_REQUEST['id']);
+            $br=explode('__',$_REQUEST['field']);
             if(isset($br[1])){
                $section=strtoupper($br[0]);
-               $_REQUEST['id']=$br[1];
+               $_REQUEST['field']=$br[1];
             }
 
-            $model->xhr_filtering_select_data($_REQUEST['id'],$section);
+            $model->xhr_filtering_select_data($_REQUEST['field'],$section);
          break;
          case 'param':
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
             $param=$_REQUEST['param'];
-            $br=explode(':',$_REQUEST['param']);
+            $br=explode('__',$_REQUEST['param']);
             if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
                $param=$br[1];
             }

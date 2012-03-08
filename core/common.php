@@ -533,9 +533,24 @@ function style_text($ROW_TEXT) {
 /*
  * Log a message in log file 
  */
-function log_msg($id,$msg,$color=null){
+function log_msg($id=null,$msg=null,$color=null){
    if(LOG_ENABLED == 'NO')return;
    $date_time=date("d-M-Y h:i:s");
+
+   //Adjust for the single
+   if(is_null($msg)){
+      $msg=$id;
+
+      //find the function which called the log_msg
+      $trace   =debug_backtrace();
+      $caller  =array_shift($trace);
+      $caller  =array_shift($trace);
+      $class   ="";
+      if(isset($caller['class'])){
+         $class   =$caller['class'].'.';
+      }
+      $id=$class.$caller['function'];
+   }
 
    $file_handler =null;
    if(file_exists(LOG)){
@@ -546,9 +561,9 @@ function log_msg($id,$msg,$color=null){
 
    //log array content if msg is an array
    if(is_array($msg)){
-      ob_start('ob_gzhandler');
-      print_r($msg);
-      $msg = ob_get_contents();
+      @ob_start('ob_gzhandler');
+      @print_r($msg);
+      $msg = @ob_get_contents();
       @ob_end_clean();
    }
 
