@@ -28,6 +28,7 @@ if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
 
    //$query="SELECT $fields FROM ".$table." UNION SELECT $fields FROM ".$table .$filter_str;
    $query="SELECT $fields FROM ".$table." ".$filter_str;
+   log_msg($query);
    $csv_file= $table.".csv";
    db_to_csv_nr($query,$csv_file);
    return;
