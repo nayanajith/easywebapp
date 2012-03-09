@@ -4,7 +4,7 @@
  */
 class Model{
 
-   protected $model      ="_mdl.php";
+   protected $model      ="_mdl%s.php";
 
    /*
     * Field types array
@@ -75,6 +75,13 @@ class Model{
             $this->model     = A_MODULES."/".MODULE."/".$name.$this->model;
          }else{
             $this->model     = A_MODULES."/".MODULE."/".$table.$this->model;
+         }
+
+         //Setting group wise model file if available else drop to default
+         if(isset($_SESSION['group_id'])&&file_exists(sprintf($this->model,$_SESSION['group_id']))){
+            $this->model=sprintf($this->model,$_SESSION['group_id']);
+         }else{
+            $this->model=sprintf($this->model,'');
          }
 
          $this->load_modifier();

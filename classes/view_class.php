@@ -5,10 +5,10 @@
 
 class View{
    //The view file
-   protected $view   ="_viw.php";
+   protected $view   ="_viw%s.php";
 
    //The model file
-   protected $model  ="_mdl.php";
+   protected $model  ="_mdl%s.php";
    protected $fields =array();
 
    //Table 
@@ -22,14 +22,37 @@ class View{
     */
    function __construct($table=null,$name=null) {
         $this->table=$table;
+        
+        //Setting the path to model and view files according to the given parameters
         if(isset($name) && $name != null ){
            $this->view = A_MODULES."/".MODULE."/".$name.$this->view;
            $this->model = A_MODULES."/".MODULE."/".$name.$this->model;
         }else{
            $this->view = A_MODULES."/".MODULE."/".$table.$this->view;
-           $this->model = A_MODULES."/".MODULE."/".$name.$this->model;
+           $this->model = A_MODULES."/".MODULE."/".$table.$this->model;
         }
 
+        //Determine group prefix according to the group of the user
+        $group_prefix='';
+        if(isset($_SESSION['group_id'])){
+            $group_prefix="_".$_SESSION['group_id'];
+        }
+
+        //Setting group wise view file if available else drop to default 
+        if(file_exists(sprintf($this->view,$group_prefix))){
+            $this->view=sprintf($this->view,$group_prefix);
+        }else{
+            $this->view=sprintf($this->view,'');
+        }
+
+        //Setting group wise model file if available else drop to default
+        if(file_exists(sprintf($this->model,$group_prefix))){
+            $this->model=sprintf($this->model,$group_prefix);
+        }else{
+            $this->model=sprintf($this->model,'');
+        }
+
+        log_msg($this->model);
         if(file_exists($this->model)){
         include_once $this->model;
 

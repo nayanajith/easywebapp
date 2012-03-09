@@ -1,7 +1,7 @@
 <?php
 //main page selection logic
 $main='';
-
+//TODO: group wise main file
 if($GLOBALS['LAYOUT']=='pub'){
    if(!file_exists(A_MODULES."/".MODULE."/".PAGE.".php")){
       $main="error.php";
@@ -26,11 +26,8 @@ if($GLOBALS['LAYOUT']=='pub'){
 //Main file contains the module+page specific features and outputs which will affect the view 
 add_to_view('MAIN',       $main);
 
-
-
 //Page footer
 add_to_view('FOOTER',     A_CORE."/footer.php");
-
 
 //Status bar  for seb/app layouts
 add_to_view('STATUSBAR',  A_CORE."/status_bar.php");

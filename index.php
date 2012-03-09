@@ -129,7 +129,7 @@ if ($page == '' && isset($menu_array)){
    reset($menu_array);
 }
 
-//Define  page 
+//Define  PAGE  constant
 define('PAGE'   , $page);
 
 /*-------------------include menu  of the the active module-------------------*/
