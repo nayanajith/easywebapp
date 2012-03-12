@@ -4,12 +4,11 @@ include_once(A_CORE."/common.php");
 
 header("Content-type: text/css");
 header("Content-Disposition: attachment; filename=\"common.css\"");
-//$menu_active="#C9D7F1";
-//$menu_active       ="#5b92c8";
-$menu_active         ="#5b92c8";
-$menu_activeText     ="white";
-$menu_inactive       ="whitesmoke";
-$menu_inactiveText   ="black";
+$light_color         ="#C9D7F1";
+$light_color         ="#5b92c8";
+$light_colorText     ="white";
+$dark_color          ="whitesmoke";
+$dark_colorText      ="black";
 $light_bg_color      ="whitesmoke";
 $border_color        ="silver";
 
@@ -40,11 +39,13 @@ body{
 }
 
 body, th, td {
-   font: normal 13px Verdana,Arial,'Bitstream Vera Sans',Helvetica,sans-serif;
+   font: normal 11px Verdana,Arial,'Bitstream Vera Sans',Helvetica,sans-serif;
+   border-color:<?php echo $light_color; ?>
 }
 
 th{
    font-weight:bold;
+   color:<?php echo $light_color; ?>
 }
 
 h1, h2, h3, h4 {
@@ -78,7 +79,7 @@ h3{
 
 hr{ 
    border: none;  
-   border-top: 1px solid <?php echo $menu_active; ?>; 
+   border-top: 1px solid <?php echo $light_color; ?>; 
    margin: 2em 0;
 }
 
@@ -212,7 +213,7 @@ img {
 }
 
 #title hr{
-   border-top: 2px solid <?php echo $menu_active; ?>; 
+   border-top: 2px solid <?php echo $light_color; ?>; 
    margin:0px;
 }
 
@@ -240,7 +241,7 @@ img {
 
 /*------------------------Friendly item browser-------------------------------*/
 #browser_box{
-   border: 1px solid <?php echo $menu_active; ?>;
+   border: 1px solid <?php echo $light_color; ?>;
    width:800px;
    padding:5px;
    overflow:auto;
@@ -256,7 +257,7 @@ img {
    padding:5px;
    overflow: -moz-scrollbars-vertical;
    overflow-x: auto;
-   border:1px solid <?php echo $menu_inactive; ?>;
+   border:1px solid <?php echo $dark_color; ?>;
 }
 
 .items
@@ -271,27 +272,28 @@ img {
 }
 
 .items div:hover{
-   background-color:<?php echo $menu_inactive; ?>;
+   background-color:<?php echo $dark_color; ?>;
 }
 
 .normal_folder{
    padding:1px;
    color:black;
    text-align:center;
-   border: 1px solid <?php echo $menu_active; ?>;
+   border: 1px solid <?php echo $light_color; ?>;
    padding:5px;
    min-width:60px;
 }
 
 .selected_folder{
    padding:5px;
-   background-color:<?php echo $menu_active; ?>;
+   background-color:<?php echo $light_color; ?>;
    color:blue;
    min-width:60px;
    text-align:center;
-   border:1px solid <?php echo $menu_inactive; ?>;
+   border:1px solid <?php echo $dark_color; ?>;
 }
 /*------------------------------Clean Table-----------------------------------*/
+
 .clean{
    border-collapse:collapse;
    border:1px solid black;
@@ -347,14 +349,14 @@ img {
 .summery{
    height:320px;
    overflow:auto;
-   border:1px solid <?php echo $menu_active; ?>;
+   border:1px solid <?php echo $light_color; ?>;
    padding:10px;
 }
 
 .detail{
    height:320px;
    overflow:auto;
-   border:1px solid <?php echo $menu_active; ?>;
+   border:1px solid <?php echo $light_color; ?>;
    padding:10px;
 }
 
@@ -368,15 +370,15 @@ img {
 .menu ul li {
    margin-left: 0;
    margin-bottom: 0px;
-   background:<?php echo $menu_inactive; ?>;   
+   background:<?php echo $dark_color; ?>;   
    list-style: none;
    display: inline;
-   border:1px solid <?php echo $menu_active; ?>;
+   border:1px solid <?php echo $light_color; ?>;
    padding: 1px 1px 2px;
 }
       
 .menu ul li.active {
-   background:<?php echo $menu_active; ?>;   
+   background:<?php echo $light_color; ?>;   
    list-style: none;
    display: inline;
    padding: 1px 1px 2px;
@@ -385,13 +387,13 @@ img {
 .menu ul li.active a{
    text-decoration:none;
    padding: 2px 15px 5px;
-   color:<?php echo $menu_activeText; ?>;
+   color:<?php echo $light_colorText; ?>;
 }
 
 .menu ul li a{
    text-decoration:none;
    padding: 2px 15px 5px;
-   color:<?php echo $menu_inactiveText; ?>;
+   color:<?php echo $dark_colorText; ?>;
 }
    
 /* UPward tabs */
@@ -404,7 +406,7 @@ img {
    border-bottom:0px;
 }
 .up ul li:hover{
-   background-color:<?php echo $menu_active; ?>;
+   background-color:<?php echo $light_color; ?>;
 }
 /* Downward tabs */
 .down ul li{
@@ -415,7 +417,7 @@ img {
    border-bottom-right-radius: 5px 5px;
 }   
 .down ul li:hover{
-   background-color:<?php echo $menu_active; ?>;
+   background-color:<?php echo $light_color; ?>;
 }
 /* Downward tabs */
 .down ul li.active{
@@ -425,7 +427,7 @@ img {
 
 /*--------------------------------search box----------------------------------*/   
 #search{
-   border:1px solid <?php echo $menu_active; ?>;
+   border:1px solid <?php echo $light_color; ?>;
    width:150px;
    padding-left:5px;
 
@@ -435,12 +437,12 @@ img {
    margin-top: -12px; 
    width: 100%; 
    height: 30px; 
-   background: <?php echo $menu_active; ?>; 
+   background: <?php echo $light_color; ?>; 
    position: relative;
 }
 
 .login_form{
-   color:<?php echo $menu_activeText; ?>;
+   color:<?php echo $light_colorText; ?>;
    margin-right:5px;
    padding-top:4px;
 } 
@@ -463,8 +465,8 @@ img {
 }
 
 #footer{
-   background: <?php echo $menu_active; ?>; 
-   color:<?php echo $menu_activeText; ?>;
+   background: <?php echo $light_color; ?>; 
+   color:<?php echo $light_colorText; ?>;
    font-size:10px;
    
    -moz-border-radius-bottomleft:5px;
@@ -478,7 +480,7 @@ img {
 }
 
 #footer a{
-   color:<?php echo $menu_activeText; ?>;
+   color:<?php echo $light_colorText; ?>;
    text-decoration:none;
 }
 
@@ -488,8 +490,8 @@ img {
 
 /*---------------------------------print csv----------------------------------*/
 .dataAction{
-   background: <?php echo $menu_active; ?>; 
-   color:<?php echo $menu_activeText; ?>;
+   background: <?php echo $light_color; ?>; 
+   color:<?php echo $light_colorText; ?>;
    text-decoration:none;
    padding-left:5px;
    padding-right:5px;
@@ -662,7 +664,7 @@ if(is_msie()){
 $baloon_bg      ="khaki";
 $baloon_font   ="11px arial,sans-serif;";
 $baloon_border   ="1px solid red";
-$page_bg         =$menu_active;
+$page_bg         =$light_color;
 
 if (isset($_SESSION['username'])) {
    $page_bg         ="white";

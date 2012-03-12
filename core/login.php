@@ -52,6 +52,7 @@ function before_login() {
                     <td>
                         <label for="user">
                             Username:
+                        </label>
                     </td>
                     <td>
                         <input type="text" id="user" name="user" required="true" style="color:black;width:60px" 
@@ -61,7 +62,8 @@ function before_login() {
                     </td>
                     <td>
                         <label for="password">
-                            Password:
+                            &nbsp;Password:
+                        </label>
                     </td>
                     <td>
                         <input type="password" id="password" name="password" required="true" style="color:black;width:60px" 
