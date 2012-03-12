@@ -77,9 +77,21 @@
 */
 ?>
 <!--________________________start data_body area_____________________________-->
-       <?php 
-          echo $GLOBALS['VIEW']['MAIN'];
-          ?>
+                     <table width='100%'>
+                        <tr>
+                           <td id='MAIN_LEFT' valign='top' align='left'>
+                              <?php 
+                              echo $GLOBALS['VIEW']['MAIN_LEFT'];
+                              ?>
+
+                           </td>
+                           <td id='MAIN_RIGHT' valign='top' align='right'>
+                              <?php 
+                              echo $GLOBALS['VIEW']['MAIN_RIGHT'];
+                              ?>
+                           </td>
+                        </tr>
+                     </table>
 <!--_________________________end data_body area______________________________-->
 </div>
 </td>

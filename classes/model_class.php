@@ -155,7 +155,7 @@ class Model{
          if(file_exists($config)){
             require_once($config);
             if(isset($GLOBALS['MODEL'])){
-               $GLOBALS['MODEL']['MAIN']=$GLOBALS['MODEL']['MAIN'];
+               $GLOBALS['MODEL']['MAIN_LEFT']=$GLOBALS['MODEL']['MAIN_LEFT'];
             }
          }else{
             $res=exec_query("SHOW COLUMNS FROM ".$this->table,Q_RET_ARRAY);
@@ -184,7 +184,7 @@ class Model{
                   $this->keys['MULTY_KEY'][]=$row['Field'];
                }
                if(strtoupper($row['Extra'])!='AUTO_INCREMENT'){
-                  $GLOBALS['MODEL']['MAIN'][$row['Field']]=array(
+                  $GLOBALS['MODEL']['MAIN_LEFT'][$row['Field']]=array(
                   "length"      =>$this->get_field_width($row['Type'],false),
                   "dojoType"    =>$this->get_field_type($row['Type']),
                   "required"    =>($row['Null']=='YES')?"false":"true",
@@ -192,7 +192,7 @@ class Model{
                   "label_pos"   =>$this->get_label_pos($this->get_field_type($row['Type']))
                   );
                }else{
-                  $GLOBALS['MODEL']['MAIN'][$row['Field']]=array(
+                  $GLOBALS['MODEL']['MAIN_LEFT'][$row['Field']]=array(
                   "length"      =>$this->get_field_width($row['Type'],false),
                   "dojoType"    =>$this->get_field_type($row['Type']),
                   "type"        =>"hidden",
@@ -280,10 +280,10 @@ EOE;
             fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN FORM-------------------\n");
             fwrite($file_handler, "//---------------THIS ALSO REFLECT THE TABLE--------------------\n");
             //write in to form related fields which reflect the form
-            fwrite($file_handler, tab(1)."'MAIN'=>array(");
+            fwrite($file_handler, tab(1)."'MAIN_LEFT'=>array(");
 
             $comma1="";
-            foreach($GLOBALS['MODEL']['MAIN'] as $field => $arr){
+            foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $arr){
                $comma2="";
                fwrite($file_handler, $comma1."\n".tab(2)."\"".$field."\"=>array(");
                foreach($arr as $key => $value){
@@ -317,7 +317,7 @@ EOE;
             fwrite($file_handler, "\$help_array=array(");
 
             $comma="";
-            foreach($GLOBALS['MODEL']['MAIN'] as $field => $arr){
+            foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $arr){
                fwrite($file_handler, $comma."\n'$field'=>'".$arr['label']."'");
                $comma=",";
             }
@@ -407,7 +407,7 @@ EOE;
          $res=exec_query("SELECT * FROM ".$this->table." $where",Q_RET_ARRAY);
          if(isset($res[0])){
             $row=$res[0];
-            foreach($GLOBALS['MODEL']['MAIN'] as $field => $value ){
+            foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $value ){
                /*Ignore custom field names*/
                if(isset($row[$field])){
                   $this->data[$field]=$row[$field];
@@ -698,7 +698,7 @@ EOE;
          if(!is_null($section)){
             $field_array=$GLOBALS['MODEL'][$section][$key];
          }else{
-            $field_array=$GLOBALS['MODEL']['MAIN'][$key];
+            $field_array=$GLOBALS['MODEL']['MAIN_LEFT'][$key];
          }
 
          if(isset($field_array['ref_key'])){
@@ -737,7 +737,7 @@ EOE;
        */
 
       public function xhr_form_filler_data($qustion,$cus_table=null,$cus_key=null){
-         $table=$this->table;
+         $table   =$this->table;
          $f_key   =$this->primary_key;
 
          if($cus_table != null){
@@ -752,8 +752,9 @@ EOE;
          $cols="";
 
          //Dates request formatted from MySQL
-         foreach( $GLOBALS['MODEL']['MAIN'] as $key => $arr){
-            if(isset($arr['custom']) || isset($arr['store'])){
+         foreach( $GLOBALS['MODEL']['MAIN_LEFT'] as $key => $arr){
+            //if(isset($arr['custom']) || isset($arr['store'])){
+            if(isset($arr['custom'])){
                continue;
             }else{
                if($arr['dojoType']=="dijit.form.DateTextBox"){
@@ -768,6 +769,7 @@ EOE;
                $comma=",";
             }
          }
+
          header('Content-Type', 'application/json');
          $res=exec_query("SELECT $cols FROM ".$table." WHERE ".$f_key." = '$qustion'",Q_RET_ARRAY);
          if(!isset($res[0])){
@@ -776,8 +778,9 @@ EOE;
          }
          $row=$res[0];
          $ret_array=array();
-         foreach( $GLOBALS['MODEL']['MAIN'] as $key => $arr){
-            if(isset($arr['custom']) || isset($arr['store'])){
+         foreach( $GLOBALS['MODEL']['MAIN_LEFT'] as $key => $arr){
+            //if(isset($arr['custom']) || isset($arr['store'])){
+            if(isset($arr['custom'])){
                continue;   
             }else{
                if($arr['dojoType']=="dijit.form.DateTextBox"){
@@ -852,7 +855,7 @@ EOE;
             $values   =""; //value for each column of the table
             $comma   ="";
             /*set columns and values for each column*/
-            foreach( $GLOBALS['MODEL']['MAIN'] as $key => $arr){
+            foreach( $GLOBALS['MODEL']['MAIN_LEFT'] as $key => $arr){
                /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
                //if( !( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
                if( !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
@@ -932,7 +935,7 @@ EOE;
             $values   =""; //valus to be changes in the tupple
             $comma   ="";
             /*generate values string*/
-            foreach( $GLOBALS['MODEL']['MAIN'] as $key => $arr){
+            foreach( $GLOBALS['MODEL']['MAIN_LEFT'] as $key => $arr){
 
                /*Trying to ignore auto incrementing fields*/
                //if(!( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){

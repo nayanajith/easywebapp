@@ -271,6 +271,24 @@ function submit_form(action,target_module,target_page){
    return true;
 }
 
+
+/**
+ * Select value in  a filtering select programatically
+ */
+function load_selected_value(field,query_id,value_to_load){
+   if(!field || !field.store)return;
+   field.store.fetch({
+      query:{ query_id:'*' },
+      onItem : function(item, request) {
+        if (request.store.getValue(item, query_id) == value_to_load) {
+            field.setValue(request.store.getValue(item, query_id));
+            return;
+        }
+      }
+   });
+}
+
+
 /**
  * Populate the data in form for the selected key
  */
@@ -304,8 +322,8 @@ function fill_form(rid,form) {
                       dijit.byId(key).setValue(dojo.date.stamp.fromISOString(response[key]['_value'])); 
                }else{
                   //Handle different types of fields
-                  switch(dijit.byId(key).type){
-                     case 'checkbox':
+                  switch(dijit.byId(key).declaredClass){
+                     case 'dijit.form.Checkbox':
                         switch(response[key]){
                            case '1':
                            case 'on':
@@ -318,7 +336,14 @@ function fill_form(rid,form) {
                            break;
                         }
                      break;
-                     case 'radio':
+                     case 'dijit.form.RadioButton':
+                     break;
+                     case 'dijit.form.FilteringSelect':
+                        dijit.byId(key).setValue(response[key]); 
+                        if(key.store){
+                           alert('kk');
+                           //load_selected_value(field,query_id,value_to_load);
+                        } 
                      break;
                      default:
                         dijit.byId(key).setValue(response[key]); 
@@ -391,5 +416,5 @@ function dialog_submit(arg_form,action){
    }
 }
 
-/*---------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------*/
 

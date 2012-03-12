@@ -24,25 +24,25 @@ if($GLOBALS['LAYOUT']=='pub'){
 
 
 //Main file contains the module+page specific features and outputs which will affect the view 
-add_to_view('MAIN',       $main);
+add_to_main_left($main);
 
 //Page footer
-add_to_view('FOOTER',     A_CORE."/footer.php");
+add_to_footer(A_CORE."/footer.php");
 
 //Status bar  for seb/app layouts
-add_to_view('STATUSBAR',  A_CORE."/status_bar.php");
+add_to_statusbar(A_CORE."/status_bar.php");
 
 //Loading animation for all reloads
-add_to_view('LOADING',    A_CORE."/loading.php");
+add_to_loading(A_CORE."/loading.php");
 
 //Javascript of requiring dojo and other custom scripts
-add_to_view('JS',         A_CORE."/dojo_require.php");
+add_to_js(A_CORE."/dojo_require.php");
 
 //Javascript for status bar functions
-add_to_view('JS',         A_CORE."/status_bar_func.php");
+add_to_js(A_CORE."/status_bar_func.php");
 
 //Stylesheets for the page
-add_to_view('CSS',        A_CORE."/style.php");
+add_to_css(A_CORE."/style.php");
 
 
 //Fill the view according to different layouts
@@ -50,10 +50,10 @@ switch($GLOBALS['LAYOUT']){
 case 'pub':
    
    //Stylesheets for the page
-   add_to_view('BREADCRUMB', A_CORE."/breadcrumb.php");
+   add_to_breadcrumb(A_CORE."/breadcrumb.php");
 
    //Navigator for public layout is a link list
-   add_to_view('NAVIGATOR',  A_CORE."/module_link_list.php");
+   add_to_navigator(A_CORE."/module_link_list.php");
 
    if(isset($_SESSION['username'])){
       $GLOBALS['VIEW']['LOGIN'] .="You are loged in as ".$_SESSION['username']."<br>";
@@ -80,16 +80,16 @@ case 'app':
    ob_end_clean();
 
    //Navigator tree
-   add_to_view('NAVIGATOR',A_CORE."/module_tree.php");
+   add_to_navigator(A_CORE."/module_tree.php");
 
    //Menubar
-   add_to_view('MENUBAR',  A_CORE."/menubar.php");
+   add_to_navigator(A_CORE."/menubar.php");
 
    //WIdgetst column
-   add_to_view('WIDGETS',  A_CORE."/widget_column.php");
+   add_to_widgets(A_CORE."/widget_column.php");
 
    //Tool bar for web/app layouts
-   add_to_view('TOOLBAR',  A_CORE."/toolbar.php");
+   add_to_toolbar(A_CORE."/toolbar.php");
 break;
 case 'web':
    //Program selector
@@ -110,10 +110,10 @@ case 'web':
    ob_end_clean();
 
    //Navigator for web layout is a tab bar
-   add_to_view('NAVIGATOR',  A_CORE."/module_tab_bar.php");
+   add_to_navigator(A_CORE."/module_tab_bar.php");
 
    //Tool bar for web/app layouts
-   add_to_view('TOOLBAR',    A_CORE."/toolbar.php");
+   add_to_toolbar(A_CORE."/toolbar.php");
 break;
 }
 

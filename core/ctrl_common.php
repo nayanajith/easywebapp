@@ -45,7 +45,7 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
          break;
          case 'combo':
             //Section of the model to reffered by the filering select data
-            $section='MAIN';
+            $section='MAIN_LEFT';
 
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
             $br=explode('__',$_REQUEST['field']);
@@ -89,7 +89,7 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
       }
    }
 }elseif(isset($_REQUEST['id'])){
-   $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['PAGE']['primary_key']);
+   $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
 }else{
    include A_CLASSES."/view_class.php";
    $view = new View($GLOBALS['PAGE']['table'],$GLOBALS['PAGE']['name']);

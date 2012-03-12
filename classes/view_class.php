@@ -58,7 +58,7 @@ class View{
 
         /*
          if(isset($GLOBALS['MODEL'])){
-           $GLOBALS['MODEL']['MAIN']=$GLOBALS['MODEL']['MAIN'];
+           $GLOBALS['MODEL']['MAIN_LEFT']=$GLOBALS['MODEL']['MAIN_LEFT'];
          }
          */
 
@@ -84,9 +84,9 @@ class View{
        "dijit.form.ValidationTextBox" =>"<input %s>",
        "dijit.form.DateTextBox"       =>"<input %s constraints=\"{datePattern:'yyyy-MM-dd'}\" promptMessage='yyyy-MM-dd' invalidMessage='Invalid date. Please use yyyy-MM-dd format.' >",
        "dijit.form.TimeTextBox"       =>"<input %s constraints=\"{'timePattern':'hh:mm:ss'}\" promptMessage='hh:mm:ss' invalidMessage='Invalid time. Please use hh:mm:ss format.' >",
-       "dijit.form.CheckBox"          =>"<div %s ></div>",
-       "dijit.form.RadioButton"       =>"<div %s ></div>",
-       "dijit.InlineEditBox"          =>"<span %s ></span>",
+       "dijit.form.CheckBox"          =>"<div %s></div>",
+       "dijit.form.RadioButton"       =>"<div %s></div>",
+       "dijit.InlineEditBox"          =>"<span %s></span>",
        "dijit.form.Button"            =>"<button %s>%s</button>",
    );
 
@@ -222,14 +222,14 @@ class View{
       }
 
       if(file_exists($this->view)){
-         $MAIN=array();
-         foreach($GLOBALS['MODEL']['MAIN'] as $field => $field_array){
-             $MAIN[$field]=$this->gen_field_entry($field,$field_array);
+         $MAIN_LEFT=array();
+         foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $field_array){
+             $MAIN_LEFT[$field]=$this->gen_field_entry($field,$field_array);
          }
 
-         add_to_main("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
+         add_to_main_left("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
          include $this->view;
-         add_to_main("</div>");
+         add_to_main_left("</div>");
          return;
       }
 
@@ -239,13 +239,13 @@ class View{
       $html.="<div >Required fields marked as <font color='red'>*</font>";
 
       /*Find first and last elements of the fields array*/
-      reset($GLOBALS['MODEL']['MAIN']);
-      $keys    =array_keys($GLOBALS['MODEL']['MAIN']);
+      reset($GLOBALS['MODEL']['MAIN_LEFT']);
+      $keys    =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
       $first   =current($keys);
       $last    =end($keys);
 
       /*Set html table background and padding/spacing*/
-      foreach($GLOBALS['MODEL']['MAIN'] as $field => $field_array){
+      foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $field_array){
          if($field != ""){
             /*IF the section ended in previouse field drow section header*/
             /*IF the field is the first field of the html drow section header*/
@@ -294,7 +294,7 @@ class View{
       //html ends hear
       $html.= "</div>";
       $html.= "</div>";
-      add_to_main($html);
+      add_to_main_left($html);
    }
 
    /*
@@ -351,8 +351,7 @@ class View{
             url='".gen_url()."&data=json&action=combo&form=main&field=".$field."'
             jsId='".$field_array['store']."'
             >
-         </span>
-";
+         </span>";
       }
 
       /*Handl custom form input method or generic one*/
@@ -419,16 +418,7 @@ class View{
 <script>
 //Set the previouse value in drop down box
 dojo.ready(function(){
-   var valueSet = false;
-   $field.store.fetch({
-      query:{ $field_:'*' },
-      onItem : function(item, request) {
-        if (!valueSet && request.store.getValue(item, '$field_') == '$fill') {
-            $field.setValue(request.store.getValue(item, '$field_'));
-            valueSet = true;
-        }
-    }
-   });
+   load_selected_value($field,'$field_','$fill');
 });
 </script> ";
       }
@@ -516,7 +506,7 @@ dojo.ready(function(){
          /*Set labels for the table header if available in fileds array*/
          foreach($field_array as $h_key){
             $html.= "<th width='auto' field='$h_key'>
-               ".(isset($GLOBALS['MODEL']['MAIN'][$h_key]['label'])?$GLOBALS['MODEL']['MAIN'][$h_key]['label']:$h_key)."
+               ".(isset($GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label'])?$GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label']:$h_key)."
             </th>";
          }
          //<th width='auto' field='sex' cellType='dojox.grid.cells.Select' options='Male,Female' editable='true'>Sex</th>
@@ -544,7 +534,7 @@ dojo.ready(function(){
     */
    public function gen_xhr_filtering_select($js_function,$key=null,$filter=null){
       $key     =$key==null?$this->self['key']:$key;
-      $label   =$key==null?$GLOBALS['MODEL']['MAIN'][$this->self['key']]['label']:$key;
+      $label   =$key==null?$GLOBALS['MODEL']['MAIN_LEFT'][$this->self['key']]['label']:$key;
       $form    =$filter==null?'&form=main':'&form=filter';
       $value   =isset($_REQUEST[$key])?$_REQUEST[$key]:'';
 

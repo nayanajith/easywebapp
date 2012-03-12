@@ -56,7 +56,7 @@ function clear_view($view_id){
  * Wrapper function to make it easy to add a contet to each section of the view
  */
 function add_to_main($content){
-   add_to_view('MAIN_LEFT',$content);
+   add_to_main_left($content);
 }
 function add_to_main_left($content){
    add_to_view('MAIN_LEFT',$content);
