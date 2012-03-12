@@ -99,6 +99,7 @@ $system_table_schemas['filter']="CREATE TABLE `filter` (
   `table_name`       VARCHAR(50) DEFAULT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id`          INT NOT NULL,
+  `filter_type`      ENUM('SQL','JSON') DEFAULT 'JSON',
   `filter`           TEXT,
   `deleted`          BOOLEAN     DEFAULT false,
   `note`             VARCHAR(300) DEFAULT NULL,

@@ -8,7 +8,8 @@ $GLOBALS['VIEW']=array(
    'PROGRAM'   =>'',
    'BREADCRUMB'=>'',
    'NAVIGATOR' =>'',
-   'MAIN'      =>'',
+   'MAIN_LEFT' =>'',
+   'MAIN_RIGHT'=>'',
    'WIDGETS'   =>'',
    'MENUBAR'   =>'',
    'TOOLBAR'   =>'',
@@ -55,7 +56,13 @@ function clear_view($view_id){
  * Wrapper function to make it easy to add a contet to each section of the view
  */
 function add_to_main($content){
-   add_to_view('MAIN',$content);
+   add_to_view('MAIN_LEFT',$content);
+}
+function add_to_main_left($content){
+   add_to_view('MAIN_LEFT',$content);
+}
+function add_to_main_right($content){
+   add_to_view('MAIN_RIGHT',$content);
 }
 function add_to_css($content){
    add_to_view('CSS',$content);
@@ -99,7 +106,14 @@ function add_to_footer($content){
  * Wrapper function to make it easy to clear each section
  */
 function clear_main(){
-   clear_view('MAIN');
+   clear_view('MAIN_LEFT');
+   clear_view('MAIN_RIGHT');
+}
+function clear_main_left(){
+   clear_view('MAIN_LEFT');
+}
+function clear_main_right(){
+   clear_view('MAIN_RIGHT');
 }
 function clear_css(){
    clear_view('CSS');

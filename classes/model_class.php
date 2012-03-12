@@ -215,30 +215,53 @@ class Model{
 
       public function write_config(){
          $common_toolbar_buttons=<<<EOE
+      "rid"=>array(
+         "length"=>"70",
+         "dojoType"=>"dijit.form.FilteringSelect",
+         "required"=>"false",
+         "label"=>"Label",
+         "label_pos"=>"left",
+
+         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',
+         "searchAttr"=>"label",
+         "pageSize"=>"10",
+         "store"=>"rid_store",
+
+         "filter"=>isset(\$_SESSION[PAGE]['rid'])?"student_year='".\$_SESSION[PAGE]['rid']."'":null,
+         "ref_table"=>\$GLOBALS['P_TABLES']['batch'],
+         "ref_key"=>'rid',
+         "order_by"=>'ORDER BY rid DESC',
+         "vid"=>array('rid','rid'),
+      ),  
+
       "add"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Add",
-         "label_pos"=>"left",
          "iconClass"=>get_icon_class('NewPage'),
-         "showLabbel"=>'false',
+         "showLabbel"=>'true',
          "onClick"=>'submit_form("add")',
       ),  
       "modify"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Modify",
-         "label_pos"=>"left",
          "iconClass"=>get_icon_class('Save'),
-         "showLabbel"=>'false',
+         "showLabbel"=>'true',
          "onClick"=>'submit_form("modify")',
       ),  
       "remove"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Delete",
-         "label_pos"=>"left",
          "iconClass"=>get_icon_class('Delete'),
-         "showLabbel"=>'false',
+         "showLabbel"=>'true',
          "onClick"=>'submit_form("delete")',
       ),
+      "search"=>array(
+         "dojoType"=>"dijit.form.Button",
+         "label"=>"Search",
+         "iconClass"=>get_icon_class('Search'),
+         "showLabbel"=>'true',
+         "onClick"=>'search_records()',
+      ),  
 EOE;
     
          $config=$this->model;
