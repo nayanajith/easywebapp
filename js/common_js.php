@@ -78,12 +78,18 @@ function download(url){
 }
 
 /*-----------------------------------view_class mostly using these functions-----------------------------*/
-//acquire GET request key,values from the current url 
+
+
 function get_request_value( name ){
+   return get_url_value( name ,window.location.href);
+}
+
+//acquire GET request key,values from the current url 
+function get_url_value( name , url){
    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
    var regexS = "[\\?&]"+name+"=([^&#]*)";
    var regex = new RegExp( regexS );
-   var results = regex.exec( window.location.href );
+   var results = regex.exec( url );
    if( results == null ){
 		return "";
    }else{
@@ -275,13 +281,18 @@ function submit_form(action,target_module,target_page){
 /**
  * Select value in  a filtering select programatically
  */
-function load_selected_value(field,query_id,value_to_load){
+function load_selected_value(field,value_to_load){
    if(!field || !field.store)return;
    field.store.fetch({
-      query:{ query_id:'*' },
+      query:{ 'id': value_to_load },
       onItem : function(item, request) {
-        if (request.store.getValue(item, query_id) == value_to_load) {
-            field.setValue(request.store.getValue(item, query_id));
+         var searchKey;
+         for(var key in item['i']){
+               searchKey=key;
+               break;
+         }
+        if (request.store.getValue(item, searchKey) == value_to_load) {
+            field.setValue(request.store.getValue(item, searchKey));
             return;
         }
       }
@@ -310,7 +321,8 @@ function fill_form(rid,form) {
 
          /*reset form*/
          dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
-            if(!widget.store){
+            if(widget.store){
+            }else{
                widget.attr('value', null);
             }
          });
@@ -340,10 +352,7 @@ function fill_form(rid,form) {
                      break;
                      case 'dijit.form.FilteringSelect':
                         dijit.byId(key).setValue(response[key]); 
-                        if(key.store){
-                           alert('kk');
-                           //load_selected_value(field,query_id,value_to_load);
-                        } 
+                        load_selected_value(dijit.byId(key),response[key]);
                      break;
                      default:
                         dijit.byId(key).setValue(response[key]); 
