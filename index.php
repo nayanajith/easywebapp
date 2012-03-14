@@ -117,6 +117,11 @@ if (!isset($module)){
 
 $GLOBALS['module']   =$module;
 define('MODULE'   , $module);
+/*-------------------include menu  of the the active module-------------------*/
+include (A_MODULES."/".MODULE."/menu.php");
+//Set the meny array as a global array $menu_array is from menu.php
+$GLOBALS['MENU_ARRAY']=$menu_array;
+
 
 /*-----If th page is blank load the first permitted page of the module--------*/
 if ($page == '' && isset($menu_array)){
@@ -131,11 +136,6 @@ if ($page == '' && isset($menu_array)){
 
 //Define  PAGE  constant
 define('PAGE'   , $page);
-
-/*-------------------include menu  of the the active module-------------------*/
-include (A_MODULES."/".MODULE."/menu.php");
-//Set the meny array as a global array $menu_array is from menu.php
-$GLOBALS['MENU_ARRAY']=$menu_array;
 
 //get the toolbar items of selected page $toolbar is from menu.php
 if(isset($toolbar)&&isset($toolbar[PAGE])){

@@ -1,6 +1,7 @@
 <?php
 /*These modules have default read access unless expressed externally*/
 $permission['USER'][]=array( 'module' => 'home', 'page' => '*', 'access_right' => 'WRITE' );
+$permission['USER'][]=array( 'module' => 'system', 'page' => 'reset_password', 'access_right' => 'WRITE' );
 
 //public access to  module
 if(!(isset($_SESSION['loged_module']) && $_SESSION['loged_module']=='home')){
