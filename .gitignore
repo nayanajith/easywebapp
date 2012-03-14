@@ -1,0 +1,12 @@
+bak/
+config.php
+db_config.php
+errors.log
+js/dojo-ucscis/
+js/dojo-release/
+lib/tcpdf/
+messages.log
+modules.php
+permission.php
+.DS_Store
+mod/

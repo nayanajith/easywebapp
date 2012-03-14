@@ -34,7 +34,9 @@ Tables of the system
 $system_tables=array(
    'program'         =>'program',          
    'users'           =>'users',              
+   'groups'          =>'groups',              
    'permission'      =>'permission',              
+   'common_lists'    =>'common_lists',         
    'filter'          =>'filter',         
    'log'             =>'log'              
 );
@@ -300,13 +302,15 @@ db to csv data export function for non root users
 function db_to_csv_nr($query,$csv_file,$db=null){
    log_msg('db_to_csv_nr',$query);
    $res    = exec_query($query,Q_RET_MYSQL_RES,$db);
-
+   set_file_header($csv_file);
+   /*
    header('Content-Type', 'application/vnd.ms-excel');
    header('Content-Disposition: attachment; filename='.$csv_file);
    //header("Content-type: application/octet-stream");
    //header("Content-Disposition: attachment; filename=your_desired_name.xls");
    header("Pragma: no-cache");
    header("Expires: 0");
+    */
 
 
    $header=false;
@@ -406,6 +410,40 @@ function drop_tables($tables){
    }
    return $state;
 }
+
+/*
+ * Generic mysql function creation function
+ */
+function create_functions($schemas=null){
+   $state=true;
+
+   foreach($schemas as $key=>$schema){
+      if(exec_query($schema,Q_RET_MYSQL_RES)){
+         log_msg('create_functions',"Creating function:$key");
+      }else{
+         log_msg('create_functions',get_sql_error());
+         $state=false;
+      }
+   }
+   return $state;
+}
+
+/*
+ * Delete triggers 
+ */
+function drop_functions($schemas){
+   $state=true;
+   foreach($schemas as $name=>$sql){
+     if(exec_query("DROP TRIGGER ".$name,Q_RET_MYSQL_RES)){
+        log_msg('drop_system_tables',"Drop table:$name");
+     }else{
+        log_msg('drop_system_tables',get_sql_error());
+        $state=false;
+     }   
+   }
+   return $state;
+}
+
 
 /**
 This function will create all the tables required to manage a program eg: BIT,BICT, BCSC

@@ -3,7 +3,7 @@ include A_CORE."/database_schema.php";
 if(isset($_REQUEST['action'])){ /*haldle requests*/
    switch($_REQUEST['action']){
       case 'generate_db':
-         $drop      =drop_tables($GLOBALS["S_TABLES"]);
+         $drop     =drop_tables($GLOBALS["S_TABLES"]);
          $create   =create_tables($system_table_schemas);
          $res      =exec_query("INSERT INTO ".$GLOBALS["S_TABLES"]['users']."(username,password,permission,layout)values('admin',md5('admin'),'SUPER','app') ",Q_RET_MYSQL_RES);
 

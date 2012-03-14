@@ -1,4 +1,200 @@
 <?php
+/*--create and fill view global array which contains all parts of the fintend-*/
+$GLOBALS['VIEW']=array(
+   'CSS'       =>'',
+   'JS'        =>'',
+   'LOADING'   =>'',
+   'LOGIN'     =>'',
+   'PROGRAM'   =>'',
+   'BREADCRUMB'=>'',
+   'NAVIGATOR' =>'',
+   'MAIN_LEFT' =>'',
+   'MAIN_RIGHT'=>'',
+   'WIDGETS'   =>'',
+   'MENUBAR'   =>'',
+   'TOOLBAR'   =>'',
+   'STATUSBAR' =>'',
+   'FOOTER'    =>''
+);
+
+/*
+ * View_id : one of the ids in above array
+ * contet   : any html/css/js content or a include file which will generate any of the contet
+ */
+
+function add_to_view($view_id,$content){
+   //IF the contet is a file then include and get the output to array using ob_func
+   if(isset($GLOBALS['VIEW'][$view_id])){
+      if(is_file($content)){
+         ob_start();
+         include $content;
+         $content=ob_get_contents();
+         $GLOBALS['VIEW'][$view_id] .= $content;
+         ob_end_clean();
+      }elseif(!is_null($content) || $content != ''){
+         $GLOBALS['VIEW'][$view_id] .= $content;
+      }
+   }else{
+      return "key[$view_id] error!"; 
+   }
+}
+/**
+ * Clear the view with blank
+ */
+
+function clear_view($view_id){
+   if(isset($GLOBALS['VIEW'][$view_id])){
+      $GLOBALS['VIEW'][$view_id] = '';
+   }else{
+      return "key[$view_id] error!"; 
+   }
+}
+
+
+
+/**
+ * Wrapper function to make it easy to add a contet to each section of the view
+ */
+function add_to_main($content){
+   add_to_main_left($content);
+}
+function add_to_main_left($content){
+   add_to_view('MAIN_LEFT',$content);
+}
+function add_to_main_right($content){
+   add_to_view('MAIN_RIGHT',$content);
+}
+function add_to_css($content){
+   add_to_view('CSS',$content);
+}
+function add_to_js($content){
+   add_to_view('JS',$content);
+}
+function add_to_loading($content){
+   add_to_view('LOADING',$content);
+}
+function add_to_login($content){
+   add_to_view('LOGIN',$content);
+}
+function add_to_program($content){
+   add_to_view('PROGRAM',$content);
+}
+function add_to_breadcrumb($content){
+   add_to_view('BREADCRUMB',$content);
+}
+function add_to_navigator($content){
+   add_to_view('NAVIGATOR',$content);
+}
+function add_to_widgets($content){
+   add_to_view('WIDGETS',$content);
+}
+function add_to_menubar($content){
+   add_to_view('MENUBAR',$content);
+}
+function add_to_toolbar($content){
+   add_to_view('TOOLBAR',$content);
+}
+function add_to_statusbar($content){
+   add_to_view('STATUSBAR',$content);
+}
+function add_to_footer($content){
+   add_to_view('FOOTER',$content);
+}
+
+
+/**
+ * Wrapper function to make it easy to clear each section
+ */
+function clear_main(){
+   clear_view('MAIN_LEFT');
+   clear_view('MAIN_RIGHT');
+}
+function clear_main_left(){
+   clear_view('MAIN_LEFT');
+}
+function clear_main_right(){
+   clear_view('MAIN_RIGHT');
+}
+function clear_css(){
+   clear_view('CSS');
+}
+function clear_js(){
+   clear_view('JS');
+}
+function clear_loading(){
+   clear_view('LOADING');
+}
+function clear_login(){
+   clear_view('LOGIN');
+}
+function clear_program(){
+   clear_view('PROGRAM');
+}
+function clear_breadcrumb(){
+   clear_view('BREADCRUMB');
+}
+function clear_navigator(){
+   clear_view('NAVIGATOR');
+}
+function clear_widgets(){
+   clear_view('WIDGETS');
+}
+function clear_menubar(){
+   clear_view('MENUBAR');
+}
+function clear_toolbar(){
+   clear_view('TOOLBAR');
+}
+function clear_statusbar(){
+   clear_view('STATUSBAR');
+}
+function clear_footer(){
+   clear_view('FOOTER');
+}
+
+/**
+ * Different headers are required by files generation
+ * $file_name : name of the file with the extention;
+ */
+function set_file_header($file_name){
+   $ext=explode('.',$file_name);
+   $ext=$ext[1];
+   $content_type=null;
+   switch($ext){
+   case 'csv':
+      //$content_type="application/octet-stream";
+      $content_type='application/vnd.ms-excel';
+   break;
+   case 'json':
+      $content_type='application/json';
+   break;
+   case 'pdf':
+      $content_type='application/pdf';
+   break;
+   case 'jpg':
+      $content_type='image/jpg';
+   break;
+   case 'png':
+      $content_type='image/png';
+   break;
+   default:
+      $content_type='text/json';
+   break;
+   }
+
+  header('Content-Type',$content_type );
+  header('Content-Disposition: attachment; filename='.$file_name);
+  //header("Content-type: application/octet-stream");
+  //header("Content-Disposition: attachment; filename=your_desired_name.xls");
+  //header("Content-Length: ".@filesize($file));
+  //header("Content-Transfer-Encoding: binary");
+  header("Pragma: no-cache");
+  header("Expires: 0");
+}
+
+
+
+
 /*Return staus as json for XHR request or io.iframe request */
 /*
 Possible status
@@ -26,10 +222,112 @@ function dojo_require($module){
    }
 }
 
+//simplyfied version of dojo_require
 function d_r($module){
    dojo_require($module);
 }
 
+//dojo have set of icons which can used with buttons and so on
+$dijitIcons=array(
+   "Save",
+   "Print",
+   "Cut",
+   "Copy",
+   "Clear",
+   "Delete",
+   "Undo",
+   "Edit",
+   "NewTask",
+   "EditTask",
+   "EditProperty",
+   "Task",
+   "Filter",
+   "Configure",
+   "Search",
+   "Application",
+   "Bookmark",
+   "Chart",
+   "Connector",
+   "Database",
+   "Documents",
+   "Mail",
+   "File",
+   "Function",
+   "Key",
+   "Package",
+   "Sample",
+   "Table",
+   "Users",
+   "FolderClosed",
+   "FolderOpen"
+);
+
+//Editor icons
+$dijitEditorIcons=array(
+   "Sep",
+   "Save",
+   "Print",
+   "Cut",
+   "Copy",
+   "Paste",
+   "Delete",
+   "Cancel",
+   "Undo",
+   "Redo",
+   "SelectAll",
+   "Bold",
+   "Italic",
+   "Underline",
+   "Strikethrough",
+   "Superscript",
+   "Subscript",
+   "JustifyCenter",
+   "JustifyFull",
+   "JustifyLeft",
+   "JustifyRight",
+   "Indent",
+   "Outdent",
+   "ListBulletIndent",
+   "ListBulletOutdent",
+   "ListNumIndent",
+   "ListNumOutdent",
+   "TabIndent",
+   "LeftToRight",
+   "RightToLeft",
+   "ToggleDir",
+   "BackColor",
+   "ForeColor",
+   "HiliteColor",
+   "NewPage",
+   "InsertImage",
+   "InsertTable",
+   "Space",
+   "InsertHorizontalRule",
+   "InsertOrderedList",
+   "InsertUnorderedList",
+   "CreateLink",
+   "Unlink",
+   "ViewSource",
+   "RemoveFormat",
+   "FullScreen",
+   "Wikiword"
+);
+
+/**
+ * return the css classes which represent the relevent button icon
+ */
+function get_icon_class($name){
+   global $dijitEditorIcons;
+   global $dijitIcons;
+   $name=ucfirst($name); 
+   if(array_search($name,$dijitIcons)){
+      return 'dijitIcon dijitIcon'.$name;
+   }elseif(array_search($name,$dijitEditorIcons)){
+      return 'dijitEditorIcon dijitEditorIcon'.$name;   
+   }else{
+      return 'dijitIcon dijitIconFunction';   
+   }
+}
 
 /*vefiry captcha by matching code submitted by the user  and avail in session*/
 function verify_captcha($custom_param=null){
@@ -52,6 +350,67 @@ function verify_captcha($custom_param=null){
    }else{
       return true;   
    }
+}
+
+/**
+ * return a commen list array with title according to the common list_name
+ */
+function get_common_list($list_name){
+   $arr=exec_query("SELECT list_title,json FROM ".$GLOBALS['S_TABLES']['common_lists']." WHERE list_name='".$list_name."'",Q_RET_ARRAY);
+   if(isset($arr[0])){
+      return array(
+         'title'  =>$arr[0]['list_title'],
+         'list'   =>json_decode($arr[0]['json'])
+      );
+   }
+}
+
+/**
+ * Check if the array is associtated array
+ */
+function is_assoc_array($arr){
+   if(is_array($arr) && sizeof($arr)>0){
+      return array_keys($arr) !== range(0, count($arr) - 1);
+   }else{
+      return false;
+   }
+}
+
+
+/**
+ * Generate a Select box for a given array of values and return the html
+ * arr: associative array with key=>value
+ */
+function gen_select_inner($arr,$label=null,$without_none=false){
+   //validation  $arr must be an array
+   if(!is_array($arr)){
+      return null;
+   }
+
+   $select='<option value="NULL">-none-</option>';
+   if($without_none){
+      $select='';
+   }
+
+   if(is_assoc_array($arr)){
+      //Direct compatibility with  returning array of exec_query
+      if(is_array($arr[key($arr)])){
+         foreach($arr as $key=>$value ){
+            $select.="<option value=\"$key\">$value[$label]</option>";
+         }
+      }else{
+         //Associative array with ke=>value
+         foreach($arr as $key=>$value ){
+            $select.="<option value=\"$key\">$value</option>";
+         }
+      }
+   }else{
+      //1D array with values
+      foreach($arr as $value ){
+         $select.="<option value=\"$value\">$value</option>";
+      }
+   }
+   return $select;
 }
 
 
@@ -188,9 +547,24 @@ function style_text($ROW_TEXT) {
 /*
  * Log a message in log file 
  */
-function log_msg($id,$msg,$color=null){
+function log_msg($id=null,$msg=null,$color=null){
    if(LOG_ENABLED == 'NO')return;
    $date_time=date("d-M-Y h:i:s");
+
+   //Adjust for the single
+   if(is_null($msg)){
+      $msg=$id;
+
+      //find the function which called the log_msg
+      $trace   =debug_backtrace();
+      $caller  =array_shift($trace);
+      $caller  =array_shift($trace);
+      $class   ="";
+      if(isset($caller['class'])){
+         $class   =$caller['class'].'.';
+      }
+      $id=$class.$caller['function'];
+   }
 
    $file_handler =null;
    if(file_exists(LOG)){
@@ -201,9 +575,9 @@ function log_msg($id,$msg,$color=null){
 
    //log array content if msg is an array
    if(is_array($msg)){
-      ob_start('ob_gzhandler');
-      print_r($msg);
-      $msg = ob_get_contents();
+      @ob_start('ob_gzhandler');
+      @print_r($msg);
+      $msg = @ob_get_contents();
       @ob_end_clean();
    }
 
@@ -312,10 +686,7 @@ function table_to_csv($table,$filename){
    $table=str_replace(array('<tr><td>','<tr><th>'),"'",$table);
    $table=str_replace(array('</td></tr>','</th></tr>'),"'\n",$table);
 
-   header('Content-Type', 'application/vnd.ms-excel');
-   header('Content-Disposition: attachment; filename='.$filename.'.csv');
-   header("Pragma: no-cache");
-   header("Expires: 0");
+   set_file_header($filename.".csv");
    echo  $table;
    exit();
 }
@@ -401,5 +772,16 @@ function number_to_text($number){
    return $res; 
 } 
 
+/**
+ * In order to indent the generated code given number of tabs generated
+ */
+function tab($num){
+   $tab='   ';
+   $ret='';
+   for($i=0;$i<$num;$i++){
+      $ret.=$tab;
+   }
+   return $ret;
+}
 
 ?>

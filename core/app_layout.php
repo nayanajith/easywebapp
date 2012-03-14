@@ -7,14 +7,13 @@
 
 <!--_________________________________CSS_____________________________________-->
       <?php 
-         include A_CORE."/style.php";
+         echo $GLOBALS['VIEW']['CSS'];
       ?>
 <!--______________________________FAVICON____________________________________-->
       <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" >
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
-         include A_CORE."/dojo_require.php";
-         include A_CORE."/status_bar_func.php";
+         echo $GLOBALS['VIEW']['JS'];
       ?>
    </head>
 <!--_____________________BODY with dojo border container_____________________-->
@@ -38,7 +37,7 @@ bottom:      Tool bar
    <body class="<?php echo $GLOBALS['THEME']; ?>" >
 <!--__________________________start loading ________________________________-->
    <?php
-      include A_CORE."/loading.php";
+      echo $GLOBALS['VIEW']['LOADING'];
 
       d_r("dijit.layout.BorderContainer");
       d_r("dijit.layout.ContentPane");
@@ -58,19 +57,13 @@ This contains the login box from core/login.php and program selector from core/p
             <div style='float:right;'>
 <!--__________________________end Login form ________________________________-->
             <?php 
-
-               if (isset($_SESSION['username'])){
-                  echo after_login();
-               }else{
-                  echo before_login();
-               }
+               echo $GLOBALS['VIEW']['LOGIN'];
             ?>
 <!--______________________________end Login form ____________________________-->
 
 <!--_________________________start Program selector__________________________-->
             <?php 
-               echo "Change Program:";
-               program_select($program); 
+               echo $GLOBALS['VIEW']['PROGRAM'];
             ?>
 <!--__________________________end Program selector___________________________-->
             </div>
@@ -87,7 +80,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                <div dojoType="dijit.layout.AccordionPane" title="Modules & Functions">
 <!--___________________________start module tree_____________________________-->
                   <?php
-                     include A_CORE."/module_tree.php";
+                     echo $GLOBALS['VIEW']['NAVIGATOR'];
                   ?>
 <!--_____________________________end module tree_____________________________-->
                 </div>
@@ -115,7 +108,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                
 <!--_______________________________start menubar_____________________________-->
                            <?php
-                              include A_CORE."/menubar.php";
+                              echo $GLOBALS['VIEW']['MENUBAR'];
                            ?>
 <!--_________________________________end menubar_____________________________-->
 
@@ -127,7 +120,12 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
 
 <!--___________________________start toolbar_________________________________-->
                            <?php
-                              include A_CORE."/toolbar.php";
+                              d_r("dijit.layout.ContentPane");
+                              d_r("dijit.Toolbar");
+ 
+                              echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
+                              echo $GLOBALS['VIEW']['TOOLBAR'];
+                              echo "</div>";
                            ?>
 <!--___________________________end toolbar___________________________________-->
 
@@ -143,21 +141,21 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <!--CENTER box of BorderContainer-2-->
                   <div dojoType="dijit.layout.ContentPane" region="center" id="data_body" class="bgBottom"  style='padding:5px;'>
 <!--________________________start data_body area_____________________________-->
-                  <?php 
-                     //include page in module
-                     if(!isset($_SESSION['username'])){
-                              if(file_exists(A_MODULES."/".MODULE."/about.php")){
-                           include A_MODULES."/".MODULE."/about.php";
-                        }else{
-                           include "error.php";
-                        }
-                                 }elseif(!file_exists(A_MODULES."/".MODULE."/".PAGE.".php")){
-                        include "error.php";
-                                 }else{
-                        
-                        include A_MODULES."/".MODULE."/".PAGE.".php";
-                                                   }
-                  ?>
+                     <table width='100%'>
+                        <tr>
+                           <td id='MAIN_LEFT' valign='top' align='left'>
+                              <?php 
+                              echo $GLOBALS['VIEW']['MAIN_LEFT'];
+                              ?>
+
+                           </td>
+                           <td id='MAIN_RIGHT' valign='top' align='right'>
+                              <?php 
+                              echo $GLOBALS['VIEW']['MAIN_RIGHT'];
+                              ?>
+                           </td>
+                        </tr>
+                     </table>
 <!--_________________________end data_body area______________________________-->
                   </div>
                   <!--end CENTER box of BorderContainer-2-->
@@ -166,7 +164,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <div dojoType="dijit.layout.ContentPane" region="bottom" class="bgBottom" jsId="stb" style="padding:1px;">
 <!--___________________________start statusbar_______________________________-->
                      <?php
-                        include A_CORE."/status_bar.php";
+                        echo $GLOBALS['VIEW']['STATUSBAR'];
                      ?>
 <!--___________________________end statusbar_________________________________-->
                   </div>
@@ -182,7 +180,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <div dojoType="dijit.layout.AccordionPane" title="Widgets">
 <!--______________________________start widgets______________________________-->
                      <?php
-                        include A_CORE."/widget_column.php";
+                        echo $GLOBALS['VIEW']['WIDGETS'];
                      ?>
 <!--_______________________________end  widgets______________________________-->
                   </div>
@@ -195,7 +193,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
             <div dojoType="dijit.layout.ContentPane" region="bottom" class="bgBottom"  style='padding:5px;'>
 <!--______________________________start footer_______________________________-->
             <?php
-               include A_CORE."/footer.php";
+               echo $GLOBALS['VIEW']['FOOTER'];
             ?>
 <!--_______________________________end footer________________________________-->
             </div>

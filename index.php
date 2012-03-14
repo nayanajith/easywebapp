@@ -29,7 +29,7 @@ if($_SERVER['HTTP_HOST']!="ucsc.lk"){
 session_start();
 
 //timezone fix for old php versions
-//date_default_timezone_set('UTC');
+date_default_timezone_set('UTC');
 
 /*-----------Dummy session for testing comment at deployment------------------*/
 /*
@@ -69,8 +69,8 @@ $secure = new Secure();
 $secure->secureGlobals();
 
 /*-----------------Load permission and database functions --------------------*/
-include A_CORE."/permission.php";
 include A_CORE."/database.php";
+include A_CORE."/permission.php";
 
 /*-----------------Check availability of the database-------------------------*/
 if(!opendb()){
@@ -106,7 +106,7 @@ if (!isset($module)){
    }else{
       //$module = "Home";
       //In any arror first permitted module will be loaded by default
-      foreach($modules as $mod => $arr){
+      foreach($GLOBALS['MODULES'] as $mod => $arr){
          if(is_module_permitted($mod)){
             $module = $mod;
             break;   
@@ -118,11 +118,8 @@ if (!isset($module)){
 $GLOBALS['module']   =$module;
 define('MODULE'   , $module);
 
-/*-------------------include menu  of the the active module-------------------*/
-include (A_MODULES."/".MODULE."/menu.php");
-
 /*-----If th page is blank load the first permitted page of the module--------*/
-if ($page == '' && $menu_array){
+if ($page == '' && isset($menu_array)){
    foreach($menu_array as $pg => $arr){
       if(is_page_permitted($module,$pg)){
          $page = $pg;
@@ -131,8 +128,20 @@ if ($page == '' && $menu_array){
    }
    reset($menu_array);
 }
-//Define  page 
+
+//Define  PAGE  constant
 define('PAGE'   , $page);
+
+/*-------------------include menu  of the the active module-------------------*/
+include (A_MODULES."/".MODULE."/menu.php");
+//Set the meny array as a global array $menu_array is from menu.php
+$GLOBALS['MENU_ARRAY']=$menu_array;
+
+//get the toolbar items of selected page $toolbar is from menu.php
+if(isset($toolbar)&&isset($toolbar[PAGE])){
+   $GLOBALS['TOOLBAR_ITEMS']=$toolbar[PAGE];
+}
+
 
 /*--------------------------validate program request--------------------------*/
 if (!isset($program)){
@@ -198,8 +207,8 @@ if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
 if(isset($_SESSION['username']) && isset($_SESSION['loged_module']) && $_SESSION['loged_module'] =='home'){
    $layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['users']." WHERE username='".$_SESSION['username']."'",Q_RET_ARRAY);
 
-   $GLOBALS['THEME']=isset($layout_theme[0]['theme'])&&$layout_theme[0]['theme']!=''?$layout_theme[0]['theme']:$GLOBALS['THEME'];
-   $GLOBALS['LAYOUT']=isset($layout_theme[0]['layout'])&&$layout_theme[0]['layout']!=''?$layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
+   $GLOBALS['THEME']=isset($layout_theme[0]['theme'])&&$layout_theme[0]['theme']!='NULL'&&$layout_theme[0]['theme']!=''?$layout_theme[0]['theme']:$GLOBALS['THEME'];
+   $GLOBALS['LAYOUT']=isset($layout_theme[0]['layout'])&&$layout_theme[0]['layout']!='NULL'&&$layout_theme[0]['layout']!=''?$layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
 }
 
 /*custom layout can be set from url for testing*/
@@ -213,10 +222,15 @@ if(isset($_SESSION['REDIRECT']) && $_SESSION['REDIRECT'] != ''){
    header("Location:".$redirect);
 }
 
+/*-----------------------------------------------------------------------------*/
+/**
+ * Process the request related to page and insert into view array which will be used in layouts
+ */
+include A_CORE."/assembler.php";
+
 /*----------------Nothing will printed/echoed above this line-----------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------HTML started below------------------------------*/
-
 /*--------------start output buffering for html compression-------------------*/
 if(COMPRESS=='YES'){
    ob_start('ob_gzhandler');
@@ -224,13 +238,6 @@ if(COMPRESS=='YES'){
 
 /*---------------------include layout web,app or pub--------------------------*/
 include A_CORE."/".$GLOBALS['LAYOUT']."_layout.php";
-/*
-if(isset($_SESSION['username'])){
-   include A_CORE."/".$GLOBALS['LAYOUT']."_layout.php";
-}else{
-   include A_CORE."/"."welcome.php";
-}
-*/
 
 /*------------IF compression enabled compress the page and out----------------*/
 if(COMPRESS=='YES'){

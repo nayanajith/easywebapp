@@ -30,9 +30,8 @@ items: [
 ]
 }
 */
-
 function gen_tree(){
-global $modules;
+$modules=$GLOBALS['MODULES'];
 /*-----------------generate json-------------------*/
    $json = "{
 identifier:'id',
@@ -100,7 +99,7 @@ items: [
 }
 
 function gen_module_array(){
-   global $modules;
+   $modules=$GLOBALS['MODULES'];
    $tabs=array();
    foreach ($modules as $mod_key => $mod) {
       $module_visible=true;
@@ -139,7 +138,7 @@ function gen_module_array(){
 }
 
 function gen_visible_module_array(){
-   global $modules;
+   $modules=$GLOBALS['MODULES'];
    $tabs=array();
    foreach ($modules as $mod_key => $mod) {
       $module_visible=true;
@@ -154,8 +153,8 @@ function gen_visible_module_array(){
       if(!is_module_permitted($mod_key) && $module_visible){
          continue;   
       }
-
       $module_menu_file=A_MODULES."/".$mod_key."/menu.php";
+
       if(file_exists($module_menu_file)){
          include($module_menu_file);
          foreach($menu_array as $page_key => $page){
@@ -275,5 +274,6 @@ if($GLOBALS['DATA']==true){
       gen_tree();
    }
 }
+
 
 ?>

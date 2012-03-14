@@ -2,7 +2,7 @@
 if [[ $# -lt 2 ]]
 then
 	echo "Usage:"
-	echo "$0 <find> <replace> <ignore>";
+	echo "$0 <find string> <replace string> <ignore regexp>";
 	exit 0;
 fi
 

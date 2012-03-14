@@ -1,9 +1,13 @@
 <?php
 
 $menu_array  = array(
-   "manage_users"         =>"System Users",
-   "manage_permission"   =>"System Users Permission",
-   "activity"            =>"Activity Log",
+//   "modules"            =>"Modules",
+   "manage_users"       =>"Users",
+   "groups"             =>"Groups",
+   "manage_permission"  =>"Users/Group Permission",
+   "common_lists"       =>"Common Lists",
+   "reset_password"     =>array("PAGE"=>"Reset Password","VISIBLE"=>"false"),
+   "activity"           =>"Activity Log",
    "system_log"         =>"System Log",
    "init_db"            =>">Regenerate Database<"
 );
@@ -13,18 +17,9 @@ $toolbar   =array(
       'Add'      =>array('icon'=>'NewPage','action'=>'submit_form("add")'),
       'Save'   =>array('icon'=>'Save','action'=>'submit_form("modify")'),
       'Delete'   =>array('icon'=>'Delete','action'=>'submit_form("delete")'),
-      'Search'   =>array('icon'=>'Search'),
-      'CSV'      =>array('icon'=>'Database','action'=>'get_csv()'),
-      'Grid'   =>array('icon'=>'Table','action'=>'grid()'),
-      'Print'   =>array('icon'=>'Print'),
-      'Add Filter'   =>array('icon'=>'Filter','action'=>'show_dialog()','dojoType'=>'dijit.form.Button','label'=>'Add Filter')
    ),
    "manage_permission"      =>array(
       'Save'   =>array('icon'=>'Save','action'=>'submit_form("modify")'),
-      'CSV'      =>array('icon'=>'Database','action'=>'get_csv()'),
-      'Grid'   =>array('icon'=>'Table','action'=>'grid()'),
-      'Print'   =>array('icon'=>'Print'),
-      'Add Filter'   =>array('icon'=>'Filter','action'=>'show_dialog()','dojoType'=>'dijit.form.Button','label'=>'Add Filter')
    ),
    "activity"      =>array(
       'CSV'      =>array('icon'=>'Database','action'=>'get_csv()'),

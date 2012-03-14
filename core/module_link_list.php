@@ -21,9 +21,9 @@ link list genertion for the modules
 
    /*Add nested tab contgainers for each module*/
    foreach($modules_array as $module_key => $module){
-      $module_name=$modules[$module_key];
-      if(is_array($modules[$module_key])){
-         $module_name=$modules[$module_key]['MODULE'];
+      $module_name=$GLOBALS['MODULES'][$module_key];
+      if(is_array($GLOBALS['MODULES'][$module_key])){
+         $module_name=$GLOBALS['MODULES'][$module_key]['MODULE'];
       }
        echo "<a href=\"javascript:open_module('$module_key')\" style='font-weight:bold;text-decoration:none;color:gray'>".$module_name."</a><br>";
 

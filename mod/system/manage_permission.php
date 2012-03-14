@@ -1,12 +1,18 @@
 <?php
 include A_CLASSES."/data_entry_class.php";
 $table            ='users';
-$key1               ='username';
+$key1             ='username';
 $formgen          = new Formgenerator($table,$key1);
 
+//Generate the json related to the user/group permission
 if(isset($_REQUEST['data'])&&$_REQUEST['data']=='json'){
+   $user_group_id   =explode(':',$_REQUEST['id']);
+   $is_user    =0;
+   if($user_group_id[0]=='U')$is_user=1;
+   $user_group   =$user_group_id[1];
+
    /*Select permission information for the given user from the db*/
-   $arr=exec_query("SELECT * FROM ".$GLOBALS['S_TABLES']['permission']." WHERE user_id='".$_REQUEST['id']."'", Q_RET_ARRAY);
+   $arr=exec_query("SELECT * FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=$is_user && group_user_id='".$user_group."'", Q_RET_ARRAY);
    $return_array=array();
 
    /*Convert permission into form ids at the frontend*/
@@ -37,10 +43,15 @@ if(isset($_REQUEST['form'])){
             unset($permission_array[$key]);   
          }
 
+         $user_group_id   =explode(':',$_REQUEST['username']);
+         $is_user    =0;
+         if($user_group_id[0]=='U')$is_user=1;
+         $user_group   =$user_group_id[1];
+
          /*Save json*/
          //$res=exec_query("UPDATE ".$GLOBALS['S_TABLES']['users']." SET permission='".json_encode($permission_array)."' WHERE username='".$_REQUEST['username']."' ",Q_RET_MYSQL_RES);
          /*Delete all permission before set new settings TODO: recovery plan*/
-         if(!exec_query("DELETE FROM ".$GLOBALS['S_TABLES']['permission']." WHERE user_id='".$_REQUEST['username']."'", Q_RET_MYSQL_RES)){
+         if(!exec_query("DELETE FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=$is_user && group_user_id='".$user_group."'", Q_RET_MYSQL_RES)){
             return_status_json('ERROR','error resetting permission');
             return;
          }
@@ -67,7 +78,7 @@ if(isset($_REQUEST['form'])){
             switch($break_down[0]){
                case "M":
                   $modules_permitted[$module]=$value;   
-                  if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(user_id,module,page,access_right) values('".$_REQUEST['username']."','$module','*','$value')",Q_RET_MYSQL_RES)){
+                  if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','*','$value',$is_user)",Q_RET_MYSQL_RES)){
                      return_status_json('ERROR','error updating permission');
                      return;
                   }
@@ -77,13 +88,13 @@ if(isset($_REQUEST['form'])){
                   if(isset($modules_permitted[$module])){
                      /*Prevent redundent permission ruls eg: module->w then page should not re assign 'w'*/
                      if($modules_permitted[$module] != $value){
-                        if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(user_id,module,page,access_right) values('".$_REQUEST['username']."','$module','$page','$value')",Q_RET_MYSQL_RES)){
+                        if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','$page','$value',$is_user)",Q_RET_MYSQL_RES)){
                            return_status_json('ERROR','error updating permission');
                            return;
                         }
                      }
                   }else{
-                     if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(user_id,module,page,access_right) values('".$_REQUEST['username']."','$module','$page','$value')",Q_RET_MYSQL_RES)){
+                     if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','$page','$value',$is_user)",Q_RET_MYSQL_RES)){
                         return_status_json('ERROR','error updating permission');
                         return;
                      }
@@ -108,26 +119,26 @@ exit();
 
 
 function gen_permission_tree(){
-   global $modules;
    d_r('dijit.form.ComboBox');
+   d_r('dijit.form.Select');
    d_r('dijit.form.Form');
-   foreach ($modules as $mod_key => $mod) {
+   foreach ($GLOBALS['MODULES'] as $mod_key => $mod) {
       $module_menu_file   =A_MODULES."/".$mod_key."/menu.php";
       if(is_array($mod)){
          $mod=$mod['MODULE'];
       }
-      echo "<table border=0 style='border-collapse:collapse;width:200px;border:1px solid silver;'>
+      echo "<table border=0 style='border-collapse:collapse;width:400px;font:inherit'>
       <tr>
-      <th align='left'>Module/Page</th>
-      <th align='left'>PERMISSION</th>
+      <th align='left' style='font:inherit;font-weight:bold'>Module/Page</th>
+      <th align='right' style='font:inherit;font-weight:bold'>PERMISSION</th>
       </tr>
       <tr>
-      <td style='background-color:silver' >".$mod."</td>
-      <td style='background-color:silver' align='right'>
-      <select dojoType='dijit.form.ComboBox' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px' >
-         <option value='D'>DENIED</option>
-         <option value='R'>READ</option>
-         <option value='W'>WRITE</option>
+      <td style='background-color:silver;font:inherit' >".$mod." (module)</td>
+      <td style='background-color:silver;font:inherit' align='right'>
+      <select dojoType='dijit.form.Select' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px;font:inherit' >
+         <option value='DENIED'><font color='red'>DENIED</font></option>
+         <option value='READ'>READ</option>
+         <option value='WRITE'>WRITE</option>
       </select>
       </td>
       </tr>\n";
@@ -141,12 +152,12 @@ function gen_permission_tree(){
             }
 
             echo "<tr>
-            <td style='background-color:whitesmoke'>".$page."</td>
-            <td style='background-color:whitesmoke' align='right'>
-            <select dojoType='dijit.form.ComboBox' name='P#".$mod_key."#".$page_key."' id='DP#".$mod_key."#".$page_key."' value='DENIED' style='width:70px' >
-               <option value='D'>DENIED</option>
-               <option value='R'>READ</option>
-               <option value='W'>WRITE</option>
+            <td style='background-color:whitesmoke;font:inherit'>&nbsp;-".$page."</td>
+            <td style='background-color:whitesmoke;font:inherit' align='right'>
+            <select dojoType='dijit.form.ComboBox' name='P#".$mod_key."#".$page_key."' id='DP#".$mod_key."#".$page_key."' value='DENIED' style='width:70px;font:inherit' >
+               <option value='DENIED'>DENIED</option>
+               <option value='READ'>READ</option>
+               <option value='WRITE'>WRITE</option>
             </select>   
             </td>
             </tr>\n";
@@ -156,20 +167,27 @@ function gen_permission_tree(){
    }
 
 }
+echo "<p>Select group or user to assign permission </p>";
 echo "<div  align='center'>";
 echo  "<div dojoType='dijit.form.Form' id='permission_frm' jsId='permission_frm'
          encType='multipart/form-data'
          action='".$GLOBALS['PAGE_GEN']."';
          method='GET' >
          ";
+echo "Select User/Group: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.value);'>";
 
-echo "Select User: <select name='username' id='username' dojoType='dijit.form.ComboBox' jsId='username' onChange='fill_form(this.get(\"displayedValue\"));'
->";
+//List of groups
+echo "<option value='none'>-groups-</option>";
+$res=exec_query("SELECT group_name FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_MYSQL_RES);
+while($row=mysql_fetch_assoc($res)){
+echo "<option value='G:".$row['group_name']."'>".$row['group_name']."</option>";
+}
 
-echo "<option value='none'>-select-</option>";
+//List of users
+echo "<option value='none'>-users-</option>";
 $res=exec_query("SELECT username FROM ".$GLOBALS['S_TABLES']['users'],Q_RET_MYSQL_RES);
 while($row=mysql_fetch_assoc($res)){
-echo "<option value='".$row['username']."'>".$row['username']."</option>";
+echo "<option value='U:".$row['username']."'>".$row['username']."</option>";
 }
 
 echo "</select><br><br>";
@@ -243,7 +261,7 @@ function submit_form(action){
 
       load: function(response) {
          update_status_bar('OK','rquest sent successfully');
-         update_progress_bar(50);
+         //update_progress_bar(50);
       }, 
       error: function() {
          update_status_bar('ERROR','error on submission');

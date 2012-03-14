@@ -1,92 +1,87 @@
-<?php
-/*
-This will include in to $GLOBALS['PAGE_GEN']
-*/
-?>
 <?php 
 $dijitIcons=array(
-      "dijitIconSave",
-      "dijitIconPrint",
-      "dijitIconCut",
-      "dijitIconCopy",
-      "dijitIconClear",
-      "dijitIconDelete",
-      "dijitIconUndo",
-      "dijitIconEdit",
-      "dijitIconNewTask",
-      "dijitIconEditTask",
-      "dijitIconEditProperty",
-      "dijitIconTask",
-      "dijitIconFilter",
-      "dijitIconConfigure",
-      "dijitIconSearch",
-      "dijitIconApplication",
-      "dijitIconBookmark",
-      "dijitIconChart",
-      "dijitIconConnector",
-      "dijitIconDatabase",
-      "dijitIconDocuments",
-      "dijitIconMail",
-      "dijitIconFile",
-      "dijitIconFunction",
-      "dijitIconKey",
-      "dijitIconPackage",
-      "dijitIconSample",
-      "dijitIconTable",
-      "dijitIconUsers",
-      "dijitIconFolderClosed",
-      "dijitIconFolderOpen"
+      "Save",
+      "Print",
+      "Cut",
+      "Copy",
+      "Clear",
+      "Delete",
+      "Undo",
+      "Edit",
+      "NewTask",
+      "EditTask",
+      "EditProperty",
+      "Task",
+      "Filter",
+      "Configure",
+      "Search",
+      "Application",
+      "Bookmark",
+      "Chart",
+      "Connector",
+      "Database",
+      "Documents",
+      "Mail",
+      "File",
+      "Function",
+      "Key",
+      "Package",
+      "Sample",
+      "Table",
+      "Users",
+      "FolderClosed",
+      "FolderOpen"
 );
 
 //Editor icons
 $dijitEditorIcons=array(
-      "dijitEditorIconSep",
-      "dijitEditorIconSave",
-      "dijitEditorIconPrint",
-      "dijitEditorIconCut",
-      "dijitEditorIconCopy",
-      "dijitEditorIconPaste",
-      "dijitEditorIconDelete",
-      "dijitEditorIconCancel",
-      "dijitEditorIconUndo",
-      "dijitEditorIconRedo",
-      "dijitEditorIconSelectAll",
-      "dijitEditorIconBold",
-      "dijitEditorIconItalic",
-      "dijitEditorIconUnderline",
-      "dijitEditorIconStrikethrough",
-      "dijitEditorIconSuperscript",
-      "dijitEditorIconSubscript",
-      "dijitEditorIconJustifyCenter",
-      "dijitEditorIconJustifyFull",
-      "dijitEditorIconJustifyLeft",
-      "dijitEditorIconJustifyRight",
-      "dijitEditorIconIndent",
-      "dijitEditorIconOutdent",
-      "dijitEditorIconListBulletIndent",
-      "dijitEditorIconListBulletOutdent",
-      "dijitEditorIconListNumIndent",
-      "dijitEditorIconListNumOutdent",
-      "dijitEditorIconTabIndent",
-      "dijitEditorIconLeftToRight",
-      "dijitEditorIconRightToLeft",
-      "dijitEditorIconToggleDir",
-      "dijitEditorIconBackColor",
-      "dijitEditorIconForeColor",
-      "dijitEditorIconHiliteColor",
-      "dijitEditorIconNewPage",
-      "dijitEditorIconInsertImage",
-      "dijitEditorIconInsertTable",
-      "dijitEditorIconSpace",
-      "dijitEditorIconInsertHorizontalRule",
-      "dijitEditorIconInsertOrderedList",
-      "dijitEditorIconInsertUnorderedList",
-      "dijitEditorIconCreateLink",
-      "dijitEditorIconUnlink",
-      "dijitEditorIconViewSource",
-      "dijitEditorIconRemoveFormat",
-      "dijitEditorIconFullScreen",
-      "dijitEditorIconWikiword"
+      "Sep",
+      "Save",
+      "Print",
+      "Cut",
+      "Copy",
+      "Paste",
+      "Delete",
+      "Cancel",
+      "Undo",
+      "Redo",
+      "SelectAll",
+      "Bold",
+      "Italic",
+      "Underline",
+      "Strikethrough",
+      "Superscript",
+      "Subscript",
+      "JustifyCenter",
+      "JustifyFull",
+      "JustifyLeft",
+      "JustifyRight",
+      "Indent",
+      "Outdent",
+      "ListBulletIndent",
+      "ListBulletOutdent",
+      "ListNumIndent",
+      "ListNumOutdent",
+      "TabIndent",
+      "LeftToRight",
+      "RightToLeft",
+      "ToggleDir",
+      "BackColor",
+      "ForeColor",
+      "HiliteColor",
+      "NewPage",
+      "InsertImage",
+      "InsertTable",
+      "Space",
+      "InsertHorizontalRule",
+      "InsertOrderedList",
+      "InsertUnorderedList",
+      "CreateLink",
+      "Unlink",
+      "ViewSource",
+      "RemoveFormat",
+      "FullScreen",
+      "Wikiword"
 );
 
 //view all buttons
@@ -157,24 +152,22 @@ $labeld_types=array(
    'dijit.form.NumberTextBox',
    'dijit.form.TextBox'
 );
-echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
 //Adding help button to the toolbar
-echo "<div dojoType='dijit.form.Button' label='Help' showLabel='true' iconClass='dijitIcon dijitIconDocuments' onClick='help_dialog()'></div>";
-
-if(!isset($toolbar[PAGE])){
+echo "<div dojoType='dijit.form.Button' label='Help' showLabel='true' iconClass='dijitIcon dijitIconDocuments' onClick='show_help_dialog()'></div>";
+if(!isset($GLOBALS['TOOLBAR_ITEMS'])){
    //toolbar is empty
 }else{
-   foreach($toolbar[PAGE] as $label => $attrib ){
+   foreach($GLOBALS['TOOLBAR_ITEMS'] as $label => $attrib ){
       /*
          Set of attributes associated with each button of the toolbar   
       */
       $cur_attrib=array(
-         'dojoType'   =>'dijit.form.Button',
-         'id'         =>'act'.str_replace(array(" "),array("_"),$label),
-         'iconClass'   =>'dijitIcon',
+         'dojoType'  =>'dijit.form.Button',
+         'id'        =>'act'.str_replace(array(" "),array("_"),$label),
+         'iconClass' =>'dijitIcon',
          'icon'      =>'dijitIconFunction',
-         'action'      =>'alert("Not yet configured!")',
-         'label'      =>$label,
+         'action'    =>'alert("Not yet configured!")',
+         'label'     =>$label,
          'element'   =>''
       );
 
@@ -209,10 +202,10 @@ if(!isset($toolbar[PAGE])){
             select icon either from dijitIcons or dijitEditorIcons array given above
             according to the given icon name icon name is the latter part of the icon style of any array
             */
-            if(array_search('dijitIcon'.$attrib['icon'],$dijitIcons)){
+            if(array_search($attrib['icon'],$dijitIcons)){
                $cur_attrib['iconClass']="dijitIcon";
                $cur_attrib['icon']      ='dijitIcon'.$attrib['icon'];   
-            }elseif(array_search('dijitEditorIcon'.$attrib['icon'],$dijitEditorIcons)){
+            }elseif(array_search($attrib['icon'],$dijitEditorIcons)){
                $cur_attrib['iconClass']="dijitEditorIcon";
                $cur_attrib['icon']      ='dijitEditorIcon'.$attrib['icon'];   
             }
@@ -255,5 +248,4 @@ if(!isset($toolbar[PAGE])){
 }
 
 //END toolbar
-echo "</div>";
 ?>
