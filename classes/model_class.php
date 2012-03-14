@@ -228,7 +228,7 @@ class Model{
          "store"=>"rid_store",
 
          "filter"=>isset(\$_SESSION[PAGE]['rid'])?"student_year='".\$_SESSION[PAGE]['rid']."'":null,
-         "ref_table"=>\$GLOBALS['P_TABLES']['batch'],
+         "ref_table"=>\$GLOBALS['MOD_P_TABLES']['batch'],
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
          "vid"=>array('rid','rid'),
