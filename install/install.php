@@ -102,7 +102,7 @@ if(isset($_REQUEST['action']) && $_REQUEST['action']=='install'){
          /*Creating system table set*/
          create_system_tables();
          $con             = mysql_connect($GLOBALS['DB_HOST'],$GLOBALS['DB_USER'],$GLOBALS['DB_PASS']);
-         $admin_add      = mysql_query("INSERT INTO ".$GLOBALS['DB'].".users(username,password,permission,theme,layout)values('admin',md5('admin'),'SUPER','claro','app')",$con);
+         $admin_add      = mysql_query("INSERT INTO ".$GLOBALS['DB'].".users(username,password,group_id,theme,layout)values('admin',md5('admin'),'SUPER','claro','app')",$con);
          echo "<li> Successfully added the administrator with SUPER power!\n";
          echo "<ul><li>Username:admin<li>Password:admin</ul>\n";
          echo "<li><font color='red'>PLEASE CHANGE THE PASSWORD OF THE ADMINISTRATOR AT THE FIRST LOGIN </font>\n";

@@ -495,7 +495,7 @@ dojo.ready(function(){
          $html .="<table\n";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('filter','columns');
+         $bypass=array('filter','columns','selector_id');
 
          /*all paremeters will be inserted to the options string*/
          foreach($grid as $key => $value){
@@ -519,9 +519,10 @@ dojo.ready(function(){
          <script type='text/javascript'>
          function load_grid_item(e){
             var selectedValue = grid3.store.getValue(".$grid['jsId'].".getItem(e.rowIndex),'".$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']."');
+            load_selected_value(".$grid['selector_id'].",selectedValue);
             //alert('selected cell Value is '+selectedValue);
             //fill_form(selectedValue);
-            dijit.byId('".$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']."').setValue(selectedValue);
+            //dijit.byId('".$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']."').setValue(selectedValue);
          }
       </script>";
       }
