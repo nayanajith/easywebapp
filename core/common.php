@@ -1,4 +1,7 @@
 <?php
+$GLOBALS['PREVIEW']=array(
+
+);
 /*--create and fill view global array which contains all parts of the fintend-*/
 $GLOBALS['VIEW']=array(
    'CSS'       =>'',
@@ -20,19 +23,28 @@ $GLOBALS['VIEW']=array(
 /*
  * View_id : one of the ids in above array
  * contet   : any html/css/js content or a include file which will generate any of the contet
+ * before : true/false
  */
 
-function add_to_view($view_id,$content){
+function add_to_view($view_id,$content,$before=false){
    //IF the contet is a file then include and get the output to array using ob_func
    if(isset($GLOBALS['VIEW'][$view_id])){
       if(is_file($content)){
          ob_start();
          include $content;
          $content=ob_get_contents();
-         $GLOBALS['VIEW'][$view_id] .= $content;
+         if($before){
+            $GLOBALS['VIEW'][$view_id] = $content.$GLOBALS['VIEW'][$view_id];
+         }else{
+            $GLOBALS['VIEW'][$view_id] .= $content;
+         }
          ob_end_clean();
       }elseif(!is_null($content) || $content != ''){
-         $GLOBALS['VIEW'][$view_id] .= $content;
+         if($before){
+            $GLOBALS['VIEW'][$view_id] = $content.$GLOBALS['VIEW'][$view_id];
+         }else{
+            $GLOBALS['VIEW'][$view_id] .= $content;
+         }
       }
    }else{
       return "key[$view_id] error!"; 
@@ -55,50 +67,50 @@ function clear_view($view_id){
 /**
  * Wrapper function to make it easy to add a contet to each section of the view
  */
-function add_to_main($content){
-   add_to_main_left($content);
+function add_to_main($content,$before=false){
+   add_to_main_left($content,$before);
 }
-function add_to_main_left($content){
-   add_to_view('MAIN_LEFT',$content);
+function add_to_main_left($content,$before=false){
+   add_to_view('MAIN_LEFT',$content,$before);
 }
-function add_to_main_right($content){
-   add_to_view('MAIN_RIGHT',$content);
+function add_to_main_right($content,$before=false){
+   add_to_view('MAIN_RIGHT',$content,$before);
 }
-function add_to_css($content){
-   add_to_view('CSS',$content);
+function add_to_css($content,$before=false){
+   add_to_view('CSS',$content,$before);
 }
-function add_to_js($content){
-   add_to_view('JS',$content);
+function add_to_js($content,$before=false){
+   add_to_view('JS',$content,$before);
 }
-function add_to_loading($content){
-   add_to_view('LOADING',$content);
+function add_to_loading($content,$before=false){
+   add_to_view('LOADING',$content,$before);
 }
-function add_to_login($content){
-   add_to_view('LOGIN',$content);
+function add_to_login($content,$before=false){
+   add_to_view('LOGIN',$content,$before);
 }
-function add_to_program($content){
-   add_to_view('PROGRAM',$content);
+function add_to_program($content,$before=false){
+   add_to_view('PROGRAM',$content,$before);
 }
-function add_to_breadcrumb($content){
-   add_to_view('BREADCRUMB',$content);
+function add_to_breadcrumb($content,$before=false){
+   add_to_view('BREADCRUMB',$content,$before);
 }
-function add_to_navigator($content){
-   add_to_view('NAVIGATOR',$content);
+function add_to_navigator($content,$before=false){
+   add_to_view('NAVIGATOR',$content,$before);
 }
-function add_to_widgets($content){
-   add_to_view('WIDGETS',$content);
+function add_to_widgets($content,$before=false){
+   add_to_view('WIDGETS',$content,$before);
 }
-function add_to_menubar($content){
-   add_to_view('MENUBAR',$content);
+function add_to_menubar($content,$before=false){
+   add_to_view('MENUBAR',$content,$before);
 }
-function add_to_toolbar($content){
-   add_to_view('TOOLBAR',$content);
+function add_to_toolbar($content,$before=false){
+   add_to_view('TOOLBAR',$content,$before);
 }
-function add_to_statusbar($content){
-   add_to_view('STATUSBAR',$content);
+function add_to_statusbar($content,$before=false){
+   add_to_view('STATUSBAR',$content,$before);
 }
-function add_to_footer($content){
-   add_to_view('FOOTER',$content);
+function add_to_footer($content,$before=false){
+   add_to_view('FOOTER',$content,$before);
 }
 
 

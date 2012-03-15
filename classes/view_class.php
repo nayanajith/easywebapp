@@ -211,6 +211,14 @@ class View{
       return $html;
    }
 
+   public  function finish_view(){
+      if(file_exists($this->view)){
+         add_to_main_left("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
+         include $this->view;
+         add_to_main_left("</div>"); 
+      }
+   }
+
    /*
    Generating form for using ghe fields array which was generated in model-class 
    */
@@ -222,14 +230,10 @@ class View{
       }
 
       if(file_exists($this->view)){
-         $MAIN_LEFT=array();
+         $GLOBALS['PREVIEW']['MAIN_LEFT']=array();
          foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $field_array){
-             $MAIN_LEFT[$field]=$this->gen_field_entry($field,$field_array);
+             $GLOBALS['PREVIEW']['MAIN_LEFT'][$field]=$this->gen_field_entry($field,$field_array);
          }
-
-         add_to_main_left("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
-         include $this->view;
-         add_to_main_left("</div>");
          return;
       }
 
@@ -476,53 +480,60 @@ dojo.ready(function(){
     json_file: data from the server
     return: data grid containing the key fields provided in $key_array
     */
-   public function gen_data_grid($field_array,$csv_url,$key=null){
-      $html="";
-      //d_r('dojo.data.ItemFileWriteStore');
+   public function gen_data_grid($field_array,$key=null){
       d_r('dojox.data.CsvStore');
       d_r('dojox.widget.PlaceholderMenuItem');
       d_r('dojox.grid.DataGrid');
-      // $html.="<span dojoType='dojo.data.ItemFileWriteStore' jsId='store3' url='$json_url'></span>
-      $html.="<span dojoType='dojox.data.CsvStore' jsId='store3' url='".gen_url()."&form=grid&data=csv'></span>
-      <div dojoType='dijit.Menu' jsid='gridMenu' id='gridMenu' style='display: none;'>
-         <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
-      </div>
+      $html=""; 
+      if(isset($GLOBALS['MODEL']['MAIN_RIGHT']) && isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID'])){
+         $grid=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID'];
 
-      <table 
-         dojoType='dojox.grid.DataGrid' 
-         jsId='grid3' 
-         store='store3' 
-         query='{ ".$field_array[0].": \"*\" }'
-         rowsPerPage='40' 
-         clientSort='true' 
-         style='width:100%;height:400px' 
-         onClick='displayLinks'
-         rowSelector='20px'
-         columnReordering='true'
-         headerMenu='gridMenu'
-      >
-      <thead>
-         <tr>";
+         $html.="<span dojoType='dojox.data.CsvStore' jsId='".$grid['store']."' url='".gen_url()."&form=grid&data=csv'></span>
+      <div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
+         <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
+      </div>";
+         $html .="<table\n";
+
+         /*Fields to bypass when creating forms*/
+         $bypass=array('filter','columns');
+
+         /*all paremeters will be inserted to the options string*/
+         foreach($grid as $key => $value){
+            if(!in_array($key,$bypass)){
+               $html.=$key."='$value'\n";
+            }
+         }      
+
+         $html .='><thead>';
+
          /*Set labels for the table header if available in fileds array*/
-         foreach($field_array as $h_key){
+         foreach($grid['columns'] as $h_key){
             $html.= "<th width='auto' field='$h_key'>
                ".(isset($GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label'])?$GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label']:$h_key)."
             </th>";
          }
-         //<th width='auto' field='sex' cellType='dojox.grid.cells.Select' options='Male,Female' editable='true'>Sex</th>
          $html.= "</tr>
       </thead>
       </table>";
          $html.= "
          <script type='text/javascript'>
-         function displayLinks(e){
-            var selectedValue = grid3.store.getValue(grid3.getItem(e.rowIndex),'".$field_array[0]."');
+         function load_grid_item(e){
+            var selectedValue = grid3.store.getValue(".$grid['jsId'].".getItem(e.rowIndex),'".$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']."');
             //alert('selected cell Value is '+selectedValue);
             //fill_form(selectedValue);
-            dijit.byId('fs_$key').setValue(selectedValue);
+            dijit.byId('".$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']."').setValue(selectedValue);
          }
       </script>";
-      return $html;
+      }
+      log_msg($html);
+
+      if(file_exists($this->view)){
+         $GLOBALS['PREVIEW']['MAIN_RIGHT']=array(
+            'GRID'=>$html,
+         );
+      }else{
+         add_to_main_right($html); 
+      }
    }
 
 

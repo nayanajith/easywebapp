@@ -11,6 +11,8 @@ $GLOBALS['PAGE']=array(
 );
 */
 
+
+
 include A_CLASSES."/model_class.php";
 //include_once A_MODULES."/".MODULE."/".$GLOBALS['PAGE']['name']."_mdl.php";
 
@@ -30,7 +32,9 @@ $model    = new Model(
    $GLOBALS['PAGE']['filter_primary_key']
 );
 
-if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
+if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
+   $model->gen_csv();
+}elseif(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
    switch($_REQUEST['form']){
    case 'main':
       switch($_REQUEST['action']){
@@ -99,5 +103,11 @@ if(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
 
    //Generate toolbar
    $view->gen_toolbar();
+
+   //Generate search grid
+   $view->gen_data_grid(array('rid'),$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
+
+   //finish view
+   $view->finish_view();
 }
 ?>

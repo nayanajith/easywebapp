@@ -648,37 +648,19 @@ EOE;
          return  $json_fileW;
       }
 
-      public function gen_csv($key_array,$filter=null,$return,$table=null){
-         $where=" WHERE ";
-
-         if($filter != null){
-            $where.=$filter;
-         }else{
-            $where="";
-         }
-
-         /*Custom table*/
-         $table=$table==null?$this->table:$table;   
-
-         $res=exec_query("SELECT ".implode(",",$key_array)." FROM ".$table." $where",Q_RET_ARRAY);
-
-         header('Content-Type', 'application/vnd.ms-excel');
-         header('Content-Disposition: attachment; filename='.$csv_file);
-         //header("Content-type: application/octet-stream");
-         //header("Content-Disposition: attachment; filename=your_desired_name.xls");
-         header("Pragma: no-cache");
-         header("Expires: 0");
-
-
-         $header=false;
-         while($row = mysql_fetch_assoc($res)){
-            if(!$header){
-               echo '"'.implode('","',array_keys($row))."\"\n";
-               $header=true;
-            }
-            echo '"'.implode('","',array_values($row))."\"\n";
-         }
-         exit();
+      /**
+       * Generate csv for the given query
+       */
+      public function gen_csv(){
+         $filter_str=isset($_SESSION[PAGE]['filter'])?" WHERE ".$_SESSION[PAGE]['filter']:"";
+         $columns=array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
+         
+         $fields=implode(",",$columns);
+         $query="SELECT $fields FROM ".$this->table.$filter_str;
+         
+         $csv_file= $this->table.".csv";
+         db_to_csv_nr($query,$csv_file);
+         return;
       }
 
 
