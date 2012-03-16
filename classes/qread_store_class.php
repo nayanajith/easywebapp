@@ -35,6 +35,7 @@ class Query_read_store{
       $this->pre_filter =$filter;
       $this->order_by   =$order_by;
       $this->id         =$id;   
+      $this->fields     =$id;   
       $this->searchAttr =$key;
       if(is_array($key)){
          $this->key_a        =$key;   
@@ -44,10 +45,10 @@ class Query_read_store{
          }else{
             $this->key =key($key);  //hidden field of the select box 
             if(is_array($key[key($key)])){
-               $this->id  =',CONCAT('.implode(',"/",',$key[key($key)]).") label";   //displaying field of the select box
+               $this->fields  =',CONCAT('.implode(',"/",',$key[key($key)]).") label";   //displaying field of the select box
                $this->searchAttr =$key[key($key)][0];
             }else{
-               $this->id  =','.$key[key($key)].' label';   //displaying field of the select box
+               $this->fields  =','.$key[key($key)].' label';   //displaying field of the select box
                $this->searchAttr =$key[key($key)];
             }
          }
@@ -65,7 +66,7 @@ class Query_read_store{
    */
    public function _gen_query(){
       if (array_key_exists('id', $_REQUEST)) {
-         $this->filter="WHERE $this->searchAttr ='".$_REQUEST['id']."'";
+         $this->filter="WHERE $this->id ='".$_REQUEST['id']."'";
       }elseif (array_key_exists('label', $_REQUEST)) {
          $this->filter = $_REQUEST['label'];
          $this->filter = str_replace("*", "%", $this->filter);
@@ -92,7 +93,7 @@ class Query_read_store{
       if(is_null($this->order_by)){
          $this->order_by="ORDER BY $this->key";
       }
-      return "SELECT DISTINCT $this->key $this->id FROM $this->table $this->filter $this->order_by LIMIT $this->start,$this->count";
+      return "SELECT DISTINCT $this->key $this->fields FROM $this->table $this->filter $this->order_by LIMIT $this->start,$this->count";
    }
 
 
@@ -100,7 +101,7 @@ class Query_read_store{
    Fill the data in to array
    */
    public function gen_json_data(){
-      $res=exec_query($this->_gen_query());
+      $res=array();
       if(isset($this->key_a) && is_array($this->key_a)){
          if(is_array($this->key_a[key($this->key_a)])){
             $res[]=array(key($this->key_a)=>'NULL','label'=>'-none-');
@@ -110,6 +111,8 @@ class Query_read_store{
       }else{
          $res[]=array($this->key=>'-none-');
       }
+
+      $res=array_merge($res,exec_query($this->_gen_query()));
       //Return as JSON formatted data
       return json_encode(array("identifier"=>$this->key,"label"=>"label","items"=>$res));
    }

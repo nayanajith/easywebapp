@@ -764,7 +764,7 @@ EOE;
 
          header('Content-Type', 'application/json');
          include 'qread_store_class.php';
-         $query_read_store = new Query_read_store($table,$key_,$filter,$order_by);
+         $query_read_store = new Query_read_store($table,$key_,$filter,$order_by,$key);
          echo $query_read_store->gen_json_data();
       }
       /*

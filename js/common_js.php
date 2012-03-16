@@ -339,6 +339,7 @@ function fill_form(rid,form) {
          /*reset form*/
          dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
             if(widget.store){
+               widget.attr('value', 'NULL');
             }else{
                widget.attr('value', null);
             }
