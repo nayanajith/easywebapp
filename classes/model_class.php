@@ -214,6 +214,26 @@ class Model{
 
 
       public function write_config(){
+         $main_right=<<<EOE
+   'MAIN_RIGHT'=>array(
+       'GRID'=>array(
+          'columns'      =>array('rid','class','name','status'),
+          'filter'       =>'',
+          'selector_id'  =>'toolbar__rid',
+          'dojoType'     =>'dojox.grid.DataGrid',
+          'jsId'         =>'grid3',
+          'store'        =>'store3' ,
+          'query'        =>'{ "rid": "*" }',
+          'rowsPerPage'  =>'40',
+          'clientSort'   =>'true',
+          'style'        =>'width:100%;height:400px',
+          'onClick'      =>'load_grid_item',
+          'rowSelector'  =>'20px',
+          'columnReordering'=>'true',
+          'headerMenu'   =>'gridMenu',
+       ),
+    ),
+EOE;
          $common_toolbar_buttons=<<<EOE
       "rid"=>array(
          "length"=>"70",
@@ -255,13 +275,20 @@ class Model{
          "showLabbel"=>'true',
          "onClick"=>'submit_form("delete")',
       ),
-      "search"=>array(
+     "filter"=>array(
          "dojoType"=>"dijit.form.Button",
-         "label"=>"Search",
-         "iconClass"=>get_icon_class('Search'),
+         "label"=>"FIlter",
+         "iconClass"=>get_icon_class('Filter'),
          "showLabbel"=>'true',
-         "onClick"=>'search_records()',
+         "onClick"=>'submit_form("add_filter")',
       ),  
+      "reset_ filter"=>array(
+         "dojoType"=>"dijit.form.Button",
+         "label"=>"Reset Filter",
+         "iconClass"=>get_icon_class('Delete'),
+         "showLabbel"=>'true',
+         "onClick"=>'submit_form("delete_filter")',
+      ),
 EOE;
     
          $config=$this->model;
@@ -298,6 +325,7 @@ EOE;
             
             fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------\n");
             //write the toolbar related fields
+            fwrite($file_handler, $main_right."\n");
             fwrite($file_handler, tab(1)."'TOOLBAR'=>array(\n".$common_toolbar_buttons."\n".tab(1)."),\n");
             fwrite($file_handler, tab(1)."'WIDGETS'=>array(\n".tab(1)."),\n");
             fwrite($file_handler, ");");
@@ -648,6 +676,32 @@ EOE;
          return  $json_fileW;
       }
 
+
+     /**
+       * Generate csv for the given query
+       */
+      public function gen_grid_csv(){
+         $columns    =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
+         $table      =$this->table;
+         $filter_str =isset($_SESSION[PAGE]['filter'])?" WHERE ".$_SESSION[PAGE]['filter']:"";
+
+         if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['columns'])){
+            $columns=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['columns'];
+         }
+         if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['ref_table'])){
+            $table=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['ref_table'];
+         }
+
+         $fields=implode(",",$columns);
+
+         $query="SELECT $fields FROM ".$table.$filter_str;
+         
+         $csv_file= $table.".csv";
+         db_to_csv_nr($query,$csv_file);
+         return;
+      }
+
+
       /**
        * Generate csv for the given query
        */
@@ -693,7 +747,7 @@ EOE;
             $key_=$key; 
          }
 
-         $table   =null;
+         $table   =$this->table;
          if(isset($field_array['ref_table'])){
             $table   =$field_array['ref_table'];
          }

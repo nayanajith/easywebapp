@@ -279,6 +279,23 @@ function submit_form(action,target_module,target_page){
 
 
 /**
+ * reload the grid
+ */
+function reload_grid(grid){
+   //if(!grid || !grid.store)return;
+   if(grid.store.save) {
+      grid.store.save();
+   }
+   //alert(grid.store.url);
+   grid.store.close();
+   grid.store.url=grid.store.url+'&rand='+Math.floor(Math.random()*100)
+   //grid._refresh();
+   grid.store.fetch();
+   
+}
+
+
+/**
  * Select value in  a filtering select programatically
  */
 function load_selected_value(field,value_to_load){

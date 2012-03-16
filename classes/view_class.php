@@ -310,7 +310,7 @@ class View{
 
       //if the entry/control type is a button the execute gen_toolbar_button instead
       if($field_array['dojoType']=='dijit.form.Button'){
-         return $this->gen_goolbar_button($field,$field_array);
+         return $this->gen_toolbar_button($field,$field_array);
       }
       //Add toolbar prefix to identify the ids in toolbar
 
@@ -407,10 +407,10 @@ class View{
 
             //combining the dojo type mapping in above array with the generated content
             $html            .=sprintf($form_control,$options,$inner);
-            $field_div_start   ="<div id='td_$field' jsId='td_$field'>";
-            $field_div_end     ="<div id='td_in_$field'></div></div>";
-            $field_div_start   ="";
-            $field_div_end     ="";
+            $field_div_start  ="<div id='td_$field' jsId='td_$field'>";
+            $field_div_end    ="<div id='td_in_$field'></div></div>";
+            $field_div_start  ="";
+            $field_div_end    ="";
 
 
             //Set label position
@@ -430,7 +430,7 @@ dojo.ready(function(){
       return $html;
    }
 
-   function gen_goolbar_button($field,$field_array){
+   function gen_toolbar_button($field,$field_array){
       if($field_array['dojoType']=='dijit.form.Button'){
 
          /*all paremeters will be inserted to the options string*/
@@ -488,14 +488,14 @@ dojo.ready(function(){
       if(isset($GLOBALS['MODEL']['MAIN_RIGHT']) && isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID'])){
          $grid=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID'];
 
-         $html.="<span dojoType='dojox.data.CsvStore' jsId='".$grid['store']."' url='".gen_url()."&form=grid&data=csv'></span>
+         $html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=grid&data=csv'></span>
       <div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>";
          $html .="<table\n";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('filter','columns','selector_id');
+         $bypass=array('filter','columns','selector_id','ref_table','ref_key');
 
          /*all paremeters will be inserted to the options string*/
          foreach($grid as $key => $value){
@@ -526,7 +526,6 @@ dojo.ready(function(){
          }
       </script>";
       }
-      log_msg($html);
 
       if(file_exists($this->view)){
          $GLOBALS['PREVIEW']['MAIN_RIGHT']=array(

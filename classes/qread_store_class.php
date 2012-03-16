@@ -64,7 +64,9 @@ class Query_read_store{
    );
    */
    public function _gen_query(){
-      if (array_key_exists('label', $_REQUEST)) {
+      if (array_key_exists('id', $_REQUEST)) {
+         $this->filter="WHERE $this->searchAttr ='".$_REQUEST['id']."'";
+      }elseif (array_key_exists('label', $_REQUEST)) {
          $this->filter = $_REQUEST['label'];
          $this->filter = str_replace("*", "%", $this->filter);
          $this->filter="WHERE $this->searchAttr LIKE '".$this->filter."' ".$this->pre_filter;

@@ -33,7 +33,7 @@ $model    = new Model(
 );
 
 if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
-   $model->gen_csv();
+   $model->gen_grid_csv();
 }elseif(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
    switch($_REQUEST['form']){
    case 'main':
