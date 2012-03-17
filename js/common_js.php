@@ -200,20 +200,28 @@ function request_html(target,source_array,action_) {
    });
 }
 
-function add_filter(){
+function submit_display_values(action){
    var form='main';
-   var url_=gen_url()+'&form=main&action=add_filter';
+   var url_=gen_url()+'&form=main&action='+action;
    dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
       if(widget.store){
-         url_=url_+'&'+widget.attr('name')+'='+widget.displayValue();
-      }else{
-         url_=url_+'&'+widget.attr('name')+'='+widget.attr('value');
+         if(widget.get('displayedValue')){
+            url_=url_+'&'+widget.attr('name')+'='+widget.get('displayedValue');
+         }
+      }else if(widget.get('value')){
+         var value=widget.get('value');
+         if(isNaN(widget.get('value')){
+            value='';
+         } 
+         url_=url_+'&'+widget.attr('name')+'='+value;
       }
    });
+
+
    dojo.xhrPost({
       url         : url_, 
       handleAs    : 'json',
-   
+
       handle: function(response,ioArgs){
          update_status_bar(response.status_code,response.info);
          if(response.status_code == 'OK'){

@@ -23,7 +23,6 @@ echo $reflector->getFileName();
 echo $reflector->getStartLine();
  */
 
-
 $model    = new Model(
    $GLOBALS['PAGE']['table'],
    $GLOBALS['PAGE']['primary_key'],

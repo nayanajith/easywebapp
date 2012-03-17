@@ -52,7 +52,6 @@ class View{
             $this->model=sprintf($this->model,'');
         }
 
-        log_msg($this->model);
         if(file_exists($this->model)){
         include_once $this->model;
 

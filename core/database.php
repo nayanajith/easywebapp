@@ -375,16 +375,27 @@ function create_tables($schemas=null){
    $state=true;
 
    foreach($schemas as $key=>$schema){
-      if(exec_query($schema,Q_RET_MYSQL_RES)){
-         log_msg('create_program_tables',"Creating table:$key");
+      if(exec_query($schema,Q_RET_NON)){
+         log_msg('create_tables',"Creating table:$key");
       }else{
-         log_msg('create_program_tables',get_sql_error());
+         log_msg('create_tables',get_sql_error());
          $state=false;
       }
    }
    return $state;
 }
 
+
+/**
+ * chec if the given schema is a table or view
+ */
+function is_view($schema){
+   if(exec_query("SHOW FULL TABLES WHERE TABLE_TYPE LIKE 'VIEW' AND TABLES_IN_".$GLOBALS['DB']." LIKE '$schema'",Q_RET_MYSQL_RES)){
+      return true;
+   }else{
+      return false;
+   }
+}
 
 function drop_tables($tables){
    $state=true;
@@ -394,17 +405,27 @@ function drop_tables($tables){
       /*IF the table have data backup the table instead of deleting*/
       if(get_num_rows()>0){
          if(exec_query("RENAME TABLE ".$name." TO ".$name."_BAK_".Date('d_m_Y'),Q_RET_MYSQL_RES)){
-            log_msg('drop_system_tables',"Drop table:$name");
+            log_msg('rename_tables',$name);
          }else{
-            log_msg('drop_system_tables',get_sql_error());
+            log_msg('rename_tables',get_sql_error());
             $state=false;
          }
       }else{
-         if(exec_query("DROP TABLE ".$name,Q_RET_MYSQL_RES)){
-            log_msg('drop_system_tables',"Drop table:$name");
+         if(is_view($name)){
+            if(exec_query("DROP VIEW ".$name,Q_RET_MYSQL_RES)){
+               log_msg('drop_tables',"Drop table:$name");
+            }else{
+               log_msg('drop_tables',get_sql_error());
+               $state=false;
+            }
          }else{
-            log_msg('drop_system_tables',get_sql_error());
-            $state=false;
+            if(exec_query("DROP TABLE ".$name,Q_RET_MYSQL_RES)){
+               log_msg('drop_tables',"Drop table:$name");
+            }else{
+               log_msg('drop_tables',get_sql_error());
+               $state=false;
+            }
+
          }
       }
    }
