@@ -77,6 +77,18 @@ if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
                $_SESSION[PAGE][$param]=$_REQUEST[$_REQUEST['param']];
                return_status_json('OK',"Set ".$_REQUEST['param']."=".$_REQUEST[$_REQUEST['param']]);
             }
+         break;
+         case 'add_filter':
+            $_SESSION[PAGE]['FILTER']=$model->get_temp_filter();
+            return_status_json('OK','Filter added');
+         break;
+         case 'del_filter':
+            if(isset($_SESSION[PAGE]) && isset($_SESSION[PAGE]['FILTER'])){
+               log_msg($_SESSION[PAGE]['FILTER']);
+               unset($_SESSION[PAGE]['FILTER']);
+            }
+            return_status_json('OK','Filter deleted');
+         break;
          }
    break;
    case 'filter':

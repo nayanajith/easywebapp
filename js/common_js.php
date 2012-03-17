@@ -200,6 +200,51 @@ function request_html(target,source_array,action_) {
    });
 }
 
+function add_filter(){
+   var form='main';
+   var url_=gen_url()+'&form=main&action=add_filter';
+   dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
+      if(widget.store){
+         url_=url_+'&'+widget.attr('name')+'='+widget.displayValue();
+      }else{
+         url_=url_+'&'+widget.attr('name')+'='+widget.attr('value');
+      }
+   });
+   dojo.xhrPost({
+      url         : url_, 
+      handleAs    : 'json',
+   
+      handle: function(response,ioArgs){
+         update_status_bar(response.status_code,response.info);
+         if(response.status_code == 'OK'){
+            if(!target_module && !target_page){
+               update_progress_bar(100);
+            }else{
+               window.open('?module='+module+'&page='+page,'_parent');
+            }
+         }else{
+            update_status_bar('ERROR',response.info);
+            if(document.getElementById('captcha_image'))reload_captcha();
+            //update_status_bar('ERROR','Duplicate Entry!');
+         }
+      },
+   
+      load: function(response) {
+         if(!target_module && !target_page){
+            update_status_bar('OK','rquest sent successfully');
+            update_progress_bar(50);
+         }
+      }, 
+      error: function() {
+         if(!target_module && !target_page){
+            update_status_bar('ERROR','error on submission');
+            update_progress_bar(0);
+         }
+      }
+   });
+   return true;
+}
+
 /** Submit the given form
 * tartget_module and target_page are optional. these parameters are used by public layout
 */

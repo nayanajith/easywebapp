@@ -444,7 +444,20 @@ EOE;
          }
       }
 
-
+      /**
+       * Generate temporary filter for the submitted values
+       */
+      public function get_temp_filter(){
+         $filter="";
+         $and="";
+         foreach(array_keys($GLOBALS['MODEL']['MAIN_LEFT']) as $key){
+            if($key != $this->primary_key && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
+               $filter.=$and."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
+               $and=' AND ';
+            }
+         }
+         return $filter; 
+      }
 
       /*retrieve filter from the database*/
       public function ret_filter($filter_name,$table=null){
@@ -683,7 +696,7 @@ EOE;
       public function gen_grid_csv(){
          $columns    =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
          $table      =$this->table;
-         $filter_str =isset($_SESSION[PAGE]['filter'])?" WHERE ".$_SESSION[PAGE]['filter']:"";
+         $filter_str =isset($_SESSION[PAGE]['FILTER'])?" WHERE ".$_SESSION[PAGE]['FILTER']:"";
 
          if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['columns'])){
             $columns=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['columns'];
@@ -706,7 +719,7 @@ EOE;
        * Generate csv for the given query
        */
       public function gen_csv(){
-         $filter_str=isset($_SESSION[PAGE]['filter'])?" WHERE ".$_SESSION[PAGE]['filter']:"";
+         $filter_str=isset($_SESSION[PAGE]['FILTER'])?" WHERE ".$_SESSION[PAGE]['FILTER']:"";
          $columns=array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
          
          $fields=implode(",",$columns);

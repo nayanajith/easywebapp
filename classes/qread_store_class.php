@@ -65,8 +65,8 @@ class Query_read_store{
    );
    */
    public function _gen_query(){
-      if (array_key_exists('id', $_REQUEST)) {
-         $this->filter="WHERE $this->id ='".$_REQUEST['id']."'";
+      if (array_key_exists('id', $_REQUEST) && $_REQUEST['id'] != '') {
+         $this->filter="WHERE $this->id ='".$_REQUEST['id']."' ".$this->pre_filter;
       }elseif (array_key_exists('label', $_REQUEST)) {
          $this->filter = $_REQUEST['label'];
          $this->filter = str_replace("*", "%", $this->filter);
@@ -102,6 +102,7 @@ class Query_read_store{
    */
    public function gen_json_data(){
       $res=array();
+      $res=array_merge($res,exec_query($this->_gen_query()));
       if(isset($this->key_a) && is_array($this->key_a)){
          if(is_array($this->key_a[key($this->key_a)])){
             $res[]=array(key($this->key_a)=>'NULL','label'=>'-none-');
@@ -112,7 +113,6 @@ class Query_read_store{
          $res[]=array($this->key=>'-none-');
       }
 
-      $res=array_merge($res,exec_query($this->_gen_query()));
       //Return as JSON formatted data
       return json_encode(array("identifier"=>$this->key,"label"=>"label","items"=>$res));
    }
