@@ -79,6 +79,7 @@ if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
          break;
          case 'add_filter':
             $_SESSION[PAGE]['FILTER']=$model->get_temp_filter();
+            log_msg($_SESSION[PAGE]['FILTER']);
             return_status_json('OK','Filter added');
          break;
          case 'del_filter':

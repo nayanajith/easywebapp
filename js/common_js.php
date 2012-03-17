@@ -210,7 +210,7 @@ function submit_display_values(action){
          }
       }else if(widget.get('value')){
          var value=widget.get('value');
-         if(isNaN(widget.get('value')){
+         if(isNaN(widget.get('value'))){
             value='';
          } 
          url_=url_+'&'+widget.attr('name')+'='+value;
@@ -369,6 +369,13 @@ function load_selected_value(field,value_to_load){
    });
 }
 
+/**
+ * clear the form
+ */
+
+function clear_form(selector_field){
+   load_selected_value(selector_field,'NULL');
+}
 
 /**
  * Populate the data in form for the selected key
