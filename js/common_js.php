@@ -288,7 +288,27 @@ function submit_form(action,target_module,target_page){
       return;   
    }
 
-   if (action=='delete' || dijit.byId(form).validate()) {
+   //Some actions do not require form submission
+   if (action=='del_filter') {
+    dojo.xhrPost({
+         url         : url+'&form=main&action='+action,
+         handle: function(response,ioArgs){
+            update_status_bar(response.status_code,response.info);
+         },
+         load: function(response) {
+            update_status_bar('OK','rquest sent successfully');
+            update_progress_bar(50);
+         }, 
+         error: function() {
+            update_status_bar('ERROR','error on submission');
+            update_progress_bar(0);
+         }
+      });
+      return;
+   }
+
+
+   if (action=='delete' || action=='add_filter' || dijit.byId(form).validate()) {
       dojo.xhrPost({
          url         : url+'&form=main&action='+action, 
          handleAs    : 'json',
@@ -371,11 +391,10 @@ function load_selected_value(field,value_to_load){
 
 /**
  * clear the form
- */
-
 function clear_form(selector_field){
    load_selected_value(selector_field,'NULL');
 }
+*/
 
 /**
  * Populate the data in form for the selected key

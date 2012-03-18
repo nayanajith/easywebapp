@@ -217,9 +217,11 @@ class Model{
          $main_right=<<<EOE
    'MAIN_RIGHT'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid','class','name','status'),
+          'columns'      =>array('rid','status'),
           'filter'       =>'',
           'selector_id'  =>'toolbar__rid',
+          'ref_table'    =>\$GLOBALS['MOD_P_TABLES'][''],
+          'event_key'    =>'rid',
           'dojoType'     =>'dojox.grid.DataGrid',
           'jsId'         =>'grid3',
           'store'        =>'store3' ,
@@ -247,12 +249,21 @@ EOE;
          "pageSize"=>"10",
          "store"=>"rid_store",
 
-         "filter"=>isset(\$_SESSION[PAGE]['rid'])?"student_year='".\$_SESSION[PAGE]['rid']."'":null,
-         "ref_table"=>\$GLOBALS['MOD_P_TABLES']['batch'],
+         "filter"=>"",
+         "ref_table"=>\$GLOBALS['MOD_P_TABLES']['filter'],
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
-         "vid"=>array('rid','rid'),
+         "vid"=>array('rid'),
       ),  
+
+      "clear"=>array(
+         "dojoType"=>"dijit.form.Button",
+         "label"=>"Clear form",
+         "iconClass"=>get_icon_class('Clear'),
+         "showLabbel"=>'true',
+         "onClick"=>'clear_form("main")',
+         //"onClick"=>'load_selected_value(toolbar__rid,"NULL")',
+      ),
 
       "add"=>array(
          "dojoType"=>"dijit.form.Button",
@@ -275,19 +286,19 @@ EOE;
          "showLabbel"=>'true',
          "onClick"=>'submit_form("delete")',
       ),
-     "filter"=>array(
+     "add_filter"=>array(
          "dojoType"=>"dijit.form.Button",
-         "label"=>"FIlter",
+         "label"=>"Add fIlter",
          "iconClass"=>get_icon_class('Filter'),
          "showLabbel"=>'true',
          "onClick"=>'submit_form("add_filter")',
       ),  
-      "reset_ filter"=>array(
+      "del_filter"=>array(
          "dojoType"=>"dijit.form.Button",
-         "label"=>"Reset Filter",
+         "label"=>"Delete filter",
          "iconClass"=>get_icon_class('Delete'),
          "showLabbel"=>'true',
-         "onClick"=>'submit_form("delete_filter")',
+         "onClick"=>'submit_form("del_filter")',
       ),
 EOE;
     

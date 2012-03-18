@@ -494,7 +494,7 @@ dojo.ready(function(){
          $html .="<table\n";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('filter','columns','selector_id','ref_table','ref_key');
+         $bypass=array('filter','columns','selector_id','ref_table','ref_key','event_key');
 
          /*all paremeters will be inserted to the options string*/
          foreach($grid as $key => $value){
@@ -514,10 +514,14 @@ dojo.ready(function(){
          $html.= "</tr>
       </thead>
       </table>";
+         if(!isset($grid['event_key'])){
+            $grid['event_key']=$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'];
+         }
+
          $html.= "
          <script type='text/javascript'>
          function load_grid_item(e){
-            var selectedValue = grid3.store.getValue(".$grid['jsId'].".getItem(e.rowIndex),'".$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']."');
+            var selectedValue = grid3.store.getValue(".$grid['jsId'].".getItem(e.rowIndex),'".$grid['event_key']."');
             load_selected_value(".$grid['selector_id'].",selectedValue);
             //alert('selected cell Value is '+selectedValue);
             //fill_form(selectedValue);
