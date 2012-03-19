@@ -238,7 +238,7 @@ class Model{
 EOE;
          $common_toolbar_buttons=<<<EOE
       "rid"=>array(
-         "length"=>"70",
+         "length"=>"170",
          "dojoType"=>"dijit.form.FilteringSelect",
          "required"=>"false",
          "label"=>"Label",

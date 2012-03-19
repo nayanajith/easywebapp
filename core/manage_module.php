@@ -30,6 +30,8 @@ items: [
 ]
 }
 */
+
+load_permission();
 function gen_tree(){
 $modules=$GLOBALS['MODULES'];
 /*-----------------generate json-------------------*/

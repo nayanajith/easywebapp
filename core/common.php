@@ -11,6 +11,7 @@ $GLOBALS['VIEW']=array(
    'PROGRAM'   =>'',
    'BREADCRUMB'=>'',
    'NAVIGATOR' =>'',
+   'MAIN_TOP' =>'',
    'MAIN_LEFT' =>'',
    'MAIN_RIGHT'=>'',
    'WIDGETS'   =>'',
@@ -68,7 +69,10 @@ function clear_view($view_id){
  * Wrapper function to make it easy to add a contet to each section of the view
  */
 function add_to_main($content,$before=false){
-   add_to_main_left($content,$before);
+   add_to_main_top($content,$before);
+}
+function add_to_main_top($content,$before=false){
+   add_to_view('MAIN_TOP',$content,$before);
 }
 function add_to_main_left($content,$before=false){
    add_to_view('MAIN_LEFT',$content,$before);

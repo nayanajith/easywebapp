@@ -142,7 +142,6 @@ class View{
          $html.="<div id='td_$field' jsId='td_$field' style='padding:10px;'>";
          $html.="<label for='$field' >".$field_array['label']."$required</label>";
          $html.=$inner;
-         $html.=sprintf($html,$fill);
          $html.="<div id='td_in_$field'></div></div>\n";
       }else{
          d_r($field_array['dojoType']);

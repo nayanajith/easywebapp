@@ -88,13 +88,19 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
 <!--________________________start data_body area_____________________________-->
                      <table width='100%'>
                         <tr>
-                           <td id='MAIN_LEFT' valign='top' align='left' width='60%'>
+                           <td id='MAIN_TOP' colspan='2' valign='top' width='100%'>
+                              <?php 
+                              echo $GLOBALS['VIEW']['MAIN_TOP'];
+                              ?>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td id='MAIN_LEFT' valign='top' align='left' width='50%'>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_LEFT'];
                               ?>
-
                            </td>
-                           <td id='MAIN_RIGHT' valign='top'  align='right'  width='40%'>
+                           <td id='MAIN_RIGHT' valign='top'  align='right'  width='50%'>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_RIGHT'];
                               ?>

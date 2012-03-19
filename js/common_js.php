@@ -372,6 +372,7 @@ function reload_grid(grid){
  * Select value in  a filtering select programatically
  */
 function load_selected_value(field,value_to_load){
+   //var field=dijit.byId(field_);
    if(!field || !field.store)return;
    field.store.fetch({
       query:{ 'id': value_to_load },

@@ -24,7 +24,7 @@ if($GLOBALS['LAYOUT']=='pub'){
 
 
 //Main file contains the module+page specific features and outputs which will affect the view 
-add_to_main_left($main);
+add_to_main_top($main);
 
 //Page footer
 add_to_footer(A_CORE."/footer.php");

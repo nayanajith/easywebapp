@@ -111,13 +111,16 @@ $LOGIN      =false;
 
 if (isset($_SESSION['username'])) {
    if ($logout == "logout") {
-      $_SESSION['username']   = null;
-      $_SESSION['permission'] = null;
-      $_SESSION['group']      = null;
-      $_SESSION['fullname']   = null;
-      $_SESSION['user_id']    = null;
-      $_SESSION['login_module']    = null;
+      unset($_SESSION['username']);
+      unset($_SESSION['permission']);
+      unset($_SESSION['group']);
+      unset($_SESSION['fullname']);
+      unset($_SESSION['user_id']);
+      unset($_SESSION['login_module']);
       session_destroy();
+
+      //After logout take the user to home
+      header('Location: ?module=home');
    }
 } elseif(isset($_REQUEST['loginBtn'])){
    //Log users activity

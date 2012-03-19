@@ -15,7 +15,6 @@ link list genertion for the modules
 */
    /*gen_module_array function is in this file*/
    include A_CORE."/manage_module.php";
-
    /*Generate array with modules and pages */
    $modules_array=gen_visible_module_array();
 

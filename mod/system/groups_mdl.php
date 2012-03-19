@@ -7,7 +7,7 @@ $GLOBALS['MODEL']=array(
    ),
 //--------------FIELDS TO BE INCLUDED IN FORM-------------------
 //---------------THIS ALSO REFLECT THE TABLE--------------------
-   'MAIN'=>array(
+   'MAIN_LEFT'=>array(
       "rid"=>array(
       		"length"=>"70",
 				"dojoType"=>"dijit.form.NumberTextBox",
