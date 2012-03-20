@@ -151,9 +151,9 @@ class View{
          $required      ="<font color='red'>*</font>";
       }
 
-      //If the field require a stor add a store
+      //If the field require a store add a store to the page
       if(isset($field_array['store'])){
-         add_store($field,$field_array['store']);
+         $this->add_store($field,$field_array['store']);
       }
 
       /*Handl custom form input method or generic one*/
@@ -262,7 +262,7 @@ class View{
       if(file_exists($this->view)){
          $GLOBALS['PREVIEW']['MAIN_LEFT']=array();
          foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $field_array){
-             $GLOBALS['PREVIEW']['MAIN_LEFT'][$field]=$this->gen_field_entry($field,$field_array);
+             $GLOBALS['PREVIEW']['MAIN_LEFT'][$field]=$this->gen_field_entry($field,$field_array,true);
          }
          return;
       }

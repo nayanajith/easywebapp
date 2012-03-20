@@ -169,6 +169,24 @@ function clear_footer(){
 }
 
 /**
+ * Add return the field for the given field_id from $GLOBALS['PREVIEW']['MAIN_LEFT']
+ */
+function get_field($field_id){
+   if(isset($GLOBALS['PREVIEW']['MAIN_LEFT'][$field_id])){
+      return $GLOBALS['PREVIEW']['MAIN_LEFT'][$field_id]['field'];
+   }
+}
+
+/**
+ * Add return the label for the given field_id from $GLOBALS['PREVIEW']['MAIN_LEFT']
+ */
+function get_label($field_id){
+   if(isset($GLOBALS['PREVIEW']['MAIN_LEFT'][$field_id])){
+      return $GLOBALS['PREVIEW']['MAIN_LEFT'][$field_id]['label'];
+   }
+}
+
+/**
  * Different headers are required by files generation
  * $file_name : name of the file with the extention;
  */

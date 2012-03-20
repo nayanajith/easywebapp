@@ -710,7 +710,7 @@ EOE;
          $filter_str ='';
 
          if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter']) && $GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter']){
-            $filter_str ="WHERE ".$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter'];
+            $filter_str =" WHERE ".$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter'];
          }
 
          if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['columns'])){

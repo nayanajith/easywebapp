@@ -32,11 +32,15 @@ dojo.isChrome);
 */
 
 
+//timeout for XHR request is 60 secons
+var timeout_ = 60*1000;
+
 /*--help viewer--*/
 function show_help_dialog(){
 	dojo.xhrPost({
       url 		: gen_url()+'&help=true',
   	   handleAs :'text',
+      timeout  : timeout_,
   	   load 		: function(response, ioArgs) {	     
          help_Dialog = new dijit.Dialog({
             title: "Help",
@@ -148,7 +152,8 @@ function set_param(key,value) {
    dojo.xhrPost({
       url       : url+'&form=main&action=param&data=json&param='+key+'&'+key+'='+value,
         handleAs :'json',
-        load       : function(response, ioArgs) {        
+        timeout  : timeout_,
+        load     : function(response, ioArgs) {        
             update_status_bar(response.status,response.info);
             if(response.status == 'OK'){
                update_progress_bar(100);
@@ -188,6 +193,7 @@ function request_html(target,source_array,action_) {
    dojo.xhrPost({
       url      : url+'&form=main&data=json&action='+action+param,
       handleAs :'text',
+      timeout  : timeout_,
       load     : function(response, ioArgs) {        
          update_status_bar('OK','Done');
          update_progress_bar(100);
@@ -221,6 +227,7 @@ function submit_display_values(action){
    dojo.xhrPost({
       url         : url_, 
       handleAs    : 'json',
+      timeout     : timeout_,
 
       handle: function(response,ioArgs){
          update_status_bar(response.status_code,response.info);
@@ -279,7 +286,7 @@ function submit_form(action,target_module,target_page){
    }
 
    update_status_bar('OK','Processing...');
-   update_progress_bar(10);
+   update_progress_bar(50);
 
    /*User should confirm deletion*/
    if(action=='delete' && !confirm('Confirm Deletion!')){
@@ -292,12 +299,15 @@ function submit_form(action,target_module,target_page){
    if (action=='del_filter') {
     dojo.xhrPost({
          url         : url+'&form=main&action='+action,
+         timeout     : timeout_,
+
          handle: function(response,ioArgs){
-            update_status_bar(response.status_code,response.info);
+            //update_status_bar(response.status_code,response.info);
+            //window.location.reload(); 
          },
-         load: function(response) {
-            update_status_bar('OK','rquest sent successfully');
-            update_progress_bar(50);
+         load: function(response,ioArgs) {
+            update_status_bar(response.status_code,response.info);
+            window.location.reload(); 
          }, 
          error: function() {
             update_status_bar('ERROR','error on submission');
@@ -313,10 +323,15 @@ function submit_form(action,target_module,target_page){
          url         : url+'&form=main&action='+action, 
          handleAs    : 'json',
          form        : form, 
+         timeout     : timeout_,
       
          handle: function(response,ioArgs){
+            /*
             update_status_bar(response.status_code,response.info);
             if(response.status_code == 'OK'){
+               if(action=='add_filter'){
+                  window.location.reload(); 
+               }
                if(!target_module && !target_page){
                   update_progress_bar(100);
                }else{
@@ -327,12 +342,24 @@ function submit_form(action,target_module,target_page){
                if(document.getElementById('captcha_image'))reload_captcha();
                //update_status_bar('ERROR','Duplicate Entry!');
             }
+            */
          },
       
-         load: function(response) {
-            if(!target_module && !target_page){
-               update_status_bar('OK','rquest sent successfully');
-               update_progress_bar(50);
+         load: function(response,ioArgs) {
+            update_status_bar(response.status_code,response.info);
+            if(response.status_code == 'OK'){
+               if(action=='add_filter'){
+                  window.location.reload(); 
+               }
+               if(!target_module && !target_page){
+                  update_progress_bar(100);
+               }else{
+                  window.open('?module='+module+'&page='+page,'_parent');
+               }
+            }else{
+               update_status_bar('ERROR',response.info);
+               if(document.getElementById('captcha_image'))reload_captcha();
+               //update_status_bar('ERROR','Duplicate Entry!');
             }
          }, 
          error: function() {
