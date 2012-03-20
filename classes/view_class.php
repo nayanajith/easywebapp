@@ -71,7 +71,27 @@ class View{
         }
    }
 
+   /**
+    * Add store to the page
+    * This will allow to use one store among many fields
+    */
+   protected $stores=array();
+   public function add_store($field_id,$store_id){
+      d_r('dojox.data.QueryReadStore');
+      if(!isset($this->stores[$store_id])){
+          add_to_main(
+            "<span dojoType='dojox.data.QueryReadStore' 
+            url='".gen_url()."&data=json&action=combo&form=main&field=".$field_id."'
+            jsId='".$store_id."'
+            >
+            </span>"
+         );
+         $this->stores[]=$store_id;
+      }
+   }
+
    //Mapping interlel html chuncks for each dojo type
+   //
    protected $form_controls=array(
        "dijit.form.FilteringSelect"   =>"<select %s>%s</select>",
        "dijit.form.ComboBox"          =>"<select %s>%s</select>",
@@ -96,9 +116,15 @@ class View{
     select-> data for select box/combo box
     data-> data for text area
    */
-   public function gen_field_entry($field,$field_array){
+   public function gen_field_entry($field,$field_array,$customizable=false){
       /*fill data from data array*/
       $fill ="";
+
+      //if customizable true then retuen label and field seperately as an array
+      $custom_arr=array(
+           'label'=>'', 
+           'field'=>'', 
+      );
 
       if($this->data_load_key != null){
          if($field != 'password' && isset($this->data[$field])){
@@ -127,20 +153,17 @@ class View{
 
       //If the field require a stor add a store
       if(isset($field_array['store'])){
-         d_r('dojox.data.QueryReadStore');
-         $html .="
-         <span dojoType='dojox.data.QueryReadStore' 
-            url='".gen_url()."&data=json&action=combo&form=main&field=".$field."'
-            jsId='".$field_array['store']."'
-            >
-            </span>
-                 ";
+         add_store($field,$field_array['store']);
       }
 
       /*Handl custom form input method or generic one*/
       if(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
          $html.="<div id='td_$field' jsId='td_$field' style='padding:10px;'>";
-         $html.="<label for='$field' >".$field_array['label']."$required</label>";
+         if($customizable){
+            $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
+         }else{
+            $html.="<label for='$field' >".$field_array['label']."$required</label>";
+         }
          $html.=$inner;
          $html.="<div id='td_in_$field'></div></div>\n";
       }else{
@@ -187,24 +210,33 @@ class View{
             $field_div_end     ="<div id='td_in_$field'></div></div>";
 
             //Set label position
-            $field_label   ="<label for='$field' >".$field_array['label']."$required</label>";
-            if(isset($field_array['label_pos'])){
-               switch($field_array['label_pos']){
-                  case 'left':
-                     $html =$field_div_start.$field_label.$html.$field_div_end;
-                  break;
-                  case 'right':
-                     $html =$field_div_start.$html.$field_label.$field_div_end;
-                  break;
-                  case 'top':
-                  default:
-                     $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
-                  break;
-               }
+            if($customizable){
+               $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
+               $custom_arr['field']=$field_div_start.$html.$field_div_end;
             }else{
-               $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
+               $field_label   ="<label for='$field' >".$field_array['label']."$required</label>";
+               if(isset($field_array['label_pos'])){
+                  switch($field_array['label_pos']){
+                     case 'left':
+                        $html =$field_div_start.$field_label.$html.$field_div_end;
+                     break;
+                     case 'right':
+                        $html =$field_div_start.$html.$field_label.$field_div_end;
+                     break;
+                     case 'top':
+                     default:
+                        $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
+                     break;
+                  }
+               }else{
+                  $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
+               }
             }
          }
+      }
+      if($customizable){
+         $custom_arr['field']=$html;
+         return $custom_arr;
       }
       return $html;
    }

@@ -218,7 +218,7 @@ class Model{
    'MAIN_RIGHT'=>array(
        'GRID'=>array(
           'columns'      =>array('rid','status'),
-          'filter'       =>'',
+          'filter'       =>isset(\$_SESSION[PAGE]['FILTER'])?\$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
           'ref_table'    =>\$GLOBALS['MOD_P_TABLES'][''],
           'event_key'    =>'rid',
@@ -249,7 +249,7 @@ EOE;
          "pageSize"=>"10",
          "store"=>"rid_store",
 
-         "filter"=>"",
+         "filter"=>isset(\$_SESSION[PAGE]['FILTER'])?" AND ".\$_SESSION[PAGE]['FILTER']:null,
          "ref_table"=>\$GLOBALS['MOD_P_TABLES']['filter'],
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
@@ -707,7 +707,11 @@ EOE;
       public function gen_grid_csv(){
          $columns    =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
          $table      =$this->table;
-         $filter_str =isset($_SESSION[PAGE]['FILTER'])?" WHERE ".$_SESSION[PAGE]['FILTER']:"";
+         $filter_str ='';
+
+         if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter']) && $GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter']){
+            $filter_str ="WHERE ".$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter'];
+         }
 
          if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['columns'])){
             $columns=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['columns'];

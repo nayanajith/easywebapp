@@ -357,7 +357,7 @@ function csv_to_db2($csv_file,$table,$field_array,$delimiter,$encloser,$terminat
 
 /*Addd prefix to each array entrye*/
 function add_prefix(&$value,$key,$prefix){
-   $value=sprintf($value,$prefix,$prefix,$prefix,$prefix,$prefix);
+   $value=sprintf($value,$prefix,$prefix,$prefix,$prefix,$prefix,$prefix,$prefix,$prefix);
 }
 
 /*Addd prefix to each table to reflect the module*/
@@ -376,7 +376,7 @@ function create_tables($schemas=null){
 
    foreach($schemas as $key=>$schema){
       if(exec_query($schema,Q_RET_NON)){
-         log_msg('create_tables',"Creating table:$key");
+         log_msg('create_tables',$key.":==OK==");
       }else{
          log_msg('create_tables',get_sql_error());
          $state=false;
