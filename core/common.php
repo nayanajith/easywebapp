@@ -14,6 +14,7 @@ $GLOBALS['VIEW']=array(
    'MAIN_TOP' =>'',
    'MAIN_LEFT' =>'',
    'MAIN_RIGHT'=>'',
+   'MAIN_BOTTOM'=>'',
    'WIDGETS'   =>'',
    'MENUBAR'   =>'',
    'TOOLBAR'   =>'',
@@ -77,6 +78,9 @@ function add_to_main_top($content,$before=false){
 function add_to_main_left($content,$before=false){
    add_to_view('MAIN_LEFT',$content,$before);
 }
+function add_to_main_bottom($content,$before=false){
+   add_to_view('MAIN_BOTTOM',$content,$before);
+}
 function add_to_main_right($content,$before=false){
    add_to_view('MAIN_RIGHT',$content,$before);
 }
@@ -122,11 +126,19 @@ function add_to_footer($content,$before=false){
  * Wrapper function to make it easy to clear each section
  */
 function clear_main(){
+   clear_view('MAIN_TOP');
    clear_view('MAIN_LEFT');
    clear_view('MAIN_RIGHT');
+   clear_view('MAIN_BOTTOM');
 }
 function clear_main_left(){
    clear_view('MAIN_LEFT');
+}
+function clear_main_top(){
+   clear_view('MAIN_TOP');
+}
+function clear_main_bottom(){
+   clear_view('MAIN_BOTTOM');
 }
 function clear_main_right(){
    clear_view('MAIN_RIGHT');

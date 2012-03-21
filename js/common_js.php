@@ -259,6 +259,12 @@ function submit_display_values(action){
    });
    return true;
 }
+/**
+ * reload the page
+ */
+function reload_page(){
+   window.location.reload(); 
+}
 
 /** Submit the given form
 * tartget_module and target_page are optional. these parameters are used by public layout
@@ -299,15 +305,16 @@ function submit_form(action,target_module,target_page){
    if (action=='del_filter') {
     dojo.xhrPost({
          url         : url+'&form=main&action='+action,
+         handleAs    : 'json',
          timeout     : timeout_,
 
          handle: function(response,ioArgs){
             //update_status_bar(response.status_code,response.info);
-            //window.location.reload(); 
+            //reload_page(); 
          },
          load: function(response,ioArgs) {
             update_status_bar(response.status_code,response.info);
-            window.location.reload(); 
+            //reload_page(); 
          }, 
          error: function() {
             update_status_bar('ERROR','error on submission');
@@ -330,7 +337,7 @@ function submit_form(action,target_module,target_page){
             update_status_bar(response.status_code,response.info);
             if(response.status_code == 'OK'){
                if(action=='add_filter'){
-                  window.location.reload(); 
+                  //reload_page(); 
                }
                if(!target_module && !target_page){
                   update_progress_bar(100);
@@ -349,7 +356,7 @@ function submit_form(action,target_module,target_page){
             update_status_bar(response.status_code,response.info);
             if(response.status_code == 'OK'){
                if(action=='add_filter'){
-                  window.location.reload(); 
+                  //reload_page(); 
                }
                if(!target_module && !target_page){
                   update_progress_bar(100);
@@ -382,17 +389,11 @@ function submit_form(action,target_module,target_page){
  * reload the grid
  */
 function reload_grid(grid){
-   //if(!grid || !grid.store)return;
-   if(grid.store.save) {
-      grid.store.save();
-   }
-   //alert(grid.store.url);
-   grid.store.close();
-   grid.store.url=grid.store.url+'&rand='+Math.floor(Math.random()*100)
-   //grid._refresh();
-   grid.store.fetch();
-   
+    var url_=grid.store.url;
+    var new_store = new dojox.data.CsvStore({url: url_ });
+    grid.setStore(new_store);
 }
+
 
 
 /**

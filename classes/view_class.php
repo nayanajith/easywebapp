@@ -379,13 +379,7 @@ class View{
 
       //If the field require a stor add a store
       if(isset($field_array['store'])){
-         d_r('dojox.data.QueryReadStore');
-         $html .="
-         <span dojoType='dojox.data.QueryReadStore' 
-            url='".gen_url()."&data=json&action=combo&form=main&field=".$field."'
-            jsId='".$field_array['store']."'
-            >
-         </span>";
+         $this->add_store($field,$field_array['store']);
       }
 
       /*Handl custom form input method or generic one*/
@@ -447,7 +441,7 @@ class View{
             $html =$field_div_start.$html.$field_div_end;
          }
       }
-      if(isset($field_array['dojoType']['store']) && ($field_array['dojoType'] == 'dijit.form.FilteringSelect' || $field_array['dojoType'] == 'dijit.form.Select' || $field_array['dojoType'] == 'dijit.form.Select')){
+      if(isset($field_array['store']) && ($field_array['dojoType'] == 'dijit.form.FilteringSelect' || $field_array['dojoType'] == 'dijit.form.Select' || $field_array['dojoType'] == 'dijit.form.Select')){
       $html.="
 <script>
 //Set the previouse value in drop down box

@@ -375,10 +375,10 @@ function create_tables($schemas=null){
    $state=true;
 
    foreach($schemas as $key=>$schema){
-      if(exec_query($schema,Q_RET_NON)){
-         log_msg('create_tables',$key.":==OK==");
+      if(exec_query($schema,Q_RET_MYSQL_RES)){
+         log_msg('create_tables',"[OK] ".$key);
       }else{
-         log_msg('create_tables',get_sql_error());
+         log_msg('create_tables',"[ERROR] ".get_sql_error());
          $state=false;
       }
    }

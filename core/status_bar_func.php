@@ -29,6 +29,7 @@ d_r('dijit.form.Button');
          case 'OK':
          default:
             info=info;
+            update_progress_bar(100);
          break;
          case 'ERROR':
             info="<font color='red'>"+info+"</font>";
