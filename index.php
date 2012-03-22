@@ -202,9 +202,9 @@ if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
    include A_CORE."/help_layout.php";
    return;
 }
-
 /*--------------------------get and set users theme and layout----------------*/
-if(isset($_SESSION['username']) && isset($_SESSION['loged_module']) && $_SESSION['loged_module'] =='home'){
+//if(isset($_SESSION['username']) && isset($_SESSION['loged_module']) && $_SESSION['loged_module'] =='home'){
+if(isset($_SESSION['username'])){
    $layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['users']." WHERE username='".$_SESSION['username']."'",Q_RET_ARRAY);
 
    $GLOBALS['THEME']=isset($layout_theme[0]['theme'])&&$layout_theme[0]['theme']!='NULL'&&$layout_theme[0]['theme']!=''?$layout_theme[0]['theme']:$GLOBALS['THEME'];

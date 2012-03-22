@@ -48,7 +48,7 @@ This contains the login box from core/login.php and program selector from core/p
          <div dojoType="dijit.layout.ContentPane" region="top" gutter="false" style="padding:5px;">
             <!-- bannar -->
             <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=60px style='float:left'>
-            <h1 style='float:left;font-size:24px;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE']; ?></h1>
+            <h1 style='float:left;font-size:24px;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE_LONG']; ?></h1>
             <div style='float:right;'>
 <!--__________________________end Login form ________________________________-->
             <?php 

@@ -465,13 +465,24 @@ EOE;
       /**
        * Generate temporary filter for the submitted values
        */
-      public function get_temp_filter(){
+      public function get_temp_filter($table_as=null){
+
+         //Reset the global filter array
+         $_SESSION[PAGE]['FILTER_ARRAY']=array();
+
+         //return if request with the table name prefix
+         if(!is_null($table_as)){
+            $table_as=$table_as.".";
+         }
+
          $filter="";
          $and="";
          foreach(array_keys($GLOBALS['MODEL']['MAIN_LEFT']) as $key){
             if($key != $this->primary_key && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
-               $filter.=$and."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
+               $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
                $and=' AND ';
+               //keep the filter array for future use
+               $_SESSION[PAGE]['FILTER_ARRAY'][$key]=$_REQUEST[$key];
             }
          }
          return $filter; 

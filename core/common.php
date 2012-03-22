@@ -1,7 +1,62 @@
 <?php
+/*
+ * Adopt print output into standard html
+ */
+function gen_print_html($content,$title){
+   return "
+      <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+      <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >
+      <html>
+         <head>
+            <title>$title</title>
+            <style type='text/css'>
+               @import '/uis/css/common_css.php';
+            </style>
+           <link rel='shortcut icon' href='/uis/img/favicon.ico'type='image/x-icon' >
+           <script src='/uis/js/common_js.php' type='text/javascript'></script>
+         </head>
+         <body>
+            <center><h2>$title</h2></center>
+            $content
+            <script type='text/javascript'> 
+               setTimeout(print(),10000);
+            </script>
+         </body>
+         </html>
+      ";
+}
+//Keep the filter key=value paires for future use this array may initialized in model_class.php
+//$_SESSION[PAGE]['FILTER_ARRAY']=array();
+
+/**
+ * Regenerate the filter with customizations
+ */
+function gen_filter($table_as=null){
+   if(isset($_SESSION[PAGE]['FILTER_ARRAY']) && is_array($_SESSION[PAGE]['FILTER_ARRAY']) && sizeof($_SESSION[PAGE]['FILTER_ARRAY']) > 0){
+   }else{
+      return null;
+   }
+
+
+   //return if request with the table name prefix
+   if(!is_null($table_as)){
+      $table_as=$table_as.".";
+   }
+
+   $filter="";
+   $and="";
+   foreach($_SESSION[PAGE]['FILTER_ARRAY'] as $key => $value){
+      $filter.=$and.$table_as."`".$key."` LIKE '%".$value."%'";
+      $and=' AND ';
+   }
+   return $filter; 
+}
+
+//Array to keep the view entries before puting in VIEW array 
 $GLOBALS['PREVIEW']=array(
 
 );
+
 /*--create and fill view global array which contains all parts of the fintend-*/
 $GLOBALS['VIEW']=array(
    'CSS'       =>'',
