@@ -824,7 +824,8 @@ html, body {
    -moz-box-shadow:0 4px 8px #C8C8C8;
    -webkit-box-shadow: #C8C8C8 1px 3px 10px;
 
-   width: 1000px; 
+   min-width: 1000px; 
+   width: 97%;
    height: 97%;
    margin-left:auto;
    margin-right:auto; 

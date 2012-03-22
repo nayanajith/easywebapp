@@ -97,6 +97,13 @@
                               ?>
                            </td>
                         </tr>
+                        <tr>
+                           <td id='MAIN_BOTTOM' colspan='2' valign='top' width='100%'>
+                              <?php 
+                              echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
+                              ?>
+                           </td>
+                        </tr>
                      </table>
 <!--_________________________end data_body area______________________________-->
 </div>
