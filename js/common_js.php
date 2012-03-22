@@ -263,7 +263,7 @@ function submit_display_values(action){
  * reload the page
  */
 function reload_page(){
-   window.location.reload(); 
+   setTimeout('window.location.reload()',2000); 
 }
 
 /** Submit the given form

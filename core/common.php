@@ -19,7 +19,7 @@ function gen_print_html($content,$title){
             <center><h2>$title</h2></center>
             $content
             <script type='text/javascript'> 
-               setTimeout(print(),10000);
+               setTimeout('print()',2000);
             </script>
          </body>
          </html>

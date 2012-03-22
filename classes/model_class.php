@@ -463,6 +463,17 @@ EOE;
       }
 
       /**
+       * Delete temporary filter for the submitted values
+       */
+
+      public function del_temp_filter($table_as=null){
+         if(isset($_SESSION[PAGE]['FILTER_ARRAY'])){
+            unset($_SESSION[PAGE]['FILTER']);
+            unset($_SESSION[PAGE]['FILTER_ARRAY']);
+         }
+      }
+
+      /**
        * Generate temporary filter for the submitted values
        */
       public function get_temp_filter($table_as=null){
