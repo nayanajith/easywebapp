@@ -37,9 +37,22 @@ function before_login() {
    if(isset($GLOBALS['MOD_TBL_LOGIN']['target'])){
       $page=$GLOBALS['MOD_TBL_LOGIN']['target'];
    }
+
+
+   $server=$_SERVER['HTTP_HOST'];
+
+   //If the system behind proxy bind proxy address for the login form
+   if(isset($GLOBALS['PROXY_HOSTS']) && is_array($GLOBALS['PROXY_HOSTS'])){
+      foreach($GLOBALS['PROXY_HOSTS'] as $ip => $hostname){
+         if($_SERVER['REMOTE_ADDR'] == $ip){
+            $server=$hostname;
+         }
+      }
+   }
+
    return '
    <div dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" encType="multipart/form-data"
-   action="http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST"
+   action="https://'.$server.$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST"
    onSubmit="if(loginForm.validate()){return true;}else{return false}"
    >
 '.

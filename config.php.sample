@@ -81,4 +81,8 @@ $GLOBALS['MAIL_CONF']=array (
 ); 
 /*------------------------------DEBUG ON OFF ---------------------------------*/
 define('DEBUG',   true); //true=ON and false=OFF
+
+/*-----------------------IF th system isbehind proxy--------------------------*/
+$GLOBALS['PROXY_HOSTS']    = array("192.248.16.84"=>"ucsc.lk");
+
 ?>
