@@ -52,7 +52,7 @@ function before_login() {
 
    return '
    <div dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" encType="multipart/form-data"
-   action="https://'.$server.$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST"
+   action="'.$GLOBALS['AUTH_PROTOCOLE'].'://'.$server.$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST"
    onSubmit="if(loginForm.validate()){return true;}else{return false}"
    >
 '.

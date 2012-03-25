@@ -61,6 +61,7 @@ $GLOBALS['TBL_LOGIN']   = array(
    'group_id'  =>'group_id',
    'permission'=>'permission'       
 );
+$GLOBALS['AUTH_PROTOCOLE'] ='http'; //authentication communication protocol http,https
 $GLOBALS['AUTH_MOD']       ='MYSQL'; //authentication modes: LDAP,MYSQL,PASSWD
 
 //UCSC ldap [zimbra] configuration

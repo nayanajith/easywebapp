@@ -243,9 +243,9 @@ class View{
 
    public  function finish_view(){
       if(file_exists($this->view)){
-         add_to_main_left("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
+         //add_to_main_left("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
          include $this->view;
-         add_to_main_left("</div>"); 
+         //add_to_main_left("</div>"); 
       }
    }
 
@@ -394,7 +394,7 @@ class View{
       }else{
          d_r($field_array['dojoType']);
          $form_control   =$this->form_controls[$field_array['dojoType']];
-         $options         =" jsId='$field' id='$field' name='$field'  title='".$field_array['label']."'";
+         $options         =" jsId='$field' id='$field' name='$field'  title='".$field_array['label']."' ";
 
          /*Fields to bypass when creating forms*/
          $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by');
@@ -512,7 +512,7 @@ dojo.ready(function(){
       if(isset($GLOBALS['MODEL']['MAIN_RIGHT']) && isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID'])){
          $grid=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID'];
 
-         $html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=grid&data=csv'></span>
+         $html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>
       <div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>";
@@ -528,7 +528,7 @@ dojo.ready(function(){
             }
          }      
 
-         $html .='><thead>';
+         $html .='><thead><tr>';
 
          /*Set labels for the table header if available in fileds array*/
          foreach($grid['columns'] as $h_key){

@@ -264,6 +264,7 @@ function submit_display_values(action){
  */
 function reload_page(){
    setTimeout('window.location.reload()',2000); 
+   setTimeout('update_status_bar("OK","Reloading page...")',2000);
 }
 
 /** Submit the given form
@@ -389,9 +390,14 @@ function submit_form(action,target_module,target_page){
  * reload the grid
  */
 function reload_grid(grid){
-    var url_=grid.store.url;
-    var new_store = new dojox.data.CsvStore({url: url_ });
-    grid.setStore(new_store);
+   update_status_bar('OK','Reloading grid...');
+   update_progress_bar(50);
+
+   var url_=grid.store.url;
+   var new_store = new dojox.data.CsvStore({url: url_ });
+   grid.setStore(new_store);
+
+   update_progress_bar(100);
 }
 
 

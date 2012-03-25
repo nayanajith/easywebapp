@@ -13,7 +13,7 @@ $GLOBALS['PAGE']=array(
 
 
 
-include A_CLASSES."/model_class.php";
+include_once A_CLASSES."/model_class.php";
 //include_once A_MODULES."/".MODULE."/".$GLOBALS['PAGE']['name']."_mdl.php";
 
 //DEBUG: find where a class is declared
@@ -31,12 +31,11 @@ $model    = new Model(
    $GLOBALS['PAGE']['filter_primary_key']
 );
 
-if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
-   $model->gen_grid_csv();
-}elseif(isset($_REQUEST['form']) && isset($_REQUEST['action'])){
+if(isset($_REQUEST['form'])){
    switch($_REQUEST['form']){
    case 'main':
-      switch($_REQUEST['action']){
+      if(isset($_REQUEST['action'])){
+         switch($_REQUEST['action']){
          case 'add':
            return $model->add_record();
          break;
@@ -49,14 +48,14 @@ if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
          case 'combo':
             //Section of the model to reffered by the filering select data
             $section='MAIN_LEFT';
-
+      
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
             $br=explode('__',$_REQUEST['field']);
             if(isset($br[1])){
                $section=strtoupper($br[0]);
                $_REQUEST['field']=$br[1];
             }
-
+      
             $model->xhr_filtering_select_data($_REQUEST['field'],$section);
          break;
          case 'param':
@@ -66,7 +65,7 @@ if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
             if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
                $param=$br[1];
             }
-
+      
             if($_REQUEST[$_REQUEST['param']] == 'NULL'){
                //rest the session variable corresponding to the given value if  it is NULL
                unset($_SESSION[PAGE][$param]);
@@ -86,6 +85,21 @@ if(isset($_REQUEST['data']) && $_REQUEST['data']=='csv'){
             return_status_json('OK','Filter deleted');
          break;
          }
+      }
+   break;
+   case 'grid':
+   case 'main_grid_store':
+   case 'store3':
+      if(isset($_REQUEST['data'])){
+         switch($_REQUEST['data']){
+         case 'csv':
+            $model->gen_grid_csv();
+         break;
+         case 'json':
+            //$model->gen_grid_json();
+         break;
+         }
+      }
    break;
    case 'filter':
       switch($_REQUEST['action']){
