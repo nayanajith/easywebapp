@@ -506,13 +506,14 @@ dojo.ready(function(){
     */
    public function gen_data_grid($field_array,$key=null){
       d_r('dojox.data.CsvStore');
+      //d_r('dojox.data.JsonRestStore');
       d_r('dojox.widget.PlaceholderMenuItem');
       d_r('dojox.grid.DataGrid');
       $html=""; 
       if(isset($GLOBALS['MODEL']['MAIN_RIGHT']) && isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID'])){
          $grid=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID'];
 
-         $html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>
+         $html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=json'></span>
       <div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>";
@@ -533,24 +534,23 @@ dojo.ready(function(){
          /*Set labels for the table header if available in fileds array*/
          foreach($grid['columns'] as $key=>$array){
             $h_key   ='';
-            $editable='';
-            $cellType='';
+            $options ='';
+            $bypass  =array();
 
-            //Sett cell type and editbility
+            //Sett cell type and editbility and other options
             if(is_array($array)){
                $h_key=$key;
-               if(isset($array['editable'])){
-                  $editable="editable='".$array['editable']."'";
-               }
 
-               if(isset($array['cellType'])){
-                  $cellType="cellType='".$array['cellType']."'";
+               foreach($array as $key => $value){
+                  if(!in_array($key,$bypass)){
+                     $options.=$key."='".$value."' ";
+                  }
                }
             }else{
                $h_key=$array;
             }
 
-            $html.= "<th width='auto' field='$h_key' $editable $cellType>
+            $html.= "<th width='auto' field='$h_key' $options>
                ".(isset($GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label'])?$GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label']:$h_key)."
             </th>";
          }
