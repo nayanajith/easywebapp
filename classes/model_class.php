@@ -734,24 +734,30 @@ EOE;
        * Generate csv for the given query
        */
       public function gen_grid_csv(){
-         $columns    =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
          $table      =$this->table;
          $filter_str ='';
+         $query      ='';
+         $grid       =$GLOBALS['MODEL']['MAIN_RIGHT']['GRID'];
 
-         if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter']) && $GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter']){
-            $filter_str =" WHERE ".$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['filter'];
+         if(!isset($grid['sql'])){
+            if(isset($grid['filter']) && $grid['filter']){
+               $filter_str =" WHERE ".$grid['filter'];
+            }
+         
+            if(isset($grid['columns'])){
+               $columns=$grid['columns'];
+            }
+            if(isset($grid['ref_table'])){
+               $table=$grid['ref_table'];
+            }
+         
+            $columns =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
+            $fields  =implode(",",$columns);
+         
+            $query="SELECT $fields FROM ".$table.$filter_str;
+         }else{
+            $query   =$grid['sql'];
          }
-
-         if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['columns'])){
-            $columns=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['columns'];
-         }
-         if(isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['ref_table'])){
-            $table=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID']['ref_table'];
-         }
-
-         $fields=implode(",",$columns);
-
-         $query="SELECT $fields FROM ".$table.$filter_str;
          
          $csv_file= $table.".csv";
          db_to_csv_nr($query,$csv_file);

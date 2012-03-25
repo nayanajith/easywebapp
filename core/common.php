@@ -1,4 +1,9 @@
 <?php
+/**
+ * wrapper for isset() function which will return value if is set else return null
+ * TODO
+ */
+
 /*
  * Adopt print output into standard html
  */

@@ -519,7 +519,7 @@ dojo.ready(function(){
          $html .="<table\n";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('filter','columns','selector_id','ref_table','ref_key','event_key');
+         $bypass=array('filter','columns','selector_id','ref_table','ref_key','event_key','sql');
 
          /*all paremeters will be inserted to the options string*/
          foreach($grid as $key => $value){
@@ -531,8 +531,26 @@ dojo.ready(function(){
          $html .='><thead><tr>';
 
          /*Set labels for the table header if available in fileds array*/
-         foreach($grid['columns'] as $h_key){
-            $html.= "<th width='auto' field='$h_key'>
+         foreach($grid['columns'] as $key=>$array){
+            $h_key   ='';
+            $editable='';
+            $cellType='';
+
+            //Sett cell type and editbility
+            if(is_array($array)){
+               $h_key=$key;
+               if(isset($array['editable'])){
+                  $editable="editable='".$array['editable']."'";
+               }
+
+               if(isset($array['cellType'])){
+                  $cellType="cellType='".$array['cellType']."'";
+               }
+            }else{
+               $h_key=$array;
+            }
+
+            $html.= "<th width='auto' field='$h_key' $editable $cellType>
                ".(isset($GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label'])?$GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label']:$h_key)."
             </th>";
          }
@@ -543,16 +561,18 @@ dojo.ready(function(){
             $grid['event_key']=$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'];
          }
 
-         $html.= "
-         <script type='text/javascript'>
-         function load_grid_item(e){
-            var selectedValue = grid3.store.getValue(".$grid['jsId'].".getItem(e.rowIndex),'".$grid['event_key']."');
-            load_selected_value(".$grid['selector_id'].",selectedValue);
-            //alert('selected cell Value is '+selectedValue);
-            //fill_form(selectedValue);
-            //dijit.byId('".$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']."').setValue(selectedValue);
+         if(isset($grid['selector_id'])){
+            $html.= "
+            <script type='text/javascript'>
+            function load_grid_item(e){
+               var selectedValue = ".$grid['jsId'].".store.getValue(".$grid['jsId'].".getItem(e.rowIndex),'".$grid['event_key']."');
+               load_selected_value(".$grid['selector_id'].",selectedValue);
+               //alert('selected cell Value is '+selectedValue);
+               //fill_form(selectedValue);
+               //dijit.byId('".$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']."').setValue(selectedValue);
+            }
+            </script>";
          }
-      </script>";
       }
 
       if(file_exists($this->view)){

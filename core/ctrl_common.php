@@ -114,8 +114,10 @@ if(isset($_REQUEST['form'])){
          break;
       }
    }
-}elseif(isset($_REQUEST['id'])){
-   $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
+//request for a record related to a given id
+   if(isset($_REQUEST['id'])){
+      $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
+   }
 }else{
    include A_CLASSES."/view_class.php";
    $view = new View($GLOBALS['PAGE']['table'],$GLOBALS['PAGE']['name']);
