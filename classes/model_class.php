@@ -746,12 +746,14 @@ EOE;
          
             if(isset($grid['columns'])){
                $columns=$grid['columns'];
+            }else{
+               $columns =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
             }
+
             if(isset($grid['ref_table'])){
                $table=$grid['ref_table'];
             }
          
-            $columns =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
             $fields  =implode(",",$columns);
          
             $query="SELECT $fields FROM ".$table.$filter_str;
