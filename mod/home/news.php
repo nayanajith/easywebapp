@@ -1,3 +1,7 @@
+<?php
+include "slogin.php";
+return;
+?>
 <h3>News</h3>
 <table width="100%">
 <tr>
