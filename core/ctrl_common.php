@@ -84,8 +84,14 @@ if(isset($_REQUEST['form'])){
             $model->del_temp_filter();
             return_status_json('OK','Filter deleted');
          break;
+         case 'filler':
+            //request for a record related to a given id
+            if(isset($_REQUEST['id'])){
+               $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
+            }
+         break;
          }
-      }
+      }else
    break;
    case 'grid':
    case 'main_grid_store':
@@ -113,10 +119,24 @@ if(isset($_REQUEST['form'])){
            return $model->delete_filter(null,true);
          break;
       }
-   }
-//request for a record related to a given id
-   if(isset($_REQUEST['id'])){
-      $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
+   case 'system':
+      if(isset($_REQUEST['action']) && isset($_REQUEST['user_id'])){
+         switch($_REQUEST['action']){
+         case 'switch_user':
+            $user=$_REQUEST['user_id'];
+            $arr = exec_query("SELECT * FROM ".$GLOBALS['TBL_LOGIN']['table']." WHERE user_id='$user'",Q_RET_ARRAY);
+            $row=$arr[0];
+
+            foreach($GLOBALS['TBL_LOGIN'] as $key => $value){
+               if(isset($row[$value])){
+                  $_SESSION[$key]   = $row[$value];
+               }
+            }
+            $_SESSION['loged_module']    = MODULE;
+         break;
+         }
+      }
+   break;
    }
 }else{
    include A_CLASSES."/view_class.php";

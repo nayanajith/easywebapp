@@ -109,12 +109,28 @@ function after_login() {
    d_r("dijit.form.ValidationTextBox");
    d_r("dijit.form.Form");
    d_r("dijit.form.Button");
+   d_r("dijit.form.FilteringSelect");
+
+   //Super users have privilege to change the users to check whtat the user can do so they have special varialble to notify the system 
+   //that he is a super user
+   if($_SESSION['group_id']=='SUPER'){
+      $_SESSION['SUPER_USER']=true;
+   }
+
+   //User changing select box
+   $user_changer="";
+   if(isset($_SESSION['SUPER_USER']) && $_SESSION['SUPER_USER']){
+      $arr=exec_query('SELECT username,user_id FROM '.$GLOBALS['S_TABLES']['users'],Q_RET_ARRAY,null,'user_id');
+      $inner=gen_select_inner($arr,'username',true);
+      $user_changer="Switch user<select dojoType='dijit.form.FilteringSelect' value='".$_SESSION['user_id']."' style='width:90px' id='switch_user' onChange='switch_user(this.value)'>$inner</select>";
+   }
 
    return "
    <div dojoType='dijit.form.Form' id='loginForm' jsId='loginForm' encType='multipart/form-data' 
    action='".$GLOBALS['PAGE_GEN']."?page=".PAGE."&module=".MODULE."' method='REQUEST' >
    <span>Loged in as ".$_SESSION['fullname']."</span>
    <button dojoType='dijit.form.Button' style='color:black;' type=submit name=logout value=logout>Logout</button>
+   $user_changer
    </div>";
 }
 
