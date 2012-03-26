@@ -143,6 +143,28 @@ function gen_url(){
    return page_gen+"?module="+module+"&page="+page+"&program="+program+filter_name;
 }
 
+/**
+ * change the user using XHR requests in backend
+ */
+function switch_user(value) {
+   var url=gen_url();
+   dojo.xhrPost({
+      url       : url+'&form=system&action=switch_user&data=json&user_id='+value,
+        handleAs :'json',
+        timeout  : timeout_,
+        load     : function(response, ioArgs) {        
+            update_status_bar(response.status,response.info);
+            if(response.status == 'OK'){
+               reload_page();
+               update_progress_bar(100);
+            }
+         },
+         error : function(response, ioArgs) {
+            update_status_bar(response.status,response.info);
+         }
+   });
+}   
+
 
 /**
  * Set session parameters using XHR requests in backend
@@ -441,7 +463,7 @@ function fill_form(rid,form) {
 
    if(!(rid == '' || rid == 'new' || rid == "-none-")){
    dojo.xhrPost({
-      url       : gen_url()+'&data=json&id='+rid+'&form='+form,
+      url       : gen_url()+'&action=filler&data=json&id='+rid+'&form='+form,
       handleAs :'json',
       load       : function(response, ioArgs) {        
          if(response.status && response.status == 'ERROR'){

@@ -513,7 +513,7 @@ dojo.ready(function(){
       if(isset($GLOBALS['MODEL']['MAIN_RIGHT']) && isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID'])){
          $grid=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID'];
 
-         $html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=json'></span>
+         $html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>
       <div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>";
