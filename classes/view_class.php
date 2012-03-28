@@ -460,7 +460,7 @@ dojo.ready(function(){
          /*all paremeters will be inserted to the options string*/
          $inner   ='';
          //$inner   =$field_array['label'];
-         $options ='';
+         $options ="jsId='toolbar__$field' ";
          $bypass=array('inner','section','style','label_pos','type','vid','filter','ref_table','order_by');
          foreach($field_array as $key => $value){
             if(!in_array($key,$bypass)){
