@@ -122,7 +122,7 @@ function after_login() {
    if(isset($_SESSION['SUPER_USER']) && $_SESSION['SUPER_USER']){
       $arr=exec_query('SELECT username,user_id FROM '.$GLOBALS['S_TABLES']['users'],Q_RET_ARRAY,null,'user_id');
       $inner=gen_select_inner($arr,'username',true);
-      $user_changer="Switch user<select dojoType='dijit.form.FilteringSelect' value='".$_SESSION['user_id']."' style='width:90px' id='switch_user' onChange='switch_user(this.value)'>$inner</select>";
+      $user_changer="Switch user<select dojoType='dijit.form.FilteringSelect' value='".$_SESSION['user_id']."' style='width:90px' id='switch_user' onChange='switch_user(this.value);reload_page()'>$inner</select>";
    }
 
    return "
