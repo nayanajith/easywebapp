@@ -143,13 +143,17 @@ if(isset($_REQUEST['form'])){
    $view = new View($GLOBALS['PAGE']['table'],$GLOBALS['PAGE']['name']);
 
    //Generate form
-   $view->gen_form();
+   if(isset($GLOBALS['MODEL']['MAIN_LEFT']) && is_array($GLOBALS['MODEL']['MAIN_LEFT']) &&  sizeof($GLOBALS['MODEL']['MAIN_LEFT']) > 0){
+      $view->gen_form();
+   }
 
    //Generate toolbar
    $view->gen_toolbar();
 
    //Generate search grid
-   $view->gen_data_grid(array('rid'),$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
+   if(isset($GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'])){
+      $view->gen_data_grid(array('rid'),$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
+   }
 
    //finish view
    $view->finish_view();
