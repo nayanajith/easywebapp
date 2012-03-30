@@ -9,6 +9,7 @@ $menu_array  = array(
    "reset_password"     =>array("PAGE"=>"Reset Password","VISIBLE"=>"false"),
    "activity"           =>"Activity Log",
    "system_log"         =>"System Log",
+   "backup"             =>"Backup",
    "init_db"            =>">Regenerate Database<"
 );
 

@@ -78,10 +78,16 @@ class Model{
          }
 
          //Setting group wise model file if available else drop to default
-         if(isset($_SESSION['group_id'])&&file_exists(sprintf($this->model,$_SESSION['group_id']))){
-            $this->model=sprintf($this->model,$_SESSION['group_id']);
-         }else{
-            $this->model=sprintf($this->model,'');
+         if(isset($_SESSION['group_id'])){
+            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_ARRAY);
+            $group_prefix='_'.$arr[0]['file_prefix'];
+            $file=sprintf($this->model,$group_prefix);
+
+            if(file_exists($file)){
+               $this->model=$file;
+            }else{
+               $this->model=sprintf($this->model,'');
+            }
          }
 
          $this->load_modifier();

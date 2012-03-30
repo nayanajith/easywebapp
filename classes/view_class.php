@@ -35,25 +35,28 @@ class View{
         //Determine group prefix according to the group of the user
         $group_prefix='';
         if(isset($_SESSION['group_id'])){
-            $group_prefix="_".$_SESSION['group_id'];
+            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_ARRAY);
+            $group_prefix='_'.$arr[0]['file_prefix'];
         }
+         $model=sprintf($this->model,$group_prefix);
+         $view=sprintf($this->view,$group_prefix);
 
         //Setting group wise view file if available else drop to default 
-        if(file_exists(sprintf($this->view,$group_prefix))){
-            $this->view=sprintf($this->view,$group_prefix);
+        if(file_exists($view)){
+            $this->view=$view;
         }else{
             $this->view=sprintf($this->view,'');
         }
 
         //Setting group wise model file if available else drop to default
-        if(file_exists(sprintf($this->model,$group_prefix))){
-            $this->model=sprintf($this->model,$group_prefix);
+        if(file_exists($model)){
+            $this->model=$model;
         }else{
             $this->model=sprintf($this->model,'');
         }
 
         if(file_exists($this->model)){
-        include_once $this->model;
+         include_once $this->model;
 
         /*
          if(isset($GLOBALS['MODEL'])){
