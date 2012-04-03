@@ -42,14 +42,13 @@ function gen_filter($table_as=null){
       return null;
    }
 
-
    //return if request with the table name prefix
    if(!is_null($table_as)){
       $table_as=$table_as.".";
    }
 
-   $filter="";
-   $and="";
+   $filter  ="";
+   $and     ="";
    foreach($_SESSION[PAGE]['FILTER_ARRAY'] as $key => $value){
       $filter.=$and.$table_as."`".$key."` LIKE '%".$value."%'";
       $and=' AND ';
