@@ -77,11 +77,11 @@ if(isset($_REQUEST['form'])){
             }
          break;
          case 'add_filter':
-            $_SESSION[PAGE]['FILTER']=$model->get_temp_filter();
+            $_SESSION[PAGE]['FILTER']=get_temp_filter();
             return_status_json('OK','Filter added');
          break;
          case 'del_filter':
-            $model->del_temp_filter();
+            del_temp_filter();
             return_status_json('OK','Filter deleted');
          break;
          case 'filler':

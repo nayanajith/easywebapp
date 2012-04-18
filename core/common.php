@@ -32,29 +32,77 @@ function gen_print_html($content,$title){
 }
 //Keep the filter key=value paires for future use this array may initialized in model_class.php
 //$_SESSION[PAGE]['FILTER_ARRAY']=array();
+//
+//Filter exceptions are stored in FILTER_ARRAY_EXP which will override the default values
+//$_SESSION[PAGE]['FILTER_ARRAY_EXP']=array();
 
 /**
  * Regenerate the filter with customizations
  */
 function gen_filter($table_as=null){
-   if(isset($_SESSION[PAGE]['FILTER_ARRAY']) && is_array($_SESSION[PAGE]['FILTER_ARRAY']) && sizeof($_SESSION[PAGE]['FILTER_ARRAY']) > 0){
+   if(isset($_SESSION[PAGE]['FILTER_ARRAY']) && is_array($_SESSION[PAGE]['FILTER_ARRAY']) && sizeof($_SESSION[PAGE]['FILTER_ARRAY']) > 0){ 
    }else{
       return null;
+   }   
+
+   //return if request with the table name prefix
+   if(!is_null($table_as)){
+      $table_as=$table_as.".";
+   }   
+
+   $filter="";
+   $and="";
+   foreach($_SESSION[PAGE]['FILTER_ARRAY'] as $key => $value){
+      //override the default values with the exceptions
+      if(isset($_SESSION[PAGE]['FILTER_ARRAY_EXP']) && $_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key]){
+         $value=$_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key]; 
+      }else{
+         $value=$table_as."`".$key."` LIKE '%".$value."%'"; 
+      }   
+
+      $filter.=$and.$value;
+      $and=' AND ';
+   }   
+   return $filter; 
+}
+
+/**
+ * Delete temporary filter for the submitted values
+ */
+
+function del_temp_filter($table_as=null){
+   if(isset($_SESSION[PAGE]['FILTER_ARRAY'])){
+      unset($_SESSION[PAGE]['FILTER']);
+      unset($_SESSION[PAGE]['FILTER_ARRAY']);
    }
+}
+
+/**
+ * Generate temporary filter for the submitted values
+ */
+function get_temp_filter($table_as=null){
+
+   //Reset the global filter array
+   $_SESSION[PAGE]['FILTER_ARRAY']=array();
 
    //return if request with the table name prefix
    if(!is_null($table_as)){
       $table_as=$table_as.".";
    }
 
-   $filter  ="";
-   $and     ="";
-   foreach($_SESSION[PAGE]['FILTER_ARRAY'] as $key => $value){
-      $filter.=$and.$table_as."`".$key."` LIKE '%".$value."%'";
-      $and=' AND ';
+   $filter="";
+   $and="";
+   foreach(array_keys($GLOBALS['MODEL']['MAIN_LEFT']) as $key){
+      if($key != $GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'] && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
+         $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
+         $and=' AND ';
+         //keep the filter array for future use
+         $_SESSION[PAGE]['FILTER_ARRAY'][$key]=$_REQUEST[$key];
+      }
    }
    return $filter; 
 }
+
 
 //Array to keep the view entries before puting in VIEW array 
 $GLOBALS['PREVIEW']=array(
