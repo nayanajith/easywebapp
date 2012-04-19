@@ -3,6 +3,7 @@
 $menu_array  = array(
 //   "modules"            =>"Modules",
    "manage_users"       =>"Users",
+   "users"              =>"Users2",
    "groups"             =>"Groups",
    "manage_permission"  =>"Users/Group Permission",
    "common_lists"       =>"Common Lists",
