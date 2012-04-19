@@ -16,6 +16,22 @@ if(isset($_REQUEST['logout'])){
    $logout       = $_REQUEST['logout'];
 }
 
+/**
+ * Switch the user
+ */
+if(isset($_REQUEST['form']) && $_REQUEST['form']=='system' && isset($_REQUEST['action']) && $_REQUEST['action']=='switch_user' && isset($_REQUEST['user_id'])){
+   $user=$_REQUEST['user_id'];
+   $arr = exec_query("SELECT * FROM ".$GLOBALS['TBL_LOGIN']['table']." WHERE user_id='$user'",Q_RET_ARRAY);
+   $row=$arr[0];
+
+   foreach($GLOBALS['TBL_LOGIN'] as $key => $value){
+      if(isset($row[$value])){
+         $_SESSION[$key]   = $row[$value];
+      }
+   }
+   $_SESSION['loged_module']    = MODULE;
+}
+
 /*
 If the login was done by a module and if the user try to escape out from it end the session
 if(isset($_SESSION['login_module']) && $_SESSION['login_module'] != MODULE)

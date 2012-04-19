@@ -123,6 +123,8 @@ if(isset($_REQUEST['form'])){
       if(isset($_REQUEST['action']) && isset($_REQUEST['user_id'])){
          switch($_REQUEST['action']){
          case 'switch_user':
+            /*
+             * This function moved to /core/login.php
             $user=$_REQUEST['user_id'];
             $arr = exec_query("SELECT * FROM ".$GLOBALS['TBL_LOGIN']['table']." WHERE user_id='$user'",Q_RET_ARRAY);
             $row=$arr[0];
@@ -133,6 +135,7 @@ if(isset($_REQUEST['form'])){
                }
             }
             $_SESSION['loged_module']    = MODULE;
+             */
          break;
          }
       }
