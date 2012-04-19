@@ -49,7 +49,7 @@ $GLOBALS['MODEL']=array(
           'columns'      =>array('rid','group_name','file_prefix'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
-          'ref_table'    =>$GLOBALS['MOD_P_TABLES']['groups'],
+          'ref_table'    =>$GLOBALS['S_TABLES']['groups'],
           'event_key'    =>'rid',
           'dojoType'     =>'dojox.grid.DataGrid',
           'jsId'         =>'main_grid',
@@ -78,7 +78,7 @@ $GLOBALS['MODEL']=array(
          "store"=>"rid_store",
 
          "filter"=>isset($_SESSION[PAGE]['FILTER'])?" AND ".$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>$GLOBALS['MOD_P_TABLES']['groups'],
+         "ref_table"=>$GLOBALS['S_TABLES']['groups'],
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
          "vid"=>array('group_name'),
