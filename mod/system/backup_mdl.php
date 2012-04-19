@@ -59,7 +59,7 @@ function list_backups(){
 		$list='<ol>';
       foreach($files as $file){
          if($file == '.' || $file == '..')continue;
-         $list.="<li><a href='".MOD_W_BACKUP."/".$file."'>".$file."</a>";
+         $list.="<li><a href='".MOD_W_BACKUP."/".$file."'>".$file."</a><input dojoType='dijit.form.CheckBox' type='checkbox' name='BACK#$file'>";
       }
       $list.='</ol>';
    }
@@ -78,6 +78,23 @@ function backup_now(){
    }else{
       return_status_json('ERROR','Backup error!');
    }
+}
+
+/**
+ * Delete the selected backups from disk
+ */
+function del_backup(){
+   $msg="Deleted:";
+   foreach($_REQUEST as $id => $value){
+      $arr=explode('#',$id);
+      if(sizeof($arr)==2 && $arr[0]=='BACK'){
+         $msg.=$arr[1].",";
+         $path=MOD_BACKUP."/".str_replace('_sql_gz','.sql.gz',$arr[1]);
+         log_msg($path);
+         $err=unlink($path);
+      }
+   }
+   return_status_json('OK',$msg);
 }
 
 ?>

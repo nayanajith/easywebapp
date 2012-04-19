@@ -325,7 +325,7 @@ function submit_form(action,target_module,target_page){
    }
 
    //Some actions do not require form submission
-   if (action=='del_filter' || action=='del_backup') {
+   if (action=='del_filter' ) {
     dojo.xhrPost({
          url         : url+'&form=main&action='+action,
          handleAs    : 'json',
@@ -348,7 +348,7 @@ function submit_form(action,target_module,target_page){
    }
 
 
-   if (action=='delete' || action=='add_filter' || action=='add_backup' || dijit.byId(form).validate()) {
+   if (action=='delete' || action=='add_filter' || action=='add_backup' || action=='del_backup' || dijit.byId(form).validate()) {
       dojo.xhrPost({
          url         : url+'&form=main&action='+action, 
          handleAs    : 'json',

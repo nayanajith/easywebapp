@@ -13,9 +13,13 @@ include A_CORE."/ctrl_common.php";
 
 
 if(isset($_REQUEST['action']) && $_REQUEST['action']=='add_backup'){
-   log_msg('in');
    backup_now();
 }
+
+if(isset($_REQUEST['action']) && $_REQUEST['action']=='del_backup'){
+   del_backup();
+}
+
 
 
 ?>
