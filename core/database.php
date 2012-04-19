@@ -470,6 +470,7 @@ function drop_functions($schemas){
 This function will create all the tables required to manage a program eg: BIT,BICT, BCSC
 
 @param table_prefix prefix to be added when generating program tables eg: bit_, bcsc_, mcs_
+DEPRICATED
 */
 
 function create_program_tables($schemas=null){
