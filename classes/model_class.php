@@ -302,14 +302,14 @@ EOE;
       "del_filter"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Delete filter",
-         "iconClass"=>get_icon_class('Delete'),
+         "iconClass"=>get_icon_class('Cancel'),
          "showLabbel"=>'true',
          "onClick"=>'submit_form("del_filter");reload_grid(main_grid)',
       ),
       "reload_grid"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Reload grid",
-         "iconClass"=>get_icon_class('Function'),
+         "iconClass"=>get_icon_class('Undo'),
          "showLabbel"=>'true',
          "onClick"=>'reload_grid(main_grid)',
       ),
