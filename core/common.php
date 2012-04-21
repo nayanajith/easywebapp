@@ -728,7 +728,7 @@ function log_msg($id=null,$msg=null,$color=null){
 
    //log array content if msg is an array
    if(is_array($msg)){
-      @ob_start('ob_gzhandler');
+      @ob_start();
       @print_r($msg);
       $msg = @ob_get_contents();
       @ob_end_clean();

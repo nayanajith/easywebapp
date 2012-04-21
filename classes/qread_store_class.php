@@ -52,6 +52,8 @@ class Query_read_store{
                $this->searchAttr =$key[key($key)];
             }
          }
+      }else{
+         $this->fields=",".$this->key." label";
       }
       
    }
@@ -110,7 +112,7 @@ class Query_read_store{
             $res[]=array(key($this->key_a)=>'NULL','label'=>'-none-');
          }
       }else{
-         $res[]=array($this->key=>'-none-');
+         $res[]=array($this->key=>'NULL','label'=>'-none-');
       }
 
       //Return as JSON formatted data

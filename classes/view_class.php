@@ -102,6 +102,7 @@ class View{
        "dijit.form.MultiSelect"       =>"<select %s>%s</select>",
        "dijit.form.SimpleTextarea"    =>"<textarea %s>%s</textarea>",
        "dijit.form.NumberTextBox"     =>"<input %s>",
+       "dijit.form.TextBox"           =>"<input %s>",
        "dijit.form.NumberSpinner"     =>"<input %s>",
        "dijit.form.ValidationTextBox" =>"<input %s>",
        "dijit.form.DateTextBox"       =>"<input %s constraints=\"{datePattern:'yyyy-MM-dd'}\" promptMessage='yyyy-MM-dd' invalidMessage='Invalid date. Please use yyyy-MM-dd format.' >",

@@ -12,7 +12,8 @@ class XHR_Combobox{
    function json_data($table,$key,$filter=null,$order_by=null,$id=null){
       include A_CLASSES.'/qread_store_class.php';
       $filter=$filter==null?"":" AND $filter";
-   
+      //
+      log_msg($table.','.$key.','.$filter.','.$order_by.','.$id); 
       header('Content-Type', 'application/json');
       $query_read_store = new Query_read_store($table,$key,$filter,$order_by,$id);
       echo $query_read_store->gen_json_data();
@@ -43,7 +44,7 @@ class XHR_Combobox{
       d_r('dojox.data.QueryReadStore');
       echo "
       var ".$id."_store = new dojox.data.QueryReadStore({
-         url:'".gen_url()."&data=json&form=main&action=store&id=$id',
+         url:'".gen_url()."&data=json&form=main&action=store&field=$id',
          jsId:'".$id."_store',
       });
       ";
@@ -101,15 +102,15 @@ class XHR_Combobox{
          $onchange="set_param('$id',this.value);source_array=new Array('".implode("','",$source_array)."');request_html('$target',source_array,null)";
       }
 
-      d_r('dijit.form.ComboBox');
+      d_r('dijit.form.FilteringSelect');
       echo  "
-       var ".$id."_combo = new dijit.form.ComboBox({
+       var ".$id."_combo = new dijit.form.FilteringSelect({
          jsId:'$id',
          id:'$id',
          name:'$id',
          style:'width:".$width."px;',
          value:'$value',
-         searchAttr: '$id',
+         searchAttr: 'label',
          pageSize: '$page_size',
          onChange:function(){".$onchange.";},
          store : ".$id."_store

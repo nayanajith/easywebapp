@@ -31,6 +31,8 @@ dojo.isWebKit+':'+
 dojo.isChrome);
 */
 
+//halt reloading the page or grid temporaly 
+var halt_page_reloading=true;
 
 //timeout for XHR request is 60 secons
 var timeout_ = 60*1000;
@@ -285,8 +287,13 @@ function submit_display_values(action){
  * reload the page
  */
 function reload_page(){
+   if(halt_page_reloading==true){
+      return;
+   }
+
    setTimeout('window.location.reload()',2000); 
    setTimeout('update_status_bar("OK","Reloading page...")',2000);
+   halt_page_reloading==true;
 }
 
 /** Submit the given form
