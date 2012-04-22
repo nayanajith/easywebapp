@@ -547,8 +547,15 @@ function show_dialog(){
 /*clear the form first*/
 function clear_form(frm){
    dojo.forEach(dijit.byId(frm).getDescendants(),function(widget){
-      widget.attr('value', null);
-    });
+      switch(widget.declaredClass){
+      case 'dijit.form.CheckBox':
+         widget.attr('checked', false);
+      break;
+      default:
+         widget.attr('value', null);
+      break;
+      }  
+   });
 }   
 
 /*

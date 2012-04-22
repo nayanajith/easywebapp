@@ -1012,6 +1012,8 @@ EOE;
                //if(!( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
                if(!(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
 
+                  
+
                   /*check for valid json strings to use as json strings in database*/
                   $value=isset($_REQUEST[$key])?$_REQUEST[$key]:'';
                   $value=str_replace(
@@ -1019,6 +1021,15 @@ EOE;
                      array('"','""',''),
                      $value
                   );
+
+                  //For CheckBoxes all SET values will be caset to true(1)
+                  if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dijit.form.CheckBox'){
+                     if(in_array(strtolower($value),array('on','true'))){   
+                        $value=1;
+                     }else{
+                        $value=0;
+                     }
+                  }
                
                   /*apply md5 to the password fields*/
                   if(in_array(strtolower($key),$this->pwd_field_guess)){   
