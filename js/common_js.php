@@ -496,7 +496,7 @@ function fill_form(rid,form) {
                }else{
                   //Handle different types of fields
                   switch(dijit.byId(key).declaredClass){
-                     case 'dijit.form.Checkbox':
+                     case 'dijit.form.CheckBox':
                         switch(response[key]){
                            case '1':
                            case 'on':
