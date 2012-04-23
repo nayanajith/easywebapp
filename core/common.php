@@ -508,11 +508,11 @@ function verify_captcha($custom_param=null){
  * return a commen list array with title according to the common list_name
  */
 function get_common_list($list_name){
-   $arr=exec_query("SELECT list_title,json FROM ".$GLOBALS['S_TABLES']['common_lists']." WHERE list_name='".$list_name."'",Q_RET_ARRAY);
+   $arr=exec_query("SELECT list_label,json FROM ".$GLOBALS['S_TABLES']['common_lists']." WHERE list_name='".$list_name."'",Q_RET_ARRAY);
    if(isset($arr[0])){
       return array(
-         'title'  =>$arr[0]['list_title'],
-         'list'   =>json_decode($arr[0]['json'])
+         'title'  =>$arr[0]['list_label'],
+         'list'   =>json_decode($arr[0]['json'],true)
       );
    }
 }
