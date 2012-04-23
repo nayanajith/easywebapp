@@ -195,12 +195,18 @@ request html from the backend
 */
 function request_html(target,source_array,action_) {
    var content_obj   =document.getElementById(target);
+   if(content_obj == null){
+      var content_obj=target;
+   }
    var param='';   
    var url=gen_url();
-   for(var i=0;i<sourse_array.length;i++){
-      var tmp_val   =document.getElementById(sourse_array[i]).value;
-      if(tmp_val=='')return;
-      param+='&'+sourse_array[i]+'='+tmp_val;
+   if(source_array != null){
+      for(var i=0;i< source_array.length;i++){
+         alert(source_array[i]);
+         var tmp_val   =document.getElementById(source_array[i]).value;
+         if(tmp_val=='')return;
+         param+='&'+source_array[i]+'='+tmp_val;
+      }
    }
 
    //Action will be html by default unless it is set explicitly

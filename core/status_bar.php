@@ -11,7 +11,7 @@ d_r('dijit.ProgressBar');
          <div id='status_bar'>status</div>
       </td>
       <td style='border-right:1px solid silver;padding-left:2px;width:17px;'>
-      <div id='busy'><img src='<?php echo IMG."/busy-stopped.gif"; ?>' ></div>
+      <div id='busy'><img src='<?php echo IMG."/busy-stopped.gif"; ?>' title='Not busy'></div>
       </td>
       <td style='padding-left:5px;width:60px;text-align:center;font:inherit;'>Progress:</td>
       <td style='padding-left:5px;border-right:1px solid silver;width:155px'>

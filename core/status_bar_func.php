@@ -97,9 +97,9 @@ d_r('dijit.form.Button');
       }else{
          var busy = document.getElementById('busy') ;
          if(is_busy){
-            busy.innerHTML="<img src='<?php echo IMG."/busy.gif"; ?>' >";
+            busy.innerHTML="<img src='<?php echo IMG."/busy.gif"; ?>' title='Busy'>";
          }else{
-            busy.innerHTML="<img src='<?php echo IMG."/busy-stopped.gif"; ?>' >";
+            busy.innerHTML="<img src='<?php echo IMG."/busy-stopped.gif"; ?>' title='Not busy' >";
          }
       }
    }

@@ -79,7 +79,7 @@ class Model{
 
          //Setting group wise model file if available else drop to default
          if(isset($_SESSION['group_id'])){
-            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_ARRAY);
+            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['groups']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
             $group_prefix='_'.$arr[0]['file_prefix'];
             $file=sprintf($this->model,$group_prefix);
 
@@ -158,6 +158,7 @@ class Model{
 
       public function load_modifier(){
          $config=$this->model;
+         log_msg($config);
          if(file_exists($config)){
             require_once($config);
             if(isset($GLOBALS['MODEL'])){

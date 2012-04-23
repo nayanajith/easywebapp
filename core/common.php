@@ -159,10 +159,10 @@ function add_to_view($view_id,$content,$before=false){
       return "key[$view_id] error!"; 
    }
 }
+
 /**
  * Clear the view with blank
  */
-
 function clear_view($view_id){
    if(isset($GLOBALS['VIEW'][$view_id])){
       $GLOBALS['VIEW'][$view_id] = '';
@@ -170,7 +170,6 @@ function clear_view($view_id){
       return "key[$view_id] error!"; 
    }
 }
-
 
 
 /**
