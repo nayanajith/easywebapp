@@ -438,10 +438,10 @@ function reload_grid(grid){
 
 
 /**
- * Select value in  a filtering select programatically
+ * Select value in  a filtering select connected to store programatically
  */
 function load_selected_value(field,value_to_load){
-   //var field=dijit.byId(field_);
+   //TODO: checking for the field with store has a bug
    if(!field || !field.store)return;
    field.store.fetch({
       query:{ 'id': value_to_load },
@@ -451,7 +451,8 @@ function load_selected_value(field,value_to_load){
                searchKey=key;
                break;
          }
-        if (request.store.getValue(item, searchKey) == value_to_load) {
+         //TODO:remove  undefined != request.store and find alternative method
+        if (undefined != request.store && request.store.getValue(item, searchKey) == value_to_load) {
             field.setValue(request.store.getValue(item, searchKey));
             return;
         }

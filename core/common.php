@@ -547,8 +547,16 @@ function gen_select_inner($arr,$label=null,$without_none=false){
    if(is_assoc_array($arr)){
       //Direct compatibility with  returning array of exec_query
       if(is_array($arr[key($arr)])){
-         foreach($arr as $key=>$value ){
-            $select.="<option value=\"$key\">$value[$label]</option>";
+         //case: exec_query("SELECT rid,batch_id FROM ".$GLOBALS['P_TABLES']['batch'],Q_RET_ARRAY,null,'rid');
+         if($label != null){
+            foreach($arr as $key=>$value ){
+               $select.="<option value=\"$key\">$value[$label]</option>";
+            }
+         }else{
+            //case: exec_query("SELECT batch_id FROM ".$GLOBALS['P_TABLES']['batch'],Q_RET_ARRAY,null,'batch_id');
+            foreach($arr as $key=>$value ){
+               $select.="<option value=\"$key\">$key</option>";
+            }
          }
       }else{
          //Associative array with ke=>value

@@ -30,7 +30,7 @@ function client_side_handle($form_name,$input_name,$btn_label,$callback,$file_id
    /*If the requested file already exists file delete form will be returned*/
    if(file_exists($this->base_path."/".$this->file_name)){
       /*Delete form*/
-      $frm .="<form name='$form_name' id='$form_name' method='post' style='border:1px solid silver;padding:5px'>
+      $frm .="<form name='$form_name' id='$form_name' method='post'  solid silver;padding:5px'>
    <button dojoType='dijit.form.Button' >Delete
         <script type='dojo/method' event='onClick' args='evt'>
          ".$form_name."_delete('$input_name');
@@ -39,7 +39,7 @@ function client_side_handle($form_name,$input_name,$btn_label,$callback,$file_id
 </form>";
    }else{
       /*Upload form*/
-      $frm.="<form name='$form_name' id='$form_name' enctype='multipart/form-data' method='post' style='border:1px solid silver;padding:5px'>
+      $frm.="<form name='$form_name' id='$form_name' enctype='multipart/form-data' method='post' style='padding:5px'>
    <label for='$input_name'>Choose file</label>
    <input type='file' name='$input_name' id='$input_name' ><br><br>
    <button dojoType='dijit.form.Button' >$btn_label

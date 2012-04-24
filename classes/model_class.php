@@ -716,7 +716,14 @@ EOE;
             }
          
             if(isset($grid['columns'])){
-               $columns=$grid['columns'];
+               //Compatible with any array (associative or normal)
+               foreach($grid['columns'] as $key => $value){
+                  if(is_array($value)){
+                     $columns[]=$key;
+                  }else{
+                     $columns[]=$value;
+                  }
+               }
             }else{
                $columns =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
             }

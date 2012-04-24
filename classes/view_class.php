@@ -537,9 +537,9 @@ dojo.ready(function(){
 
          /*Set labels for the table header if available in fileds array*/
          foreach($grid['columns'] as $key=>$array){
-            $h_key   ='';
-            $options ='';
-            $bypass  =array();
+            $h_key         ='';
+            $options       ='';
+            $bypass        =array();
 
             //Sett cell type and editbility and other options
             if(is_array($array)){
@@ -554,7 +554,8 @@ dojo.ready(function(){
                $h_key=$array;
             }
 
-            $html.= "<th width='auto' field='$h_key' $options>
+
+            $html.= "<th width='auto' field='$h_key' $options >
                ".(isset($GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label'])?$GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label']:$h_key)."
             </th>";
          }
