@@ -81,7 +81,6 @@ function del_temp_filter($table_as=null){
  * Generate temporary filter for the submitted values
  */
 function get_temp_filter($table_as=null){
-
    //Reset the global filter array
    $_SESSION[PAGE]['FILTER_ARRAY']=array();
 

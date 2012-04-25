@@ -17,12 +17,6 @@ $toolbar   =array(
    "manage_permission"      =>array(
       'Save'   =>array('icon'=>'Save','action'=>'submit_form("modify")'),
    ),
-   "activity"      =>array(
-      'CSV'      =>array('icon'=>'Database','action'=>'get_csv()'),
-      'Grid'   =>array('icon'=>'Table','action'=>'grid()'),
-      'Print'   =>array('icon'=>'Print'),
-      'Add Filter'   =>array('icon'=>'Filter','action'=>'show_dialog()','dojoType'=>'dijit.form.Button','label'=>'Add Filter')
-   ),
    "system_log"      =>array(
       'Print'   =>array('icon'=>'Print','action'=>'print_data()'),
       'Number of Lines'   =>array('icon'=>'Filter','dojoType'=>'dijit.form.NumberTextBox','name'=>'numLines','id'=>'numLines','style'=>'width:50px','action'=>'null'),

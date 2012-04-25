@@ -430,8 +430,9 @@ function reload_grid(grid){
 
    var url_=grid.store.url;
    var new_store = new dojox.data.CsvStore({url: url_ });
-   grid.setStore(new_store);
 
+   //setTimeout(function(){grid.setStore(new_store)},2000); 
+   grid.setStore(new_store);
    update_progress_bar(100);
 }
 
@@ -552,7 +553,8 @@ function show_dialog(){
 }
 
 /*clear the form first*/
-function clear_form(frm){
+function clear_form(frm,selector_field){
+   load_selected_value(selector_field,'NULL');
    dojo.forEach(dijit.byId(frm).getDescendants(),function(widget){
       switch(widget.declaredClass){
       case 'dijit.form.CheckBox':
