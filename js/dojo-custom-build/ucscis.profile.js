@@ -1,4 +1,4 @@
-dependencies = {
+dependencies={
 	stripConsole: "normal",
 	layers: [
 		{
@@ -72,7 +72,7 @@ dependencies = {
 	],
 
 	prefixes: [
-		//[ "dojo", "../dojo" ],
+		[ "dojo", "../dojo" ],
 		[ "dijit", "../dijit" ],
 		[ "dojox", "../dojox" ]
 	]

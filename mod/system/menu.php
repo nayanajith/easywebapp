@@ -2,8 +2,7 @@
 
 $menu_array  = array(
 //   "modules"            =>"Modules",
-   "manage_users"       =>"Users",
-   "users"              =>"Users2",
+   "users"              =>"Users",
    "groups"             =>"Groups",
    "manage_permission"  =>"Users/Group Permission",
    "common_lists"       =>"Common Lists",
@@ -15,11 +14,6 @@ $menu_array  = array(
 );
 
 $toolbar   =array(
-   "manage_users"      =>array(
-      'Add'      =>array('icon'=>'NewPage','action'=>'submit_form("add")'),
-      'Save'   =>array('icon'=>'Save','action'=>'submit_form("modify")'),
-      'Delete'   =>array('icon'=>'Delete','action'=>'submit_form("delete")'),
-   ),
    "manage_permission"      =>array(
       'Save'   =>array('icon'=>'Save','action'=>'submit_form("modify")'),
    ),

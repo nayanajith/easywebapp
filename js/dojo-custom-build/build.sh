@@ -1,6 +1,5 @@
 #!/bin/bash
-VERSION="1.6.0";
-VERSION="1.7.0";
+VERSION="1.7.2";
 DOJO_SRC="http://download.dojotoolkit.org/release-$VERSION/dojo-release-$VERSION-src.tar.gz";
 BASE_DIR="dojo-release-$VERSION-src";
 SAVE_AS="$BASE_DIR.tar.gz";
@@ -32,7 +31,7 @@ function check_integrity(){
     	   exit 0;
       fi
    else
-      if [[ -z $( grep $( md5 -q dojo-release-1.7.0-src.tar.gz ) dojo-release-1.7.0-src.tar.gz.md5 ) ]]
+      if [[ -z $( grep $( md5 -q "dojo-release-$VERSION-src.tar.gz" ) "dojo-release-$VERSION-src.tar.gz.md5" ) ]]
       then
          echo "Integrity of $SAVE_AS failed!";
          echo "Delete $SAVE_AS.md5 and run the script again";
@@ -63,7 +62,7 @@ OPTIMIZE_DEV="optimize=shrinksafe.keepLines cssOptimize=comments.keepLines";
 ACTION="action=clean,release";
 pushd .
 cd $BASE_DIR/util/buildscripts/
-./build.sh profileFile=../../../ucscis.profile.js $ACTION $OPTIMIZE_PROD version=$VERSION $RELEASENAME
+./build.sh profile=../../../ucscis.profile.js $ACTION $OPTIMIZE_PROD version=$VERSION $RELEASENAME
   
 
 if [[ $? == 0 ]]
