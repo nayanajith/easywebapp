@@ -37,6 +37,20 @@ var halt_page_reloading=true;
 //timeout for XHR request is 60 secons
 var timeout_ = 60*1000;
 
+/**
+ * Turn on reloading the page
+ */
+function reloading_on(){
+   halt_page_reloading=false;
+}
+
+/**
+ * Turn off reloading the page
+ */
+function reloading_off(){
+   halt_page_reloading=true;
+}
+
 /*--help viewer--*/
 function show_help_dialog(){
 	dojo.xhrPost({
