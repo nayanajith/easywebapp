@@ -202,15 +202,25 @@ if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
    include A_CORE."/help_layout.php";
    return;
 }
-/*--------------------------get and set users theme and layout----------------*/
-//if(isset($_SESSION['username']) && isset($_SESSION['loged_module']) && $_SESSION['loged_module'] =='home'){
-if(isset($_SESSION['username'])){
-   $layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['users']." WHERE username='".$_SESSION['username']."'",Q_RET_ARRAY);
+/*-------------------------get and set group theme and layout ----------------*/
+//will override by user theme and layout
+if(isset($_SESSION['group_id'])){
+   $group_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['groups']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
 
-   $GLOBALS['THEME']=isset($layout_theme[0]['theme'])&&$layout_theme[0]['theme']!='NULL'&&$layout_theme[0]['theme']!=''?$layout_theme[0]['theme']:$GLOBALS['THEME'];
-   $GLOBALS['LAYOUT']=isset($layout_theme[0]['layout'])&&$layout_theme[0]['layout']!='NULL'&&$layout_theme[0]['layout']!=''?$layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
+   $GLOBALS['THEME']=isset($group_layout_theme[0]['theme'])&&$group_layout_theme[0]['theme']!='NULL'&&$group_layout_theme[0]['theme']!=''?$group_layout_theme[0]['theme']:$GLOBALS['THEME'];
+   $GLOBALS['LAYOUT']=isset($group_layout_theme[0]['layout'])&&$group_layout_theme[0]['layout']!='NULL'&&$group_layout_theme[0]['layout']!=''?$group_layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
+
+}
+log_msg($GLOBALS['LAYOUT']);
+/*--------------------------get and set users theme and layout----------------*/
+if(isset($_SESSION['username'])){
+   $user_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['users']." WHERE username='".$_SESSION['username']."'",Q_RET_ARRAY);
+
+   $GLOBALS['THEME']=isset($user_layout_theme[0]['theme'])&&$user_layout_theme[0]['theme']!='NULL'&&$user_layout_theme[0]['theme']!=''?$user_layout_theme[0]['theme']:$GLOBALS['THEME'];
+   $GLOBALS['LAYOUT']=isset($user_layout_theme[0]['layout'])&&$user_layout_theme[0]['layout']!='NULL'&&$user_layout_theme[0]['layout']!=''?$user_layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
 }
 
+log_msg($GLOBALS['LAYOUT']);
 /*custom layout can be set from url for testing*/
 $GLOBALS['LAYOUT']=isset($_REQUEST['layout'])?$_REQUEST['layout']:$GLOBALS['LAYOUT'];
 

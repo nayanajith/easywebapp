@@ -52,6 +52,8 @@ $system_table_schemas['groups']="CREATE TABLE `groups`(
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
   `group_name`       VARCHAR(100) NOT NULL COMMENT 'A short name to identify the group',
   `file_prefix`      VARCHAR(10) NOT NULL COMMENT 'The prefix for the group related files',
+  `layout`           VARCHAR(10) NOT NULL COMMENT 'The page layout for the group',
+  `theme`            VARCHAR(10) NOT NULL COMMENT 'Theme for the group',
   `description`      VARCHAR(300) NOT NULL COMMENT 'Description about the group',
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`rid`),
@@ -114,4 +116,10 @@ $system_table_schemas['common_lists']="CREATE TABLE `common_lists`(
    PRIMARY KEY (`rid`),
    UNIQUE KEY (`list_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+$system_table_schemas['update_common_lists']="INSERT INTO `common_lists`(`list_name`,`list_label`,`json`)values
+   ('layout','Layout','[\"app\",\"pub\",\"web\"]'),
+   ()
+";
+
 ?>

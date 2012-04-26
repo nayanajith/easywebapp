@@ -1,4 +1,7 @@
 <?php
+$theme_inner      =gen_select_inner(array('claro','nihilo','soria','tundra'));
+$layout_inner     =gen_select_inner(array('web','app','pub'));
+
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
    'KEYS'=>array(
@@ -34,6 +37,24 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
+      "layout"=>array(
+         "length"	=>"70",
+         "dojoType"	=>"dijit.form.Select",
+         "required"	=>"true",
+         "label"	=>"Layout",
+         "inner"  =>$layout_inner,
+         "label_pos"	=>"top",
+         "value"=>""
+      ),
+      "theme"=>array(
+         "length"	=>"70",
+         "dojoType"	=>"dijit.form.Select",
+         "required"	=>"true",
+         "label"	=>"Theme",
+         "inner"  =>$theme_inner,
+         "label_pos"	=>"top",
+         "value"=>""
+      ),
       "description"=>array(
          "length"	=>"350",
          "dojoType"	=>"dijit.form.ValidationTextBox",
@@ -46,7 +67,7 @@ $GLOBALS['MODEL']=array(
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'MAIN_RIGHT'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid','group_name','file_prefix'),
+          'columns'      =>array('rid','group_name','file_prefix','layout','theme'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
           'ref_table'    =>$GLOBALS['S_TABLES']['groups'],

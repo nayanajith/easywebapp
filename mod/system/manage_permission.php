@@ -260,7 +260,8 @@ function submit_form(action){
       },
 
       load: function(response) {
-         update_status_bar('OK','rquest sent successfully');
+         update_status_bar(status,response.info);
+         //update_status_bar('OK','rquest sent successfully');
          //update_progress_bar(50);
       }, 
       error: function() {
