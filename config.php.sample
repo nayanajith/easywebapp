@@ -1,7 +1,6 @@
 <?php
 /*--------------------------------paths---------------------------------------*/
-//define('A_ROOT'    , getcwd());
-define('A_ROOT'      , '/home/nayanajith/Projects/sis/engine');
+define('A_ROOT'      , dirname(__FILE__));
 define('W_ROOT'      , '/sis');
 define('IMG'         , W_ROOT.'/img');
 define('A_IMG'       , A_ROOT.'/img');
@@ -33,6 +32,8 @@ $GLOBALS['TITLE_SHORT'] = 'UIS';
 $GLOBALS['TITLE']       = 'UCSC Information System';
 $GLOBALS['TITLE_LONG']  = '&nbsp;University of Colombo School of Computing<br>&nbsp;Information System';
 $GLOBALS['INSTITUTE']   = 'University of Colombo School of Computing';
+$GLOBALS['FOOTER']      = 'University of Colombo School of Computing |  No:35 |  Reid Avenue |  Colombo 7,Sri Lanka.';
+$GLOBALS['HOTLINE']     = 'Contact: +94112581245/7';
 $GLOBALS['ADMIN_MAIL']  = 'uis@ucsc.cmb.ac.lk';
 $GLOBALS['INFO_MAIL']   = 'info@ucsc.cmb.ac.lk';
 $GLOBALS['NOREPLY_MAIL']= 'noreply@ucsc.cmb.ac.lk';
