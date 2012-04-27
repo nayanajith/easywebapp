@@ -279,9 +279,9 @@ EOE;
          "showLabbel"=>'true',
          "onClick"=>'submit_form("add");reload_grid(main_grid)',
       ),  
-      "modify"=>array(
+      "save"=>array(
          "dojoType"=>"dijit.form.Button",
-         "label"=>"Modify",
+         "label"=>"Save",
          "iconClass"=>get_icon_class('Save'),
          "showLabbel"=>'true',
          "onClick"=>'submit_form("modify");reload_grid(main_grid)',
