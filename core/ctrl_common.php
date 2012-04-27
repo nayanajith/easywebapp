@@ -89,6 +89,9 @@ if(isset($_REQUEST['form'])){
                $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
             }
          break;
+         case 'csv':
+            $model->gen_csv();
+         break;
          }
       }else
    break;
