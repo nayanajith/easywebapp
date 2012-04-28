@@ -82,12 +82,12 @@ class View{
    public function add_store($field_id,$store_id){
       d_r('dojox.data.QueryReadStore');
       if(!isset($this->stores[$store_id])){
-          add_to_main(
-            "<span dojoType='dojox.data.QueryReadStore' 
+          add_to_toolbar(
+            "\n<span dojoType='dojox.data.QueryReadStore' 
             url='".gen_url()."&data=json&action=combo&form=main&field=".$field_id."'
             jsId='".$store_id."'
             >
-            </span>"
+            </span>\n"
          );
          $this->stores[]=$store_id;
       }
@@ -320,7 +320,7 @@ class View{
             }
          
             $html.=$section;
-            $html.=$this->gen_field_entry($field,$field_array);
+            $html.="\n".$this->gen_field_entry($field,$field_array)."\n";
 
             /*If the element is 'last' set section as end*/
             if($field==$last && !isset($field_array['section'])){
@@ -450,7 +450,6 @@ class View{
 <script>
 //Set the previouse value in drop down box
 dojo.ready(function(){
-   //TODO
    //load_selected_value($field,'$fill');
 });
 </script> ";
@@ -484,7 +483,7 @@ dojo.ready(function(){
     */
    function gen_toolbar(){
       foreach($GLOBALS['MODEL']['TOOLBAR'] as $field => $field_array){
-         add_to_toolbar($this->gen_toolbar_entry($field,$field_array));
+         add_to_toolbar("\n".$this->gen_toolbar_entry($field,$field_array)."\n");
       }
    }
 

@@ -808,6 +808,8 @@ html, body {
 
 /*style of main border container  for app2-layout*/
 .bContainerApp2{
+   min-width: 790px; 
+   min-height: 590px; 
    width: 100%;
    height: 100%;
    margin-left:auto;
