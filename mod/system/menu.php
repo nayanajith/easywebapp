@@ -10,7 +10,7 @@ $menu_array  = array(
    "activity"           =>"Activity Log",
    "system_log"         =>"System Log",
    "backup"             =>"Backup",
-   "init_db"            =>">Regenerate Database<"
+   "init_db"            =>"Regenerate Database"
 );
 
 $toolbar   =array(

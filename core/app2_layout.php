@@ -38,6 +38,7 @@ bottom:      Tool bar
 <!--__________________________start loading ________________________________-->
    <?php
       echo $GLOBALS['VIEW']['LOADING'];
+      d_r("dijit.layout.BorderContainer");
    ?>
 <!--____________________________end loading ________________________________-->
       <div dojoType="dijit.layout.BorderContainer" class='bgTop bContainerApp2'   gutters="false" liveSplitters="true" >
@@ -88,10 +89,9 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                <div dojoType="dijit.layout.BorderContainer" style="width:100%; height:100%; padding:0px;" gutters="false">
                      
                   <!--TOP box of BorderContainer-2 (BorderContainer-3)-->
-                  <div dojoType="dijit.layout.ContentPane" region="top" style="height:58px; padding:0px;">
+                  <div dojoType="dijit.layout.ContentPane" region="top" style="height:0px; padding:0px;">
                      <?php
-                        d_r("dijit.layout.BorderContainer");
-                        echo $GLOBALS['VIEW']['NAVIGATOR'];
+                        //echo $GLOBALS['VIEW']['NAVIGATOR'];
                      ?>
                   </div>
                   <!--end TOP box of BorderContainer-2 (BorderContainer-3)-->

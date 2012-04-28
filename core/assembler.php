@@ -134,7 +134,7 @@ case 'app2':
    ob_end_clean();
 
    //Navigator for web layout is a tab bar
-   add_to_navigator(A_CORE."/module_tab_bar.php");
+   //add_to_navigator(A_CORE."/module_tab_bar.php");
 
    //Tool bar for web/app layouts
    add_to_menubar_left(A_CORE."/menubar_left.php");
