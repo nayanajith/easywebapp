@@ -2,9 +2,7 @@
 /*
 This will include in to $GLOBALS['PAGE_GEN']
 */
-$ENABLE=false;
 $html=<<<EOF
-<div dojoType="dijit.MenuBar" id="navMenu" >
    <div dojoType="dijit.PopupMenuBarItem">
       <span>
       File
@@ -31,16 +29,7 @@ $html=<<<EOF
          </div>
       </div>
    </div>
-</div>
 EOF;
-
-if($ENABLE){
-d_r("dijit.MenuBar");
-d_r("dijit.Menu");
-d_r("dijit.MenuItem");
-d_r("dijit.PopupMenuBarItem");
-
 echo $html;
-}
 
 ?>

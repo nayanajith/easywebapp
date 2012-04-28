@@ -450,7 +450,8 @@ class View{
 <script>
 //Set the previouse value in drop down box
 dojo.ready(function(){
-   load_selected_value($field,'$fill');
+   //TODO
+   //load_selected_value($field,'$fill');
 });
 </script> ";
       }

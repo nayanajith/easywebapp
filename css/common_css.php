@@ -806,6 +806,14 @@ html, body {
    bottom:10px;
 }
 
+/*style of main border container  for app2-layout*/
+.bContainerApp2{
+   width: 100%;
+   height: 100%;
+   margin-left:auto;
+   margin-right:auto; 
+}
+
 /*style of main border container  for layout-2 (web layout)*/
 .bContainer{
 /*

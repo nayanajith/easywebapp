@@ -35,7 +35,7 @@ $program_inner  =gen_select_inner($res,'short_name');
 
 $permission_inner =gen_select_inner(array("ADMIN","STAFF","STUDENT","GUEST"));
 $theme_inner      =gen_select_inner(array('claro','nihilo','soria','tundra'));
-$layout_inner     =gen_select_inner(array('web','app','pub'));
+$layout_inner     =gen_select_inner(array('web','app','pub','app2'));
 $title_list       =get_common_list('title');
 $title_inner      =gen_select_inner($title_list['list'],null,true);
 

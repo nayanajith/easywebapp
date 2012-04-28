@@ -115,6 +115,34 @@ case 'web':
    //Tool bar for web/app layouts
    add_to_toolbar(A_CORE."/toolbar.php");
 break;
+case 'app2':
+   //Program selector
+   ob_start();
+   echo "Change Program:";
+   program_select($program); 
+   $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
+   ob_end_clean();
+
+   //login/logout 
+   ob_start();
+   if (isset($_SESSION['username'])){
+      echo after_login();
+   }else{
+      echo before_login();
+   }
+   $GLOBALS['VIEW']['LOGIN'] .= ob_get_contents();
+   ob_end_clean();
+
+   //Navigator for web layout is a tab bar
+   add_to_navigator(A_CORE."/module_tab_bar.php");
+
+   //Tool bar for web/app layouts
+   add_to_menubar(A_CORE."/menubar.php");
+
+   //Tool bar for web/app layouts
+   add_to_toolbar(A_CORE."/toolbar.php");
+break;
+
 }
 
 ?>
