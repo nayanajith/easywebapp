@@ -524,6 +524,7 @@ dojo.ready(function(){
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>";
          $html .="<table
+            autoHeight='true'
             dojoType='dojox.grid.EnhancedGrid'
             plugins='{
                 pagination: {
@@ -541,7 +542,7 @@ dojo.ready(function(){
             \n";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('filter','dojoType','columns','selector_id','ref_table','ref_key','event_key','sql');
+         $bypass=array('filter','rowSelector','dojoType','columns','selector_id','ref_table','ref_key','event_key','sql');
 
          /*all paremeters will be inserted to the options string*/
          foreach($grid as $key => $value){
