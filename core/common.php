@@ -110,22 +110,23 @@ $GLOBALS['PREVIEW']=array(
 
 /*--create and fill view global array which contains all parts of the fintend-*/
 $GLOBALS['VIEW']=array(
-   'CSS'       =>'',
-   'JS'        =>'',
-   'LOADING'   =>'',
-   'LOGIN'     =>'',
-   'PROGRAM'   =>'',
-   'BREADCRUMB'=>'',
-   'NAVIGATOR' =>'',
-   'MAIN_TOP' =>'',
-   'MAIN_LEFT' =>'',
-   'MAIN_RIGHT'=>'',
-   'MAIN_BOTTOM'=>'',
-   'WIDGETS'   =>'',
-   'MENUBAR'   =>'',
-   'TOOLBAR'   =>'',
-   'STATUSBAR' =>'',
-   'FOOTER'    =>''
+   'CSS'          =>'',
+   'JS'           =>'',
+   'LOADING'      =>'',
+   'LOGIN'        =>'',
+   'PROGRAM'      =>'',
+   'BREADCRUMB'   =>'',
+   'NAVIGATOR'    =>'',
+   'MAIN_TOP'     =>'',
+   'MAIN_LEFT'    =>'',
+   'MAIN_RIGHT'   =>'',
+   'MAIN_BOTTOM'  =>'',
+   'WIDGETS'      =>'',
+   'MENUBAR_LEFT' =>'',
+   'MENUBAR_RIGHT'=>'',
+   'TOOLBAR'      =>'',
+   'STATUSBAR'    =>'',
+   'FOOTER'       =>''
 );
 
 /*
@@ -213,8 +214,11 @@ function add_to_navigator($content,$before=false){
 function add_to_widgets($content,$before=false){
    add_to_view('WIDGETS',$content,$before);
 }
-function add_to_menubar($content,$before=false){
-   add_to_view('MENUBAR',$content,$before);
+function add_to_menubar_left($content,$before=false){
+   add_to_view('MENUBAR_LEFT',$content,$before);
+}
+function add_to_menubar_right($content,$before=false){
+   add_to_view('MENUBAR_RIGHT',$content,$before);
 }
 function add_to_toolbar($content,$before=false){
    add_to_view('TOOLBAR',$content,$before);
@@ -272,8 +276,11 @@ function clear_navigator(){
 function clear_widgets(){
    clear_view('WIDGETS');
 }
-function clear_menubar(){
-   clear_view('MENUBAR');
+function clear_menubar_right(){
+   clear_view('MENUBAR_RIGHT');
+}
+function clear_menubar_left(){
+   clear_view('MENUBAR_LEFT');
 }
 function clear_toolbar(){
    clear_view('TOOLBAR');

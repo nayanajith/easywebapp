@@ -513,6 +513,8 @@ dojo.ready(function(){
       //d_r('dojox.data.JsonRestStore');
       d_r('dojox.widget.PlaceholderMenuItem');
       d_r('dojox.grid.DataGrid');
+      d_r('dojox.grid.enhanced.plugins.Pagination');
+      d_r('dojox.grid.EnhancedGrid');
       $html=""; 
       if(isset($GLOBALS['MODEL']['MAIN_RIGHT']) && isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID'])){
          $grid=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID'];
@@ -521,10 +523,25 @@ dojo.ready(function(){
       <div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>";
-         $html .="<table\n";
+         $html .="<table
+            dojoType='dojox.grid.EnhancedGrid'
+            plugins='{
+                pagination: {
+                    pageSizes: [\"25\", \"50\", \"100\", \"All\"],
+                    description: true,
+                    sizeSwitch: true,
+                    pageStepper: true,
+                    gotoButton: true,
+                            /*page step to be displayed*/
+                    maxPageStep: 4,
+                            /*position of the pagination bar*/
+                    position: \"bottom\"
+                }
+              }'
+            \n";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('filter','columns','selector_id','ref_table','ref_key','event_key','sql');
+         $bypass=array('filter','dojoType','columns','selector_id','ref_table','ref_key','event_key','sql');
 
          /*all paremeters will be inserted to the options string*/
          foreach($grid as $key => $value){

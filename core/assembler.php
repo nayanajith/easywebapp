@@ -83,7 +83,7 @@ case 'app':
    add_to_navigator(A_CORE."/module_tree.php");
 
    //Menubar
-   add_to_navigator(A_CORE."/menubar.php");
+   add_to_navigator(A_CORE."/menubar_left.php");
 
    //WIdgetst column
    add_to_widgets(A_CORE."/widget_column.php");
@@ -137,7 +137,9 @@ case 'app2':
    add_to_navigator(A_CORE."/module_tab_bar.php");
 
    //Tool bar for web/app layouts
-   add_to_menubar(A_CORE."/menubar.php");
+   add_to_menubar_left(A_CORE."/menubar_left.php");
+
+   add_to_menubar_right(A_CORE."/menubar_right.php");
 
    //Tool bar for web/app layouts
    add_to_toolbar(A_CORE."/toolbar.php");
