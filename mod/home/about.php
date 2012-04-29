@@ -1,4 +1,4 @@
-<table >
+<table>
    <tr>
       <td rowspan="4">
          <img src="<?php echo IMG."/black_feather.svg"; ?>" width="150px">
@@ -20,7 +20,7 @@
    <tr>
       <td >
          <div style="font-weight:bold">Modules enabled</div>
-         <div style="overflow:scroll;height:110px">
+         <div style="overflow:auto;overflow-x:hidden;height:110px">
             <ul>
 <?php
 foreach($GLOBALS['MODULES'] as $key =>$name){
