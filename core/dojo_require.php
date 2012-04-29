@@ -9,7 +9,7 @@ check in (index.php or loading.php)
 
 djConfig = {
    isDebug:true, 
-   parseOnLoad:false
+   parseOnLoad:true
 }; 
 -->
 </script>
@@ -42,7 +42,7 @@ dojo.addOnLoad(function() {
    var start = +new Date();
 
    /*Parse dojo for total page and keep the loading message until parsing*/
-   dojo.parser.parse();
+   //dojo.parser.parse();
 
    /*Printing loading time to the firebug console*/
    console.info("Total parse time: " + (+new Date() - start) + "ms");

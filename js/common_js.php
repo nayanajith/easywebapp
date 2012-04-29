@@ -51,6 +51,38 @@ function reloading_off(){
    halt_page_reloading=true;
 }
 
+/*--show page xhr dialogbox--*/
+function show_xhr_dialog(url_,title,width,height){
+	dojo.xhrPost({
+      url 		: url_,
+  	   handleAs :'text',
+      timeout  : timeout_,
+  	   load 		: function(response, ioArgs) {	     
+         xhr_Dialog = new dijit.Dialog({
+            title: title,
+            style: "width:"+width+"px;height:"+height+"px;"
+         });
+
+         if(width > 15){
+            width=width-15;
+         }
+
+         if(height > 80){
+            height=height-80;
+         }
+
+         var content="<div style='width:"+width+"px;min-height:"+height+"px;border:1px solid black;'>"+response+"</div><center><button dojoType='dijit.form.Button' onClick=\"xhr_Dialog.hide()\" >OK</button></center>";
+         xhr_Dialog.attr("content", content);
+         xhr_Dialog.show();
+  	   },
+  	   error : function(response, ioArgs) {
+  	  			update_status_bar('ERROR',response);
+  	   }
+   });
+}
+
+
+
 /*--help viewer--*/
 function show_help_dialog(){
 	dojo.xhrPost({
@@ -125,13 +157,14 @@ function info_dialog(info,title,more_buttons,width,height){
    if(!height)height=200;
    infoDialog = new dijit.Dialog({
       title: title,
-      style: "width:"+width+"px;height:"+height+";"
+      style: "width:"+width+"px;height:"+height+"px;"
    });
 
    var buttons="<br/><center>"+more_buttons+"<button dojoType='dijit.form.Button' onClick=\"infoDialog.hide()\" >OK</button></center>";
    infoDialog.attr("content", info+buttons);
    infoDialog.show();
 }
+
 
 //This function allow to copy the content of given object to clipboard
 //Only work with IE TODO: try to fix with suppor of flash

@@ -91,6 +91,23 @@ img {
    border: none; 
 }
 
+/*-------------------------------custom icons---------------------------*/
+.GFIcon {
+   background-image: url("<?php echo IMG.'/icons/06-magnify.png'; ?>"); 
+   background-repeat: no-repeat;
+   width: 16px;
+   height: 16px;
+   text-align: center;
+} 
+
+.homeIcon {
+   background-image: url("<?php echo IMG.'/icons/53-house.png'; ?>"); 
+   background-repeat: no-repeat;
+   width: 16px;
+   height: 16px;
+   text-align: center;
+}
+
 /*------------------------------news styles------------------------------*/
 .news_title{
    font-size:150%;

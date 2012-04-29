@@ -28,7 +28,7 @@ foreach($modules_array as $module => $pages){
 
    /*Active module is selected*/
    if(MODULE == $module){
-      echo "<div dojoType='dijit.PopupMenuBarItem'>
+      echo "<div dojoType='dijit.PopupMenuBarItem' style='font-weight:bold;'>
          <span>".$module_label."</span>
          <div dojoType='dijit.Menu' id='menubar__".$module."'>\n";
    }else{
@@ -45,7 +45,7 @@ foreach($modules_array as $module => $pages){
 
       /*active tab is selected*/
       if(PAGE == $page){
-         echo "<div dojoType='dijit.MenuItem' onClick='alert(\"edit 2\")'>
+         echo "<div dojoType='dijit.MenuItem'  style='font-weight:bold;'>
            ".$name." 
          </div>\n";
       }else{

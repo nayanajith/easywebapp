@@ -122,8 +122,9 @@ $GLOBALS['VIEW']=array(
    'MAIN_RIGHT'   =>'',
    'MAIN_BOTTOM'  =>'',
    'WIDGETS'      =>'',
-   'MENUBAR_LEFT' =>'',
-   'MENUBAR_RIGHT'=>'',
+   'MENUBAR'      =>'',
+   'TOOLBAR_TR'   =>'',
+   'TOOLBAR_TL'   =>'',
    'TOOLBAR'      =>'',
    'STATUSBAR'    =>'',
    'FOOTER'       =>''
@@ -214,14 +215,17 @@ function add_to_navigator($content,$before=false){
 function add_to_widgets($content,$before=false){
    add_to_view('WIDGETS',$content,$before);
 }
-function add_to_menubar_left($content,$before=false){
-   add_to_view('MENUBAR_LEFT',$content,$before);
-}
-function add_to_menubar_right($content,$before=false){
-   add_to_view('MENUBAR_RIGHT',$content,$before);
+function add_to_menubar($content,$before=false){
+   add_to_view('MENUBAR',$content,$before);
 }
 function add_to_toolbar($content,$before=false){
    add_to_view('TOOLBAR',$content,$before);
+}
+function add_to_toolbar_tl($content,$before=false){
+   add_to_view('TOOLBAR_TL',$content,$before);
+}
+function add_to_toolbar_tr($content,$before=false){
+   add_to_view('TOOLBAR_TR',$content,$before);
 }
 function add_to_statusbar($content,$before=false){
    add_to_view('STATUSBAR',$content,$before);
@@ -276,14 +280,17 @@ function clear_navigator(){
 function clear_widgets(){
    clear_view('WIDGETS');
 }
-function clear_menubar_right(){
-   clear_view('MENUBAR_RIGHT');
-}
-function clear_menubar_left(){
-   clear_view('MENUBAR_LEFT');
+function clear_menubar(){
+   clear_view('MENUBAR');
 }
 function clear_toolbar(){
    clear_view('TOOLBAR');
+}
+function clear_toolbar_tl(){
+   clear_view('TOOLBAR_TL');
+}
+function clear_toolbar_tr(){
+   clear_view('TOOLBAR_TR');
 }
 function clear_statusbar(){
    clear_view('STATUSBAR');

@@ -46,23 +46,30 @@ bottom:      Tool bar
 <!--
 This contains the login box from core/login.php and program selector from core/program.php
 -->
-         <div dojoType="dijit.layout.ContentPane" region="top" gutter="false" style="padding:0px;height:55px;">
+         <div dojoType="dijit.layout.ContentPane" region="top" gutter="false" style="padding:0px;height:57px;">
             <div dojoType="dijit.layout.BorderContainer"   gutters="false" liveSplitters="true" >
+               <div dojoType="dijit.layout.ContentPane" region="left" gutter="false" style="padding:0px;width:50px;" align="left">
+                     <?php
+                     echo "<div id='toolbar_top_left' jsId='toolbar_top_left' dojoType='dijit.Toolbar' style='height:23px;border-right:0px'>";
+                     echo $GLOBALS['VIEW']['TOOLBAR_TL'];
+                     echo "</div>";
+                     ?>
+               </div>
                <div dojoType="dijit.layout.ContentPane" region="center" gutter="false" style="padding:0px;">
                      <?php
                      d_r("dijit.MenuBar");
                      d_r("dijit.Menu");
                      d_r("dijit.MenuItem");
                      d_r("dijit.PopupMenuBarItem");
-                     echo "<div id='menubar_left' jsId='menubar_left' dojoType='dijit.MenuBar' style='border-right:0px;'>";
-                     echo $GLOBALS['VIEW']['MENUBAR_LEFT'];
+                     echo "<div id='menubar' jsId='menubar' dojoType='dijit.MenuBar' style='height:26px;padding-left:1px;border-right:0px;border-left:0px;border-top:1px solid whitesmoke;'>";
+                     echo $GLOBALS['VIEW']['MENUBAR'];
                      echo "</div>";
                      ?>
                </div>
                <div dojoType="dijit.layout.ContentPane" region="right" gutter="false" style="padding:0px;width:300px;" align="right">
                      <?php
-                     echo "<div id='menubar_right' jsId='menubar_right' dojoType='dijit.MenuBar' style='border-left:0px;padding-left:1px'>";
-                     echo $GLOBALS['VIEW']['MENUBAR_RIGHT'];
+                     echo "<div id='toolbar_top_right' jsId='toolbar_top_right' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:23px;'>";
+                     echo $GLOBALS['VIEW']['TOOLBAR_TR'];
                      echo "</div>";
                      ?>
                </div>

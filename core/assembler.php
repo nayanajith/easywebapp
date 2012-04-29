@@ -137,9 +137,13 @@ case 'app2':
    //add_to_navigator(A_CORE."/module_tab_bar.php");
 
    //Tool bar for web/app layouts
-   add_to_menubar_left(A_CORE."/menubar_left.php");
+   add_to_menubar(A_CORE."/menubar.php");
 
-   add_to_menubar_right(A_CORE."/menubar_right.php");
+   //Top right corner of the menubar is a toolbar
+   add_to_toolbar_tr(A_CORE."/toolbar_tr.php");
+
+   //Top left corner of the menubar is a toolbar
+   add_to_toolbar_tl(A_CORE."/toolbar_tl.php");
 
    //Tool bar for web/app layouts
    add_to_toolbar(A_CORE."/toolbar.php");
