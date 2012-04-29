@@ -71,7 +71,7 @@ function show_xhr_dialog(url_,title,width,height){
             height=height-80;
          }
 
-         var content="<div style='width:"+width+"px;min-height:"+height+"px;border:1px solid black;'>"+response+"</div><center><button dojoType='dijit.form.Button' onClick=\"xhr_Dialog.hide()\" >OK</button></center>";
+         var content="<div style='width:"+width+"px;min-height:"+height+"px;'>"+response+"</div><center><button dojoType='dijit.form.Button' onClick=\"xhr_Dialog.hide()\" >OK</button></center>";
          xhr_Dialog.attr("content", content);
          xhr_Dialog.show();
   	   },

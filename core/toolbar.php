@@ -154,6 +154,7 @@ $labeld_types=array(
 );
 //Adding help button to the toolbar
 echo "<div dojoType='dijit.form.Button' label='Help' showLabel='true' iconClass='dijitIcon dijitIconDocuments' onClick='show_help_dialog()'></div>";
+
 if(!isset($GLOBALS['TOOLBAR_ITEMS'])){
    //toolbar is empty
 }else{

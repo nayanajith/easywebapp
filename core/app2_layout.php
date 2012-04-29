@@ -66,7 +66,7 @@ This contains the login box from core/login.php and program selector from core/p
                      echo "</div>";
                      ?>
                </div>
-               <div dojoType="dijit.layout.ContentPane" region="right" gutter="false" style="padding:0px;width:300px;" align="right">
+               <div dojoType="dijit.layout.ContentPane" region="right" gutter="false" style="padding:0px;width:200px;" align="right">
                      <?php
                      echo "<div id='toolbar_top_right' jsId='toolbar_top_right' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:23px;'>";
                      echo $GLOBALS['VIEW']['TOOLBAR_TR'];
