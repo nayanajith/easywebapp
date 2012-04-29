@@ -52,7 +52,7 @@ function reloading_off(){
 }
 
 /*--show page xhr dialogbox--*/
-function show_xhr_dialog(url_,title,width,height){
+function show_xhr_dialog(url_,title,width,height,no_buttons){
 	dojo.xhrPost({
       url 		: url_,
   	   handleAs :'text',
@@ -70,8 +70,15 @@ function show_xhr_dialog(url_,title,width,height){
          if(height > 80){
             height=height-80;
          }
+         
+         var content="<center><button dojoType='dijit.form.Button' onClick=\"xhr_Dialog.hide()\" >OK</button></center>";
 
-         var content="<div style='width:"+width+"px;min-height:"+height+"px;'>"+response+"</div><center><button dojoType='dijit.form.Button' onClick=\"xhr_Dialog.hide()\" >OK</button></center>";
+         if(no_buttons == true){
+            content="";
+         }
+
+         content="<div style='width:"+width+"px;min-height:"+height+"px;'>"+response+"</div>"+content;
+
          xhr_Dialog.attr("content", content);
          xhr_Dialog.show();
   	   },
