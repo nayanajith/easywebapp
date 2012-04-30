@@ -46,7 +46,7 @@ bottom:      Tool bar
 <!--
 This contains the login box from core/login.php and program selector from core/program.php
 -->
-         <div dojoType="dijit.layout.ContentPane" region="top" gutter="false" style="padding:0px;height:56px;">
+         <div dojoType="dijit.layout.ContentPane" region="top" gutter="false" style="padding:0px;height:57px;">
             <div dojoType="dijit.layout.BorderContainer"   gutters="false" liveSplitters="true" >
                <div dojoType="dijit.layout.ContentPane" region="left" gutter="false" style="padding:0px;width:50px;" align="left">
                      <?php

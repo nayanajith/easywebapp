@@ -90,7 +90,11 @@ if(isset($_REQUEST['form'])){
             }
          break;
          case 'csv':
-            $model->gen_csv();
+            if(function_exists('gen_csv')){
+               gen_csv();
+            }else{
+               $model->gen_csv();
+            }
          break;
          }
       }else
