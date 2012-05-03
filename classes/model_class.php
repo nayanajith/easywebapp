@@ -927,77 +927,75 @@ EOE;
          }
 
          
-         if($this->is_duplicate()){
-            return_status_json('ERROR',"Duplicate key exists");
-            return false;
-         }else{//key not available  ->  add
-            $cols      =""; //coumns of the table
-            $values   =""; //value for each column of the table
-            $comma   ="";
-            /*set columns and values for each column*/
-            foreach( $GLOBALS['MODEL']['MAIN_LEFT'] as $key => $arr){
-               /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
-               //if( !( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
-               if( !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
-                  $cols      .=$comma.$key;
-               
-                  /*check for valid json strings to use as json strings in database*/
-                  if(isset($_REQUEST[$key])){
-                     $value=$_REQUEST[$key];
-                  }else{
-                     $_REQUEST[$key]="";
-                     $value="";
-                  }
+         $cols      =""; //coumns of the table
+         $values   =""; //value for each column of the table
+         $comma   ="";
+         /*set columns and values for each column*/
+         foreach( $GLOBALS['MODEL']['MAIN_LEFT'] as $key => $arr){
+            if( $GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'] == $key){
+               continue; 
+            }
+            /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
+            //if( !( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
+            if( !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
+               $cols      .=$comma.$key;
+            
+               /*check for valid json strings to use as json strings in database*/
+               if(isset($_REQUEST[$key])){
+                  $value=$_REQUEST[$key];
+               }else{
+                  $_REQUEST[$key]="";
+                  $value="";
+               }
 
-                  $value=str_replace(
-                     array('&quot;','NaN','\n'),
-                     array('"','""',''),
-                     $value
-                  );
-                  
+               $value=str_replace(
+                  array('&quot;','NaN','\n'),
+                  array('"','""',''),
+                  $value
+               );
+               
+               /*apply md5 to the password fields*/
+               if(in_array(strtolower($key),$this->pwd_field_guess)){   
+                  $_REQUEST[$key]=md5($value);
+               }
+            
+               /*if the values is valid json then store clean string */
+               if(json_decode($value) != null ){
+                  $_REQUEST[$key]=$value;
+               }
+            
+               $values   .=$comma."'".$_REQUEST[$key]."'";
+               $comma   =",";
+            }else{
+               log_msg('kk','lll');   
+            }
+
+            /*handle custom fields from form submission*/
+            if(isset($arr['custom']) && $arr['custom'] == 'true' && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
+               if(isset($_REQUEST[$key]) && $_REQUEST[$key] != ''){
+                  $cols      .=$comma.$key;
                   /*apply md5 to the password fields*/
                   if(in_array(strtolower($key),$this->pwd_field_guess)){   
-                     $_REQUEST[$key]=md5($value);
+                     //$_REQUEST[$key]=md5($value);
+                     $_REQUEST[$key]=md5($_REQUEST[$key]);
                   }
-               
-                  /*if the values is valid json then store clean string */
-                  if(json_decode($value) != null ){
-                     $_REQUEST[$key]=$value;
-                  }
-               
                   $values   .=$comma."'".$_REQUEST[$key]."'";
                   $comma   =",";
-               }else{
-                  log_msg('kk','lll');   
-               }
-
-               /*handle custom fields from form submission*/
-               if(isset($arr['custom']) && $arr['custom'] == 'true' && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
-                  if(isset($_REQUEST[$key]) && $_REQUEST[$key] != ''){
-                     $cols      .=$comma.$key;
-                     /*apply md5 to the password fields*/
-                     if(in_array(strtolower($key),$this->pwd_field_guess)){   
-                        //$_REQUEST[$key]=md5($value);
-                        $_REQUEST[$key]=md5($_REQUEST[$key]);
-                     }
-                     $values   .=$comma."'".$_REQUEST[$key]."'";
-                     $comma   =",";
-                  }
                }
             }
+         }
 
-            $insert_query   ="INSERT INTO ".$this->table."(%s) VALUES(%s)";
-            $insert_query   =sprintf($insert_query,$cols,$values);
-            $res            =exec_query($insert_query,Q_RET_MYSQL_RES);
+         $insert_query   ="INSERT INTO ".$this->table."(%s) VALUES(%s)";
+         $insert_query   =sprintf($insert_query,$cols,$values);
+         $res            =exec_query($insert_query,Q_RET_MYSQL_RES);
 
-            /*report error/success*/
-            if(get_affected_rows() > 0){
-               return_status_json('OK','record inserted successfully');
-               return true;
-            }else{
-               return_status_json('ERROR',get_sql_error());
-               return false;
-            }
+         /*report error/success*/
+         if(get_affected_rows() > 0){
+            return_status_json('OK','record inserted successfully');
+            return true;
+         }else{
+            return_status_json('ERROR',get_sql_error());
+            return false;
          }
       }
 
