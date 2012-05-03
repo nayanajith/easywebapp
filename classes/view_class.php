@@ -35,7 +35,7 @@ class View{
         //Determine group prefix according to the group of the user
         $group_prefix='';
         if(isset($_SESSION['group_id'])){
-            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['groups']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
+            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
             $group_prefix='_'.$arr[0]['file_prefix'];
         }
          $model=sprintf($this->model,$group_prefix);

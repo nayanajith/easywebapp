@@ -205,7 +205,7 @@ if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
 /*-------------------------get and set group theme and layout ----------------*/
 //will override by user theme and layout
 if(isset($_SESSION['group_id'])){
-   $group_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['groups']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
+   $group_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
 
    $GLOBALS['THEME']=isset($group_layout_theme[0]['theme'])&&$group_layout_theme[0]['theme']!='NULL'&&$group_layout_theme[0]['theme']!=''?$group_layout_theme[0]['theme']:$GLOBALS['THEME'];
    $GLOBALS['LAYOUT']=isset($group_layout_theme[0]['layout'])&&$group_layout_theme[0]['layout']!='NULL'&&$group_layout_theme[0]['layout']!=''?$group_layout_theme[0]['layout']:$GLOBALS['LAYOUT'];

@@ -1,6 +1,6 @@
 <?php
 $theme_inner      =gen_select_inner(array('claro','nihilo','soria','tundra'));
-$layout_inner     =gen_select_inner(array('web','app','pub'));
+$layout_inner     =gen_select_inner(array('web','app','pub','app2'));
 
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
@@ -64,7 +64,6 @@ $GLOBALS['MODEL']=array(
          "value"=>""
       ),
    ),
-//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'MAIN_RIGHT'=>array(
        'GRID'=>array(
           'columns'      =>array('rid'=>array('hidden'=>'true'),'group_name','file_prefix','layout','theme'),
@@ -85,9 +84,10 @@ $GLOBALS['MODEL']=array(
           'headerMenu'   =>'gridMenu',
        ),
     ),
+//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'TOOLBAR'=>array(
       "rid"=>array(
-         "length"=>"170",
+         "length"=>"100",
          "dojoType"=>"dijit.form.FilteringSelect",
          "required"=>"false",
          "label"=>"Label",

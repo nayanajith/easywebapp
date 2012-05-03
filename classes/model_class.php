@@ -79,7 +79,7 @@ class Model{
 
          //Setting group wise model file if available else drop to default
          if(isset($_SESSION['group_id'])){
-            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['groups']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
+            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
             $group_prefix='_'.$arr[0]['file_prefix'];
             $file=sprintf($this->model,$group_prefix);
 
@@ -224,7 +224,7 @@ class Model{
          $main_right=<<<EOE
    'MAIN_RIGHT'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid','status'),
+          'columns'      =>array('rid'=>array('hidden'=>'true'),'status'),
           'filter'       =>isset(\$_SESSION[PAGE]['FILTER'])?\$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
           'ref_table'    =>\$GLOBALS['MOD_P_TABLES'][''],
@@ -257,7 +257,7 @@ EOE;
          "store"=>"rid_store",
 
          "filter"=>isset(\$_SESSION[PAGE]['FILTER'])?" AND ".\$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>\$GLOBALS['MOD_P_TABLES']['filter'],
+         "ref_table"=>\$GLOBALS['MOD_P_TABLES'][''],
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
          "vid"=>array('rid'),
@@ -348,9 +348,10 @@ EOE;
             fwrite($file_handler, "\n".tab(1)."),\n");
 
             
-            fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------\n");
-            //write the toolbar related fields
+            fwrite($file_handler, "//---------------------GRID CONFIGURATION-----------------------\n");
             fwrite($file_handler, $main_right."\n");
+            //write the toolbar related fields
+            fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------\n");
             fwrite($file_handler, tab(1)."'TOOLBAR'=>array(\n".$common_toolbar_buttons."\n".tab(1)."),\n");
             fwrite($file_handler, tab(1)."'WIDGETS'=>array(\n".tab(1)."),\n");
             fwrite($file_handler, ");");
