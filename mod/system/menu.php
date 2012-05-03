@@ -3,7 +3,7 @@
 $menu_array  = array(
 //   "modules"            =>"Modules",
    "users"              =>"Users",
-   "groups"             =>"Groups",
+   "role"               =>"Roles",
    "manage_permission"  =>"Users/Group Permission",
    "common_lists"       =>"Common Lists",
    "reset_password"     =>array("PAGE"=>"Reset Password","VISIBLE"=>"false"),

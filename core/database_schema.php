@@ -48,7 +48,7 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   UNIQUE KEY (`ldap_user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$system_table_schemas['groups']="CREATE TABLE `groups`(
+$system_table_schemas['role']="CREATE TABLE `role`(
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
   `group_name`       VARCHAR(100) NOT NULL COMMENT 'A short name to identify the group',
   `file_prefix`      VARCHAR(10) NOT NULL COMMENT 'The prefix for the group related files',

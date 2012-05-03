@@ -27,7 +27,7 @@ $password_custom='
 </div>
 ';
 
-$res=exec_query("SELECT group_name,rid FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_ARRAY,null,'group_name');
+$res=exec_query("SELECT group_name,rid FROM ".$GLOBALS['S_TABLES']['role'],Q_RET_ARRAY,null,'group_name');
 $group_inner      =gen_select_inner(array_keys($res));
 
 $res=exec_query("SELECT short_name,rid FROM ".$GLOBALS['S_TABLES']['program'],Q_RET_ARRAY,null,'rid');

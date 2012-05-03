@@ -177,8 +177,8 @@ echo  "<div dojoType='dijit.form.Form' id='permission_frm' jsId='permission_frm'
 echo "Select User/Group: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.value);'>";
 
 //List of groups
-echo "<option value='none'>-groups-</option>";
-$res=exec_query("SELECT group_name FROM ".$GLOBALS['S_TABLES']['groups'],Q_RET_MYSQL_RES);
+echo "<option value='none'>-roles-</option>";
+$res=exec_query("SELECT group_name FROM ".$GLOBALS['S_TABLES']['role'],Q_RET_MYSQL_RES);
 while($row=mysql_fetch_assoc($res)){
 echo "<option value='G:".$row['group_name']."'>".$row['group_name']."</option>";
 }
