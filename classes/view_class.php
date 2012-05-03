@@ -526,6 +526,7 @@ dojo.ready(function(){
          $html .="<table
             autoHeight='true'
             dojoType='dojox.grid.EnhancedGrid'
+            errorMessage='No records to display!'
             plugins='{
                 pagination: {
                     pageSizes: [\"25\", \"50\", \"100\", \"All\"],
