@@ -48,21 +48,27 @@ This contains the login box from core/login.php and program selector from core/p
 -->
          <div dojoType="dijit.layout.ContentPane" region="top" gutter="false" style="padding:0px;height:40px;overflow:hidden">
             <div id='toolbar_top' jsId='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;'>
-               <table width="100%" cellpadding="0" cellspacing="0"><tr><td width="30%">
-               <?php
-               echo $GLOBALS['VIEW']['TOOLBAR_TL'];
-               ?>
-               </td><td align="center" valign="top" width="40%">
-               <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" height=30px>
-               <span style='font-size:16px;font-weight:bold;'><?php echo $GLOBALS['TITLE']; ?></span>
-               </td><td width="30%">
-               <div style="float:right" >
-                  <?php
-                  echo $GLOBALS['VIEW']['TOOLBAR_TR'];
-               ?>
-               </div>
-               </td>
-               </tr>
+               <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                     <td width="30%">
+                        <?php
+                        echo $GLOBALS['VIEW']['TOOLBAR_TL'];
+                        ?>
+                     </td>
+                     <td width="40%"  align="center">
+                        <button dojoType="dijit.form.Button" style="font-size:14px;font-weight:bold">
+                        <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" height=30px>
+                        <?php echo $GLOBALS['TITLE']; ?>
+                        </button>
+                     </td>
+                     <td width="30%">
+                        <div style="float:right" >
+                           <?php
+                           echo $GLOBALS['VIEW']['TOOLBAR_TR'];
+                           ?>
+                        </div>
+                     </td>
+                  </tr>
                </table>
             </div>
         </div>

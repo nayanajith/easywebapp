@@ -167,14 +167,14 @@ function gen_permission_tree(){
    }
 
 }
-echo "<p>Select group or user to assign permission </p>";
+echo "<h3>Select role or user to assign permission </h3>";
 echo "<div  align='center'>";
 echo  "<div dojoType='dijit.form.Form' id='permission_frm' jsId='permission_frm'
          encType='multipart/form-data'
          action='".$GLOBALS['PAGE_GEN']."';
          method='GET' >
          ";
-echo "Select User/Group: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.value);'>";
+echo "Select User/Role: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.value);'>";
 
 //List of groups
 echo "<option value='none'>-roles-</option>";
