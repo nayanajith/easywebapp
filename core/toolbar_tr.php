@@ -1,5 +1,7 @@
 <?php
 d_r("dijit.form.Button");
+
+echo $GLOBALS['VIEW']['PROGRAM'];
 ?>
 <div dojoType="dijit.form.DropDownButton" iconClass="<?php echo get_icon_class('Users'); ?>" showLabel="true">
 <span><?php echo $_SESSION['username'];?></span>

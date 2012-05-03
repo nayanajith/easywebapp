@@ -118,7 +118,6 @@ break;
 case 'app2':
    //Program selector
    ob_start();
-   echo "Change Program:";
    program_select($program); 
    $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
    ob_end_clean();

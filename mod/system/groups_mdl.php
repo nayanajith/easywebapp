@@ -67,7 +67,7 @@ $GLOBALS['MODEL']=array(
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'MAIN_RIGHT'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid','group_name','file_prefix','layout','theme'),
+          'columns'      =>array('rid'=>array('hidden'=>'true'),'group_name','file_prefix','layout','theme'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
           'ref_table'    =>$GLOBALS['S_TABLES']['groups'],
