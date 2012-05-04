@@ -30,6 +30,24 @@ function gen_print_html($content,$title){
          </html>
       ";
 }
+/**
+ * $filter_array=array('id1','id2') -> and id1='val_id1' and id2='val_id2'
+ */
+function gen_and_filter($filter_ids){
+   $filter="";
+   if(!is_array($filter_ids)){
+      $id=$filter_ids;
+      $filter.=(isset($_SESSION[PAGE][$id])? " AND $id='".$_SESSION[PAGE][$id]."'":null);
+   }else{
+      foreach($filter_ids as $id){
+         $filter.=(isset($_SESSION[PAGE][$id])? " AND $id='".$_SESSION[PAGE][$id]."'":null);
+      }
+   }
+   return $filter;
+}
+
+
+
 //Keep the filter key=value paires for future use this array may initialized in model_class.php
 //$_SESSION[PAGE]['FILTER_ARRAY']=array();
 //
