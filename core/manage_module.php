@@ -52,7 +52,7 @@ items: [
 
 
       /*Skip not permitted modules*/
-      if(!is_module_permitted($mod_key) && $module_visible){
+      if(!is_module_permitted($mod_key) || !$module_visible){
          continue;   
       }
 
@@ -113,7 +113,7 @@ function gen_module_array(){
       }
 
       /*Skip not permitted modules*/
-      if(!is_module_permitted($mod_key) && $module_visible){
+      if(!is_module_permitted($mod_key) ||  !$module_visible){
          continue;   
       }
 
@@ -152,9 +152,11 @@ function gen_visible_module_array(){
       }
 
       /*Skip not permitted modules*/
-      if(!is_module_permitted($mod_key) && $module_visible){
-         continue;   
-      }
+      if(!is_module_permitted($mod_key))continue;
+
+      //TODO:logic seems not working
+      if(!$module_visible)continue;
+            
       $module_menu_file=A_MODULES."/".$mod_key."/menu.php";
 
       if(file_exists($module_menu_file)){
