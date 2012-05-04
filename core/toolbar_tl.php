@@ -10,5 +10,5 @@ d_r("dijit.form.DropDownButton");
     </div>
 </div>
 <button dojoType="dijit.form.Button" style="font-weight:bold;color:gray" iconClass="<?php echo get_icon_class('Package') ?>">
-<?php echo $GLOBALS['MODULES'][MODULE]." / ".$GLOBALS['MENU_ARRAY'][PAGE]?>
+<?php  echo module_name(MODULE)." / ".page_name(PAGE) ?>
 </button>

@@ -4,6 +4,28 @@
  * TODO
  */
 
+/**
+ * Return page name for a page_id
+ */
+function page_name($page_id){
+   $page_name=$GLOBALS['MENU_ARRAY'][$page_id];
+   if(is_array($page_name)){
+      $page_name=$page_name['PAGE'];
+   }
+   return $page_name;
+}
+
+/**
+ * Return module name for a module_id
+ */
+function module_name($module_id){
+   $module_name=$GLOBALS['MODULES'][$module_id];
+   if(is_array($module_name)){
+      $module_name=$module_name['MODULE'];
+   }
+   return $module_name;
+}
+
 /*
  * Adopt print output into standard html
  */
