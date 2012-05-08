@@ -55,14 +55,28 @@ function gen_print_html($content,$title){
 /**
  * $filter_array=array('id1','id2') -> and id1='val_id1' and id2='val_id2'
  */
-function gen_and_filter($filter_ids){
+function gen_and_filter($filter_ids,$array=null,$start_and=false){
+   if(is_null($array) && isset($_SESSION[PAGE])){
+      $array=$_SESSION[PAGE];
+   }elseif(is_null($array)){
+      return "";
+   }
+
+   $and="";
+   if($start_and){
+      $and="AND";
+   }
+
    $filter="";
    if(!is_array($filter_ids)){
       $id=$filter_ids;
-      $filter.=(isset($_SESSION[PAGE][$id])? " AND $id='".$_SESSION[PAGE][$id]."'":null);
+      $filter.=(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='NULL'? "$and $id='".$array[$id]."'":null);
    }else{
       foreach($filter_ids as $id){
-         $filter.=(isset($_SESSION[PAGE][$id])? " AND $id='".$_SESSION[PAGE][$id]."'":null);
+         if(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='NULL'){
+            $filter.= "$and $id='".$array[$id]."'";
+            $and="AND";
+         }
       }
    }
    return $filter;

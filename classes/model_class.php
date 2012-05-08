@@ -79,7 +79,7 @@ class Model{
 
          //Setting group wise model file if available else drop to default
          if(isset($_SESSION['group_id'])){
-            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['groups']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
+            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
             $group_prefix='_'.$arr[0]['file_prefix'];
             $file=sprintf($this->model,$group_prefix);
 
@@ -1078,7 +1078,6 @@ EOE;
                   }
                }
 
-            }
             $update_query   ="UPDATE ".$this->table." SET %s WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
             $update_query   =sprintf($update_query,$values);
             $res            =exec_query($update_query,Q_RET_MYSQL_RES);
