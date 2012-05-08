@@ -3,6 +3,32 @@
  * wrapper for isset() function which will return value if is set else return null
  * TODO
  */
+/**
+ * Return actual system table name
+ */
+function s_table($key){
+   if(isset($GLOBALS['MOD_S_TABLES']) && isset($GLOBALS['MOD_S_TABLES'][$key])){
+      return $GLOBALS['MOD_S_TABLES'][$key];
+   }elseif(isset($GLOBALS['S_TABLES']) && isset($GLOBALS['S_TABLES'][$key])){
+      return $GLOBALS['S_TABLES'][$key];
+   }else{
+      return null;
+   }
+}
+
+/**
+ * Return actual program table name
+ */
+function p_table($key){
+   if(isset($GLOBALS['MOD_P_TABLES']) && isset($GLOBALS['MOD_P_TABLES'][$key])){
+      return $GLOBALS['MOD_P_TABLES'][$key];
+   }elseif(isset($GLOBALS['P_TABLES']) && isset($GLOBALS['P_TABLES'][$key])){
+      return $GLOBALS['P_TABLES'][$key];
+   }else{
+      return null;
+   }
+}
+
 
 /**
  * Return page name for a page_id
