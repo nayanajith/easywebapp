@@ -4,7 +4,7 @@
  * TODO
  */
 /**
- * Return actual system table name
+ * Return effective system table name
  */
 function s_table($key){
    if(isset($GLOBALS['MOD_S_TABLES']) && isset($GLOBALS['MOD_S_TABLES'][$key])){
@@ -17,7 +17,7 @@ function s_table($key){
 }
 
 /**
- * Return actual program table name
+ * Return effective program table name
  */
 function p_table($key){
    if(isset($GLOBALS['MOD_P_TABLES']) && isset($GLOBALS['MOD_P_TABLES'][$key])){
