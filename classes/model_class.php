@@ -1022,47 +1022,46 @@ EOE;
             /*generate values string*/
             foreach( $GLOBALS['MODEL']['MAIN_LEFT'] as $key => $arr){
 
-               /*Trying to ignore auto incrementing fields*/
-               //if(!( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
-               if(!(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
-
-                  
-
-                  /*check for valid json strings to use as json strings in database*/
-                  $value=isset($_REQUEST[$key])?$_REQUEST[$key]:'';
-                  $value=str_replace(
-                     array('&quot;','NaN','\n'),
-                     array('"','""',''),
-                     $value
-                  );
-
-                  //For CheckBoxes all SET values will be caset to true(1)
-                  if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dijit.form.CheckBox'){
-                     if(in_array(strtolower($value),array('on','true'))){   
-                        $value=1;
-                     }else{
-                        $value=0;
-                     }
-                     }
-                  }
-               
-                  /*apply md5 to the password fields*/
-                  if(in_array(strtolower($key),$this->pwd_field_guess)){   
-                     $_REQUEST[$key]=md5($value);
-                  }
-               
-                  /*if the values is valid json then store clean string */
-                  if(json_decode($value) != null ){
-                     $_REQUEST[$key]=$value;
-                  }
-               
-                  if(isset($_REQUEST[$key])){
-                     $values   .=$comma.$key."='".$_REQUEST[$key]."'";
-                  }else{
-                     $values   .=$comma.$key."=''";
-                  }
-                  $comma   =",";
+               //primary key,custom and disabled fields will be excluded do not update
+               if( $GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'] == $key || (isset($arr['custom']) && $arr['custom'] == 'true') || (isset($arr['disabled']) && $arr['disabled'] == 'true')){
+                  continue; 
                }
+
+
+               /*check for valid json strings to use as json strings in database*/
+               $value=isset($_REQUEST[$key])?$_REQUEST[$key]:'';
+               $value=str_replace(
+                  array('&quot;','NaN','\n'),
+                  array('"','""',''),
+                  $value
+               );
+
+               //For CheckBoxes all SET values will be caset to true(1)
+               if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dijit.form.CheckBox'){
+                  if(in_array(strtolower($value),array('on','true'))){   
+                     $value=1;
+                  }else{
+                     $value=0;
+                  }
+                }
+               
+               /*apply md5 to the password fields*/
+               if(in_array(strtolower($key),$this->pwd_field_guess)){   
+                  $_REQUEST[$key]=md5($value);
+               }
+               
+               /*if the values is valid json then store clean string */
+               if(json_decode($value) != null ){
+                  $_REQUEST[$key]=$value;
+               }
+               
+               if(isset($_REQUEST[$key])){
+                  $values   .=$comma.$key."='".$_REQUEST[$key]."'";
+               }else{
+                  $values   .=$comma.$key."=''";
+               }
+               $comma   =",";
+            }
 
                /*handle custom fields from form submission*/
                if(isset($arr['custom']) && $arr['custom'] == 'true'){
