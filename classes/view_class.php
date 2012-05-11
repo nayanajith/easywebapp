@@ -172,7 +172,7 @@ class View{
 
       /*Handl custom form input method or generic one*/
       if(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
-         $html.="<div id='td_$field' jsId='td_$field' style='padding:10px;'>";
+         $html.="<div id='td_$field' jsId='td_$field' style='padding:5px;'>";
          if($customizable){
             $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
          }else{
@@ -220,7 +220,7 @@ class View{
 
             //combining the dojo type mapping in above array with the generated content
             $html            .=sprintf($form_control,$options,$inner);
-            $field_div_start   ="<div id='td_$field' jsId='td_$field' style='padding:10px;'>";
+            $field_div_start   ="<div id='td_$field' jsId='td_$field' style='padding:5px;'>";
             $field_div_end     ="<div id='td_in_$field'></div></div>";
 
             //Set label position

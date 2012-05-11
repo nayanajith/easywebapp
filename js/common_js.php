@@ -608,7 +608,7 @@ function show_dialog(){
 
 /*clear the form first*/
 function clear_form(frm,selector_field){
-   load_selected_value(selector_field,'NULL');
+   //load_selected_value(selector_field,'NULL');
    dojo.forEach(dijit.byId(frm).getDescendants(),function(widget){
       switch(widget.declaredClass){
       case 'dijit.form.CheckBox':
@@ -616,6 +616,8 @@ function clear_form(frm,selector_field){
       break;
       default:
          widget.attr('value', null);
+         widget.setValue(null);
+         widget.set('value',null);
       break;
       }  
    });
