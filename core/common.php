@@ -6,6 +6,12 @@
 /**
  * Return effective system table name
  */
+function s_t($key){
+   return s_table($key);
+}
+function super_table($key){
+   return s_table($key);
+}
 function s_table($key){
    if(isset($GLOBALS['MOD_S_TABLES']) && isset($GLOBALS['MOD_S_TABLES'][$key])){
       return $GLOBALS['MOD_S_TABLES'][$key];
@@ -19,6 +25,12 @@ function s_table($key){
 /**
  * Return effective program table name
  */
+function p_t($key){
+   return p_table($key);
+}
+function program_table($key){
+   return p_table($key);
+}
 function p_table($key){
    if(isset($GLOBALS['MOD_P_TABLES']) && isset($GLOBALS['MOD_P_TABLES'][$key])){
       return $GLOBALS['MOD_P_TABLES'][$key];
