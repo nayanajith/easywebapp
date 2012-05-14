@@ -114,7 +114,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <!--CENTER box of BorderContainer-2-->
                   <div dojoType="dijit.layout.ContentPane" region="center" id="data_body" class="bgBottom" style="padding:5px;">
 <!--________________________start data_body area_____________________________-->
-                     <table width='100%' >
+                     <table width='100%'  >
                         <tr>
                            <td id='MAIN_TOP' colspan='2' valign='top' width='100%'>
                               <?php 

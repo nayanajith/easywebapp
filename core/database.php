@@ -34,10 +34,11 @@ Tables of the system
 $system_tables=array(
    'program'         =>'program',          
    'users'           =>'users',              
-   'role'          =>'role',              
+   'role'            =>'role',              
    'permission'      =>'permission',              
    'common_lists'    =>'common_lists',         
    'filter'          =>'filter',         
+   'news'            =>'news',         
    'log'             =>'log'              
 );
 

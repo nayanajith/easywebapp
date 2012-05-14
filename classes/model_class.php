@@ -224,10 +224,10 @@ class Model{
          $main_right=<<<EOE
    'MAIN_RIGHT'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid','status'),
+          'columns'      =>array('rid'=>array('hidden'=>'true'),'timestamp'),
           'filter'       =>isset(\$_SESSION[PAGE]['FILTER'])?\$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
-          'ref_table'    =>\$GLOBALS['MOD_P_TABLES'][''],
+          'ref_table'    =>p_t(''),
           'event_key'    =>'rid',
           'dojoType'     =>'dojox.grid.DataGrid',
           'jsId'         =>'main_grid',
@@ -251,13 +251,13 @@ EOE;
          "label"=>"Label",
          "label_pos"=>"left",
 
-         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',
+         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main",f_on_ok,f_on_err,f_on_reset)',
          "searchAttr"=>"label",
          "pageSize"=>"10",
          "store"=>"rid_store",
 
          "filter"=>isset(\$_SESSION[PAGE]['FILTER'])?" AND ".\$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>\$GLOBALS['MOD_P_TABLES']['filter'],
+         "ref_table"=>p_t(''),
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
          "vid"=>array('rid'),
@@ -317,9 +317,9 @@ EOE;
       "csv"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"CSV",
-         "iconClass"=>get_icon_class('Undo'),
+         "iconClass"=>get_icon_class('Table'),
          "showLabbel"=>'true',
-         "onClick"=>'reload_grid(main_grid)',
+         "onClick"=>'submit_form("csv")',
        ),
 EOE;
     

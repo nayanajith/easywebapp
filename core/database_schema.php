@@ -117,6 +117,17 @@ $system_table_schemas['common_lists']="CREATE TABLE `common_lists`(
    UNIQUE KEY (`list_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
+$system_table_schemas['news']="CREATE TABLE `news`(
+  `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
+  `title`            VARCHAR(100) NOT NULL,
+  `content`          TEXT NOT NULL,
+  `display_from`     DATE NOT NULL,
+  `display_to`       DATE NOT NULL,
+  `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   PRIMARY KEY (`rid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+
+
 $system_table_schemas['update_common_lists']="INSERT INTO `common_lists`(`list_name`,`list_label`,`json`)values
    ('layout','Layout','[\"app\",\"pub\",\"web\"]'),
    ()
