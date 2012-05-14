@@ -516,13 +516,6 @@ function load_selected_value(field,value_to_load){
 }
 
 /**
- * clear the form
-function clear_form(selector_field){
-   load_selected_value(selector_field,'NULL');
-}
-*/
-
-/**
  * Populate the data in form for the selected key
  */
 function fill_form(rid,form) {
@@ -647,8 +640,7 @@ function dialog_submit(arg_form,action){
             update_status_bar('ERROR','error on submission');
          }
       });
-
-      /*
+/*
       for(var key in arg_array){
          update_status_bar(key);   
       }
@@ -657,6 +649,75 @@ function dialog_submit(arg_form,action){
       update_status_bar('ERROR','found invalid filed values');      
    }
 }
+
+/**
+ * Populate the data in form for the selected key
+ */
+function fill_filter_form(form) {
+   if(!form){
+      form='main';
+   }
+
+   dojo.xhrPost({
+      url       : gen_url()+'&action=filter_filler&data=json&id='+rid+'&form='+form,
+      handleAs :'json',
+      load       : function(response, ioArgs) {        
+         if(response.status && response.status == 'ERROR'){
+            update_status_bar(response.status,response.info);
+            update_progress_bar(50);
+            return;
+         }
+
+         /*reset form*/
+         dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
+            if(widget.store){
+               widget.attr('value', 'NULL');
+            }else{
+               widget.attr('value', null);
+            }
+         });
+         /*fill the form with returned values from json*/
+         for(var key in response){
+            if(response[key] && dijit.byId(key)){
+               if(response[key]['_type']=='Date'){
+                  //Convert ISO standard date string to javascript Date object
+                      dijit.byId(key).setValue(dojo.date.stamp.fromISOString(response[key]['_value'])); 
+               }else{
+                  //Handle different types of fields
+                  switch(dijit.byId(key).declaredClass){
+                     case 'dijit.form.CheckBox':
+                        switch(response[key]){
+                           case '1':
+                           case 'on':
+                              dijit.byId(key).attr('checked',true); 
+                           break;
+                           case '0':
+                           case 'off':
+                           default:
+                              dijit.byId(key).attr('checked',false); 
+                           break;
+                        }
+                     break;
+                     case 'dijit.form.RadioButton':
+                     break;
+                     case 'dijit.form.FilteringSelect':
+                        dijit.byId(key).setValue(response[key]); 
+                        load_selected_value(dijit.byId(key),response[key]);
+                     break;
+                     default:
+                        dijit.byId(key).setValue(response[key]); 
+                     break;
+                  }
+               }
+            }
+         }
+      },
+      error : function(response, ioArgs) {
+           update_status_bar('ERROR',response);
+      }
+   });
+}
+
 
 /*-------------------------------------------------------------------------------------*/
 

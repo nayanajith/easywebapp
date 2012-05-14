@@ -101,10 +101,6 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false){
    }
 
    $and="";
-   if($start_and){
-      $and="AND";
-   }
-
    $filter="";
    if(!is_array($filter_ids)){
       $id=$filter_ids;
@@ -117,6 +113,13 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false){
          }
       }
    }
+
+   //Prepend and if requested
+   if($start_and && $filter!=''){
+      log_msg($filter);
+      $filter="AND ".$filter;
+   }
+
    return $filter;
 }
 
@@ -642,15 +645,17 @@ function is_assoc_array($arr){
  * Generate a Select box for a given array of values and return the html
  * arr: associative array with key=>value
  */
-function gen_select_inner($arr,$label=null,$without_none=false){
+function gen_select_inner($arr,$label=null,$null_select=false){
    //validation  $arr must be an array
    if(!is_array($arr)){
       return null;
    }
 
-   $select='<option value="NULL">-none-</option>';
-   if($without_none){
+   $select="<option value='NULL'>-none-</option>";
+   if($null_select===true){
       $select='';
+   }elseif($null_select !== true && $null_select != ""){
+      $select="<option value='NULL'>$null_select</option>";
    }
 
    if(is_assoc_array($arr)){
@@ -659,7 +664,7 @@ function gen_select_inner($arr,$label=null,$without_none=false){
          //case: exec_query("SELECT rid,batch_id FROM ".$GLOBALS['P_TABLES']['batch'],Q_RET_ARRAY,null,'rid');
          if($label != null){
             foreach($arr as $key=>$value ){
-               $select.="<option value=\"$key\">$value[$label]</option>";
+               $select.="<option value=\"$key\">".$value[$label]."</option>";
             }
          }else{
             //case: exec_query("SELECT batch_id FROM ".$GLOBALS['P_TABLES']['batch'],Q_RET_ARRAY,null,'batch_id');

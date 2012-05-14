@@ -89,6 +89,13 @@ if(isset($_REQUEST['form'])){
                $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
             }
          break;
+         case 'filter_filler':
+            //request for a record related to a given id
+            if(isset($_SESSION[PAGE]['FILTER_ARRAY'])){
+               echo json_encode($_SESSION[PAGE]['FILTER_ARRAY']);
+            }
+         break;
+
          case 'csv':
             if(function_exists('gen_csv')){
                gen_csv();
