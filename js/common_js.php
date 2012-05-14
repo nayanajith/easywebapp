@@ -51,6 +51,17 @@ function reloading_off(){
    halt_page_reloading=true;
 }
 
+/**
+ * find maching element in array
+ */
+function in_array(needle, haystack){
+    var length = haystack.length;
+    for(var i = 0; i < length; i++){
+        if(haystack[i] == needle) return true;
+    }
+    return false;
+}
+
 /*--show page xhr dialogbox--*/
 function show_xhr_dialog(url_,title,width,height,no_buttons){
 	dojo.xhrPost({
@@ -360,7 +371,7 @@ function reload_page(){
 * tartget_module and target_page are optional. these parameters are used by public layout
 */
 
-function submit_form(action,target_module,target_page){
+function submit_form(action,target_module,target_page,f_on_err,f_on_ok){
    var form='main';
    var url=gen_url();
    switch(action){
@@ -518,12 +529,12 @@ function load_selected_value(field,value_to_load){
 /**
  * Populate the data in form for the selected key
  */
-function fill_form(rid,form) {
+function fill_form(rid,form,f_on_ok,f_on_err,f_on_reset) {
    if(!form){
       form='main';
    }
 
-   if(!(rid == '' || rid == 'new' || rid == "-none-")){
+   if(!(rid == '' || rid == 'new' || rid == "-none-" || rid == "-all-")){
    dojo.xhrPost({
       url       : gen_url()+'&action=filler&data=json&id='+rid+'&form='+form,
       handleAs :'json',
@@ -531,6 +542,7 @@ function fill_form(rid,form) {
          if(response.status && response.status == 'ERROR'){
             update_status_bar(response.status,response.info);
             update_progress_bar(50);
+            if(f_on_err)f_on_err();
             return;
          }
 
@@ -577,6 +589,8 @@ function fill_form(rid,form) {
                }
             }
          }
+
+         if(f_on_ok)f_on_ok();
       },
       error : function(response, ioArgs) {
            update_status_bar('ERROR',response);
@@ -589,6 +603,7 @@ function fill_form(rid,form) {
             widget.attr('value', null);
          }
       });
+      if(f_on_reset)f_on_reset();
    }
 }
 
