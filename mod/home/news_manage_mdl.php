@@ -32,6 +32,8 @@ $GLOBALS['MODEL']=array(
          "type"   =>"text",
          "label"	   =>"Content",
          "label_pos"	=>"top",
+         "read_func"=>"htmlspecialchars_decode",
+         "write_func"=>"",
          "value"=>""
       ),
       "display_from"=>array(

@@ -361,16 +361,47 @@ function reload_page(){
    halt_page_reloading==true;
 }
 
+/*
+ * callback arrays are in the following form the callback function will check whether the function is set and if so it will execute the function
+var fill_form_callback={
+   'ok':null,
+   'error':null,
+   'reset':null,
+   'before':null
+};
+*/
+function callback(callback_array,function_name){
+   if(callback_array && function_name && callback_array[function_name] && callback_array[function_name] != null){
+      callback_array[function_name]();
+   }
+}
+
+/**
+ * clear cllaback array
+ */
+function clear_callback(callback_array){
+   for(key in callback_array){
+      callback_array[key]=null;
+   }
+}
+
 /** Submit the given form
 * tartget_module and target_page are optional. these parameters are used by public layout
 */
+//cllback array for this function
 var submit_form_callback={
-   'f_on_ok':null,
-   'f_on_err':null,
-   'f_before':null
+   'ok':null,
+   'error':null,
+   'before':null
 };
 
-function submit_form(action,target_module,target_page,submit_form_callback){
+function submit_form(action,target_module,target_page){
+   //submit form callback array
+   var s_f_c=submit_form_callback;
+
+   //call the before callback function
+   callback(s_f_c,'before');
+
    var form='main';
    var url=gen_url();
    switch(action){
@@ -398,6 +429,9 @@ function submit_form(action,target_module,target_page,submit_form_callback){
    if(action=='delete' && !confirm('Confirm Deletion!')){
       update_status_bar('ERROR','deletion canceled');
       update_progress_bar(0);
+
+      //call the error callback function
+      callback(s_f_c,'error');
       return;   
    }
 
@@ -411,6 +445,10 @@ function submit_form(action,target_module,target_page,submit_form_callback){
          handle: function(response,ioArgs){
             //update_status_bar(response.status_code,response.info);
             //reload_page(); 
+            
+            //call the error callback function
+            callback(s_f_c,'ok');
+
          },
          load: function(response,ioArgs) {
             update_status_bar(response.status_code,response.info);
@@ -419,6 +457,9 @@ function submit_form(action,target_module,target_page,submit_form_callback){
          error: function() {
             update_status_bar('ERROR','error on submission');
             update_progress_bar(0);
+
+            //call the error callback function
+            callback(s_f_c,'error');
          }
       });
       return;
@@ -463,22 +504,37 @@ function submit_form(action,target_module,target_page,submit_form_callback){
                }else{
                   window.open('?module='+module+'&page='+page,'_parent');
                }
+
+               //call the error callback function
+               callback(s_f_c,'ok');
+
             }else{
                update_status_bar('ERROR',response.info);
                if(document.getElementById('captcha_image'))reload_captcha();
                //update_status_bar('ERROR','Duplicate Entry!');
+
+               //call the error callback function
+               callback(s_f_c,'error');
+
             }
          }, 
          error: function() {
             if(!target_module && !target_page){
                update_status_bar('ERROR','error on submission');
                update_progress_bar(0);
+
+               //call the before callback function
+               callback(s_f_c,'error');
+
             }
          }
       });
       return false;
    }else{
       update_status_bar('ERROR','Form contains invalid data.  Please correct them and submit');
+
+      //call the before callback function
+      callback(s_f_c,'error');
       return false;
    }
    return true;
@@ -529,14 +585,20 @@ function load_selected_value(field,value_to_load){
  * Populate the data in form for the selected key
  */
 var fill_form_callback={
-   'f_on_ok':null,
-   'f_on_err':null,
-   'f_on_reset':null,
-   'f_before':null
+   'ok':null,
+   'error':null,
+   'reset':null,
+   'before':null
 };
-function fill_form(rid,form,fill_form_callback) {
+
+function fill_form(rid,form) {
+   console.debug(fill_form_callback);
+   //callback function array
    var f_f_c=fill_form_callback;
-   if(f_f_c['f_before'] && f_f_c['f_before'] != null)f_f_c['f_before']();
+
+   //call the before callback function
+   callback(f_f_c,'before');
+
    if(!form){
       form='main';
    }
@@ -549,7 +611,8 @@ function fill_form(rid,form,fill_form_callback) {
          if(response.status && response.status == 'ERROR'){
             update_status_bar(response.status,response.info);
             update_progress_bar(50);
-            if(f_on_err)f_on_err();
+            //calling the error callback function
+            callback(f_f_c,'error');
             return;
          }
 
@@ -597,10 +660,13 @@ function fill_form(rid,form,fill_form_callback) {
             }
          }
 
-         if(f_on_ok)f_on_ok();
+         //calling the ok callback function
+         callback(f_f_c,'ok');
       },
       error : function(response, ioArgs) {
-           update_status_bar('ERROR',response);
+         update_status_bar('ERROR',response);
+         //calling the ok callback function
+         callback(f_f_c,'error');
       }
    });
    }else{
@@ -610,7 +676,9 @@ function fill_form(rid,form,fill_form_callback) {
             widget.attr('value', null);
          }
       });
-      if(f_on_reset)f_on_reset();
+
+      //calling the reset callback function
+      callback(f_f_c,'reset');
    }
 }
 

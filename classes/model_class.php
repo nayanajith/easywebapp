@@ -877,7 +877,12 @@ EOE;
                   //Dates have issues with dojo it is speacially formatted as bellow
                   $ret_array[$key]=array('_type'=>'Date','_value'=>$row[$key]);
                }else{
-                  $ret_array[$key]=$row[$key];
+                  //apply read function if specified in the model
+                  if(isset($arr['read_func']) && $arr['read_func'] != ""){
+                     $ret_array[$key]=call_user_func($arr['read_func'],$row[$key]);
+                  }else{
+                     $ret_array[$key]=$row[$key];
+                  }
                }
             }
          }

@@ -12,11 +12,14 @@ class Secure
 
    function secureSuperGlobalGET(&$value, $key)
    {
-      $value = htmlspecialchars(stripslashes($value));
+      //$value = htmlspecialchars(stripslashes($value));
+      if (get_magic_quotes_gpc()) {
+         $value = stripslashes($value);
+      }
       $value = str_ireplace("script", "blocked", $value);
 
       if($GLOBALS['DB_TYPE']=='mysql'){
-         $value = mysql_escape_string($value);
+         $value = mysql_real_escape_string($value);
       }
    }
 

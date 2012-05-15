@@ -16,7 +16,7 @@ add_to_main_left($main_left);
 //content.value=this.value
 d_r('dijit.Editor');
 $content_editor="
-<div dojoType='dijit.Editor' jsId='news_editor' onMouseOut='load_editor_value()' ></div></center>
+<div dojoType='dijit.Editor' jsId='news_editor' ></div></center>
 <script>
    function read_editor_value(){
       content.setValue(news_editor.get(\"value\"));
@@ -24,6 +24,8 @@ $content_editor="
    function load_editor_value(){
       news_editor.setValue(content.getValue());
    }
+submit_form_callback['before']=read_editor_value;
+fill_form_callback['ok']=load_editor_value;
 </script>
 ";
 add_to_main_left($content_editor);
