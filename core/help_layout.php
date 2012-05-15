@@ -14,7 +14,7 @@ if(isset($_REQUEST['fullscreen']) && $_REQUEST['fullscreen'] == 'true'){
          include A_CORE."/style.php";
       ?>
 <!--______________________________FAVICON____________________________________-->
-      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>"type="image/x-icon" >
+      <link rel="shortcut icon" href="<?php echo $GLOBALS['FAVICON']; ?>"type="image/x-icon" >
 
    </head>
    <body class="<?php echo $GLOBALS['THEME']; ?>">
@@ -24,7 +24,7 @@ if(isset($_REQUEST['fullscreen']) && $_REQUEST['fullscreen'] == 'true'){
 <!--header-->
    <tr>
       <td colspan=2 style>
-         <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=80px style='float:left'>
+         <img src="<?php echo $GLOBALS['LOGO']; ?>" width=80px style='float:left'>
          <span style='float:left;font-size:26px;font-weight:bold;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE_LONG']; ?> <font color='green' >Help+Guide</font></span>
       </td>
    </tr>

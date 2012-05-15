@@ -19,7 +19,7 @@ $GLOBALS['MODEL']=array(
          "value"=>""
       ),
       "title"=>array(
-         "length"	=>"350",
+         "length"	=>"300",
          "dojoType"	=>"dijit.form.ValidationTextBox",
          "required"	=>"true",
          "label"	=>"Title",
@@ -27,10 +27,10 @@ $GLOBALS['MODEL']=array(
          "value"=>""
       ),
       "content"=>array(
-         "length"	=>"100",
          "dojoType"	=>"dijit.form.SimpleTextarea",
          "required"	=>"true",
-         "label"	=>"Content",
+         "type"   =>"hidden",
+         "label"	   =>"Content",
          "label_pos"	=>"top",
          "value"=>""
       ),
@@ -50,6 +50,7 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
+
    ),
 //---------------------GRID CONFIGURATION-----------------------
    'MAIN_RIGHT'=>array(
@@ -155,6 +156,4 @@ $GLOBALS['MODEL']=array(
    'WIDGETS'=>array(
    ),
 );
-
-include "news_mdl.inc.php";
 ?>

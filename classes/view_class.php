@@ -537,6 +537,7 @@ dojo.ready(function(){
             autoHeight='true'
             dojoType='dojox.grid.EnhancedGrid'
             errorMessage='No records to display!'
+            selectable='true'
             plugins='{
                 pagination: {
                     pageSizes: [\"25\", \"50\", \"100\", \"All\"],

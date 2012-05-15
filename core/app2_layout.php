@@ -10,7 +10,7 @@
          echo $GLOBALS['VIEW']['CSS'];
       ?>
 <!--______________________________FAVICON____________________________________-->
-      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>" type="image/x-icon" >
+      <link rel="shortcut icon" href="<?php echo $GLOBALS['FAVICON']; ?>" type="image/x-icon" >
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
          echo $GLOBALS['VIEW']['JS'];
@@ -57,7 +57,7 @@ This contains the login box from core/login.php and program selector from core/p
                      </td>
                      <td width="40%"  align="center">
                         <button dojoType="dijit.form.Button" style="font-size:14px;font-weight:bold">
-                        <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" height=30px>
+                        <img src="<?php echo $GLOBALS['LOGO']; ?>" height=30px>
                         <?php echo $GLOBALS['TITLE']; ?>
                         </button>
                      </td>

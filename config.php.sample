@@ -22,8 +22,6 @@ define('LOG'         , A_ROOT.'/messages.log');
 define('LOG_ENABLED' , 'YES'); //YES/NO : this will enable write messages to LOG
 define('ERROR_LOG'   , A_ROOT.'/errors.log');
 
-define('FPDF_FONTS_PATH'  , A_ROOT.'/errors.log');
-
 /*Enable disable HTTP compression YES/NO */
 define('COMPRESS' , 'NO'); 
 
@@ -37,12 +35,12 @@ $GLOBALS['HOTLINE']     = 'Contact: +94112581245/7';
 $GLOBALS['ADMIN_MAIL']  = 'uis@ucsc.cmb.ac.lk';
 $GLOBALS['INFO_MAIL']   = 'info@ucsc.cmb.ac.lk';
 $GLOBALS['NOREPLY_MAIL']= 'noreply@ucsc.cmb.ac.lk';
-$GLOBALS['LOGO']        = 'ucsc-logo.png';
-$GLOBALS['LOGO2']       = 'uoc-logo.png';
-$GLOBALS['FAVICON']     = 'favicon.ico';
+$GLOBALS['LOGO']        = IMG.'/ucsc-logo.png';
+$GLOBALS['LOGO2']       = IMG.'/uoc-logo.png';
+$GLOBALS['FAVICON']     = IMG.'/favicon.ico';
 $GLOBALS['LAYOUT']      = 'pub'; //web,app,pub
-$GLOBALS['THEME']         = 'claro'; //claro,nihilo,soria,tundra
-$GLOBALS['PAGE_GEN']      = '';
+$GLOBALS['THEME']       = 'claro'; //claro,nihilo,soria,tundra
+$GLOBALS['PAGE_GEN']    = '';
 
 /*---------------------------configure Database--------------------------------*/
 $GLOBALS['DB']          = 'ucscsis';

@@ -11,7 +11,7 @@
          echo $GLOBALS['VIEW']['CSS'];
       ?>
 <!--______________________________FAVICON____________________________________-->
-      <link rel="shortcut icon" href="<?php echo IMG."/".$GLOBALS['FAVICON']; ?>" type="image/x-icon" >
+      <link rel="shortcut icon" href="<?php echo $GLOBALS['FAVICON']; ?>" type="image/x-icon" >
 
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
@@ -32,7 +32,7 @@
 <table width='100%' cellpadding=5 cellspacing=0 >
 <!--header-->
 <tr><td colspan=2 style>
-            <img src="<?php echo IMG."/".$GLOBALS['LOGO']; ?>" width=80px style='float:left'>
+            <img src="<?php echo $GLOBALS['LOGO']; ?>" width=80px style='float:left'>
             <span style='float:left;font-size:26px;font-weight:bold;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE_LONG']; ?></span>
             <div style='float:right;padding:20px;'>
 <!--__________________________end Login form ________________________________-->

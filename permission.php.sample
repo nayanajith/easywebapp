@@ -2,9 +2,8 @@
 /*These modules have default read access unless expressed externally*/
 function load_anon_permission(){
 $GLOBALS['permission']['USER'][]=array( 'module' => 'home', 'page' => '*', 'access_right' => 'WRITE' );
+$GLOBALS['permission']['USER'][]=array( 'module' => 'home', 'page' => 'news_manage', 'access_right' => 'DENIED' );
 //$permission['USER'][]=array( 'module' => 'system', 'page' => 'reset_password', 'access_right' => 'WRITE' );
 
-$GLOBALS['permission']['USER'][]=array( 'module' => 'asset', 'page' => 'login', 'access_right' => 'WRITE' );
-$GLOBALS['permission']['USER'][]=array( 'module' => 'asset', 'page' => 'reset_password', 'access_right' => 'WRITE' );
 }
 ?>

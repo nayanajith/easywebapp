@@ -1,4 +1,13 @@
 <?php
+foreach($GLOBALS['MODULES'] as $key => $value){
+   $schema=A_MODULES."/".$key."/core/database_schema.php";
+   if(file_exists($schema)){
+      include $schema;
+      print_r(array_keys($system_table_schemas));
+      print_r(array_keys($program_table_schemas));
+   }
+}
+
 include A_CORE."/database_schema.php";
 if(isset($_REQUEST['action'])){ /*haldle requests*/
    switch($_REQUEST['action']){
