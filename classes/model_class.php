@@ -88,6 +88,8 @@ class Model{
             }else{
                $this->model=sprintf($this->model,'');
             }
+         }else{
+            $this->model=sprintf($this->model,'');
          }
 
          $this->load_modifier();
