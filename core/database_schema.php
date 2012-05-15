@@ -122,7 +122,7 @@ $system_table_schemas['news']="CREATE TABLE `news`(
   `title`            VARCHAR(100) NOT NULL,
   `content`          TEXT NOT NULL,
   `display_from`     DATE NOT NULL,
-  `display_to`       DATE NOT NULL,
+  `display_until`    DATE NOT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    PRIMARY KEY (`rid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";

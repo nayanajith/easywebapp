@@ -29,7 +29,7 @@ $GLOBALS['MODEL']=array(
       "content"=>array(
          "dojoType"	=>"dijit.form.SimpleTextarea",
          "required"	=>"true",
-         "type"   =>"text",
+         "type"   =>"hidden",
          "label"	   =>"Content",
          "label_pos"	=>"top",
          "read_func"=>"htmlspecialchars_decode",
@@ -44,11 +44,11 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
-      "display_to"=>array(
+      "display_until"=>array(
          "length"	=>"100",
          "dojoType"	=>"dijit.form.DateTextBox",
          "required"	=>"false",
-         "label"	=>"Display to",
+         "label"	=>"Display until",
          "label_pos"	=>"top",
          "value"=>""
       ),
@@ -57,7 +57,7 @@ $GLOBALS['MODEL']=array(
 //---------------------GRID CONFIGURATION-----------------------
    'MAIN_RIGHT'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid'=>array('hidden'=>'true'),'title','display_from','display_to'),
+          'columns'      =>array('rid'=>array('hidden'=>'true'),'title','display_from','display_until'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
           'ref_table'    =>s_t('news'),

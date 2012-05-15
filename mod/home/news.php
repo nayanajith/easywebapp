@@ -5,7 +5,7 @@ return;
 }
 
 $news_tpl="";
-$arr=exec_query("SELECT * FROM ".s_t('news')." WHERE display_to >= curdate() ",Q_RET_ARRAY);
+$arr=exec_query("SELECT * FROM ".s_t('news')." WHERE display_until >= curdate() AND display_from <= curdate() ",Q_RET_ARRAY);
 $news="";
 foreach($arr as $row){
    $news.="

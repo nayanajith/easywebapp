@@ -592,7 +592,6 @@ var fill_form_callback={
 };
 
 function fill_form(rid,form) {
-   console.debug(fill_form_callback);
    //callback function array
    var f_f_c=fill_form_callback;
 
