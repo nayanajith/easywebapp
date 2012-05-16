@@ -31,12 +31,15 @@ function program_select($program){
          open(URL,'_self');
       }   
    }
+program_select.textbox.value='kkk';
    </script>
    ";
 
 
    echo "<select dojoType='dijit.form.FilteringSelect' 
    style='width:100px;'
+	title='Select Program'
+	data-dojo-props=\"placeHolder:'Program'\"
    onChange='change_program(this.get(\"value\"),this.get(\"displayedValue\"))'>\n";
 
    foreach($GLOBALS['PROGRAMS'] as $key => $value){

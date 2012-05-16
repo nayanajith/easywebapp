@@ -159,6 +159,12 @@ class View{
       /*inner value of the field (innerhtml)*/
       $inner   =isset($field_array['inner'])?$field_array['inner']:"";
 
+		/*if tooltip is set add tooltip */
+      $tooltip      ="";
+      if(isset($field_array['tooltip']) && $field_array['tooltip'] != ""){
+         $tooltip="<div dojoType='dijit.Tooltip' id='tooltip_".$field."' connectId='$field'><div style='max-width:400px;text-align:justify'>".$field_array['tooltip']."</div></div>";
+      }
+
       /*if required=true put  * by the label */
       $required      ="";
       if(isset($field_array['required']) && $field_array['required'] == "true"){
@@ -183,10 +189,10 @@ class View{
       }else{
          d_r($field_array['dojoType']);
          $form_control   =$this->form_controls[$field_array['dojoType']];
-         $options         =" jsId='$field' id='$field' name='$field' ";
+         $options         =" jsId='$field' id='$field' name='$field'";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by');
+         $bypass=array('inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','tooltip');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -221,7 +227,7 @@ class View{
             //combining the dojo type mapping in above array with the generated content
             $html            .=sprintf($form_control,$options,$inner);
             $field_div_start   ="<div id='td_$field' jsId='td_$field' style='padding:5px;'>";
-            $field_div_end     ="<div id='td_in_$field'></div></div>";
+            $field_div_end     =$tooltip."<div id='td_in_$field'></div></div>";
 
             //Set label position
             if($customizable){
@@ -249,7 +255,7 @@ class View{
          }
       }
       if($customizable){
-         $custom_arr['field']=$html;
+         $custom_arr['field']=$html.$tooltip;
          return $custom_arr;
       }
       return $html;
@@ -407,11 +413,22 @@ class View{
          $html.="<div id='td_in_$field'></div></div>\n";
       }else{
          d_r($field_array['dojoType']);
-         $form_control   =$this->form_controls[$field_array['dojoType']];
-         $options         =" jsId='$field' id='$field' name='$field'  title='".$field_array['label']."' ";
+         $form_control  =$this->form_controls[$field_array['dojoType']];
+			
+			//dojo data-dojo-props (to put placeholder and more)
+			$data_dojo_props	="";
+			if(isset($field_array['data-dojo-props'])){
+				$data_dojo_props	=$field_array['data-dojo-props'];
+			}elseif(isset($field_array['label'])){
+				$data_dojo_props	="data-dojo-props=\"placeHolder:'".$field_array['label']."'\"";
+			}elseif(isset($field_array['title'])){
+				$data_dojo_props	="data-dojo-props=\"placeHolder:'".$field_array['title']."'\"";
+			}
+
+         $options       =" jsId='$field' id='$field' name='$field'  title='".$field_array['label']."' $data_dojo_props ";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by');
+         $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -498,21 +515,6 @@ dojo.ready(function(){
    }
 
  
-   function set_help_tips($help_array){
-      $html="<style type='text/css'>.helptt{max-width:400px;text-align:justify;color:green;}</style>";
-      foreach( $help_array as $key => $value){
-         if($value == '')continue;
-         //possible positions of tooltio: before,above,after,below
-         $html.="<div dojoType='dijit.Tooltip' connectId='$key' position='after' >
-         <!--b>HELP:</b-->
-         <div class='helptt'>
-            $value
-         </div>
-         </div>";
-      }
-      return $html;
-   }
-
    /*
     $key_array: the key array to be visible in data grid
     json_file: data from the server
