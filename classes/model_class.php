@@ -253,7 +253,7 @@ EOE;
          "label"=>"Label",
          "label_pos"=>"left",
 
-         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main",f_on_ok,f_on_err,f_on_reset)',
+         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',
          "searchAttr"=>"label",
          "pageSize"=>"10",
          "store"=>"rid_store",
