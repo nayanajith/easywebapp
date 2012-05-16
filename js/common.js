@@ -748,7 +748,7 @@ function fill_filter_form(form) {
    }
 
    dojo.xhrPost({
-      url       : gen_url()+'&action=filter_filler&data=json&id='+rid+'&form='+form,
+      url       : gen_url()+'&action=filter_filler&data=json&form='+form,
       handleAs :'json',
       load       : function(response, ioArgs) {        
          if(response.status && response.status == 'ERROR'){
