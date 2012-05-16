@@ -377,6 +377,23 @@ function callback(callback_array,function_name){
 }
 
 /**
+ * Add to callback array
+ */
+function add_callback(callback_array,callback_name,callback_function){
+   callback_array[callback_name]=callback_function;
+}
+
+//wrapper for submit_form
+function add_to_s_f_c(callback_name,callback_function){
+   add_callback(submit_form_callback,callback_name,callback_function);
+}
+
+//wrapper for filter form
+function add_to_f_f_c(callback_name,callback_function){
+   add_callback(fill_form_callback,callback_name,callback_function);
+}
+
+/**
  * clear cllaback array
  */
 function clear_callback(callback_array){
