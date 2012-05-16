@@ -130,7 +130,7 @@ function after_login() {
 
    //Super users have privilege to change the users to check whtat the user can do so they have special varialble to notify the system 
    //that he is a super user
-   if($_SESSION['group_id']=='SUPER'){
+   if($_SESSION['role_id']=='SUPER'){
       $_SESSION['SUPER_USER']=true;
    }
 

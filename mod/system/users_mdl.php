@@ -27,15 +27,17 @@ $password_custom='
 </div>
 ';
 
-$res=exec_query("SELECT group_name,rid FROM ".$GLOBALS['S_TABLES']['role'],Q_RET_ARRAY,null,'group_name');
-$group_inner      =gen_select_inner(array_keys($res));
+$arr=array('USER'=>'');
+$arr=array_merge($arr,exec_query("SELECT group_name,rid FROM ".$GLOBALS['S_TABLES']['role'],Q_RET_ARRAY,null,'group_name'));
+$group_inner      =gen_select_inner(array_keys($arr),null,true);
 
 $res=exec_query("SELECT short_name,rid FROM ".$GLOBALS['S_TABLES']['program'],Q_RET_ARRAY,null,'rid');
 $program_inner  =gen_select_inner($res,'short_name');
 
+$auth_mod_inner   =gen_select_inner(array("AUTO","LOCAL","LDAP"),null,true);
 $permission_inner =gen_select_inner(array("ADMIN","STAFF","STUDENT","GUEST"));
-$theme_inner      =gen_select_inner(array('claro','nihilo','soria','tundra'));
-$layout_inner     =gen_select_inner(array('web','app','pub','app2'));
+$theme_inner      =gen_select_inner(array('claro'=>'CLARO','nihilo'=>'NIHILO','soria'=>'SORIA','tundra'=>'TUNDRA'),null,true);
+$layout_inner     =gen_select_inner(array('app2'=>'APP2','web'=>'WEB','app'=>'APP','pub'=>'PUB'),null,true);
 $title_list       =get_common_list('title');
 $title_inner      =gen_select_inner($title_list['list'],null,true);
 
@@ -118,6 +120,16 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
+      "email"=>array(
+         "length"	=>"350",
+         "dojoType"	=>"dijit.form.ValidationTextBox",
+         "required"	=>"false",
+		   "regExp"=>"\b[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\b",
+		   "invalidMessage"=>"Please enter a valid email address",
+         "label"	=>"Email",
+         "label_pos"	=>"top",
+         "value"=>""
+      ),
       "username"=>array(
          "length"	=>"350",
          "dojoType"	=>"dijit.form.ValidationTextBox",
@@ -133,6 +145,7 @@ $GLOBALS['MODEL']=array(
          "label"	=>"Password",
          "label_pos"	=>"top",
       ),
+      /*
       "phone"=>array(
          "length"	=>"350",
          "dojoType"	=>"dijit.form.ValidationTextBox",
@@ -141,19 +154,22 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
-      "email"=>array(
-         "length"	=>"350",
-         "dojoType"	=>"dijit.form.ValidationTextBox",
-         "required"	=>"false",
-         "label"	=>"Email",
-         "label_pos"	=>"top",
-         "value"=>""
-      ),
+      */
       "ldap_user_id"=>array(
-         "length"	=>"350",
+         "length"	=>"150",
          "dojoType"	=>"dijit.form.ValidationTextBox",
          "required"	=>"false",
          "label"	=>"Ldap user id",
+         "label_pos"	=>"top",
+         "value"=>""
+      ),
+      "auth_mod"=>array(
+         "length"	=>"100",
+         "dojoType"	=>"dijit.form.Select",
+         "required"	=>"false",
+         "inner"     =>$auth_mod_inner,
+         "label"	   =>"Authentication mod",
+         "tooltip"   =>"NOTE: AUTO mod will allow system to select them authentication mode.",
          "label_pos"	=>"top",
          "value"=>""
       ),
@@ -167,12 +183,12 @@ $GLOBALS['MODEL']=array(
          "value"=>""
       ),
        */
-      "group_id"=>array(
-         "length"	=>"350",
+      "role_id"=>array(
+         "length"	=>"150",
          "dojoType"	=>"dijit.form.Select",
          "required"	=>"false",
          "inner"=>$group_inner,
-         "label"	=>"Group id",
+         "label"	=>"Role",
          "label_pos"	=>"top",
          "value"=>""
       ),
@@ -194,6 +210,7 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
+      /*
       "homeroom"=>array(
          "length"	=>"35",
          "dojoType"	=>"dijit.form.ValidationTextBox",
@@ -202,7 +219,6 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
-      /*
       "programs"=>array(
          "length"	=>"100",
          "dojoType"	=>"dijit.form.SimpleTextarea",
@@ -263,7 +279,7 @@ $GLOBALS['MODEL']=array(
    ),
    'MAIN_RIGHT'=>array(
        'GRID'=>array(
-          'columns'      =>array('user_id','username','first_name','middle_names','last_name','group_id'),
+          'columns'      =>array('user_id'=>array('hidden'=>'true'),'username','email','ldap_user_id','role_id'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__user_id',
           'ref_table'    =>$GLOBALS['S_TABLES']['users'],

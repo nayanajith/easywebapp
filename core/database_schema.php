@@ -2,6 +2,7 @@
 /*
 System Database tables
 */
+$system_table_schema_version=1;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`               INT(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -32,7 +33,8 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   `phone`            VARCHAR(100) DEFAULT NULL,
   `email`            VARCHAR(100) DEFAULT NULL,
   `ldap_user_id`     VARCHAR(100) DEFAULT NULL,
-  `group_id`         VARCHAR(100) DEFAULT 'DATA_ENTRY' COMMENT 'SUPER,ADMIN,DATA_ENTRY,HEADS,EXAMINATION,STUDENT',
+  `auth_mod`         VARCHAR(50)  DEFAULT NULL,
+  `role_id`          VARCHAR(100),
   `theme`            VARCHAR(20) DEFAULT NULL,
   `layout`           VARCHAR(20) DEFAULT NULL,
   `homeroom`         VARCHAR(5) DEFAULT NULL,
@@ -45,7 +47,6 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   `note`             VARCHAR(300) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY (`username`),
-  UNIQUE KEY (`ldap_user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['role']="CREATE TABLE `role`(
@@ -129,8 +130,13 @@ $system_table_schemas['news']="CREATE TABLE `news`(
 
 
 $system_table_schemas['update_common_lists']="INSERT INTO `common_lists`(`list_name`,`list_label`,`json`)values
-   ('layout','Layout','[\"app\",\"pub\",\"web\"]'),
-   ()
+   ('layout','Layout','[\"app\",\"pub\",\"web\",\"app2\"]')
+";
+
+//In order to migrate from previous version (0) to current(1) execute these queries;
+$system_table_migrate[1]="
+ALTER TABLE users ADD auth_mod VARCHAR(100);
+ALTER TABLE users CHANGE group_id role_id VARCHAR(100);
 ";
 
 ?>
