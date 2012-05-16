@@ -16,7 +16,7 @@ then
 fi
 
 
-for FILE in $( grep  $FIND  * -R | grep -v -e js -e lib -e refactor.sh -e engine  -e img -e files -e .svn $IGNORE | awk -F: '{print $1}' |sort|uniq )
+for FILE in $( grep  $FIND  * -R | grep -v -e js -e lib -e refactor.sh -e engine  -e img -e files -e .svn  -e .git $IGNORE | awk -F: '{print $1}' |sort|uniq )
 do
 	echo Refactoring $FILE ...;
 	TMP="/tmp/$(basename $FILE)";

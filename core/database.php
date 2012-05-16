@@ -301,19 +301,8 @@ function db_to_csv($query,$csv_file,$db=null){
 db to csv data export function for non root users
 */
 function db_to_csv_nr($query,$csv_file,$db=null){
-   log_msg('db_to_csv_nr',$query);
    $res    = exec_query($query,Q_RET_MYSQL_RES,$db);
    set_file_header($csv_file);
-   /*
-   header('Content-Type', 'application/vnd.ms-excel');
-   header('Content-Disposition: attachment; filename='.$csv_file);
-   //header("Content-type: application/octet-stream");
-   //header("Content-Disposition: attachment; filename=your_desired_name.xls");
-   header("Pragma: no-cache");
-   header("Expires: 0");
-    */
-
-
    $header=false;
    while($row = mysql_fetch_assoc($res)){
       if(!$header){
@@ -325,25 +314,51 @@ function db_to_csv_nr($query,$csv_file,$db=null){
    exit();
 }
 
-function csv_to_db($csv_file,$table,$field_array,$db=null){
-   $query="LOAD DATA LOCAL INFILE '$csv_file' INTO TABLE $table FIELDS TERMINATED BY ',' ENCLOSED BY '\'' LINES TERMINATED BY '\n' (".implode(',',$field_array).")";
-   return exec_query($query,Q_RET_MYSQL_RES,$db);
-}
-
-/*
-data import from csv functio for non root users
-*/
-function csv_to_db_nr($table,$field_array,$csv_file,$first_line_header,$db=null){
-   $lines    =file($csv_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-   $first_line=true;
-   foreach($lines as $line){
-      if($first_line_header && $first_line){
-         $first_line=false;
-         continue;
+/**
+ * field array should imply the order of columns in csv
+ * data import from csv functio for non root users
+ */
+function csv_to_db($csv_file,$table,$field_array,$delimiter=',',$enclosure="'",$first_line_header=true,$first_line_columns=false,$db=null){
+   $first_line =true;
+   $comma      ="";
+   $query      ="INSERT INTO $table(`".implode($field_array,'`,`')."`)VALUES";
+   //Mac support
+   ini_set('auto_detect_line_endings',TRUE);
+   if (($handle = fopen($csv_file, "r")) !== FALSE) {
+      //fgetcsv will not work with null values (eg: for enclosure)
+      if (is_null($enclosure) || $enclosure != '') {
+         while(($line=fgetcsv($handle,$length=0,$delimiter)) !== FALSE){
+            if($first_line_columns && $first_line){
+               $field_array=$line;
+               $query      ="INSERT INTO $table(`".implode($field_array,'`,`')."`)VALUES";
+            }
+            if($first_line_header && $first_line){
+               $first_line=false;
+               continue;
+            }
+            $query   .=$comma."('".implode($line,"','")."')";
+            $comma   =",";
+         }
+      }else{
+          while(($line=fgetcsv($handle,$length=0,$delimiter,$enclosure)) !== FALSE){
+            if($first_line_columns && $first_line){
+               $field_array=$line;
+               $query      ="INSERT INTO $table(`".implode($field_array,'`,`')."`)VALUES";
+            }
+            if($first_line_header && $first_line){
+               $first_line=false;
+               continue;
+            }
+            $query   .=$comma."('".implode($line,"','")."')";
+            $comma   =",";
+         }
       }
-      $query="INSERT INTO $table(".explode($field_array,',').")values($line)";
       exec_query($query,Q_RET_NON,$db);
+   }else{
+      return false; 
    }
+   fclose($handle);
+   return true; 
 }
 
 function csv_to_db2($csv_file,$table,$field_array,$delimiter,$encloser,$terminator,$first_line_header,$db=null){
