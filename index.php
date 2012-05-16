@@ -3,12 +3,11 @@
 Author: nayanajith mahendra laxaman -> nml@ucsc.lk
 */
 /*
-if($_SERVER['REMOTE_ADDR'] != '192.248.16.12'){
-   echo "<br><br><br><center>Site down for maintenance!</center>";
+if($_SERVER['REMOTE_ADDR'] != '10.16.76.100'){
+   echo "<br><br><br><center>System down for maintenance!<br>will be back in few minutes</center>";
    exit();
 }
 */
-
 /*redirec through https*/
 /*
 if($_SERVER['HTTPS']!="on")

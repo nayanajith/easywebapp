@@ -741,10 +741,15 @@ EOE;
             if(isset($grid['ref_table'])){
                $table=$grid['ref_table'];
             }
+
+            $order_by="";
+            if(isset($grid['order_by'])){
+               $order_by=" ".$grid['order_by'];
+            }
          
             $fields  =implode(",",$columns);
          
-            $query="SELECT $fields FROM ".$table.$filter_str;
+            $query="SELECT $fields FROM ".$table.$filter_str.$order_by;
          }else{
             $query   =$grid['sql'];
          }
