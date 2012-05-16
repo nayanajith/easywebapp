@@ -19,13 +19,13 @@ function load_permission(){
    }
 
    //There are towo levels of permissions,from users.permission feld and from permission table. If you set the users.permission parameter to ADMIN that user will have supper power
-   if(isset($_SESSION['group_id']) && $_SESSION['group_id'] == 'SUPER'){
+   if(isset($_SESSION['role_id']) && $_SESSION['role_id'] == 'SUPER'){
       return;
    }
 
    //permission inherited from the users group
-   if(isset($_SESSION['group_id'])){
-      $GLOBALS['permission']['GROUP']=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=false && group_user_id='".$_SESSION['group_id']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
+   if(isset($_SESSION['role_id'])){
+      $GLOBALS['permission']['GROUP']=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=false && group_user_id='".$_SESSION['role_id']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
    }
 
    //Permission will override from the users permission
@@ -63,7 +63,7 @@ function get_page_access_right($module, $page){
 
 function is_module_permitted($module){
    //At the first place, if the user is an admin, provide supper power
-   if(isset($_SESSION['group_id']) && $_SESSION['group_id']=='SUPER'){
+   if(isset($_SESSION['role_id']) && $_SESSION['role_id']=='SUPER'){
       return true;
    }
 
@@ -89,7 +89,7 @@ function is_module_permitted($module){
 
 function is_page_permitted($module,$page){
    //At the first place, if the user is an admin, provide supper power
-   if(isset($_SESSION['group_id']) && $_SESSION['group_id']=='SUPER'){
+   if(isset($_SESSION['role_id']) && $_SESSION['role_id']=='SUPER'){
       return true;
    }
    $permission=$GLOBALS['permission'];
