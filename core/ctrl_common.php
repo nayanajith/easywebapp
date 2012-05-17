@@ -115,7 +115,7 @@ if(isset($_REQUEST['form'])){
             $model->gen_grid_csv();
          break;
          case 'json':
-            //$model->gen_grid_json();
+            $model->gen_grid_json();
          break;
          }
       }

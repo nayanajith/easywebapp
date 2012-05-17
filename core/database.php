@@ -286,6 +286,7 @@ function is_query_ok(){
    return $query_ok;
 }
 
+/*
 function db_to_csv($query,$csv_file,$db=null){
    $query="
    $query   
@@ -296,20 +297,33 @@ function db_to_csv($query,$csv_file,$db=null){
 
    return exec_query($query,Q_RET_MYSQL_RES,$db);
 }
+ */
+function db_to_csv($query,$csv_file,$db=null){
+   db_to_csv_nr($query,$csv_file,$db=$db);
+}
 
 /*
 db to csv data export function for non root users
 */
-function db_to_csv_nr($query,$csv_file,$db=null){
+function db_to_csv_nr($query,$csv_file,$header_array=null,$delimiter=",",$enclosure='"',$terminator="\n",$db=null){
    $res    = exec_query($query,Q_RET_MYSQL_RES,$db);
    set_file_header($csv_file);
    $header=false;
+
+   //print column header
+   if(!is_null($header_array)){
+      echo $enclosure.implode($enclosure.$delimiter.$enclosure,$column_array).$enclosure.$terminator;
+      $header=true;
+   }
+
+   //print lines
    while($row = mysql_fetch_assoc($res)){
       if(!$header){
-         echo '"'.implode('","',array_keys($row))."\"\n";
+         echo $enclosure.implode($enclosure.$delimiter.$enclosure,array_keys($row)).$enclosure.$terminator;
          $header=true;
+      }else{
+         echo $enclosure.implode($enclosure.$delimiter.$enclosure,array_values($row)).$enclosure.$terminator;
       }
-      echo '"'.implode('","',array_values($row))."\"\n";
    }
    exit();
 }
