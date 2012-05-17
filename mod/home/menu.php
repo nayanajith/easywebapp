@@ -1,7 +1,6 @@
 <?php
 $menu_array  = array(
    "news"=>"News",
-   "news"=>"News",
    "news_manage" =>array('PAGE'=>"Manage News",'VISIBLE'=>'true'),
    "about"=>"About",
    "help" =>"Help",
