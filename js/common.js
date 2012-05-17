@@ -341,7 +341,7 @@ function submit_display_values(action){
       }, 
       error: function() {
          if(!target_module && !target_page){
-            update_status_bar('ERROR','error on submission');
+            update_status_bar('ERROR','Error on submission!');
             update_progress_bar(0);
          }
       }
@@ -468,7 +468,7 @@ function submit_form(action,target_module,target_page){
 
          }, 
          error: function() {
-            update_status_bar('ERROR','error on submission');
+            update_status_bar('ERROR','Error on submission!');
             update_progress_bar(0);
 
             //call the error callback function
@@ -516,7 +516,7 @@ function submit_form(action,target_module,target_page){
          }, 
          error: function() {
             if(!target_module && !target_page){
-               update_status_bar('ERROR','error on submission');
+               update_status_bar('ERROR','Error on submission!');
                update_progress_bar(0);
 
                //call the before callback function
@@ -554,6 +554,7 @@ function xhr_generic(submit_form,action){
    var x_g_c=xhr_generic_callback;
    callback(x_g_c,'before');
    var url=gen_url();
+   update_progress_bar(0);
    dojo.xhrPost({
       url         : url+'&form='+submit_form+'&action='+action+'&data=true',
       handleAs    : 'text',
@@ -563,14 +564,15 @@ function xhr_generic(submit_form,action){
       handle: function(response,ioArgs){
       },
       load: function(response,ioArgs) {
-         update_status_bar('OK','Done');
+         update_status_bar('OK','Request handled successfully');
+         update_progress_bar(100);
 
          //call the error callback function
          callback(x_g_c,'ok',response);
 
       }, 
       error: function() {
-         update_status_bar('ERROR','error on submission');
+         update_status_bar('ERROR','Error on submission!');
          update_progress_bar(0);
 
          //call the error callback function
@@ -772,7 +774,7 @@ function dialog_submit(arg_form,action){
             update_status_bar('OK','form successfully submitted');
          }, 
          error: function() {
-            update_status_bar('ERROR','error on submission');
+            update_status_bar('ERROR','Error on submission!');
          }
       });
 /*
@@ -860,7 +862,7 @@ function fill_filter_form(form) {
  * Pupub generated with some content written to it
  */
 function popup(content){
-   var myWin=window.open('','RINT','width=1024,height=600,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1');
+   var myWin=window.open('','RINT','width=1024,height=600,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1,location=0');
    myWin.document.writeln(content);
    myWin.document.close();
 }

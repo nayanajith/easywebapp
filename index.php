@@ -206,17 +206,26 @@ if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
 if(isset($_SESSION['group_id'])){
    $group_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
 
-   $GLOBALS['THEME']=isset($group_layout_theme[0]['theme'])&&$group_layout_theme[0]['theme']!='NULL'&&$group_layout_theme[0]['theme']!=''?$group_layout_theme[0]['theme']:$GLOBALS['THEME'];
-   $GLOBALS['LAYOUT']=isset($group_layout_theme[0]['layout'])&&$group_layout_theme[0]['layout']!='NULL'&&$group_layout_theme[0]['layout']!=''?$group_layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
+   if(!is_null($group_layout_theme[0]['theme']) && $group_layout_theme[0]['theme'] != ""){
+      $GLOBALS['THEME']=$group_layout_theme[0]['theme'];
+   }
 
+   if(!is_null($group_layout_theme[0]['layout']) && $group_layout_theme[0]['layout'] != ""){
+      $GLOBALS['LAYOUT']=$group_layout_theme[0]['layout'];
+   }
 }
 log_msg($GLOBALS['LAYOUT']);
 /*--------------------------get and set users theme and layout----------------*/
 if(isset($_SESSION['username'])){
    $user_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['users']." WHERE username='".$_SESSION['username']."'",Q_RET_ARRAY);
 
-   $GLOBALS['THEME']=isset($user_layout_theme[0]['theme'])&&$user_layout_theme[0]['theme']!='NULL'&&$user_layout_theme[0]['theme']!=''?$user_layout_theme[0]['theme']:$GLOBALS['THEME'];
-   $GLOBALS['LAYOUT']=isset($user_layout_theme[0]['layout'])&&$user_layout_theme[0]['layout']!='NULL'&&$user_layout_theme[0]['layout']!=''?$user_layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
+   if(!is_null($user_layout_theme[0]['theme']) && $user_layout_theme[0]['theme'] != ""){
+      $GLOBALS['THEME']=$user_layout_theme[0]['theme'];
+   }
+
+   if(!is_null($user_layout_theme[0]['layout']) && $user_layout_theme[0]['layout'] != ""){
+      $GLOBALS['LAYOUT']=$user_layout_theme[0]['layout'];
+   }
 }
 
 log_msg($GLOBALS['LAYOUT']);
