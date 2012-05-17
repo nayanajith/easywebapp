@@ -1,34 +1,5 @@
 <?php
 /*
-This will include in to $GLOBALS['PAGE_GEN']
-*/
-/*
-Tables for the program
-*/
-/*
-$program_tables=array(
-   'eligibility'         =>'%seligibility',
-   'course'               =>'%scourse',
-   'course_reg'         =>'%scourse_reg',
-   'exam'               =>'%sexam',        
-   'rubric'               =>'%srubric',        
-   'paper'               =>'%spaper',        
-   'push'               =>'%spush',        
-   'gpa'                  =>'%sgpa',         
-   'log'                  =>'%slog',         
-   'filter'               =>'%sfilter',         
-   'marks'               =>'%smarks',       
-   'student'            =>'%sstudent',
-   'course_selection'   =>'%scourse_selection',
-   'state'               =>'%sstate',
-   'batch'               =>'%sbatch',
-   'mcq_marking_logic'   =>'%smcq_marking_logic',
-   'staff'               =>'%sstaff'
-);     
-
-$GLOBALS['P_TABLES']=$program_tables;
-*/
-/*
 Tables of the system
 */
 $system_tables=array(

@@ -203,8 +203,9 @@ if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
 }
 /*-------------------------get and set group theme and layout ----------------*/
 //will override by user theme and layout
-if(isset($_SESSION['group_id'])){
-   $group_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
+if(isset($_SESSION['role_id'])){
+   log_msg($_SESSION['role_id']);
+   $group_layout_theme=exec_query("SELECT layout,theme FROM ".s_t('role')." WHERE group_name='".$_SESSION['role_id']."'",Q_RET_ARRAY);
 
    if(!is_null($group_layout_theme[0]['theme']) && $group_layout_theme[0]['theme'] != ""){
       $GLOBALS['THEME']=$group_layout_theme[0]['theme'];
@@ -214,10 +215,10 @@ if(isset($_SESSION['group_id'])){
       $GLOBALS['LAYOUT']=$group_layout_theme[0]['layout'];
    }
 }
-log_msg($GLOBALS['LAYOUT']);
 /*--------------------------get and set users theme and layout----------------*/
-if(isset($_SESSION['username'])){
-   $user_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['users']." WHERE username='".$_SESSION['username']."'",Q_RET_ARRAY);
+if(isset($_SESSION['user_id'])){
+   log_msg('------------',"SELECT layout,theme FROM ".s_t('users')." WHERE user_id='".$_SESSION['user_id']."'");
+   $user_layout_theme=exec_query("SELECT layout,theme FROM ".s_t('users')." WHERE user_id='".$_SESSION['user_id']."'",Q_RET_ARRAY);
 
    if(!is_null($user_layout_theme[0]['theme']) && $user_layout_theme[0]['theme'] != ""){
       $GLOBALS['THEME']=$user_layout_theme[0]['theme'];
@@ -228,7 +229,6 @@ if(isset($_SESSION['username'])){
    }
 }
 
-log_msg($GLOBALS['LAYOUT']);
 /*custom layout can be set from url for testing*/
 $GLOBALS['LAYOUT']=isset($_REQUEST['layout'])?$_REQUEST['layout']:$GLOBALS['LAYOUT'];
 
