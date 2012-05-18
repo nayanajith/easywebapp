@@ -825,7 +825,15 @@ EOE;
        */
       public function gen_csv(){
          $filter_str=isset($_SESSION[PAGE]['FILTER'])?" WHERE ".$_SESSION[PAGE]['FILTER']:"";
-         $columns=array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
+         $columns=array();
+         $headers=array();
+			foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $key=>$arr){
+				if((isset($arr['custom']) && strtolower($arr['custom']) == 'true') || isset($arr['disabled']) && strtolower($arr['disabled']) == 'true' ){
+				}else{
+					$columns[]=$key;
+					$headers[]=$arr['label'];
+				}
+			}
          
          $fields=implode(",",$columns);
          $query="SELECT $fields FROM ".$this->table.$filter_str;
