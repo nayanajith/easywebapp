@@ -799,8 +799,12 @@ function fill_filter_form(form) {
       url       : gen_url()+'&action=filter_filler&data=json&form='+form,
       handleAs :'json',
       load       : function(response, ioArgs) {        
-         if(response.status && response.status == 'ERROR'){
-            update_status_bar(response.status,response.info);
+         if(!response){
+            return;
+         }
+
+         if(response.status_code && response.status_code == 'ERROR'){
+            update_status_bar(response.status_code,response.info);
             update_progress_bar(50);
             return;
          }
@@ -813,6 +817,7 @@ function fill_filter_form(form) {
                widget.attr('value', null);
             }
          });
+
          /*fill the form with returned values from json*/
          for(var key in response){
             if(response[key] && dijit.byId(key)){

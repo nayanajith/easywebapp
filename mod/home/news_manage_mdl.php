@@ -78,10 +78,10 @@ $GLOBALS['MODEL']=array(
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'TOOLBAR'=>array(
       "rid"=>array(
-         "length"=>"100",
+         "length"=>"200",
          "dojoType"=>"dijit.form.FilteringSelect",
          "required"=>"false",
-         "label"=>"Label",
+         "label"=>"Select News",
          "label_pos"=>"left",
 
          "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',

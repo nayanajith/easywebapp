@@ -285,7 +285,7 @@ img {
 
 .clean{
    border-collapse:collapse;
-   border:1px solid black;
+   border-color:#5B92C8;
 }
 
 .clean td{
@@ -490,7 +490,7 @@ img {
    background-color:#F5F6CE;
 }
 
-.help div{
+.help div,.help p{
    text-align:left;
    padding:10px;
 }
