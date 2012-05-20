@@ -3,12 +3,11 @@
 Author: nayanajith mahendra laxaman -> nml@ucsc.lk
 */
 /*
-if($_SERVER['REMOTE_ADDR'] != '192.248.16.12'){
-   echo "<br><br><br><center>Site down for maintenance!</center>";
+if($_SERVER['REMOTE_ADDR'] != '10.16.76.100'){
+   echo "<br><br><br><center>System down for maintenance!<br>will be back in few minutes</center>";
    exit();
 }
 */
-
 /*redirec through https*/
 /*
 if($_SERVER['HTTPS']!="on")
@@ -204,23 +203,30 @@ if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
 }
 /*-------------------------get and set group theme and layout ----------------*/
 //will override by user theme and layout
-if(isset($_SESSION['group_id'])){
-   $group_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
+if(isset($_SESSION['role_id'])){
+   $group_layout_theme=exec_query("SELECT layout,theme FROM ".s_t('role')." WHERE group_name='".$_SESSION['role_id']."'",Q_RET_ARRAY);
 
-   $GLOBALS['THEME']=isset($group_layout_theme[0]['theme'])&&$group_layout_theme[0]['theme']!='NULL'&&$group_layout_theme[0]['theme']!=''?$group_layout_theme[0]['theme']:$GLOBALS['THEME'];
-   $GLOBALS['LAYOUT']=isset($group_layout_theme[0]['layout'])&&$group_layout_theme[0]['layout']!='NULL'&&$group_layout_theme[0]['layout']!=''?$group_layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
+   if(!is_null($group_layout_theme[0]['theme']) && $group_layout_theme[0]['theme'] != "" && $group_layout_theme[0]['theme'] != "NULL"){
+      $GLOBALS['THEME']=$group_layout_theme[0]['theme'];
+   }
 
+   if(!is_null($group_layout_theme[0]['layout']) && $group_layout_theme[0]['layout'] != "" && $group_layout_theme[0]['layout'] != "NULL"){
+      $GLOBALS['LAYOUT']=$group_layout_theme[0]['layout'];
+   }
 }
-log_msg($GLOBALS['LAYOUT']);
 /*--------------------------get and set users theme and layout----------------*/
-if(isset($_SESSION['username'])){
-   $user_layout_theme=exec_query("SELECT layout,theme FROM ".$GLOBALS['S_TABLES']['users']." WHERE username='".$_SESSION['username']."'",Q_RET_ARRAY);
+if(isset($_SESSION['user_id'])){
+   $user_layout_theme=exec_query("SELECT layout,theme FROM ".s_t('users')." WHERE user_id='".$_SESSION['user_id']."'",Q_RET_ARRAY);
 
-   $GLOBALS['THEME']=isset($user_layout_theme[0]['theme'])&&$user_layout_theme[0]['theme']!='NULL'&&$user_layout_theme[0]['theme']!=''?$user_layout_theme[0]['theme']:$GLOBALS['THEME'];
-   $GLOBALS['LAYOUT']=isset($user_layout_theme[0]['layout'])&&$user_layout_theme[0]['layout']!='NULL'&&$user_layout_theme[0]['layout']!=''?$user_layout_theme[0]['layout']:$GLOBALS['LAYOUT'];
+   if(!is_null($user_layout_theme[0]['theme']) && $user_layout_theme[0]['theme'] != "" && $user_layout_theme[0]['theme'] != "NULL"){
+      $GLOBALS['THEME']=$user_layout_theme[0]['theme'];
+   }
+
+   if(!is_null($user_layout_theme[0]['layout']) && $user_layout_theme[0]['layout'] != "" && $user_layout_theme[0]['layout'] != "NULL"){
+      $GLOBALS['LAYOUT']=$user_layout_theme[0]['layout'];
+   }
 }
 
-log_msg($GLOBALS['LAYOUT']);
 /*custom layout can be set from url for testing*/
 $GLOBALS['LAYOUT']=isset($_REQUEST['layout'])?$_REQUEST['layout']:$GLOBALS['LAYOUT'];
 

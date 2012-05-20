@@ -185,8 +185,8 @@ return $frm;
    return file upload error code
    */
    function server_side_handle($valid_file_types,$max_file_size,$input_name,$file_overwrite){
+log_msg('kkkkkkkkkkkkkkkkkkkkkkkkk');
       /*file type and size validation*/
-
       if(in_array($_FILES[$input_name]["type"],$valid_file_types) && ($_FILES[$input_name]["size"] <= $max_file_size)){
          
          /*Check for errors in file if errors are then return error code*/

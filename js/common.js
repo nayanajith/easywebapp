@@ -341,7 +341,7 @@ function submit_display_values(action){
       }, 
       error: function() {
          if(!target_module && !target_page){
-            update_status_bar('ERROR','error on submission');
+            update_status_bar('ERROR','Error on submission!');
             update_progress_bar(0);
          }
       }
@@ -364,16 +364,26 @@ function reload_page(){
 /*
  * callback arrays are in the following form the callback function will check whether the function is set and if so it will execute the function
 var fill_form_callback={
-   'ok':null,
-   'error':null,
-   'reset':null,
-   'before':null
+   'ok':[f1,f2],
+   'error':[],
+   'reset':[f3,f4],
+   'before':[]
 };
 */
-function callback(callback_array,function_name){
+function callback(callback_array,function_name,response){
    if(callback_array && function_name && callback_array[function_name] && callback_array[function_name] != null){
-      callback_array[function_name]();
+      for(var i in callback_array[function_name]){
+         callback_array[function_name][i](response);
+      }
+      callback_array[function_name]=[];
    }
+}
+
+/**
+ * Add to callback array
+ */
+function add_callback(callback_array,callback_name,callback_function){
+   callback_array[callback_name].push(callback_function);
 }
 
 /**
@@ -381,8 +391,13 @@ function callback(callback_array,function_name){
  */
 function clear_callback(callback_array){
    for(key in callback_array){
-      callback_array[key]=null;
+      callback_array[key]=[];
    }
+}
+
+//wrapper for submit_form callbacks
+function s_f_c_add(callback_name,callback_function){
+   add_callback(submit_form_callback,callback_name,callback_function);
 }
 
 /** Submit the given form
@@ -390,11 +405,13 @@ function clear_callback(callback_array){
 */
 //cllback array for this function
 var submit_form_callback={
-   'ok':null,
-   'error':null,
-   'before':null
+   'ok':[],
+   'error':[],
+   'before':[]
 };
 
+//form can be changed explicitly before submitting the form
+var form='main';
 function submit_form(action,target_module,target_page){
    //submit form callback array
    var s_f_c=submit_form_callback;
@@ -402,16 +419,15 @@ function submit_form(action,target_module,target_page){
    //call the before callback function
    callback(s_f_c,'before');
 
-   var form='main';
    var url=gen_url();
    switch(action){
       case 'print':
-         window.open(url+'&form=main&action='+action,'width=800px,height=600px');
+         window.open(url+'&form='+form+'&action='+action,'width=800px,height=600px');
          return;
       break;   
       case 'csv':
       case 'pdf':
-         download(url+'&form=main&action='+action);
+         download(url+'&form='+form+'&action='+action);
          return;
       break;   
       case 'reload':
@@ -438,28 +454,25 @@ function submit_form(action,target_module,target_page){
    //Some actions do not require form submission
    if (action=='del_filter' ) {
     dojo.xhrPost({
-         url         : url+'&form=main&action='+action,
+         url         : url+'&form='+form+'&action='+action,
          handleAs    : 'json',
          timeout     : timeout_,
 
          handle: function(response,ioArgs){
-            //update_status_bar(response.status_code,response.info);
-            //reload_page(); 
-            
-            //call the error callback function
-            callback(s_f_c,'ok');
-
          },
          load: function(response,ioArgs) {
             update_status_bar(response.status_code,response.info);
-            //reload_page(); 
+
+            //call the error callback function
+            callback(s_f_c,'ok');
+
          }, 
          error: function() {
-            update_status_bar('ERROR','error on submission');
+            update_status_bar('ERROR','Error on submission!');
             update_progress_bar(0);
 
             //call the error callback function
-            callback(s_f_c,'error');
+            callback(s_f_c,'error',response);
          }
       });
       return;
@@ -468,29 +481,12 @@ function submit_form(action,target_module,target_page){
 
    if (action=='delete' || action=='add_filter' || action=='add_backup' || action=='del_backup' || dijit.byId(form).validate()) {
       dojo.xhrPost({
-         url         : url+'&form=main&action='+action, 
+         url         : url+'&form='+form+'&action='+action, 
          handleAs    : 'json',
          form        : form, 
          timeout     : timeout_,
       
          handle: function(response,ioArgs){
-            /*
-            update_status_bar(response.status_code,response.info);
-            if(response.status_code == 'OK'){
-               if(action=='add_filter'){
-                  //reload_page(); 
-               }
-               if(!target_module && !target_page){
-                  update_progress_bar(100);
-               }else{
-                  window.open('?module='+module+'&page='+page,'_parent');
-               }
-            }else{
-               update_status_bar('ERROR',response.info);
-               if(document.getElementById('captcha_image'))reload_captcha();
-               //update_status_bar('ERROR','Duplicate Entry!');
-            }
-            */
          },
       
          load: function(response,ioArgs) {
@@ -520,11 +516,11 @@ function submit_form(action,target_module,target_page){
          }, 
          error: function() {
             if(!target_module && !target_page){
-               update_status_bar('ERROR','error on submission');
+               update_status_bar('ERROR','Error on submission!');
                update_progress_bar(0);
 
                //call the before callback function
-               callback(s_f_c,'error');
+               callback(s_f_c,'error',response);
 
             }
          }
@@ -540,6 +536,51 @@ function submit_form(action,target_module,target_page){
    return true;
 }
 
+//wrapper for xhr callbacks
+function xhr_c_add(callback_name,callback_function){
+   add_callback(xhr_generic_callback,callback_name,callback_function);
+}
+
+/**
+ * Generic xhr function
+ */
+var xhr_generic_callback={
+   'ok':[],
+   'error':[],
+   'before':[]
+};
+
+function xhr_generic(submit_form,action){
+   var x_g_c=xhr_generic_callback;
+   callback(x_g_c,'before');
+   var url=gen_url();
+   update_progress_bar(0);
+   dojo.xhrPost({
+      url         : url+'&form='+submit_form+'&action='+action+'&data=true',
+      handleAs    : 'text',
+      form        : submit_form, 
+      timeout     : timeout_,
+
+      handle: function(response,ioArgs){
+      },
+      load: function(response,ioArgs) {
+         update_status_bar('OK','Request handled successfully');
+         update_progress_bar(100);
+
+         //call the error callback function
+         callback(x_g_c,'ok',response);
+
+      }, 
+      error: function() {
+         update_status_bar('ERROR','Error on submission!');
+         update_progress_bar(0);
+
+         //call the error callback function
+         callback(x_g_c,'error',response);
+      }
+   });
+   return;
+}
 
 /**
  * reload the grid
@@ -549,7 +590,8 @@ function reload_grid(grid){
    update_progress_bar(50);
 
    var url_=grid.store.url;
-   var new_store = new dojox.data.CsvStore({url: url_ });
+   //var new_store = new dojox.data.CsvStore({url: url_ });
+   var new_store = new dojox.data.QueryReadStore({url: url_ });
 
    //setTimeout(function(){grid.setStore(new_store)},2000); 
    grid.setStore(new_store);
@@ -581,14 +623,20 @@ function load_selected_value(field,value_to_load){
    });
 }
 
+//wrapper for filter form callbacks
+function f_f_c_add(callback_name,callback_function){
+   add_callback(fill_form_callback,callback_name,callback_function);
+}
+
+
 /**
  * Populate the data in form for the selected key
  */
 var fill_form_callback={
-   'ok':null,
-   'error':null,
-   'reset':null,
-   'before':null
+   'ok':[],
+   'error':[],
+   'reset':[],
+   'before':[]
 };
 
 function fill_form(rid,form) {
@@ -726,7 +774,7 @@ function dialog_submit(arg_form,action){
             update_status_bar('OK','form successfully submitted');
          }, 
          error: function() {
-            update_status_bar('ERROR','error on submission');
+            update_status_bar('ERROR','Error on submission!');
          }
       });
 /*
@@ -748,11 +796,15 @@ function fill_filter_form(form) {
    }
 
    dojo.xhrPost({
-      url       : gen_url()+'&action=filter_filler&data=json&id='+rid+'&form='+form,
+      url       : gen_url()+'&action=filter_filler&data=json&form='+form,
       handleAs :'json',
       load       : function(response, ioArgs) {        
-         if(response.status && response.status == 'ERROR'){
-            update_status_bar(response.status,response.info);
+         if(!response){
+            return;
+         }
+
+         if(response.status_code && response.status_code == 'ERROR'){
+            update_status_bar(response.status_code,response.info);
             update_progress_bar(50);
             return;
          }
@@ -765,6 +817,7 @@ function fill_filter_form(form) {
                widget.attr('value', null);
             }
          });
+
          /*fill the form with returned values from json*/
          for(var key in response){
             if(response[key] && dijit.byId(key)){
@@ -810,3 +863,11 @@ function fill_filter_form(form) {
 
 /*-------------------------------------------------------------------------------------*/
 
+/**
+ * Pupub generated with some content written to it
+ */
+function popup(content){
+   var myWin=window.open('','RINT','width=1024,height=600,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1,location=0');
+   myWin.document.writeln(content);
+   myWin.document.close();
+}

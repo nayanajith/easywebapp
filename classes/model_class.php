@@ -253,7 +253,7 @@ EOE;
          "label"=>"Label",
          "label_pos"=>"left",
 
-         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main",f_on_ok,f_on_err,f_on_reset)',
+         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',
          "searchAttr"=>"label",
          "pageSize"=>"10",
          "store"=>"rid_store",
@@ -741,10 +741,15 @@ EOE;
             if(isset($grid['ref_table'])){
                $table=$grid['ref_table'];
             }
+
+            $order_by="";
+            if(isset($grid['order_by'])){
+               $order_by=" ".$grid['order_by'];
+            }
          
             $fields  =implode(",",$columns);
          
-            $query="SELECT $fields FROM ".$table.$filter_str;
+            $query="SELECT $fields FROM ".$table.$filter_str.$order_by;
          }else{
             $query   =$grid['sql'];
          }
@@ -754,13 +759,81 @@ EOE;
          return;
       }
 
+      /**
+       * Generate json to be work with grids
+       */
+
+      public function gen_grid_json(){
+         $limit   = "";
+         if(isset($_REQUEST['count'])){
+            $limit   .= " LIMIT " . $_REQUEST['count'];
+         }
+
+         if(isset($_REQUEST['start'])){
+            $limit   .= " OFFSET " . $_REQUEST['start'];
+         }
+
+
+         $table      =$this->table;
+         $filter_str ='';
+         $query      ='';
+         $grid       =$GLOBALS['MODEL']['MAIN_RIGHT']['GRID'];
+
+         if(!isset($grid['sql'])){
+            if(isset($grid['filter']) && $grid['filter']){
+               $filter_str =" WHERE ".$grid['filter'];
+            }
+         
+            if(isset($grid['columns'])){
+               //Compatible with any array (associative or normal)
+               foreach($grid['columns'] as $key => $value){
+                  if(is_array($value)){
+                     $columns[]=$key;
+                  }else{
+                     $columns[]=$value;
+                  }
+               }
+            }else{
+               $columns =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
+            }
+
+            if(isset($grid['ref_table'])){
+               $table=$grid['ref_table'];
+            }
+
+            $order_by="";
+            if(isset($grid['order_by'])){
+               $order_by=" ".$grid['order_by'];
+            }
+         
+            $fields  =implode(",",$columns);
+         
+            $query="SELECT $fields FROM ".$table.$filter_str.$order_by.$limit;
+         }else{
+            $query   =$grid['sql'].$limit;
+         }
+
+         $data=exec_query($query,Q_RET_ARRAY);
+         $file_name='gird.json';
+         set_file_header($file_name);
+         print '/*'.json_encode(array('numRows'=>get_num_rows(),'items'=>$data,'identity'=>'id')).'*/';  
+      }
+
 
       /**
        * Generate csv for the given query
        */
       public function gen_csv(){
          $filter_str=isset($_SESSION[PAGE]['FILTER'])?" WHERE ".$_SESSION[PAGE]['FILTER']:"";
-         $columns=array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
+         $columns=array();
+         $headers=array();
+			foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $key=>$arr){
+				if((isset($arr['custom']) && strtolower($arr['custom']) == 'true') || isset($arr['disabled']) && strtolower($arr['disabled']) == 'true' ){
+				}else{
+					$columns[]=$key;
+					$headers[]=$arr['label'];
+				}
+			}
          
          $fields=implode(",",$columns);
          $query="SELECT $fields FROM ".$this->table.$filter_str;

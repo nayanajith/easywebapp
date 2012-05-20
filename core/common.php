@@ -7,16 +7,31 @@
  * Return effective system table name
  */
 function s_t($key){
-   return s_table($key);
-}
-function super_table($key){
-   return s_table($key);
+   return system_table($key);
 }
 function s_table($key){
+   return system_table($key);
+}
+function system_table($key){
+   if(isset($GLOBALS['S_TABLES']) && isset($GLOBALS['S_TABLES'][$key])){
+      return $GLOBALS['S_TABLES'][$key];
+   }else{
+      return null;
+   }
+}
+
+/**
+ * Returen Module system table
+ */
+function m_s_t($key){
+   return module_system_table($key);
+}
+function m_s_table($key){
+   return module_system_tabl($key);
+}
+function module_system_table($key){
    if(isset($GLOBALS['MOD_S_TABLES']) && isset($GLOBALS['MOD_S_TABLES'][$key])){
       return $GLOBALS['MOD_S_TABLES'][$key];
-   }elseif(isset($GLOBALS['S_TABLES']) && isset($GLOBALS['S_TABLES'][$key])){
-      return $GLOBALS['S_TABLES'][$key];
    }else{
       return null;
    }
@@ -26,16 +41,32 @@ function s_table($key){
  * Return effective program table name
  */
 function p_t($key){
-   return p_table($key);
-}
-function program_table($key){
-   return p_table($key);
+   return program_table($key);
 }
 function p_table($key){
+   return program_table($key);
+}
+function program_table($key){
+   if(isset($GLOBALS['P_TABLES']) && isset($GLOBALS['P_TABLES'][$key])){
+      return $GLOBALS['P_TABLES'][$key];
+   }else{
+      return null;
+   }
+}
+
+/**
+ * Return module program tables
+ */
+
+function m_p_t($key){
+   return module_program_table($key);
+}
+function m_p_table($key){
+   return module_program_table($key);
+}
+function module_program_table($key){
    if(isset($GLOBALS['MOD_P_TABLES']) && isset($GLOBALS['MOD_P_TABLES'][$key])){
       return $GLOBALS['MOD_P_TABLES'][$key];
-   }elseif(isset($GLOBALS['P_TABLES']) && isset($GLOBALS['P_TABLES'][$key])){
-      return $GLOBALS['P_TABLES'][$key];
    }else{
       return null;
    }

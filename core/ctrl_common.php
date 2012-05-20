@@ -104,18 +104,16 @@ if(isset($_REQUEST['form'])){
             }
          break;
          }
-      }else
+    }
    break;
-   case 'grid':
    case 'main_grid_store':
-   case 'store3':
       if(isset($_REQUEST['data'])){
          switch($_REQUEST['data']){
          case 'csv':
             $model->gen_grid_csv();
          break;
          case 'json':
-            //$model->gen_grid_json();
+            $model->gen_grid_json();
          break;
          }
       }

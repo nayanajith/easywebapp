@@ -1,34 +1,5 @@
 <?php
 /*
-This will include in to $GLOBALS['PAGE_GEN']
-*/
-/*
-Tables for the program
-*/
-/*
-$program_tables=array(
-   'eligibility'         =>'%seligibility',
-   'course'               =>'%scourse',
-   'course_reg'         =>'%scourse_reg',
-   'exam'               =>'%sexam',        
-   'rubric'               =>'%srubric',        
-   'paper'               =>'%spaper',        
-   'push'               =>'%spush',        
-   'gpa'                  =>'%sgpa',         
-   'log'                  =>'%slog',         
-   'filter'               =>'%sfilter',         
-   'marks'               =>'%smarks',       
-   'student'            =>'%sstudent',
-   'course_selection'   =>'%scourse_selection',
-   'state'               =>'%sstate',
-   'batch'               =>'%sbatch',
-   'mcq_marking_logic'   =>'%smcq_marking_logic',
-   'staff'               =>'%sstaff'
-);     
-
-$GLOBALS['P_TABLES']=$program_tables;
-*/
-/*
 Tables of the system
 */
 $system_tables=array(
@@ -286,6 +257,7 @@ function is_query_ok(){
    return $query_ok;
 }
 
+/*
 function db_to_csv($query,$csv_file,$db=null){
    $query="
    $query   
@@ -296,54 +268,82 @@ function db_to_csv($query,$csv_file,$db=null){
 
    return exec_query($query,Q_RET_MYSQL_RES,$db);
 }
+ */
+function db_to_csv($query,$csv_file,$db=null){
+   db_to_csv_nr($query,$csv_file,$db=$db);
+}
 
 /*
 db to csv data export function for non root users
 */
-function db_to_csv_nr($query,$csv_file,$db=null){
-   log_msg('db_to_csv_nr',$query);
+function db_to_csv_nr($query,$csv_file,$header_array=null,$delimiter=",",$enclosure='"',$terminator="\n",$db=null){
    $res    = exec_query($query,Q_RET_MYSQL_RES,$db);
    set_file_header($csv_file);
-   /*
-   header('Content-Type', 'application/vnd.ms-excel');
-   header('Content-Disposition: attachment; filename='.$csv_file);
-   //header("Content-type: application/octet-stream");
-   //header("Content-Disposition: attachment; filename=your_desired_name.xls");
-   header("Pragma: no-cache");
-   header("Expires: 0");
-    */
-
-
    $header=false;
+
+   //print column header
+   if(!is_null($header_array)){
+      echo $enclosure.implode($enclosure.$delimiter.$enclosure,$column_array).$enclosure.$terminator;
+      $header=true;
+   }
+
+   //print lines
    while($row = mysql_fetch_assoc($res)){
       if(!$header){
-         echo '"'.implode('","',array_keys($row))."\"\n";
+         echo $enclosure.implode($enclosure.$delimiter.$enclosure,array_keys($row)).$enclosure.$terminator;
          $header=true;
+      }else{
+         echo $enclosure.implode($enclosure.$delimiter.$enclosure,array_values($row)).$enclosure.$terminator;
       }
-      echo '"'.implode('","',array_values($row))."\"\n";
    }
    exit();
 }
 
-function csv_to_db($csv_file,$table,$field_array,$db=null){
-   $query="LOAD DATA LOCAL INFILE '$csv_file' INTO TABLE $table FIELDS TERMINATED BY ',' ENCLOSED BY '\'' LINES TERMINATED BY '\n' (".implode(',',$field_array).")";
-   return exec_query($query,Q_RET_MYSQL_RES,$db);
-}
-
-/*
-data import from csv functio for non root users
-*/
-function csv_to_db_nr($table,$field_array,$csv_file,$first_line_header,$db=null){
-   $lines    =file($csv_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-   $first_line=true;
-   foreach($lines as $line){
-      if($first_line_header && $first_line){
-         $first_line=false;
-         continue;
+/**
+ * field array should imply the order of columns in csv
+ * data import from csv functio for non root users
+ */
+function csv_to_db($csv_file,$table,$field_array,$delimiter=',',$enclosure="'",$first_line_header=true,$first_line_columns=false,$db=null){
+   $first_line =true;
+   $comma      ="";
+   $query      ="INSERT INTO $table(`".implode($field_array,'`,`')."`)VALUES";
+   //Mac support
+   ini_set('auto_detect_line_endings',TRUE);
+   if (($handle = fopen($csv_file, "r")) !== FALSE) {
+      //fgetcsv will not work with null values (eg: for enclosure)
+      if (is_null($enclosure) || $enclosure != '') {
+         while(($line=fgetcsv($handle,$length=0,$delimiter)) !== FALSE){
+            if($first_line_columns && $first_line){
+               $field_array=$line;
+               $query      ="INSERT INTO $table(`".implode($field_array,'`,`')."`)VALUES";
+            }
+            if($first_line_header && $first_line){
+               $first_line=false;
+               continue;
+            }
+            $query   .=$comma."('".implode($line,"','")."')";
+            $comma   =",";
+         }
+      }else{
+          while(($line=fgetcsv($handle,$length=0,$delimiter,$enclosure)) !== FALSE){
+            if($first_line_columns && $first_line){
+               $field_array=$line;
+               $query      ="INSERT INTO $table(`".implode($field_array,'`,`')."`)VALUES";
+            }
+            if($first_line_header && $first_line){
+               $first_line=false;
+               continue;
+            }
+            $query   .=$comma."('".implode($line,"','")."')";
+            $comma   =",";
+         }
       }
-      $query="INSERT INTO $table(".explode($field_array,',').")values($line)";
       exec_query($query,Q_RET_NON,$db);
+   }else{
+      return false; 
    }
+   fclose($handle);
+   return true; 
 }
 
 function csv_to_db2($csv_file,$table,$field_array,$delimiter,$encloser,$terminator,$first_line_header,$db=null){
