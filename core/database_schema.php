@@ -2,7 +2,7 @@
 /*
 System Database tables
 */
-$system_table_schema_version=2;
+$system_table_schema_version=3;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`               INT(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -107,15 +107,15 @@ $system_table_schemas['filter']="CREATE TABLE `filter` (
    UNIQUE KEY (`filter_name`,`table_name`,`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-$system_table_schemas['common_lists']="CREATE TABLE `common_lists`(
-  `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
-  `list_name`        VARCHAR(100) NOT NULL,
-  `list_label`       VARCHAR(300) NOT NULL,
-  `json`             TEXT NOT NULL,
-  `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   PRIMARY KEY (`rid`),
-   UNIQUE KEY (`list_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+$system_table_schemas['base_data']="CREATE TABLE `base_data` (
+  `rid`              INT(11)        NOT NULL DEFAULT '0',
+  `class`            VARCHAR(50)    DEFAULT NULL,
+  `name`             VARCHAR(300)   NOT NULL,
+  `description`      TEXT           NOT NULL,
+  `status`           VARCHAR(100)   DEFAULT NULL,
+  `timestamp`        TIMESTAMP,
+   PRIMARY KEY (`rid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8"; 
 
 $system_table_schemas['news']="CREATE TABLE `news`(
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
@@ -127,17 +127,25 @@ $system_table_schemas['news']="CREATE TABLE `news`(
    PRIMARY KEY (`rid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-
-$system_table_schemas['update_common_lists']="INSERT INTO `common_lists`(`list_name`,`list_label`,`json`)values
-   ('layout','Layout','[\"app\",\"pub\",\"web\",\"app2\"]')
+//Base data which should be populated at the first time the system is set up;
+$system_base_data['base_data']="
+INSERT INTO `base_data`(`class`,`name`,`description`,`status`)VALUES
+('VARIABLE','SYSTEM__DB_VERSION','$system_table_schema_version','ENABLED'),
+('title','[\"MR\",\"MS\",\"MISS\",\"DR\",\"Dr\",\"PROF\"],'ENABLED'),
+('district','{\"17\":\"Ampara\",\"20\":\"Anuradhapura\",\"22\":\"Badulla\",\"16\":\"Batticaloa\",\"1\":\"Colombo\",\"7\":\"Galle\",\"2\":\"Gampaha\",\"9\":\"Hambantota\",\"10\":\"Jaffna\",\"3\":\"Kalutara\",\"5\":\"Kandy\",\"24\":\"Kegalle\",\"11\":\"Kilinochchi\",\"19\":\"Kurunegala\",\"12\":\"Mannar\",\"4\":\"Matale\",\"8\":\"Matara\",\"23\":\"Moneragala\",\"13\":\"Mullaitivu\",\"6\":\"Nuwara Eliya\",\"21\":\"Polonnaruwa\",\"18\":\"Puttalam\",\"25\":\"Ratnapura\",\"15\":\"Trincomalee\",\"14\":\"Vavuniya\"},'ENABLED'),
+('province','[\"Central\",\"Eastern\",\"North Central\",\"Northern\",\"North Western\",\"Sabaragamuwa\",\"Southern\",\"Uva\",\"Western\"] ','ENABLED'),
+('al_subjects','{\"1\":\"PHYSICS\",\"2\":\"CHEMISTERY\",\"10\":\"COMBINED MATHEMATICS\",\"09\":\"BIOLOGY\",\"71\":\"SINHALA\",\"23\":\"ELEMENT OF POLITICAL SCIENCE\",\"24\":\"LOGIC &amp; SCIENTIFIC METHOD\",\"21\":\"ECONOMICS\",\"31\":\"BUSINESS STATISTICS\",\"32\":\"BUSINESS STUDIES\",\"33\":\"ACCOUNTING\",\"22\":\"GEOGRAPHY\",\"25\":\"HISTORY\",\"44\":\"ISLAM\"} ','ENABLED'),
+('days_of_week','[\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"]','ENABLED')
 ";
 
 //In order to migrate from previous version (0) to current(1) execute these queries;
+//db v0 v1
 $system_table_migrate[1]="
 ALTER TABLE users ADD auth_mod VARCHAR(100);
 ALTER TABLE users CHANGE group_id role_id VARCHAR(100);
 ";
 
+//db v1 -> v2
 $system_table_migrate[2]="
 alter table users change failed_login failed_logins int not null default 0;
 alter table users change last_login last_login datetime;
@@ -145,6 +153,15 @@ alter table users drop profile_id;
 alter table users drop rollover_id;
 alter table users change deleted status varchar(100);
 alter table users add last_logout datetime;
+";
+
+//db v2 -> v3
+$system_table_migrate[3][]=$system_table_schemas['base_data'];
+$system_table_migrate[3][]="
+insert into base_data(class,name,description,status) select 'LIST',list_name,json,'ACTIVE' from common_lists; 
+";
+$system_table_migrate[3][]="
+drop table base_data;
 ";
 
 ?>
