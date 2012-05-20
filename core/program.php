@@ -31,7 +31,6 @@ function program_select($program){
          open(URL,'_self');
       }   
    }
-program_select.textbox.value='kkk';
    </script>
    ";
 
