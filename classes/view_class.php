@@ -537,7 +537,7 @@ dojo.ready(function(){
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>";
          $html .="<table
-            autoHeight='true'
+            autoHeight='false'
             dojoType='dojox.grid.EnhancedGrid'
             errorMessage='No records to display!'
             selectable='true'

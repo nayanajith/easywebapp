@@ -107,6 +107,7 @@ if(isset($_REQUEST['form'])){
     }
    break;
    case 'main_grid_store':
+   case 'store3':
       if(isset($_REQUEST['data'])){
          switch($_REQUEST['data']){
          case 'csv':
