@@ -120,6 +120,7 @@ class View{
        "dijit.form.CheckBox"          =>"<div %s></div>",
        "dijit.form.RadioButton"       =>"<div %s></div>",
        "dijit.InlineEditBox"          =>"<span %s></span>",
+       "dijit.form.DropDownButton"    =>"<div %s>%s</div>",
        "dijit.form.Button"            =>"<button %s>%s</button>",
    );
 
@@ -359,7 +360,7 @@ class View{
    public function gen_toolbar_entry($field,$field_array){
 
       //if the entry/control type is a button the execute gen_toolbar_button instead
-      if($field_array['dojoType']=='dijit.form.Button'){
+      if(!(isset($field_array['custom']) && $field_array['custom'] == 'true') && $field_array['dojoType']=='dijit.form.Button' ){
          return $this->gen_toolbar_button($field,$field_array);
       }
       //Add toolbar prefix to identify the ids in toolbar
@@ -391,26 +392,14 @@ class View{
       /*inner value of the field (innerhtml)*/
       $inner   =isset($field_array['inner'])?$field_array['inner']:"";
 
-      /*if required=true put  * by the label */
-      $required      ="";
-      if(isset($field_array['required']) && $field_array['required'] == "true"){
-         //$required      ="<font color='red'>*</font>";
-      }
-
       //If the field require a stor add a store
       if(isset($field_array['store'])){
          $this->add_store($field,$field_array['store']);
       }
 
       /*Handl custom form input method or generic one*/
-      if($field_array['dojoType'] == 'dijit.form.Button' ){
-         d_r($field_array['dojoType']);
-      }elseif(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
-         $html.="<div id='td_$field' jsId='td_$field' >";
-         //$html.="<label for='$field' >".$field_array['label']."$required</label>";
+      if(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
          $html.=$inner;
-         $html.=sprintf($html,$fill);
-         $html.="<div id='td_in_$field'></div></div>\n";
       }else{
          d_r($field_array['dojoType']);
          $form_control  =$this->form_controls[$field_array['dojoType']];
@@ -425,7 +414,7 @@ class View{
 				$data_dojo_props	="data-dojo-props=\"placeHolder:'".$field_array['title']."'\"";
 			}
 
-         $options       =" jsId='$field' id='$field' name='$field'  title='".$field_array['label']."' $data_dojo_props ";
+         $options       =" jsId='$field' id='$field' title='".$field_array['label']."' $data_dojo_props ";
 
          /*Fields to bypass when creating forms*/
          $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder');
@@ -462,17 +451,16 @@ class View{
 
             //combining the dojo type mapping in above array with the generated content
             $html            .=sprintf($form_control,$options,$inner);
-            $field_div_start  ="<div id='td_$field' jsId='td_$field'>";
-            $field_div_end    ="<div id='td_in_$field'></div></div>";
-            $field_div_start  ="";
-            $field_div_end    ="";
-
-
-            //Set label position
-            $html =$field_div_start.$html.$field_div_end;
          }
       }
-      if(isset($field_array['store']) && ($field_array['dojoType'] == 'dijit.form.FilteringSelect' || $field_array['dojoType'] == 'dijit.form.Select' || $field_array['dojoType'] == 'dijit.form.Select')){
+      if(
+         isset($field_array['store']) && 
+         (
+            $field_array['dojoType'] == 'dijit.form.FilteringSelect' || 
+            $field_array['dojoType'] == 'dijit.form.Select' || 
+            $field_array['dojoType'] == 'dijit.form.ComboBox'
+         )
+      ){
       $html.="
 <script>
 //Set the previouse value in drop down box
