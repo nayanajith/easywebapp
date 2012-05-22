@@ -46,7 +46,7 @@ if(isset($_REQUEST['form'])){
          break;
          case 'combo':
             //Section of the model to reffered by the filering select data
-            $section='MAIN_LEFT';
+            $section='FORM';
       
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
             $br=explode('__',$_REQUEST['field']);
