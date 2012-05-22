@@ -164,7 +164,7 @@ if(isset($_REQUEST['form'])){
    $view = new View($GLOBALS['PAGE']['table'],$GLOBALS['PAGE']['name']);
 
    //Generate form
-   if(isset($GLOBALS['MODEL']['MAIN_LEFT']) && is_array($GLOBALS['MODEL']['MAIN_LEFT']) &&  sizeof($GLOBALS['MODEL']['MAIN_LEFT']) > 0){
+   if(isset($GLOBALS['MODEL']['FORM']) && is_array($GLOBALS['MODEL']['FORM']) &&  sizeof($GLOBALS['MODEL']['FORM']) > 0){
       $view->gen_form();
    }
 

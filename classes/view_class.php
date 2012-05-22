@@ -9,7 +9,13 @@ class View{
 
    //The model file
    protected $model  ="_mdl%s.php";
-   protected $fields =array();
+
+   //all the sub arrays form the model
+   protected $keys   =array();
+   protected $form   =array();
+   protected $grids  =array();
+   protected $toolbar=array();
+   protected $widgets=array();
 
    //Table 
    protected $table;
@@ -58,20 +64,21 @@ class View{
         if(file_exists($this->model)){
          include_once $this->model;
 
-        /*
          if(isset($GLOBALS['MODEL'])){
-           $GLOBALS['MODEL']['MAIN_LEFT']=$GLOBALS['MODEL']['MAIN_LEFT'];
+           $this->keys    =get_from_model('KEYS');
+           $this->form    =get_from_model('FORM');
+           $this->grids   =get_from_model('GRIDS');
+           $this->toolbar =get_from_model('TOOLBAR');
+           $this->widgets =get_from_model('WIDGETS');
          }
-         */
+      }
 
-        }
-
-        /**
-         * Set toolbar fields to class variable
-         */
-        if(isset($tb_fields)){
-            $this->tb_fields=$tb_fields;
-        }
+      /**
+       * Set toolbar fields to class variable
+       */
+      if(isset($tb_fields)){
+         $this->tb_fields=$tb_fields;
+      }
    }
 
    /**
@@ -241,7 +248,7 @@ class View{
     * <field>
     */
    public function form_flow_layout(){
-      $form_preview=$GLOBALS['PREVIEW']['MAIN_LEFT'];
+      $form_preview=get_from_preview('FORM');
       d_r('dijit.form.Form');
       $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px'>";
       $html.="<div >Required fields marked as <font color='red'>*</font>";
@@ -262,7 +269,7 @@ class View{
     * <label><field>
     */
    public function form_table_layout(){
-      $form_preview=$GLOBALS['PREVIEW']['MAIN_LEFT'];
+      $form_preview=get_from_preview('FORM');
       d_r('dijit.form.Form');
       $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px'>";
       $html.="Required fields marked as <font color='red'>*</font><table>";
@@ -293,9 +300,8 @@ class View{
       }
 
       //Fill the preview array with the field/labels
-      $GLOBALS['PREVIEW']['MAIN_LEFT']=array();
-      foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $field_array){
-          $GLOBALS['PREVIEW']['MAIN_LEFT'][$field]=$this->gen_field_entry($field,$field_array,true);
+      foreach($this->form as $field => $field_array){
+          add_to_preview($this->gen_field_entry($field,$field_array,true),'FORM',$field);
       }
 
       //layout the fields and labels according to the requested layout
@@ -345,7 +351,7 @@ function get_csv(){
 <table  id='csv__table'>";
       $cols=3;
       $td=0;
-      foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $id => $arr){
+      foreach($this->form as $id => $arr){
          if($td == 0){
             $csv_inner.="<tr>";
          }
@@ -366,7 +372,7 @@ function get_csv(){
             <label for='csv__".$id."'>".$arr['label']."</label>
             </td>";
          $td++;
-         if($td==$cols || !next($GLOBALS['MODEL']['MAIN_LEFT'])){
+         if($td==$cols || !next($this->form)){
             $csv_inner.="</tr>";
             $td=0;
          }
@@ -554,8 +560,8 @@ dojo.ready(function(){
       d_r('dojox.grid.enhanced.plugins.Pagination');
       d_r('dojox.grid.EnhancedGrid');
       $html=""; 
-      if(isset($GLOBALS['MODEL']['MAIN_RIGHT']) && isset($GLOBALS['MODEL']['MAIN_RIGHT']['GRID'])){
-         $grid=$GLOBALS['MODEL']['MAIN_RIGHT']['GRID'];
+      if(isset($this->grids) && isset($this->grids['GRID'])){
+         $grid=$this->grids['GRID'];
 
          //$html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>";
          $html.="<span dojoType='dojox.data.QueryReadStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=json'></span>";
@@ -615,14 +621,14 @@ dojo.ready(function(){
 
 
             $html.= "<th width='auto' field='$h_key' $options >
-               ".(isset($GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label'])?$GLOBALS['MODEL']['MAIN_LEFT'][$h_key]['label']:$h_key)."
+               ".(isset($this->form[$h_key]['label'])?$this->form[$h_key]['label']:$h_key)."
             </th>";
          }
          $html.= "</tr>
       </thead>
       </table>";
          if(!isset($grid['event_key'])){
-            $grid['event_key']=$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'];
+            $grid['event_key']=$this->keys['PRIMARY_KEY'];
          }
 
          if(isset($grid['selector_id'])){
@@ -633,7 +639,7 @@ dojo.ready(function(){
                load_selected_value(".$grid['selector_id'].",selectedValue);
                //alert('selected cell Value is '+selectedValue);
                //fill_form(selectedValue);
-               //dijit.byId('".$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']."').setValue(selectedValue);
+               //dijit.byId('".$this->keys['PRIMARY_KEY']."').setValue(selectedValue);
             }
             </script>";
          }

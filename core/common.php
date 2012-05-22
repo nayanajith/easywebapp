@@ -228,11 +228,83 @@ function get_temp_filter($table_as=null){
    return $filter; 
 }
 
+//Array to keep the view entries before puting in VIEW array 
+$GLOBALS['MODEL']=array(
+   'KEYS'   =>array(),
+   'FORM'   =>array(),
+   'GRIDS'  =>array(),
+   'TOOLBAR'=>array(),
+   'WIDGETS'=>array(),
+);
+
+/**
+ * Add value to model, up to 3 levels can be set
+ */
+function add_to_model($value,$l1_id,$l2_id=null,$l3_id=null){
+   if(!is_null($l2_id) && !is_null($l3_id)){
+      $GLOBALS['MODEL'][$l1_id][$l2_id][$l3_id]=$value;
+   }elseif(!is_null($l2_id)){
+      $GLOBALS['MODEL'][$l1_id][$l2_id]=$value;
+   }else{
+      $GLOBALS['MODEL'][$l1_id]=$value;
+   }
+}
+
+/**
+ * get value from model, up to 3 levels can be get
+ */
+function get_from_model($l1_id,$l2_id=null,$l3_id=null){
+   if(!is_null($l2_id) && !is_null($l3_id) && isset($GLOBALS['MODEL'][$l1_id]) && isset($GLOBALS['MODEL'][$l1_id][$l2_id]) && isset($GLOBALS['MODEL'][$l1_id][$l2_id][$l3_id])){
+      return $GLOBALS['MODEL'][$l1_id][$l2_id][$l3_id];
+   }elseif(!is_null($l2_id) && isset($GLOBALS['MODEL'][$l1_id]) && isset($GLOBALS['MODEL'][$l1_id][$l2_id])){
+      return $GLOBALS['MODEL'][$l1_id][$l2_id];
+   }elseif(isset($GLOBALS['MODEL'][$l1_id])){
+      return $GLOBALS['MODEL'][$l1_id];
+   }else{
+      return array();
+   }
+}
 
 //Array to keep the view entries before puting in VIEW array 
 $GLOBALS['PREVIEW']=array(
-
+   'KEYS'   =>array(),
+   'FORM'   =>array(),
+   'GRIDS'  =>array(),
+   'TOOLBAR'=>array(),
+   'WIDGETS'=>array(),
 );
+
+/**
+ * Set value to preview,up to 3 levels can be set
+ */
+function add_to_preview($value,$l1_id,$l2_id=null,$l3_id=null){
+   log_msg('---------------'.$l1_id,$value);
+   if(!is_null($l2_id) && !is_null($l3_id)){
+      $GLOBALS['PREVIEW'][$l1_id][$l2_id][$l3_id]=$value;
+   }elseif(!is_null($l2_id)){
+      $GLOBALS['PREVIEW'][$l1_id][$l2_id]=$value;
+   }else{
+      $GLOBALS['PREVIEW'][$l1_id]=$value;
+   }
+
+}
+
+/**
+ * Get array of elements from preview,up to 3 levels can be get
+ */
+function get_from_preview($l1_id,$l2_id=null,$l3_id=null){
+   if(!is_null($l2_id) && !is_null($l3_id) && isset($GLOBALS['PREVIEW'][$l1_id]) && isset($GLOBALS['PREVIEW'][$l1_id][$l2_id]) && isset($GLOBALS['PREVIEW'][$l1_id][$l2_id][$l3_id])){
+      return $GLOBALS['PREVIEW'][$l1_id][$l2_id][$l3_id];
+   }elseif(!is_null($l2_id) && isset($GLOBALS['PREVIEW'][$l1_id]) && isset($GLOBALS['PREVIEW'][$l1_id][$l2_id])){
+      return $GLOBALS['PREVIEW'][$l1_id][$l2_id];
+   }elseif(isset($GLOBALS['PREVIEW'][$l1_id])){
+      return $GLOBALS['PREVIEW'][$l1_id];
+   }else{
+      return array();
+   }
+}
+
+
 
 /*--create and fill view global array which contains all parts of the fintend-*/
 $GLOBALS['VIEW']=array(
