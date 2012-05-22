@@ -114,35 +114,30 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <!--CENTER box of BorderContainer-2-->
                   <div dojoType="dijit.layout.ContentPane" region="center" id="data_body" class="bgBottom" style="padding:5px;">
 <!--________________________start data_body area_____________________________-->
-                     <table width='100%'  >
-                        <tr>
-                           <td id='MAIN_TOP' colspan='2' valign='top' width='100%'>
+                     <div dojoType="dijit.layout.BorderContainer" style="width:100%; height:100%; padding:0px;" gutters="false" >
+                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP" class="bgBottom" style="padding:0px;">
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_TOP'];
                               ?>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td id='MAIN_LEFT' valign='top' align='left' width='50%'>
+                        </div>
+                        <div dojoType="dijit.layout.ContentPane" region="left" id="MAIN_LEFT" class="bgBottom" style="padding:0px;width:50%" liveSplitters="true">
+                           <div>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_LEFT'];
                               ?>
-                           </td>
-                           <td id='MAIN_RIGHT' valign='top'  align='right'  width='50%'>
+                           </div>
+                        </div>
+                        <div dojoType="dijit.layout.ContentPane" region="right" id="MAIN_RIGHT" class="bgBottom" style="padding:0px;width:50%">
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_RIGHT'];
                               ?>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td id='MAIN_BOTTOM' colspan='2' valign='top' width='100%'>
+                        </div>
+                        <div dojoType="dijit.layout.ContentPane" region="bottom" id="MAIN_bottom" class="bgBottom" style="padding:0px;">
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
                               ?>
-                           </td>
-                        </tr>
-
-                     </table>
+                        </div>
+                    </div>
 <!--_________________________end data_body area______________________________-->
                   </div>
                   <!--end CENTER box of BorderContainer-2-->

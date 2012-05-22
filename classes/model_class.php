@@ -823,17 +823,43 @@ EOE;
       /**
        * Generate csv for the given query
        */
-      public function gen_csv(){
+      public function gen_csv($field_list){
          $filter_str=isset($_SESSION[PAGE]['FILTER'])?" WHERE ".$_SESSION[PAGE]['FILTER']:"";
          $columns=array();
          $headers=array();
-			foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $key=>$arr){
-				if((isset($arr['custom']) && strtolower($arr['custom']) == 'true') || isset($arr['disabled']) && strtolower($arr['disabled']) == 'true' ){
-				}else{
-					$columns[]=$key;
-					$headers[]=$arr['label'];
+         if(is_null($field_list)){
+				foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $key=>$arr){
+					if((isset($arr['custom']) && strtolower($arr['custom']) == 'true') || isset($arr['disabled']) && strtolower($arr['disabled']) == 'true' ){
+					}else{
+						$columns[]=$key;
+
+                  //Set header as lable if available
+						if(isset($arr['label'])){
+							   $headers[]=$arr['label'];
+                  }else{
+							   $headers[]=$key;
+                  }
+					}
 				}
-			}
+         }else{
+            //When the user have provided the field list
+				foreach($field_list as $key){
+               if(isset($GLOBALS['MODEL']['MAIN_LEFT'][$key])){
+                  $arr=$GLOBALS['MODEL']['MAIN_LEFT'][$key];
+                  if((isset($arr['custom']) && strtolower($arr['custom']) == 'true') || isset($arr['disabled']) && strtolower($arr['disabled']) == 'true' ){
+						}else{
+							$columns[]=$key;
+
+                     //Set header as lable if available
+                     if(isset($arr['label'])){
+							   $headers[]=$arr['label'];
+                     }else{
+							   $headers[]=$key;
+                     }
+						}
+               }
+				}
+         }
          
          $fields=implode(",",$columns);
          $query="SELECT $fields FROM ".$this->table.$filter_str;

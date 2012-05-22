@@ -97,10 +97,16 @@ if(isset($_REQUEST['form'])){
          break;
 
          case 'csv':
+            //Custom field lists are accepted
+            $field_list=null;
+            if(isset($_REQUEST['list']) && $_REQUEST['list'] != ""){
+               $field_list=explode(',',$_REQUEST['list']);
+            }
+            //Choose from module gen_csv or core gen_csv
             if(function_exists('gen_csv')){
-               gen_csv();
+               gen_csv($field_list);
             }else{
-               $model->gen_csv();
+               $model->gen_csv($field_list);
             }
          break;
          }

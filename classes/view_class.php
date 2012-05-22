@@ -120,8 +120,8 @@ class View{
        "dijit.form.CheckBox"          =>"<div %s></div>",
        "dijit.form.RadioButton"       =>"<div %s></div>",
        "dijit.InlineEditBox"          =>"<span %s></span>",
-       "dijit.form.DropDownButton"    =>"<div %s>%s</div>",
        "dijit.form.Button"            =>"<button %s>%s</button>",
+       "dijit.form.DropDownButton"    =>"<div %s>%s</div>",
    );
 
 
@@ -352,10 +352,72 @@ class View{
       add_to_main_left($html);
    }
 
+   public function csv_field_selector($checked_fields=null){
+      d_r('dijit.TooltipDialog');
+      d_r('dijit.form.CheckBox');
+      d_r('dijit.form.DropDownButton');
+      d_r('dojo.query');
+      add_to_js("
+<script>
+function get_csv(){
+   var field_list=new Array();
+	nodes = dojo.query('table#csv__table input[type=checkbox]'); 
+   dojo.forEach(nodes,function(node){
+      if(dijit.getEnclosingWidget(node).get(\"checked\") == true){
+	      field_list.push(node.value);
+      }
+   });
+
+	var comma='';
+	var list	='';
+	for(var key in field_list){
+		list+=comma+field_list[key];
+		comma=',';
+	}
+   submit_form('csv',list)
+}
+</script>");
+
+      $csv_inner="
+<span>CSV</span>
+<div dojoType='dijit.TooltipDialog' align='center'>
+Check the fields you want to include
+<table  id='csv__table'>";
+      $cols=3;
+      $td=0;
+      foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $id => $arr){
+         if($td == 0){
+            $csv_inner.="<tr>";
+         }
+         //Set default checked fields if the parameter is not null else all will be checked
+         $checked="";
+         if(!is_null($checked_fields)){
+            if(in_array($id,$checked_fields)){
+               $checked="checked='true'";
+            }
+         }else{
+            $checked="checked='true'";
+         }
+
+         $csv_inner.="<td>
+            <input type='checkbox' dojoType='dijit.form.CheckBox' value='$id' id='csv__".$id."' jsId='csv__".$id."' $checked >
+            </td>
+            <td>
+            <label for='csv__".$id."'>".$arr['label']."</label>
+            </td>";
+         $td++;
+         if($td==$cols || !next($GLOBALS['MODEL']['MAIN_LEFT'])){
+            $csv_inner.="</tr>";
+            $td=0;
+         }
+      }
+      $csv_inner.='</table>
+   <button dojoType="dijit.form.Button" type="submit" onClick="get_csv()">Get CSV</button></div>';
+      return $csv_inner;
+   }
+
    /*
-    Generate entry for the given table field
-    select-> data for select box/combo box
-    data-> data for text area
+    * generate entry for toolbar
    */
    public function gen_toolbar_entry($field,$field_array){
 
@@ -392,6 +454,22 @@ class View{
       /*inner value of the field (innerhtml)*/
       $inner   =isset($field_array['inner'])?$field_array['inner']:"";
 
+      //for csv overrides the inner by this function
+      if($field_=='csv'){
+         if(isset($field_array['checked_fields'])){
+            $inner=$this->csv_field_selector($field_array['checked_fields']);
+         }else{
+            $inner=$this->csv_field_selector();
+         }
+      }
+
+      //DropDownButtons should have the inner span to show its text
+      if($inner == "" && $field_array['dojoType'] == 'dijit.form.DropDownButton'){
+         d_r('dijit.TooltipDialog');
+         $inner="<span>".$field_array['label']."</span><div dojoType='dijit.TooltipDialog' align='center'></div>";
+      }
+
+
       //If the field require a stor add a store
       if(isset($field_array['store'])){
          $this->add_store($field,$field_array['store']);
@@ -417,7 +495,7 @@ class View{
          $options       =" jsId='$field' id='$field' title='".$field_array['label']."' $data_dojo_props ";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder');
+         $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder','checked_fields');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -480,7 +558,7 @@ dojo.ready(function(){
          $inner   ='';
          //$inner   =$field_array['label'];
          $options ="jsId='toolbar__$field' ";
-         $bypass=array('inner','section','style','label_pos','type','vid','filter','ref_table','order_by');
+         $bypass=array('inner','section','style','label_pos','type','vid','filter','ref_table','order_by','placeHolder','checked_fields');
          foreach($field_array as $key => $value){
             if(!in_array($key,$bypass)){
                $options.=$key."='$value'\n";
