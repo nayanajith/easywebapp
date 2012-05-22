@@ -751,7 +751,9 @@ function clear_form(frm,selector_field){
       break;
       default:
          widget.attr('value', null);
-         widget.setValue(null);
+         if (typeof widget.setValue == 'function'){
+            widget.setValue(null);
+         }
          widget.set('value',null);
       break;
       }  
