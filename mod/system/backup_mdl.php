@@ -5,7 +5,7 @@ $GLOBALS['MODEL']=array(
    ),
 //--------------FIELDS TO BE INCLUDED IN FORM-------------------
 //---------------THIS ALSO REFLECT THE TABLE--------------------
-   'MAIN_LEFT'=>array(
+   'FORM'=>array(
 	
    ),
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------

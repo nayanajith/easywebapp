@@ -46,7 +46,7 @@ if(isset($_REQUEST['form'])){
          break;
          case 'combo':
             //Section of the model to reffered by the filering select data
-            $section='MAIN_LEFT';
+            $section='FORM';
       
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
             $br=explode('__',$_REQUEST['field']);
@@ -97,10 +97,16 @@ if(isset($_REQUEST['form'])){
          break;
 
          case 'csv':
+            //Custom field lists are accepted
+            $field_list=null;
+            if(isset($_REQUEST['list']) && $_REQUEST['list'] != ""){
+               $field_list=explode(',',$_REQUEST['list']);
+            }
+            //Choose from module gen_csv or core gen_csv
             if(function_exists('gen_csv')){
-               gen_csv();
+               gen_csv($field_list);
             }else{
-               $model->gen_csv();
+               $model->gen_csv($field_list);
             }
          break;
          }
@@ -158,8 +164,12 @@ if(isset($_REQUEST['form'])){
    $view = new View($GLOBALS['PAGE']['table'],$GLOBALS['PAGE']['name']);
 
    //Generate form
-   if(isset($GLOBALS['MODEL']['MAIN_LEFT']) && is_array($GLOBALS['MODEL']['MAIN_LEFT']) &&  sizeof($GLOBALS['MODEL']['MAIN_LEFT']) > 0){
-      $view->gen_form();
+   if(isset($GLOBALS['MODEL']['FORM']) && is_array($GLOBALS['MODEL']['FORM']) &&  sizeof($GLOBALS['MODEL']['FORM']) > 0){
+      $form_layout='table';
+      if(isset($GLOBALS['PAGE']['form_layout'])){
+         $form_layout=$GLOBALS['PAGE']['form_layout'];
+      }
+      $view->gen_form(null,null,$layout=$form_layout);
    }
 
    //Generate toolbar

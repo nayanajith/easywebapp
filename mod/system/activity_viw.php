@@ -26,6 +26,6 @@ $main_top.="</table></form></center>";
 
 add_to_main_top($main_top);
 add_to_main_bottom('<h2>Activity LOG</h2>');
-add_to_main_bottom($GLOBALS['PREVIEW']['MAIN_RIGHT']['GRID']);
+add_to_main_bottom($GLOBALS['PREVIEW']['GRIDS']['GRID']);
 
 ?>

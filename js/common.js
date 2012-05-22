@@ -412,7 +412,9 @@ var submit_form_callback={
 
 //form can be changed explicitly before submitting the form
 var form='main';
-function submit_form(action,target_module,target_page){
+function submit_form(action,param1,param2){
+   var target_module =param1;
+   var target_page   =param2;
    //submit form callback array
    var s_f_c=submit_form_callback;
 
@@ -426,6 +428,9 @@ function submit_form(action,target_module,target_page){
          return;
       break;   
       case 'csv':
+         download(url+'&form='+form+'&action='+action+'&list='+param1);
+         return;
+      break;
       case 'pdf':
          download(url+'&form='+form+'&action='+action);
          return;
@@ -746,7 +751,9 @@ function clear_form(frm,selector_field){
       break;
       default:
          widget.attr('value', null);
-         widget.setValue(null);
+         if (typeof widget.setValue == 'function'){
+            widget.setValue(null);
+         }
          widget.set('value',null);
       break;
       }  

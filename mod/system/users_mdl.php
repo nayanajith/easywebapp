@@ -58,7 +58,7 @@ $GLOBALS['MODEL']=array(
    ),
 //--------------FIELDS TO BE INCLUDED IN FORM-------------------
 //---------------THIS ALSO REFLECT THE TABLE--------------------
-   'MAIN_LEFT'=>array(
+   'FORM'=>array(
       "user_id"=>array(
          "length"	=>"77",
          "dojoType"	=>"dijit.form.NumberTextBox",
@@ -277,7 +277,7 @@ $GLOBALS['MODEL']=array(
          "value"=>""
       )
    ),
-   'MAIN_RIGHT'=>array(
+   'GRIDS'=>array(
        'GRID'=>array(
           'columns'      =>array('user_id'=>array('hidden'=>'true'),'username','email','ldap_user_id','role_id'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
