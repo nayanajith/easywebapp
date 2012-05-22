@@ -2,7 +2,7 @@
 /*
 System Database tables
 */
-$system_table_schema_version=3;
+$system_table_schema_version=4;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`               INT(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -108,17 +108,18 @@ $system_table_schemas['filter']="CREATE TABLE `filter` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['base_data']="CREATE TABLE `base_data` (
-  `rid`              INT(11)        NOT NULL DEFAULT '0',
-  `class`            VARCHAR(50)    DEFAULT NULL,
-  `name`             VARCHAR(300)   NOT NULL,
-  `description`      TEXT           NOT NULL,
-  `status`           VARCHAR(100)   DEFAULT NULL,
-  `timestamp`        TIMESTAMP,
+  `rid`             INT(11)        NOT NULL AUTO_INCREMENT,
+  `base_class`      VARCHAR(50)    DEFAULT NULL,
+  `base_key`        VARCHAR(300)   NOT NULL,
+  `base_value`      TEXT           NOT NULL,
+  `status`          VARCHAR(100)   DEFAULT NULL,
+  `timestamp`       TIMESTAMP,
    PRIMARY KEY (`rid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8"; 
 
 $system_table_schemas['news']="CREATE TABLE `news`(
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
+  `role_id`          VARCHAR(100) NOT NULL,
   `title`            VARCHAR(100) NOT NULL,
   `content`          TEXT NOT NULL,
   `display_from`     DATE NOT NULL,
@@ -163,5 +164,7 @@ insert into base_data(class,name,description,status) select 'LIST',list_name,jso
 $system_table_migrate[3][]="
 drop table base_data;
 ";
+
+$system_table_migrate[4]="show databases";
 
 ?>

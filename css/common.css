@@ -63,6 +63,11 @@ img {
    border: none; 
 }
 
+/*-------------------------------code bock------------------------------*/
+.code{
+   font-size:11px;
+   font-family:'Droid Sans Mono',curior,mono;
+}
 /*-------------------------------custom icons---------------------------*/
 .GFIcon {
    background-image: url("<?php echo IMG.'/icons/06-magnify.png'; ?>"); 
