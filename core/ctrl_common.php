@@ -165,7 +165,11 @@ if(isset($_REQUEST['form'])){
 
    //Generate form
    if(isset($GLOBALS['MODEL']['FORM']) && is_array($GLOBALS['MODEL']['FORM']) &&  sizeof($GLOBALS['MODEL']['FORM']) > 0){
-      $view->gen_form();
+      $form_layout='table';
+      if(isset($GLOBALS['PAGE']['form_layout'])){
+         $form_layout=$GLOBALS['PAGE']['form_layout'];
+      }
+      $view->gen_form(null,null,$layout=$form_layout);
    }
 
    //Generate toolbar

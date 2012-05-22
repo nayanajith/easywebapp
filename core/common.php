@@ -278,7 +278,6 @@ $GLOBALS['PREVIEW']=array(
  * Set value to preview,up to 3 levels can be set
  */
 function add_to_preview($value,$l1_id,$l2_id=null,$l3_id=null){
-   log_msg('---------------'.$l1_id,$value);
    if(!is_null($l2_id) && !is_null($l3_id)){
       $GLOBALS['PREVIEW'][$l1_id][$l2_id][$l3_id]=$value;
    }elseif(!is_null($l2_id)){
@@ -501,18 +500,14 @@ function clear_footer(){
  * Add return the field for the given field_id from $GLOBALS['PREVIEW']['MAIN_LEFT']
  */
 function get_field($field_id){
-   if(isset($GLOBALS['PREVIEW']['MAIN_LEFT'][$field_id])){
-      return $GLOBALS['PREVIEW']['MAIN_LEFT'][$field_id]['field'];
-   }
+   return get_from_preview('FORM',$field_id,'field');
 }
 
 /**
  * Add return the label for the given field_id from $GLOBALS['PREVIEW']['MAIN_LEFT']
  */
 function get_label($field_id){
-   if(isset($GLOBALS['PREVIEW']['MAIN_LEFT'][$field_id])){
-      return $GLOBALS['PREVIEW']['MAIN_LEFT'][$field_id]['label'];
-   }
+   return get_from_preview('FORM',$field_id,'label');
 }
 
 /**

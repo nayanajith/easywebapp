@@ -8,7 +8,7 @@ $GLOBALS['MODEL']=array(
    ),
 //--------------FIELDS TO BE INCLUDED IN FORM-------------------
 //---------------THIS ALSO REFLECT THE TABLE--------------------
-   'MAIN_LEFT'=>array(
+   'FORM'=>array(
       "rid"=>array(
          "length"	=>"70",
          "dojoType"	=>"dijit.form.NumberTextBox",
@@ -44,7 +44,7 @@ $GLOBALS['MODEL']=array(
       ),
    ),
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
-   'MAIN_RIGHT'=>array(
+   'GRIDS'=>array(
        'GRID'=>array(
           'columns'      =>array('rid','list_name'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,

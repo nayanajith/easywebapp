@@ -560,8 +560,7 @@ dojo.ready(function(){
       d_r('dojox.grid.enhanced.plugins.Pagination');
       d_r('dojox.grid.EnhancedGrid');
       $html=""; 
-      if(isset($this->grids) && isset($this->grids['GRID'])){
-         $grid=$this->grids['GRID'];
+      foreach($this->grids as $grid_key => $grid){
 
          //$html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>";
          $html.="<span dojoType='dojox.data.QueryReadStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=json'></span>";
@@ -643,14 +642,10 @@ dojo.ready(function(){
             }
             </script>";
          }
-      }
-
-      if(file_exists($this->view)){
-         $GLOBALS['PREVIEW']['MAIN_RIGHT']=array(
-            'GRID'=>$html,
-         );
-      }else{
-         add_to_main_right($html); 
+         add_to_preview($html,'GRIDS',$grid_key);
+         if(!file_exists($this->view)){
+            add_to_main_right($html); 
+         }
       }
    }
 
