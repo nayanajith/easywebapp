@@ -131,21 +131,7 @@ class View{
     select-> data for select box/combo box
     data-> data for text area
    */
-   protected $max_field_length=0;
-   public function gen_field_entry($field,$field_array,$customizable=false){
-      if($this->max_field_length == 0){
-         foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $ky => $arr){
-            $field=key;
-            if(isset($arr['label'])){
-               $field=$arr['label'];
-            }
-            $length=strlen($field);
-            if($this->max_field_length < $length){
-               $this->max_field_length=$length;
-            }
-         }
-      }
-
+   public function gen_field_entry($field,$field_array){
       /*fill data from data array*/
       $fill ="";
 
@@ -193,18 +179,12 @@ class View{
 
       /*Handl custom form input method or generic one*/
       if(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
-         $html.="<div id='td_$field' jsId='td_$field' style='padding:5px;'>";
-         if($customizable){
-            $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
-         }else{
-            $html.="<label for='$field' >".$field_array['label']."$required</label>";
-         }
-         $html.=$inner;
-         $html.="<div id='td_in_$field'></div></div>\n";
+         $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
+         $custom_arr['field']=$html.$inner;
       }else{
          d_r($field_array['dojoType']);
          $form_control   =$this->form_controls[$field_array['dojoType']];
-         $options         =" jsId='$field' id='$field' name='$field'";
+         $options        =" jsId='$field' id='$field' name='$field' ";
 
          /*Fields to bypass when creating forms*/
          $bypass=array('inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','tooltip');
@@ -216,11 +196,11 @@ class View{
             }
          }
 
-
          //hidden fields make not visible
          if(isset($field_array['type']) && $field_array['type'] == "hidden"){
             $options .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
-            $html .=sprintf($form_control,$options,$inner);
+            $custom_arr['field']=sprintf($form_control,$options,$inner);
+            $custom_arr['label']='';
          }else{
 
             //Set style and length of the field
@@ -236,140 +216,100 @@ class View{
 
             //additional style is applied
             if($style != ''){
-               $options .="style='".$style.";'";
+               $options .="style='".$style."'";
             }
 
             //combining the dojo type mapping in above array with the generated content
             $html            .=sprintf($form_control,$options,$inner);
-            $field_div_start   ="<div id='td_$field' jsId='td_$field' style='padding:5px;'>";
-            $field_div_end     =$tooltip."<div id='td_in_$field'></div></div>";
 
-            //Set label position
-            if($customizable){
-               $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
-               $custom_arr['field']=$field_div_start.$html.$field_div_end;
-            }else{
-               $field_label=$field_array['label'];
-               $span="";
-               for($i=0;$i<($this->max_field_length-strlen($field_label));$i++){
-                  $span.="_";
-               }
-               $field_label   ="<label for='$field' style='font-style:mono'>".$field_array['label']."<span style='color:silver'>$span</span>$required</label>";
-               if(isset($field_array['label_pos'])){
-                 // switch($field_array['label_pos']){
-                  switch('left'){
-                     case 'left':
-                        $html =$field_div_start.$field_label.$html.$field_div_end;
-                     break;
-                     case 'right':
-                        $html =$field_div_start.$html.$field_label.$field_div_end;
-                     break;
-                     case 'top':
-                     default:
-                        $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
-                     break;
-                  }
-               }else{
-                  $html =$field_div_start.$field_label."<br>".$html.$field_div_end;
-               }
-            }
+            $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
+            $custom_arr['field']=$html.$tooltip;
          }
       }
-      if($customizable){
-         $custom_arr['field']=$html.$tooltip;
-         return $custom_arr;
-      }
-      return $html;
+      return $custom_arr;
    }
 
    public  function finish_view(){
       if(file_exists($this->view)){
-         //add_to_main_left("<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >");
          include $this->view;
-         //add_to_main_left("</div>"); 
       }
    }
 
+   /**
+    * Layout of the form is in flow format 
+    * <label>
+    * <field>
+    */
+   public function form_flow_layout(){
+      $form_preview=$GLOBALS['PREVIEW']['MAIN_LEFT'];
+      d_r('dijit.form.Form');
+      $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px'>";
+      $html.="<div >Required fields marked as <font color='red'>*</font>";
+      /*Set html table background and padding/spacing*/
+      foreach($form_preview as $key => $arr){
+         $html.=$arr['label']."<br>";
+         $html.=$arr['field']."<br><br>";
+      }
+
+      $html.="</div></div>";
+
+      //add generated form to MAIN_LEFT 
+      add_to_main_left($html);
+   }
+
+   /**
+    * Layout of the form in table format
+    * <label><field>
+    */
+   public function form_table_layout(){
+      $form_preview=$GLOBALS['PREVIEW']['MAIN_LEFT'];
+      d_r('dijit.form.Form');
+      $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px'>";
+      $html.="Required fields marked as <font color='red'>*</font><table>";
+      /*Set html table background and padding/spacing*/
+      foreach($form_preview as $key => $arr){
+         $html.="<tr><td>".$arr['label']."</td>";
+         $html.="<td>".$arr['field']."</td></tr>";
+      }
+
+      $html.="</table></div>";
+
+      //add generated form to MAIN_LEFT 
+      add_to_main_left($html);
+   }
+
+
+
    /*
    Generating form for using ghe fields array which was generated in model-class 
+   $layout: table,flow
    */
-   public function gen_form($captchar=null,$filter_selector=null){
+   public function gen_form($captchar=null,$filter_selector=null,$layout='table'){
       $table=$this->table;
 
+      //Load data for the given key in to data array
       if($this->data_load_key != null){
          $this->get_data();
       }
 
-      if(file_exists($this->view)){
-         $GLOBALS['PREVIEW']['MAIN_LEFT']=array();
-         foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $field_array){
-             $GLOBALS['PREVIEW']['MAIN_LEFT'][$field]=$this->gen_field_entry($field,$field_array,true);
-         }
-         return;
-      }
-
-      d_r('dijit.form.Form');
-      //$html= "<div dojoType='dijit.form.Form' id='".$table."_frm' jsId='$table'_frm encType='multipart/form-data' method='POST' >";
-      $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >";
-      $html.="<div >Required fields marked as <font color='red'>*</font>";
-
-      /*Find first and last elements of the fields array*/
-      reset($GLOBALS['MODEL']['MAIN_LEFT']);
-      $keys    =array_keys($GLOBALS['MODEL']['MAIN_LEFT']);
-      $first   =current($keys);
-      $last    =end($keys);
-
-      /*Set html table background and padding/spacing*/
+      //Fill the preview array with the field/labels
+      $GLOBALS['PREVIEW']['MAIN_LEFT']=array();
       foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $field => $field_array){
-         if($field != ""){
-            /*IF the section ended in previouse field drow section header*/
-            /*IF the field is the first field of the html drow section header*/
-            if($field==$first && !isset($field_array['section'])){
-               $field_array['section']=' ';
-            }
+          $GLOBALS['PREVIEW']['MAIN_LEFT'][$field]=$this->gen_field_entry($field,$field_array,true);
+      }
 
-                        
-            /*Set section header/footer as requested*/
-            $section="";
-
-            if(isset($field_array['section'])){
-               $section      ="</div><br>";
-
-               /*For first field remove </div>*/
-               if($field==$first){
-                  $section      ="";
-               }
-
-               if($field_array['section'] !=''){
-                  //d_r('dijit.layout.ContentPane');
-                  //$section      .="<div dojoType='dijit.layout.ContentPane' title='".$field_array['section']."'>";
-                  if($field_array['section'] ==' '){
-                     //$section      .="<div style='border:1px dotted #C9D7F1'>";
-                     $section      .="<div >";
-                  }else{
-                     $section      .="<div ><div style='font-weight:bold;background-color:#C9D7F1;padding:4px;text-align:center' class='bgCenter'>".$field_array['section']."</div>";
-                  }
-               }else{
-                  //d_r('dijit.layout.ContentPane');
-                  //$section      .="<div dojoType='dijit.layout.ContentPane' title='section'>";
-                  $section      .="<div>";
-               }
-            }
-         
-            $html.=$section;
-            $html.="\n".$this->gen_field_entry($field,$field_array)."\n";
-
-            /*If the element is 'last' set section as end*/
-            if($field==$last && !isset($field_array['section'])){
-               $html.= "</div><br>";
-            }
+      //layout the fields and labels according to the requested layout
+      if(!file_exists($this->view)){
+         switch($layout){
+         case 'table':
+            $this->form_table_layout();
+         break;
+         case 'flow':
+         default:
+            $this->form_flow_layout();
+         break;
          }
       }
-      
-      //html ends hear
-      $html.= "</div>";
-      $html.= "</div>";
-      add_to_main_left($html);
    }
 
    public function csv_field_selector($checked_fields=null){
@@ -401,7 +341,7 @@ function get_csv(){
       $csv_inner="
 <span>CSV</span>
 <div dojoType='dijit.TooltipDialog' align='center'>
-Check the fields you want to include
+<h4>Check the fields you want to include in the CSV</h4>
 <table  id='csv__table'>";
       $cols=3;
       $td=0;
