@@ -131,7 +131,21 @@ class View{
     select-> data for select box/combo box
     data-> data for text area
    */
+   protected $max_field_length=0;
    public function gen_field_entry($field,$field_array,$customizable=false){
+      if($this->max_field_length == 0){
+         foreach($GLOBALS['MODEL']['MAIN_LEFT'] as $ky => $arr){
+            $field=key;
+            if(isset($arr['label'])){
+               $field=$arr['label'];
+            }
+            $length=strlen($field);
+            if($this->max_field_length < $length){
+               $this->max_field_length=$length;
+            }
+         }
+      }
+
       /*fill data from data array*/
       $fill ="";
 
@@ -222,7 +236,7 @@ class View{
 
             //additional style is applied
             if($style != ''){
-               $options .="style='".$style."'";
+               $options .="style='".$style.";'";
             }
 
             //combining the dojo type mapping in above array with the generated content
@@ -235,9 +249,15 @@ class View{
                $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
                $custom_arr['field']=$field_div_start.$html.$field_div_end;
             }else{
-               $field_label   ="<label for='$field' >".$field_array['label']."$required</label>";
+               $field_label=$field_array['label'];
+               $span="";
+               for($i=0;$i<($this->max_field_length-strlen($field_label));$i++){
+                  $span.="_";
+               }
+               $field_label   ="<label for='$field' style='font-style:mono'>".$field_array['label']."<span style='color:silver'>$span</span>$required</label>";
                if(isset($field_array['label_pos'])){
-                  switch($field_array['label_pos']){
+                 // switch($field_array['label_pos']){
+                  switch('left'){
                      case 'left':
                         $html =$field_div_start.$field_label.$html.$field_div_end;
                      break;
