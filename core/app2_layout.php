@@ -116,7 +116,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
 <!--________________________start data_body area_____________________________-->
                      <div dojoType="dijit.layout.BorderContainer" style="width:100%; height:100%; padding:0px;" gutters="false" >
                         <?php if($GLOBALS['VIEW']['MAIN_TOP'] !=""): ?>
-                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP" class="bgBottom" style="padding:0px;height:25%">
+                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP" class="bgBottom" style="padding:0px;">
                            <div>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_TOP'];
@@ -135,11 +135,9 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                         <?php endif; ?>
                         <?php if($GLOBALS['VIEW']['MAIN_RIGHT'] !=""): ?>
                         <div dojoType="dijit.layout.ContentPane" region="right" id="MAIN_RIGHT" class="bgBottom" style="padding:0px;width:50%">
-                           <div>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_RIGHT'];
                               ?>
-                           </div>
                         </div>
                         <?php endif; ?>
                         <?php if($GLOBALS['VIEW']['MAIN_BOTTOM'] !=""): ?>

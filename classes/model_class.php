@@ -231,12 +231,12 @@ class Model{
 
       public function write_config(){
          $main_right=<<<EOE
-   'GRID'=>array(
+   'GRIDS'=>array(
        'GRID'=>array(
           'columns'      =>array('rid'=>array('hidden'=>'true'),'timestamp'),
           'filter'       =>isset(\$_SESSION[PAGE]['FILTER'])?\$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
-          'ref_table'    =>p_t(''),
+          'ref_table'    =>m_p_t(''),
           'event_key'    =>'rid',
           'dojoType'     =>'dojox.grid.DataGrid',
           'jsId'         =>'main_grid',
@@ -266,7 +266,7 @@ EOE;
          "store"=>"rid_store",
 
          "filter"=>isset(\$_SESSION[PAGE]['FILTER'])?" AND ".\$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>p_t(''),
+         "ref_table"=>m_p_t(''),
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
          "vid"=>array('rid'),

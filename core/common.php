@@ -916,6 +916,13 @@ function style_text($ROW_TEXT) {
    return str_replace("_", " ", ucfirst(strtolower($ROW_TEXT)));
 }
 
+/**
+ * array walk wrapper function for style_text function
+ */
+function walk_style_text(&$item,$key,$var){
+   $item=style_text($item);
+}
+
 /*
  * Log a message in log file 
  */
