@@ -20,12 +20,12 @@ function db_migration_form(){
 
    //Starting the form of checklists to select the migrations
    $html= "<div dojoType='dijit.form.Form' name='db_migrate' id='db_migrate' jsId='db_migrate' method='POST'>";
-
+   $html.= "<table class='clean' border='1'>";
    //System table migration check list
    if($schema_version != $db_version  && isset($system_table_migrate) && isset($system_table_migrate[$schema_version])){
       $migrate=$system_table_migrate;
-      $html.= "<h4 style='color:red'>System database upgrade required from db_version ".$arr['base_value']." to db_version $schema_version </h4>";
-      $html.= "<table class='clean' border='1'><tr><th>Database version</th><th>Migration Procedure</th><th>Apply</th>";
+      $html.= "<tr><td colspan='3'  align='center'><h4 style='color:red'>System database upgrade required from db_version ".$arr['base_value']." to db_version $schema_version </h4></td></tr>";
+      $html.= "<tr><th>Database version</th><th>Migration Procedure</th><th>Apply</th></tr>";
 
       for($i=($db_version+1);$i<=$schema_version;$i++ ){
          $html.= "<tr>";
@@ -44,11 +44,10 @@ function db_migration_form(){
          $html.= "<td><input type='checkbox' dojoType='dijit.form.CheckBox' id='migrate__$i' name='migrate__$i'><label for='migrate__$i'>MIGRATE</label></td>";
          $html.= "</tr>";
       }
-      $html.= "</table>";
       set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:40%;');
       set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:60%;');
    }else{
-      $html.= "<h4 style='color:blue'>You are with the latest system db_version no need of migration!</h4>";
+      $html.= "<tr><td colspan='3'  align='center'><h4 style='color:blue'>You are with the latest system db_version no need of migration!</h4></td></tr>";
       set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:0%;');
       set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:100%;');
    }
@@ -56,8 +55,8 @@ function db_migration_form(){
    //Program table migration check list
    if($schema_version != $db_version && isset($program_table_migrate) && isset($program_table_migrate[$schema_version])  ){
       $migrate=$program_table_migrate;
-      $html.= "<h4 style='color:red'>Program database upgrade required from db_version ".$arr['base_value']." to db_version $schema_version </h4>";
-      $html.= "<table class='clean' border='1'><tr><th>Database version</th><th>Migration Procedure</th><th>Apply</th>";
+      $html.= "<tr><td colspan='3' align='center'><h4 style='color:red'>Program database upgrade required from db_version ".$arr['base_value']." to db_version $schema_version </h4></td></tr>";
+      $html.= "<tr><th>Database version</th><th>Migration Procedure</th><th>Apply</th></tr>";
 
       for($i=($db_version+1);$i<=$schema_version;$i++ ){
          $html.= "<tr>";
@@ -76,14 +75,14 @@ function db_migration_form(){
          $html.= "<td><input type='checkbox' dojoType='dijit.form.CheckBox' id='migrate__$i' name='migrate__$i'><label for='migrate__$i'>MIGRATE</label></td>";
          $html.= "</tr>";
       }
-      $html.= "</table>";
       set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:40%;');
       set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:60%;');
    }else{
-      $html.= "<h4 style='color:blue'>You are with the latest program db_version no need of migration!</h4>";
+      $html.= "<tr><td colspan='3'  align='center'><h4 style='color:blue'>You are with the latest program db_version no need of migration!</h4></td></tr>";
       set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:0%;');
       set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:100%;');
    }
+   $html.= "</table>";
    $html.="</div>";
    return $html;
 }
@@ -92,37 +91,39 @@ function table_creation_form(){
 
    d_r('dijit.form.Form');
    d_r('dijit.form.CheckBox');
+
    $html= "<h3>Table creation and recreation</h3>";
    $html.= "<div dojoType='dijit.form.Form' name='create_tables' id='create_tables' jsId='create_tables' method='POST'>";
+   $html.= "<table class='clean' border='1'>";
 
    $arr=exec_query("SHOW TABLES FROM ".$GLOBALS['DB'],Q_RET_ARRAY,null,'Tables_in_'.$GLOBALS['DB']);
    $tables=array_keys($arr);
    if(isset($system_table_schemas) && sizeof($system_table_schemas) > 0){
       $schemas=$system_table_schemas;
-      $html= "<h4>System Tables</h4>";
-      $html.= "<table class='clean' border='1'><tr><th>Table</th><th>Schema</th><th>State</th><th>Action</th>";
+      $html.= "<tr><td colspan='3' align='center'><h4>System Tables</h4></td></tr>";
+      $html.= "<tr><th>Table</th><th>Schema</th><th>State</th><th>Action</th></tr>";
       foreach($schemas as $key => $value){
          $html.= "<tr>";
          if(array_search($key,$tables)===false){
             $html.= "<td style='font-size:16px;color:red'>$key</td>";
-            $html.= "<td><pre class='code' style='width:400px;' >$value</pre></td>";
+            $html.= "<td><pre class='code' style='width:600px;overflow:scroll' >$value</pre></td>";
             $html.= "<td>NOT AVAILABLE</td>";
             $html.= "<td><input type='checkbox' dojoType='dijit.form.CheckBox' checked='true' id='create__$key' name='create__$key'><label for='create__$key'>CREATE</label></td>";
          }else{
             $html.= "<td style='font-size:16px'>$key</td>";
-            $html.= "<td><pre class='code'>$value</pre></td>";
+            $html.= "<td><pre class='code' style='width:600px;overflow:scroll'>$value</pre></td>";
             $html.= "<td>AVAILABLE</td>";
             $html.= "<td><input type='checkbox' dojoType='dijit.form.CheckBox' id='recreate__$key' name='recreate__$key'><label for='recreate__$key'>RECREATE</label></td>";
          }
          $html.= "</tr>";
       }
-      $html.= "</table>";
    }
 
    if(isset($program_table_schemas) && sizeof($program_table_schemas) > 0){
       $schemas=$program_table_schemas;
-      $html.= "<h4>Program Tables</h4>";
-      $html.= "<table class='clean' border='1'><tr><th>Table</th><th style='width:300px'>Schema</th><th>State</th><th>Action</th>";
+      $html.= "<tr><td colspan='3' align='center'><h4>Program Tables</h4></td></tr>";
+      $html.= "<tr><th>Table</th><th>Schema</th><th>State</th><th>Action</th></tr>";
+
       foreach($schemas as $key => $value){
          //program table normally has a prefix, add the prefix to the table name 
          if(isset($schema_prefix)){
@@ -131,20 +132,20 @@ function table_creation_form(){
          $html.= "<tr>";
          if(array_search($key,$tables)===false){
             $html.= "<td style='font-size:16px;color:red'>$key</td>";
-            $html.= "<td><pre class='code' style='width:300px;overflow:scroll'>$value</pre></td>";
+            $html.= "<td><pre class='code' style='width:600px;overflow:scroll'>$value</pre></td>";
             $html.= "<td>NOT AVAILABLE</td>";
             $html.= "<td><input type='checkbox' dojoType='dijit.form.CheckBox' checked='true' id='create__$key' name='create__$key'><label for='create__$key'>CREATE</label></td>";
          }else{
             $html.= "<td style='font-size:16px'>$key</td>";
-            $html.= "<td><pre class='code'>$value</pre></td>";
+            $html.= "<td><pre class='code' style='width:600px;overflow:scroll'>$value</pre></td>";
             $html.= "<td>AVAILABLE</td>";
             $html.= "<td><input type='checkbox' dojoType='dijit.form.CheckBox' id='recreate__$key' name='recreate__$key'><label for='recreate__$key'>RECREATE</label></td>";
          }
          $html.= "</tr>";
       }
-      $html.= "</table>";
    }
 
+   $html.= "</table>";
    $html.= "</div>";
    return  $html;
 }
@@ -178,6 +179,12 @@ function create_recreate_tables(){
                $info.="[$table] dropping successfull;";
             }
             //create table
+
+            //program table prefix rallback
+            if(isset($schema_prefix)){
+               $table=str_replace('%s',$schema_prefix."_",$table);
+            }
+
             exec_query($schemas[$table],Q_RET_NON);
             if(get_sql_error() != false){
                $status  ="ERROR";
