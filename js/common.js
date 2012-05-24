@@ -555,26 +555,41 @@ var xhr_generic_callback={
    'before':[]
 };
 
-function xhr_generic(submit_form,action){
+function xhr_generic(submit_form,action,handle_as){
    var x_g_c=xhr_generic_callback;
    callback(x_g_c,'before');
    var url=gen_url();
    update_progress_bar(0);
+   var handleAs_='text';
+   if(handle_as){
+      handleAs_=handle_as;
+   }
    dojo.xhrPost({
       url         : url+'&form='+submit_form+'&action='+action+'&data=true',
-      handleAs    : 'text',
+      handleAs    : handleAs_,
       form        : submit_form, 
       timeout     : timeout_,
 
       handle: function(response,ioArgs){
       },
       load: function(response,ioArgs) {
-         update_status_bar('OK','Request handled successfully');
-         update_progress_bar(100);
-
-         //call the error callback function
-         callback(x_g_c,'ok',response);
-
+         if(handleAs_ == 'text'){
+            update_status_bar('OK','Request handled successfully');
+            update_progress_bar(100);
+            //call the error callback function
+            callback(x_g_c,'ok',response);
+         }else{ //'json'
+            update_status_bar(response.status_code,response.info);
+            if(response.status_code == 'ERROR'){
+               update_progress_bar(20);
+               //call the error callback function
+               callback(x_g_c,'error',response);
+            }else{
+               update_progress_bar(100);
+               //call the error callback function
+               callback(x_g_c,'ok',response);
+            }
+         }
       }, 
       error: function() {
          update_status_bar('ERROR','Error on submission!');

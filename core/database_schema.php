@@ -2,7 +2,7 @@
 /*
 System Database tables
 */
-$system_table_schema_version=4;
+$schema_version=4;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`               INT(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -113,7 +113,8 @@ $system_table_schemas['base_data']="CREATE TABLE `base_data` (
   `base_key`        VARCHAR(300)   NOT NULL,
   `base_value`      TEXT           NOT NULL,
   `status`          VARCHAR(100)   DEFAULT NULL,
-  `timestamp`       TIMESTAMP,
+  `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   UNIQUE KEY (`base_class`,`base_key`),
    PRIMARY KEY (`rid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8"; 
 
@@ -130,8 +131,8 @@ $system_table_schemas['news']="CREATE TABLE `news`(
 
 //Base data which should be populated at the first time the system is set up;
 $system_base_data['base_data']="
-INSERT INTO `base_data`(`class`,`name`,`description`,`status`)VALUES
-('VARIABLE','SYSTEM__DB_VERSION','$system_table_schema_version','ENABLED'),
+INSERT INTO `base_data`(`base_class`,`base_key`,`base_value`,`status`)VALUES
+('VARIABLE','SYSTEM__DB_VERSION','$schema_version','ENABLED'),
 ('title','[\"MR\",\"MS\",\"MISS\",\"DR\",\"Dr\",\"PROF\"],'ENABLED'),
 ('district','{\"17\":\"Ampara\",\"20\":\"Anuradhapura\",\"22\":\"Badulla\",\"16\":\"Batticaloa\",\"1\":\"Colombo\",\"7\":\"Galle\",\"2\":\"Gampaha\",\"9\":\"Hambantota\",\"10\":\"Jaffna\",\"3\":\"Kalutara\",\"5\":\"Kandy\",\"24\":\"Kegalle\",\"11\":\"Kilinochchi\",\"19\":\"Kurunegala\",\"12\":\"Mannar\",\"4\":\"Matale\",\"8\":\"Matara\",\"23\":\"Moneragala\",\"13\":\"Mullaitivu\",\"6\":\"Nuwara Eliya\",\"21\":\"Polonnaruwa\",\"18\":\"Puttalam\",\"25\":\"Ratnapura\",\"15\":\"Trincomalee\",\"14\":\"Vavuniya\"},'ENABLED'),
 ('province','[\"Central\",\"Eastern\",\"North Central\",\"Northern\",\"North Western\",\"Sabaragamuwa\",\"Southern\",\"Uva\",\"Western\"] ','ENABLED'),

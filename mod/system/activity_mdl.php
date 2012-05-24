@@ -106,7 +106,6 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
-      /*
       "info"=>array(
          "length"	=>"100",
          "dojoType"	=>"dijit.form.ValidationTextBox",
@@ -115,7 +114,6 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
-       */
       "agent"=>array(
          "length"	=>"700",
          "dojoType"	=>"dijit.form.ValidationTextBox",
@@ -168,7 +166,6 @@ $GLOBALS['MODEL']=array(
           'jsId'         =>'main_grid',
           'store'        =>'main_grid_store' ,
           'query'        =>'{ "rid": "*" }',
-          'rowsperPage'  =>'40',
           'clientsort'   =>'true',
           'style'        =>'width:100%;height:400px',
           'onClick'      =>'load_grid_item',
@@ -250,11 +247,10 @@ $GLOBALS['MODEL']=array(
          "onClick"=>'reload_grid(main_grid)',
       ),
       "csv"=>array(
-         "dojoType"=>"dijit.form.Button",
+         "dojoType"=>"dijit.form.DropDownButton",
          "label"=>"CSV",
          "iconclass"=>get_icon_class('Database'),
          "showlabbel"=>'true',
-         "onClick"=>'submit_form("csv")',
       ),
    ),
    'WIDGETS'=>array(

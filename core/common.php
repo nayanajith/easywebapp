@@ -1,5 +1,38 @@
 <?php
 /**
+ * layouts html/dojo parameters
+ */
+$GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
+   "MAIN_TOP"     =>array(
+      "style"=>"padding:0px;height:25%",
+   ),
+   "MAIN_LEFT"    =>array(
+      "style"=>"padding:0px;height:50%",
+   ),
+   "MAIN_RIGHT"   =>array(
+      "style"=>"padding:0px;height:50%",
+   ),
+   "MAIN_BOTTOM"  =>array(
+      "style"=>"padding:0px;height:75%",
+   ),
+);
+function set_layout_properties($layout='app2',$section='MAIN_TOP',$key,$value){
+   $GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]=$value;
+}
+
+function get_layout_properties($layout='app2',$section='MAIN_TOP',$key=null){
+   $options="";
+   if(is_null($key)){
+      foreach($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section] as $key => $value){
+         $options.=$key."='$value' ";
+      }
+      return $options;
+   }else{
+      return $key."='".$GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]."' ";
+   }
+}
+
+/**
  * wrapper for isset() function which will return value if is set else return null
  * TODO
  */
@@ -217,7 +250,7 @@ function get_temp_filter($table_as=null){
 
    $filter="";
    $and="";
-   foreach(array_keys($GLOBALS['MODEL']['MAIN_LEFT']) as $key){
+   foreach(array_keys($GLOBALS['MODEL']['FORM']) as $key){
       if($key != $GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'] && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
          $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
          $and=' AND ';
@@ -497,14 +530,14 @@ function clear_footer(){
 }
 
 /**
- * Add return the field for the given field_id from $GLOBALS['PREVIEW']['MAIN_LEFT']
+ * Add return the field for the given field_id from $GLOBALS['PREVIEW']['FORM']
  */
 function get_field($field_id){
    return get_from_preview('FORM',$field_id,'field');
 }
 
 /**
- * Add return the label for the given field_id from $GLOBALS['PREVIEW']['MAIN_LEFT']
+ * Add return the label for the given field_id from $GLOBALS['PREVIEW']['FORM']
  */
 function get_label($field_id){
    return get_from_preview('FORM',$field_id,'label');

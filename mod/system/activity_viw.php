@@ -26,6 +26,6 @@ $main_top.="</table></form></center>";
 
 add_to_main_top($main_top);
 add_to_main_bottom('<h2>Activity LOG</h2>');
-add_to_main_bottom($GLOBALS['PREVIEW']['GRIDS']['GRID']);
-
+add_to_main_bottom(get_from_preview('GRIDS','GRID'));
+add_to_main_bottom("<script>dojo.ready(function(){fill_filter_form()});</script>");
 ?>

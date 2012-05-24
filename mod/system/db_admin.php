@@ -1,26 +1,30 @@
-<?php 
-include_once(A_CORE.'/database_schema.php');
-$arr=exec_query("SELECT * FROM base_data WHERE base_class='VARIABLE' AND base_key='SYSTEM__DB_VERSION'",Q_RET_ARRAY);
-$arr=$arr[0];
+<?php
+$GLOBALS['PAGE']=array(
+   'name'                =>'db_admin',
+   'table'               =>null,
+   'primary_key'         =>null,
+   'filter_table'        =>null,
+   'filter_primary_key'  =>null,
+);
 
-if($system_table_schema_version != $arr['base_value'] && isset($system_table_migrate[$system_table_schema_version]) ){
-   echo "<h4 style='color:red'>Database upgrade required from db_version ".$arr['base_value']." to db_version $system_table_schema_version </h4>";
-}else{
-   echo "<h4 style='color:blue'>You are with the latest db_version no deeds of upgrades!</h4>";
-}
-echo "<form>";
-echo "<h3>Table</h3>";
-$arr=exec_query("SHOW TABLES",Q_RET_ARRAY,null,'Tables_in_'.$GLOBALS['DB']);
-$tables=array_keys($arr);
-foreach($system_table_schemas as $key => $value){
-   if(array_search($key,$tables)){
-      echo "<h4>Table <u>$key</u> available</h4>";
-      echo "<input type='checkbox' id='regen_$key'><label for='regen_$key'>Backup and recreate $key table</label>";
-   }else{
-      echo "<h4 style='color:red'>Table <u>$key</u> not available</h4>";
-      echo "<input type='checkbox' id='create_$key'><label for='create_$key'>Create $key table</label>";
+//Common control swithces included
+include A_CORE."/ctrl_common.php";
+include_once(A_CORE.'/database_schema.php');
+if(isset($_REQUEST['form'])){
+   switch($_REQUEST['form']){
+   case 'create_tables':
+      create_recreate_tables($system_table_schemas);
+   break;
+   case 'db_migrate':
+      migrate_db($system_table_migrate);
+   break;
    }
-   echo "<pre class='code'>$value</pre>";
+   return;
+}else{
+   set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:50%;');
+   set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:50%;');
+
+   add_to_main_top("<div><center>".db_migration_form($system_table_schemas,$schema_version,$system_table_migrate)."</center></div>");
+   add_to_main_bottom("<div><center>".table_creation_form($system_table_schemas)."</center></div>");
 }
-echo "</form>";
 ?>
