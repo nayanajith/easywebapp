@@ -2,7 +2,7 @@
 /*
 System Database tables
 */
-$schema_version=4;
+$schema_version=5;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`               INT(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -167,5 +167,6 @@ drop table base_data;
 ";
 
 $system_table_migrate[4]="show databases";
+$system_table_migrate[5]="show databases";
 
 ?>

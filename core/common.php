@@ -1,5 +1,27 @@
 <?php
 /**
+ * Return module/system  schema variables
+ * $var_name: 
+ */
+/*
+function effective_schema_vars($module){
+   $schema_file=A_MODULES.'/'.$module.'/core/database_schema.php';
+   if(file_exists($schema_file)){
+      return array(
+         "schema_version"        =>$schema_version,
+         "system_table_schema"   =>$schema_version,
+         "system_table_migrate"  =>$schema_version,
+         "program_table_schema"  =>$schema_version,
+         "program_table_migrate" =>$schema_version,
+         "program_stored_functions" =>$schema_version,
+      );
+   }else{
+      return  false;
+   }
+}
+
+ */
+/**
  * layouts html/dojo parameters
  */
 $GLOBALS['LAYOUT_PROPERTIES']['app2']=array(

@@ -58,13 +58,13 @@ if(isset($_REQUEST['form'])){
             $model->xhr_filtering_select_data($_REQUEST['field'],$section);
          break;
          case 'param':
+            log_msg($_REQUEST);
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
             $param=$_REQUEST['param'];
             $br=explode('__',$_REQUEST['param']);
             if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
                $param=$br[1];
             }
-      
             if($_REQUEST[$_REQUEST['param']] == 'NULL'){
                //rest the session variable corresponding to the given value if  it is NULL
                unset($_SESSION[PAGE][$param]);
@@ -72,7 +72,7 @@ if(isset($_REQUEST['form'])){
             }else{
             //Set session variable corresponding to the value changed in front end
                $_SESSION[PAGE][$param]=$_REQUEST[$_REQUEST['param']];
-               return_status_json('OK',"Set ".$_REQUEST['param']."=".$_REQUEST[$_REQUEST['param']]);
+               return_status_json('OK',"Set ".$_REQUEST['param']." as ".$_REQUEST[$_REQUEST['param']]);
             }
          break;
          case 'add_filter':

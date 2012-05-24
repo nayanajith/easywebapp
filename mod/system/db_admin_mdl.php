@@ -1,4 +1,12 @@
 <?php
+$modules_have_schema=array('core'=>'Core');
+foreach($GLOBALS['MODULES'] as $key => $value){
+   $schema_file=A_MODULES."/".$key."/core/database_schema.php";
+   if(file_exists($schema_file)){
+      $modules_have_schema[$key]=$value;
+   }
+}
+$schema_module_inner=gen_select_inner($modules_have_schema,null,true);
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
    'KEYS'=>array(
@@ -11,6 +19,16 @@ $GLOBALS['MODEL']=array(
    'GRIDS'=>array(
    ),
    'TOOLBAR'=>array(
+      "schema_module"=>array(
+         "length"=>"170",
+         "dojoType"=>"dijit.form.Select",
+         "required"=>"false",
+         "label"=>"Module",
+         "label_pos"=>"left",
+         "onMouseOver"=>'reloading_on()',
+         "onChange"=>'set_param(this.id,this.value);reload_page();',
+         "inner"=>$schema_module_inner,
+      ),
       "create"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Create/Re-create",
