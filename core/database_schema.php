@@ -2,7 +2,7 @@
 /*
 System Database tables
 */
-$schema_version=5;
+$schema_version=3;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`               INT(3) unsigned NOT NULL AUTO_INCREMENT,
@@ -110,7 +110,7 @@ $system_table_schemas['filter']="CREATE TABLE `filter` (
 $system_table_schemas['base_data']="CREATE TABLE `base_data` (
   `rid`             INT(11)        NOT NULL AUTO_INCREMENT,
   `base_class`      VARCHAR(50)    DEFAULT NULL,
-  `base_key`        VARCHAR(300)   NOT NULL,
+  `base_key`        VARCHAR(100)   NOT NULL,
   `base_value`      TEXT           NOT NULL,
   `status`          VARCHAR(100)   DEFAULT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -160,13 +160,9 @@ alter table users add last_logout datetime;
 //db v2 -> v3
 $system_table_migrate[3][]=$system_table_schemas['base_data'];
 $system_table_migrate[3][]="
-insert into base_data(class,name,description,status) select 'LIST',list_name,json,'ACTIVE' from common_lists; 
+insert into base_data(base_class,base_key,base_value,status) select 'LIST',list_name,json,'ACTIVE' from common_lists; 
 ";
 $system_table_migrate[3][]="
-drop table base_data;
+drop table common_lists;
 ";
-
-$system_table_migrate[4]="show databases";
-$system_table_migrate[5]="show databases";
-
 ?>

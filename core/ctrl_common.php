@@ -58,7 +58,6 @@ if(isset($_REQUEST['form'])){
             $model->xhr_filtering_select_data($_REQUEST['field'],$section);
          break;
          case 'param':
-            log_msg($_REQUEST);
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
             $param=$_REQUEST['param'];
             $br=explode('__',$_REQUEST['param']);
