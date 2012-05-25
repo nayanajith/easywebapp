@@ -158,7 +158,6 @@ alter table users add last_logout datetime;
 ";
 
 //db v2 -> v3
-$system_table_migrate[3][]=$system_table_schemas['base_data'];
 $system_table_migrate[3][]="
 insert into base_data(base_class,base_key,base_value,status) select 'LIST',list_name,json,'ACTIVE' from common_lists; 
 ";
