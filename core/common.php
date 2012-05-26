@@ -29,10 +29,10 @@ $GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
       "style"=>"padding:0px;height:25%",
    ),
    "MAIN_LEFT"    =>array(
-      "style"=>"padding:0px;height:50%",
+      "style"=>"padding:0px;width:50%",
    ),
    "MAIN_RIGHT"   =>array(
-      "style"=>"padding:0px;height:50%",
+      "style"=>"padding:0px;width:50%",
    ),
    "MAIN_BOTTOM"  =>array(
       "style"=>"padding:0px;height:75%",
@@ -769,14 +769,14 @@ function verify_captcha($custom_param=null){
  * return a commen list array with title according to the common list_name
  */
 function get_common_list($list_name,$no_title=false){
-   $arr=exec_query("SELECT name,description FROM ".s_t('base_data')." WHERE class='LIST' AND nam='".$list_name."'",Q_RET_ARRAY);
+   $arr=exec_query("SELECT base_key,base_value FROM ".s_t('base_data')." WHERE base_class='LIST' AND base_key='".$list_name."'",Q_RET_ARRAY);
    if(isset($arr[0])){
       if($no_title){
-         return json_decode($arr[0]['description'],true);
+         return json_decode($arr[0]['base_value'],true);
       }else{
          return array(
-            'title'  =>style_text($arr[0]['name']),
-            'list'   =>json_decode($arr[0]['description'],true)
+            'title'  =>style_text($arr[0]['base_name']),
+            'list'   =>json_decode($arr[0]['base_value'],true)
          );
       }
    }

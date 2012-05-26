@@ -1,4 +1,5 @@
 <?php
+$status_inner=gen_select_inner(array("ENABLED","DISABLED"),null,true);
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
    'KEYS'=>array(
@@ -35,9 +36,10 @@ $GLOBALS['MODEL']=array(
          "value"=>""
       ),
       "base_value"=>array(
-         "length"	=>"100",
+         "length"	=>"350",
          "dojoType"	=>"dijit.form.SimpleTextarea",
          "required"	=>"true",
+         "style"  =>"height:50px",
          "label"	=>"Base value",
          "label_pos"	=>"top",
          "value"=>""
@@ -47,6 +49,7 @@ $GLOBALS['MODEL']=array(
          "dojoType"	=>"dijit.form.Select",
          "required"	=>"true",
          "label"	=>"Status",
+         "inner"  =>$status_inner,
          "label_pos"	=>"top",
          "value"=>""
       ),
@@ -54,10 +57,10 @@ $GLOBALS['MODEL']=array(
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'GRIDS'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid','list_name'),
+          'columns'      =>array('rid'=>array('hidden'=>'true'),'base_class'=>array('width'=>'20px'),'base_key','base_value'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
-          'ref_table'    =>$GLOBALS['S_TABLES']['common_lists'],
+          'ref_table'    =>s_t('base_data'),
           'event_key'    =>'rid',
           'dojoType'     =>'dojox.grid.DataGrid',
           'jsId'         =>'main_grid',
@@ -86,10 +89,10 @@ $GLOBALS['MODEL']=array(
          "store"=>"rid_store",
 
          "filter"=>isset($_SESSION[PAGE]['FILTER'])?" AND ".$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>$GLOBALS['S_TABLES']['common_lists'],
+         "ref_table"=>s_t('base_data'),
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
-         "vid"=>array('list_name'),
+         "vid"=>array('base_key'),
       ),  
 
       "clear"=>array(
