@@ -34,12 +34,11 @@ $group_inner      =gen_select_inner(array_keys($arr),null,true);
 $res=exec_query("SELECT short_name,rid FROM ".$GLOBALS['S_TABLES']['program'],Q_RET_ARRAY,null,'rid');
 $program_inner  =gen_select_inner($res,'short_name');
 
-$auth_mod_inner   =gen_select_inner(array("AUTO","LOCAL","LDAP"),null,true);
+$auth_mod_inner   =gen_select_inner(get_common_list('auth_mod',true),null,true);
 $permission_inner =gen_select_inner(array("ADMIN","STAFF","STUDENT","GUEST"));
-$theme_inner      =gen_select_inner(array('claro'=>'CLARO','nihilo'=>'NIHILO','soria'=>'SORIA','tundra'=>'TUNDRA'),null,true);
-$layout_inner     =gen_select_inner(array('app2'=>'APP2','web'=>'WEB','app'=>'APP','pub'=>'PUB'),null,true);
-$title_list       =get_common_list('title');
-$title_inner      =gen_select_inner($title_list['list'],null,true);
+$theme_inner      =gen_select_inner(get_common_list('theme',true),null,true);
+$layout_inner     =gen_select_inner(get_common_list('layout',true),null,true);
+$title_inner      =gen_select_inner(get_common_list('title',true),null,true);
 
 $syear_inner="";
 $curr_year=date("Y");

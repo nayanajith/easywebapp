@@ -1,8 +1,4 @@
 <?php
-include A_CLASSES."/data_entry_class.php";
-$table            ='users';
-$key1             ='username';
-$formgen          = new Formgenerator($table,$key1);
 
 //Generate the json related to the user/group permission
 if(isset($_REQUEST['data'])&&$_REQUEST['data']=='json'){

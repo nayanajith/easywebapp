@@ -4,6 +4,7 @@ $menu_array  = array(
 //   "modules"            =>"Modules",
    "users"              =>"Users",
    "role"               =>"Roles",
+   "permission"         =>"Users/Group Permission2",
    "manage_permission"  =>"Users/Group Permission",
    "base_data"          =>"Base Data",
    "reset_password"     =>array("PAGE"=>"Reset Password","VISIBLE"=>"false"),

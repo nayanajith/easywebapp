@@ -605,8 +605,16 @@ dojo.ready(function(){
             $options       ='';
             $bypass        =array();
 
+            
+
             //Sett cell type and editbility and other options
             if(is_array($array)){
+
+               //If width is not set set it to auto
+               if(!isset($array['width'])){
+                  $options =' width="auto" ';
+               }
+
                $h_key=$key;
 
                foreach($array as $key => $value){
@@ -615,11 +623,12 @@ dojo.ready(function(){
                   }
                }
             }else{
-               $h_key=$array;
+               $options =' width="auto" ';
+               $h_key   =$array;
             }
 
 
-            $html.= "<th width='auto' field='$h_key' $options >
+            $html.= "<th field='$h_key' $options >
                ".(isset($this->form[$h_key]['label'])?$this->form[$h_key]['label']:$h_key)."
             </th>";
          }

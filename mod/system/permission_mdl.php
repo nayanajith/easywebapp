@@ -1,11 +1,10 @@
 <?php
-$status_inner=gen_select_inner(array("ENABLED","DISABLED"),null,true);
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
    'KEYS'=>array(
       'PRIMARY_KEY'	=>'rid',
-      'UNIQUE_KEY'	=>array('list_name'),
-      'MULTY_KEY'	=>array(''),
+      'UNIQUE_KEY'	=>array(''),
+      'MULTY_KEY'	=>array('group_user_id'),
    ),
 //--------------FIELDS TO BE INCLUDED IN FORM-------------------
 //---------------THIS ALSO REFLECT THE TABLE--------------------
@@ -19,48 +18,55 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
-      "base_class"=>array(
+      "group_user_id"=>array(
+         "length"	=>"350",
+         "dojoType"	=>"dijit.form.ValidationTextBox",
+         "required"	=>"false",
+         "label"	=>"Group user id",
+         "label_pos"	=>"top",
+         "value"=>""
+      ),
+      "is_user"=>array(
+         "length"	=>"70",
+         "dojoType"	=>"dijit.form.CheckBox",
+         "required"	=>"false",
+         "label"	=>"Is user",
+         "label_pos"	=>"right",
+         "value"=>""
+      ),
+      "module"=>array(
          "length"	=>"350",
          "dojoType"	=>"dijit.form.ValidationTextBox",
          "required"	=>"true",
-         "label"	=>"Base class",
+         "label"	=>"Module",
          "label_pos"	=>"top",
          "value"=>""
       ),
-      "base_key"=>array(
+      "page"=>array(
          "length"	=>"350",
          "dojoType"	=>"dijit.form.ValidationTextBox",
          "required"	=>"true",
-         "label"	=>"Base key",
+         "label"	=>"Page",
          "label_pos"	=>"top",
          "value"=>""
       ),
-      "base_value"=>array(
-         "length"	=>"350",
-         "dojoType"	=>"dijit.form.SimpleTextarea",
+      "access_right"=>array(
+         "length"	=>"70",
+         "dojoType"	=>"dijit.form.ValidationTextBox",
          "required"	=>"true",
-         "style"  =>"height:50px",
-         "label"	=>"Base value",
+         "label"	=>"Access right",
          "label_pos"	=>"top",
          "value"=>""
       ),
-      "status"=>array(
-         "length"	=>"100",
-         "dojoType"	=>"dijit.form.Select",
-         "required"	=>"true",
-         "label"	=>"Status",
-         "inner"  =>$status_inner,
-         "label_pos"	=>"top",
-         "value"=>""
-      ),
+
    ),
-//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
+//---------------------GRID CONFIGURATION-----------------------
    'GRIDS'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid'=>array('hidden'=>'true'),'base_class'=>array('width'=>'60px'),'base_key'=>array('width'=>'100px'),'base_value'),
+          'columns'      =>array('rid'=>array('hidden'=>'true'),'group_user_id','module','page','access_right','is_user'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
-          'ref_table'    =>s_t('base_data'),
+          'ref_table'    =>m_p_t(''),
           'event_key'    =>'rid',
           'dojoType'     =>'dojox.grid.DataGrid',
           'jsId'         =>'main_grid',
@@ -75,9 +81,10 @@ $GLOBALS['MODEL']=array(
           'headerMenu'   =>'gridMenu',
        ),
     ),
+//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'TOOLBAR'=>array(
       "rid"=>array(
-         "length"=>"170",
+         "length"=>"100",
          "dojoType"=>"dijit.form.FilteringSelect",
          "required"=>"false",
          "label"=>"Label",
@@ -89,10 +96,10 @@ $GLOBALS['MODEL']=array(
          "store"=>"rid_store",
 
          "filter"=>isset($_SESSION[PAGE]['FILTER'])?" AND ".$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>s_t('base_data'),
+         "ref_table"=>m_p_t(''),
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
-         "vid"=>array('base_key'),
+         "vid"=>array('rid'),
       ),  
 
       "clear"=>array(
@@ -111,9 +118,9 @@ $GLOBALS['MODEL']=array(
          "showLabbel"=>'true',
          "onClick"=>'submit_form("add");reload_grid(main_grid)',
       ),  
-      "modify"=>array(
+      "save"=>array(
          "dojoType"=>"dijit.form.Button",
-         "label"=>"Modify",
+         "label"=>"Save",
          "iconClass"=>get_icon_class('Save'),
          "showLabbel"=>'true',
          "onClick"=>'submit_form("modify");reload_grid(main_grid)',
@@ -146,6 +153,12 @@ $GLOBALS['MODEL']=array(
          "showLabbel"=>'true',
          "onClick"=>'reload_grid(main_grid)',
       ),
+      "csv"=>array(
+         "dojoType"=>"dijit.form.DropDownButton",
+         "label"=>"CSV",
+         "iconClass"=>get_icon_class('Table'),
+         "showLabbel"=>'true',
+       ),
    ),
    'WIDGETS'=>array(
    ),

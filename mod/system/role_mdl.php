@@ -1,6 +1,6 @@
 <?php
-$theme_inner      =gen_select_inner(array('claro','nihilo','soria','tundra'));
-$layout_inner     =gen_select_inner(array('web','app','pub','app2'));
+$theme_inner      =gen_select_inner(get_common_list('theme',true),null,true);
+$layout_inner     =gen_select_inner(get_common_list('layout',true),null,true);
 
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
