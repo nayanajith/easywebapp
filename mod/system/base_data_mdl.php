@@ -1,5 +1,6 @@
 <?php
-$status_inner=gen_select_inner(array("ENABLED","DISABLED"),null,true);
+$status_inner=gen_select_inner($GLOBALS['STATUS'],null,true);
+$base_class_inner=gen_select_inner(get_common_list('base_class',true),null,true);
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
    'KEYS'=>array(
@@ -20,9 +21,10 @@ $GLOBALS['MODEL']=array(
          "value"=>""
       ),
       "base_class"=>array(
-         "length"	=>"350",
-         "dojoType"	=>"dijit.form.ValidationTextBox",
+         "length"	=>"100",
+         "dojoType"	=>"dijit.form.Select",
          "required"	=>"true",
+         "inner"  =>$base_class_inner,
          "label"	=>"Base class",
          "label_pos"	=>"top",
          "value"=>""

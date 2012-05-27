@@ -603,7 +603,8 @@ dojo.ready(function(){
          foreach($grid['columns'] as $key=>$array){
             $h_key         ='';
             $options       ='';
-            $bypass        =array();
+            $label         ='';
+            $bypass        =array('label');
 
             
 
@@ -617,19 +618,34 @@ dojo.ready(function(){
 
                $h_key=$key;
 
+               //Set all options for each column header which are not in bypass array
                foreach($array as $key => $value){
                   if(!in_array($key,$bypass)){
                      $options.=$key."='".$value."' ";
                   }
                }
+
+               //if label is set internally then set it as label
+               if(isset($array['label'])){
+                  $label   =$array['label'];
+               }
+
             }else{
                $options =' width="auto" ';
                $h_key   =$array;
             }
 
+            //If the lable is not internally set then check for the lable from FORM else set label as column name
+            if($label == ''){
+               if(isset($this->form[$h_key]['label'])){
+                  $label   =$this->form[$h_key]['label'];
+               }else{
+                  $label   =$h_key;
+               }
+            }
 
             $html.= "<th field='$h_key' $options >
-               ".(isset($this->form[$h_key]['label'])?$this->form[$h_key]['label']:$h_key)."
+               ".$label."
             </th>";
          }
          $html.= "</tr>

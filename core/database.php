@@ -31,10 +31,12 @@ function opendb($DB=null) {
       }
    break;
    default:
-      $GLOBALS['CONNECTION'] = @mysql_connect($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS']);
-      if(!@mysql_select_DB($DB, $GLOBALS['CONNECTION'])){
+      $GLOBALS['CONNECTION'] = @mysqli_connect($GLOBALS['DB_HOST'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASS'],$DB);
+      /*
+      if(!@mysqli_select_DB($DB, $GLOBALS['CONNECTION'])){
          $db_avail=false;
       }
+      */
    break;
    }
    return $db_avail;
@@ -49,7 +51,7 @@ function closedb() {
       mssql_close($GLOBALS['CONNECTION']);
    break;
    default:
-      mysql_close($GLOBALS['CONNECTION']);
+      mysqli_close($GLOBALS['CONNECTION']);
    break;
    }
 }
@@ -152,25 +154,18 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
    log_msg('exec_query',$db.":".$query);
 
    /*Execute query*/
-   $result    = mysql_query($query, $GLOBALS['CONNECTION']);
+   if(mysqli_multi_query($GLOBALS['CONNECTION'],$query)){
+      $query_ok=true;
+   }else{
+      $query_ok=false;
+   }
    
    /*Set affected rows*/
-   $aff_rows=mysql_affected_rows($GLOBALS['CONNECTION']);
-
-   $sql_error=mysql_error($GLOBALS['CONNECTION']);
-
-   if($result){
-      $query_ok=true;
-   }
-
-/*
-   $row_res=mysql_query("SELECT ROW_COUNT()", $GLOBALS['CONNECTION']);
-   $row_row=mysql_fetch_assoc($row_res);
-   $aff_rows=$row_row['ROW_COUNT()'];
-*/
+   $aff_rows   =mysqli_affected_rows($GLOBALS['CONNECTION']);
+   $sql_error  =mysqli_error($GLOBALS['CONNECTION']);
 
    /*If result is false then return false*/
-   if(!is_resource($result)){
+   if(mysqli_more_results($GLOBALS['CONNECTION'])){
       if($no_connect != true ){
          closedb();
       }
@@ -196,12 +191,31 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
 
    }else{
       /*Set num rows*/
-      $num_rows=mysql_num_rows($result);
+      //$num_rows=mysql_num_rows($result);
    }
 
    switch($type){
       case Q_RET_MYSQL_RES:
-         return $result;
+         //Go throgh all the results from multy query and collect them in to an array
+         $results=array();
+         while(true){
+            if ($result = mysqli_store_result($GLOBALS['CONNECTION'])) {
+               $results[]=$result;
+               mysqli_free_result($result);
+            }
+            if(mysqli_more_results($GLOBALS['CONNECTION'])){
+               mysqli_next_result($GLOBALS['CONNECTION']);
+            }else{
+               return;
+            }
+         }
+         
+         //If the results have only on result then return it as value not as array
+         if(sizeof($results) > 1){
+            return $results;
+         }else{
+            return $results[0];
+         }
       break;
       case Q_RET_NON:
       break;
@@ -210,17 +224,38 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
          $res_array   = array();
 
          /*If there are mayn row create two dimentional array*/
-         while($row = mysql_fetch_assoc($result)){
-            if($array_key!=null){
-               $temp_key=$row[$array_key];
-               unset($row[$array_key]);
-               $res_array[$temp_key]=$row;
+         $i=0;
+         while(true){
+            if ($result = mysqli_store_result($GLOBALS['CONNECTION'])) {
+               $res_res_array=array();
+               while ($row = mysqli_fetch_assoc($result)) {
+                  if($array_key!=null){
+                     $temp_key=$row[$array_key];
+                     unset($row[$array_key]);
+                     $res_res_array[$temp_key]=$row;
+                  }else{
+                     $res_res_array[]=$row;
+                  }
+
+               }
+            $res_array[$i++]=$res_res_array;
+            mysqli_free_result($result);
+            }
+            if(mysqli_more_results($GLOBALS['CONNECTION'])){
+               mysqli_next_result($GLOBALS['CONNECTION']);
             }else{
-               $res_array[]=$row;
+               break;
             }
          }
 
-         return $res_array;
+         //If we have only one element in $res_array  then return just that element
+         if(sizeof($res_array) > 1){
+            return $res_array;
+         }else{
+            log_msg($res_array[0]);
+            return $res_array[0];
+         }
+
          if($no_connect != true ){
             closedb();
          }

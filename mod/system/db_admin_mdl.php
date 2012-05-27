@@ -34,14 +34,16 @@ $GLOBALS['MODEL']=array(
          "label"=>"Create/Re-create",
          "iconClass"=>get_icon_class('Process'),
          "showLabbel"=>'true',
-         "onClick"=>'xhr_generic("create_tables","create","json")',
+         "onMouseOver"=>'reloading_on()',
+         "onClick"=>'xhr_c_add("ok",reload_page);xhr_generic("create_tables","create","json")',
       ),
       "migrate"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Migrate",
          "iconClass"=>get_icon_class('Process'),
          "showLabbel"=>'true',
-         "onClick"=>'xhr_generic("db_migrate","migrate","json")',
+         "onMouseOver"=>'reloading_on()',
+         "onClick"=>'xhr_c_add("ok",reload_page);xhr_generic("db_migrate","migrate","json")',
       ),
    ),
    'WIDGETS'=>array(

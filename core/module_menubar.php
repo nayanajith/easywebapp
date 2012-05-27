@@ -44,7 +44,7 @@ foreach($modules_array as $module => $pages){
       if(is_array($name))$name=$name['PAGE'];
 
       /*active tab is selected*/
-      if(PAGE == $page){
+      if(PAGE == $page && MODULE == $module){
          echo "<div dojoType='dijit.MenuItem'  style='font-weight:bold;'>
            ".$name." 
          </div>\n";

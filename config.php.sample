@@ -42,6 +42,9 @@ $GLOBALS['LAYOUT']      = 'pub'; //web,app,pub
 $GLOBALS['THEME']       = 'claro'; //claro,nihilo,soria,tundra
 $GLOBALS['PAGE_GEN']    = '';
 
+/*-----------------common status for all the table records---------------------*/
+$GLOBALS['STSTUS']      = array('ENABLED','DISABLED');
+
 /*---------------------------configure Database--------------------------------*/
 $GLOBALS['DB']          = 'ucscsis';
 $GLOBALS['DB_HOST']     = 'localhost';

@@ -91,11 +91,11 @@ function db_migration_form(){
          if(is_array($migrate[$i])){
             $html.= "<ol>";
             foreach($migrate[$i] as $value){
-               $html.= "<li><pre class='code'>$value</pre></li>";
+               $html.= "<li><pre class='code'>".sprintf($value,$schema_prefix."_")."</pre></li>";
             }
             $html.= "</ol>";
          }else{
-            $html.= "<ol><li><pre class='code'>".$migrate[$i]."</pre></li></ol>";
+            $html.= "<ol><li><pre class='code'>".sprintf($migrate[$i],$schema_prefix."_")."</pre></li></ol>";
          }
          $html.= "</div></td>";
          //Only in here the program database migration form differ from system database migration form
@@ -260,7 +260,7 @@ function create_recreate_tables(){
             $schemas=$program_table_schemas;
             //program table prefix rallback
             if(isset($schema_prefix)){
-               $table=str_replace('%s',$schema_prefix."_",$table);
+               $table=str_replace($schema_prefix."_",'%s',$table);
             }
 
             //creating the table
@@ -286,7 +286,7 @@ function create_recreate_tables(){
             //program table prefix rallback
             $schemas=$program_table_schemas;
             if(isset($schema_prefix)){
-               $table=str_replace('%s',$schema_prefix."_",$table);
+               $table=str_replace($schema_prefix."_",'%s',$table);
             }
 
             exec_query($schemas[$table],Q_RET_NON);
@@ -296,6 +296,9 @@ function create_recreate_tables(){
             }else{
                $info.="Table $table creation successfull;";
             }
+         break;
+         default:
+            $status='ERROR';
          break;
          }
       }
@@ -313,7 +316,7 @@ function migrate_db(){
    $info    ="";
 
    //var to hold status of the sql execution
-   $status  ="OK";
+   $status  ="";
 
    $version ="0";
 
@@ -322,6 +325,10 @@ function migrate_db(){
    foreach($_REQUEST as $key => $value){
       $br=explode('__',$key);
       if(isset($br[1])){
+
+         //Set default status as ok which allow to make the dicision of user have requested any migration
+         $status  ="OK";
+
          $version=$br[1];
          switch($br[0]){
          case 'migrate':
@@ -384,7 +391,9 @@ function migrate_db(){
                }
             }
          break;
-
+         default:
+            $status="ERROR";
+         break;
          }
       }
    }

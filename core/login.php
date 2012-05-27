@@ -29,7 +29,6 @@ if(isset($_REQUEST['form']) && $_REQUEST['form']=='system' && isset($_REQUEST['a
          $_SESSION[$key]   = $row[$value];
       }
    }
-log_msg($_SESSION);
    $_SESSION['loged_module']    = MODULE;
 }
 
