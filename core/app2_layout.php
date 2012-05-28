@@ -115,7 +115,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <div dojoType="dijit.layout.ContentPane" region="center" id="data_body" class="bgBottom" style="padding:5px;">
 <!--________________________start data_body area_____________________________-->
 <!--design:headline,sidebar -->
-                     <div dojoType="dijit.layout.BorderContainer" style="padding:0px;" gutters="true" design="headline" style="width:100%;height:100%">
+                     <div dojoType="dijit.layout.BorderContainer" style="padding:0px;" gutters="false" design="headline" style="width:100%;height:100%">
                         <?php if ($GLOBALS['VIEW']['MAIN_TOP'] != ""): ?>
                         <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP" class="bgTop" <?php echo get_layout_properties('app2','MAIN_TOP'); ?>>
                               <?php 

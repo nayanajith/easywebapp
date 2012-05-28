@@ -28,25 +28,25 @@ function effective_schema_vars($module){
  */
 $GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
    "MAIN_TOP"     =>array(
-      "style"=>"height:0px",
+      "style"=>"padding:0px;height:25%",
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_LEFT"    =>array(
-      "style"=>"width:600px",
+      "style"=>"padding:0px;width:50%",
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_RIGHT"   =>array(
-      "style"=>"height:auto",
+      "style"=>"padding:0px;width:50%",
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_BOTTOM"  =>array(
-      "style"=>"height:auto",
+      "style"=>"padding:0px;height:75%",
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
