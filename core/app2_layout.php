@@ -114,35 +114,36 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <!--CENTER box of BorderContainer-2-->
                   <div dojoType="dijit.layout.ContentPane" region="center" id="data_body" class="bgBottom" style="padding:5px;">
 <!--________________________start data_body area_____________________________-->
-                     <div dojoType="dijit.layout.BorderContainer" style="width:100%; height:100%; padding:0px;" gutters="false" >
-                        <?php if($GLOBALS['VIEW']['MAIN_TOP'] !=""): ?>
-                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP" class="bgBottom" <?php echo get_layout_properties('app2','MAIN_TOP'); ?>>
+<!--design:headline,sidebar -->
+                     <div dojoType="dijit.layout.BorderContainer" style="padding:0px;" gutters="true" design="headline" style="width:100%;height:100%">
+                        <?php if ($GLOBALS['VIEW']['MAIN_TOP'] != ""): ?>
+                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP" class="bgTop" <?php echo get_layout_properties('app2','MAIN_TOP'); ?>>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_TOP'];
                               ?>
                         </div>
-                        <?php endif; ?>
-                        <?php if($GLOBALS['VIEW']['MAIN_LEFT'] !=""): ?>
-                        <div dojoType="dijit.layout.ContentPane" region="left" id="MAIN_LEFT" class="bgBottom" <?php echo get_layout_properties('app2','MAIN_LEFT'); ?> >
+                        <?php endif ?>
+                        <?php if ($GLOBALS['VIEW']['MAIN_LEFT'] != ""): ?>
+                        <div dojoType="dijit.layout.ContentPane" region="left" id="MAIN_LEFT" <?php echo get_layout_properties('app2','MAIN_LEFT'); ?> >
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_LEFT'];
                               ?>
                         </div>
-                        <?php endif; ?>
-                        <?php if($GLOBALS['VIEW']['MAIN_RIGHT'] !=""): ?>
-                        <div dojoType="dijit.layout.ContentPane" region="right" id="MAIN_RIGHT" class="bgBottom" <?php echo get_layout_properties('app2','MAIN_RIGHT'); ?>>
+                        <?php endif ?>
+                        <?php if ($GLOBALS['VIEW']['MAIN_RIGHT'] != ""): ?>
+                        <div dojoType="dijit.layout.ContentPane" region="right" id="MAIN_RIGHT" <?php echo get_layout_properties('app2','MAIN_RIGHT'); ?>>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_RIGHT'];
                               ?>
                         </div>
-                        <?php endif; ?>
-                        <?php if($GLOBALS['VIEW']['MAIN_BOTTOM'] !=""): ?>
+                        <?php endif ?>
+                        <?php if ($GLOBALS['VIEW']['MAIN_BOTTOM'] != ""): ?>
                         <div dojoType="dijit.layout.ContentPane" region="bottom" id="MAIN_BOTTOM" class="bgBottom" <?php echo get_layout_properties('app2','MAIN_BOTTOM'); ?>>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
                               ?>
                         </div>
-                        <?php endif; ?>
+                        <?php endif ?>
                     </div>
 <!--_________________________end data_body area______________________________-->
                   </div>

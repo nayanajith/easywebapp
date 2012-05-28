@@ -23,19 +23,33 @@ function effective_schema_vars($module){
  */
 /**
  * layouts html/dojo parameters
+ * data-dojo-props='id:"border1-left", region:"left", style:"background-color: #acb386; border: 10px green solid; width: 100px;",
+ *       splitter:true, minSize:150, maxSize:250'
  */
 $GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
    "MAIN_TOP"     =>array(
-      "style"=>"padding:0px;height:25%",
+      "style"=>"height:0px",
+      "splitter"=>"false",
+      "minSize"=>"0",
+      "maxSize"=>"850",
    ),
    "MAIN_LEFT"    =>array(
-      "style"=>"padding:0px;width:50%",
+      "style"=>"width:600px",
+      "splitter"=>"false",
+      "minSize"=>"0",
+      "maxSize"=>"850",
    ),
    "MAIN_RIGHT"   =>array(
-      "style"=>"padding:0px;width:50%",
+      "style"=>"height:auto",
+      "splitter"=>"false",
+      "minSize"=>"0",
+      "maxSize"=>"850",
    ),
    "MAIN_BOTTOM"  =>array(
-      "style"=>"padding:0px;height:75%",
+      "style"=>"height:auto",
+      "splitter"=>"false",
+      "minSize"=>"0",
+      "maxSize"=>"850",
    ),
 );
 function set_layout_properties($layout='app2',$section='MAIN_TOP',$key,$value){
