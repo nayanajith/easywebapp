@@ -45,11 +45,13 @@ class Query_read_store{
          }else{
             $this->key =key($key);  //hidden field of the select box 
             if(is_array($key[key($key)])){
-               $this->fields  =',CONCAT('.implode(',"/",',$key[key($key)]).") label";   //displaying field of the select box
-               $this->searchAttr =$key[key($key)][0];
+               $this->fields  	=',CONCAT('.implode(',"/",',$key[key($key)]).") label";   //displaying field of the select box
+               $this->searchAttr =' CONCAT('.implode(',"/",',$key[key($key)]).") ";   //to use with like operator
+               //$this->searchAttr =$key[key($key)][0];
             }else{
-               $this->fields  =','.$key[key($key)].' label';   //displaying field of the select box
-               $this->searchAttr =$key[key($key)];
+               $this->fields  	=','.$key[key($key)].' label';   //displaying field of the select box
+               $this->searchAttr =$key[key($key)];   //displaying field of the select box
+               //$this->searchAttr =$key[key($key)];
             }
          }
       }else{
