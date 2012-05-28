@@ -1,5 +1,5 @@
 <?php
-$main_top="<h2>Filter Fields</h2>";
+$main_top="<h2 style='float:left'>Filter Fields</h2>";
 $main_top.="<center><form dojoType='dijit.form.Form' id='main' jsId='main' name='main' method='POST' ><table>";
 
 $main_top.="<tr>
@@ -28,4 +28,7 @@ add_to_main_top($main_top);
 add_to_main_bottom('<h2>Activity LOG</h2>');
 add_to_main_bottom(get_from_preview('GRIDS','GRID'));
 add_to_main_bottom("<script>dojo.ready(function(){fill_filter_form()});</script>");
+
+set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:28%');
+set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:72%');
 ?>

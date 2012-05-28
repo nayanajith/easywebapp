@@ -5,7 +5,7 @@ System Database tables
 $schema_version=3;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
-  `rid`               INT(3) unsigned NOT NULL AUTO_INCREMENT,
+  `rid`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `short_name`       VARCHAR(20) NOT NULL,
   `full_name`        VARCHAR(300) NOT NULL,
   `logo`             VARCHAR(300) NOT NULL,
@@ -18,10 +18,10 @@ $system_table_schemas['program']="CREATE TABLE `program` (
   `note`             VARCHAR(300) DEFAULT NULL,
   PRIMARY KEY (`rid`),
   UNIQUE KEY (`short_name`)
-)ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['users']="CREATE TABLE `users` (
-  `user_id`          INT NOT NULL AUTO_INCREMENT,
+  `user_id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `syear`            decimal(4,0) DEFAULT NULL,
   `current_school_id`decimal(10,0) DEFAULT NULL,
   `title`            VARCHAR(5) DEFAULT NULL,
@@ -46,7 +46,7 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   `note`             VARCHAR(300) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY (`username`),
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['role']="CREATE TABLE `role`(
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
@@ -58,7 +58,7 @@ $system_table_schemas['role']="CREATE TABLE `role`(
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`rid`),
   UNIQUE KEY (`group_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 
 $system_table_schemas['permission']="CREATE TABLE `permission`(
@@ -71,10 +71,10 @@ $system_table_schemas['permission']="CREATE TABLE `permission`(
   `access_right`     enum('DENIED','READ','WRITE') NOT NULL DEFAULT 'DENIED',
    PRIMARY KEY (`rid`),
    UNIQUE KEY (`group_user_id`,`module`,`page`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['log']="CREATE TABLE `log` (
-  `rid`              BIGINT(10) unsigned NOT NULL AUTO_INCREMENT,
+  `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
   `proto`            VARCHAR(5) DEFAULT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id`          INT NOT NULL,
@@ -91,7 +91,7 @@ $system_table_schemas['log']="CREATE TABLE `log` (
   `deleted`          BOOLEAN     DEFAULT false,
   `note`             VARCHAR(300) DEFAULT NULL,
   PRIMARY KEY (`rid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['filter']="CREATE TABLE `filter` (
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
@@ -105,10 +105,10 @@ $system_table_schemas['filter']="CREATE TABLE `filter` (
   `note`             VARCHAR(300) DEFAULT NULL,
    PRIMARY KEY (`rid`),
    UNIQUE KEY (`filter_name`,`table_name`,`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['base_data']="CREATE TABLE `base_data` (
-  `rid`             INT(11)        NOT NULL AUTO_INCREMENT,
+  `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
   `base_class`      VARCHAR(50)    DEFAULT NULL,
   `base_key`        VARCHAR(100)   NOT NULL,
   `base_value`      TEXT           NOT NULL,
@@ -116,7 +116,7 @@ $system_table_schemas['base_data']="CREATE TABLE `base_data` (
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    UNIQUE KEY (`base_class`,`base_key`),
    PRIMARY KEY (`rid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8"; 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8"; 
 
 $system_table_schemas['news']="CREATE TABLE `news`(
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
@@ -127,7 +127,7 @@ $system_table_schemas['news']="CREATE TABLE `news`(
   `display_until`    DATE NOT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    PRIMARY KEY (`rid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 //Base data which should be populated at the first time the system is set up;
 $system_base_data['base_data']="

@@ -34,7 +34,8 @@ function db_migration_form(){
    $migration_avail=false;
 
    //Starting the form of checklists to select the migrations
-   $html= "<div dojoType='dijit.form.Form' name='db_migrate' id='db_migrate' jsId='db_migrate' method='POST'>";
+   $html= "<h3>Database migration procedures</h3>";
+   $html.= "<div dojoType='dijit.form.Form' name='db_migrate' id='db_migrate' jsId='db_migrate' method='POST'>";
    $html.= "<table class='clean' border='1'>";
 
    //System table migration check list
@@ -114,8 +115,8 @@ function db_migration_form(){
       set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:40%;');
       set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:60%;');
    }else{
-      set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:10%;');
-      set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:90%;');
+      set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:20%;');
+      set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:80%;');
    }
 
    $html.= "</table>";
@@ -239,7 +240,7 @@ function create_recreate_tables(){
          break;
          case 'recreate':
             //first drop (backup if the tale contain any data) table
-            drop_tables(array($table));
+            drop_tables(array($table=>$table));
             if(get_sql_error() != false){
                $status  ="ERROR";
                $info.="Table $table dropping ".get_sql_error().";";

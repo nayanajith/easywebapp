@@ -201,6 +201,9 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
          while(true){
             if ($result = mysqli_store_result($GLOBALS['CONNECTION'])) {
                $results[]=$result;
+               while($row=mysqli_fetch_assoc($result)){
+                  log_msg($row);
+               }
                mysqli_free_result($result);
             }
             if(mysqli_more_results($GLOBALS['CONNECTION'])){
@@ -252,7 +255,6 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
          if(sizeof($res_array) > 1){
             return $res_array;
          }else{
-            log_msg($res_array[0]);
             return $res_array[0];
          }
 

@@ -237,7 +237,7 @@ $GLOBALS['MODEL']=array(
          "label"=>"Delete filter",
          "iconclass"=>get_icon_class('Cancel'),
          "showlabbel"=>'true',
-         "onClick"=>'submit_form("del_filter");reload_grid(main_grid)',
+         "onClick"=>'submit_form("del_filter");reload_grid(main_grid);clear_form("main",toolbar__rid)',
       ),
       "reload_grid"=>array(
          "dojoType"=>"dijit.form.Button",

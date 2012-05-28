@@ -556,7 +556,7 @@ EOE;
          }
 
          $insert=sprintf($insert,$cols,$values);
-         $res=exec_query($insert,Q_RET_MYSQL_RES);
+         exec_query($insert,Q_RET_NON);
 
          /*report error/success*/
          if(get_affected_rows() != 0){
@@ -588,7 +588,7 @@ EOE;
          }
 
 
-         $res=exec_query($delete,Q_RET_MYSQL_RES);
+         $res=exec_query($delete,Q_RET_NON);
 
          /*report error/success*/
          if(get_affected_rows()!= 0){
@@ -624,7 +624,7 @@ EOE;
             $update="UPDATE ".$table." SET  filter='$filter' WHERE filter_name='$filter_name''";
          }
 
-         $res=exec_query($update,Q_RET_MYSQL_RES);
+         exec_query($update,Q_RET_NON);
          
          /*report error/success*/
          if(get_affected_rows() != 0){
@@ -1002,7 +1002,7 @@ EOE;
          }
 
          $sql="SELECT * FROM ".$this->table." WHERE ".$filter;
-         $res=exec_query($sql,Q_RET_MYSQL_RES);
+         exec_query($sql,Q_RET_NON);
          if(get_num_rows() > 0){
             return true;
          }else{
@@ -1105,8 +1105,9 @@ EOE;
          //Log users activity
          act_log(null,$sql);
 
-         $res=exec_query($sql,Q_RET_MYSQL_RES);
-         if(get_affected_rows() > 0){
+         $res=exec_query($sql,Q_RET_ARRAY);
+
+         if(sizeof($res)>0){
             //key available  -> modify
             $values   =""; //valus to be changes in the tupple
             $comma   ="";
