@@ -304,35 +304,95 @@ $GLOBALS['MODEL']=array(
    'GRIDS'  =>array(),
    'TOOLBAR'=>array(),
    'WIDGETS'=>array(),
+   'CALLBACKS'=>array(),
 );
 
 /**
- * Add value to model, up to 3 levels can be set
+ * Add value to model add a value to a given lear of the model tree
  */
-function add_to_model($value,$l1_id,$l2_id=null,$l3_id=null){
-   if(!is_null($l2_id) && !is_null($l3_id)){
-      $GLOBALS['MODEL'][$l1_id][$l2_id][$l3_id]=$value;
-   }elseif(!is_null($l2_id)){
-      $GLOBALS['MODEL'][$l1_id][$l2_id]=$value;
-   }else{
-      $GLOBALS['MODEL'][$l1_id]=$value;
+function add_to_model($value,$path){
+
+   $model=&$GLOBALS['MODEL'];
+   if(is_array($path)){
+      foreach($path as $key){
+         //Create new array element if not available
+         if(!isset($model[$key])){
+            $model[$key]=null;
+         }
+         $model=&$model[$key];
+     }
+     $model=$value;
+     return;
    }
 }
 
 /**
- * get value from model, up to 3 levels can be get
+ * Get value from model
+ * Brows thour the array and return the value if available else return null
+ * $path is an arry of nodes 
  */
-function get_from_model($l1_id,$l2_id=null,$l3_id=null){
-   if(!is_null($l2_id) && !is_null($l3_id) && isset($GLOBALS['MODEL'][$l1_id]) && isset($GLOBALS['MODEL'][$l1_id][$l2_id]) && isset($GLOBALS['MODEL'][$l1_id][$l2_id][$l3_id])){
-      return $GLOBALS['MODEL'][$l1_id][$l2_id][$l3_id];
-   }elseif(!is_null($l2_id) && isset($GLOBALS['MODEL'][$l1_id]) && isset($GLOBALS['MODEL'][$l1_id][$l2_id])){
-      return $GLOBALS['MODEL'][$l1_id][$l2_id];
-   }elseif(isset($GLOBALS['MODEL'][$l1_id])){
-      return $GLOBALS['MODEL'][$l1_id];
+function get_from_model($path){
+   $model=$GLOBALS['MODEL'];
+   //Brows thour the array and return the value if available else return null
+   if(is_array($path)){
+      foreach($path as $key){
+         if(!isset($model[$key])){
+            return null;
+         }else{
+            $model=$model[$key];
+         }
+      }
+      return $model;
    }else{
-      return array();
+      return $model[$path];
    }
 }
+
+/**
+ * call callback functions and store returned results
+ * example callback array:
+ 'CALLBACKS'=>array(
+      "add_record"=>array(
+         "OK"     =>array(
+            "func"=>"test_func",
+            "vars"=>array(1,2),
+            "status"=>false,
+            "return"=>null
+         ),
+         "ERROR"  =>null,
+      ),
+      "modify_record"=>array(
+         "OK"     =>null,
+         "ERROR"  =>null,
+      ),
+      "delete_record"=>array(
+         "OK"     =>array(
+            "func"=>"test_func",
+            "vars"=>array(1,2),
+            "status"=>false,
+            "return"=>null
+         ),
+         "ERROR"  =>null,
+      )
+   ),
+ */
+function callback($caller,$status,$func_array=null){
+   if(is_null($func_array)){
+      $func_array=get_from_model(array('CALLBACKS',$caller,$status));
+   }
+
+   //Callback the function and set returning value back in the array as return
+   add_to_model(
+      call_user_func_array($func_array['func'],$func_array['vars']),
+      array('CALLBACKS',$caller,$status,'return')
+   );
+
+   //Set callback function status as true to denote it is executed
+   add_to_model(
+      true,
+      array('CALLBACKS',$caller,$status,'status')
+   );
+} 
 
 //Array to keep the view entries before puting in VIEW array 
 $GLOBALS['PREVIEW']=array(
@@ -371,6 +431,7 @@ function get_from_preview($l1_id,$l2_id=null,$l3_id=null){
       return array();
    }
 }
+
 
 
 

@@ -2,7 +2,6 @@
 
 d_r("dojox.form.PasswordValidator");
 $password_custom='
-<input type="hidden" name="password" id="password" jsId="password" dojoType="dijit.form.ValidationTextBox" style="border:0px;width:0px;" value="" ></input>
 <div dojoType="dijit.form.DropDownButton">
    <span>
        Change Password 
@@ -137,12 +136,18 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
-      "password"=>array(
-         "length"	=>"350",
-         "custom"	=>"true",
+      "password_custom"=>array(
+         "custom"=>"true",
          "inner"=>$password_custom,   
          "label"	=>"Password",
-         "label_pos"	=>"top",
+         "label_pos"	=>"left",
+      ),
+
+      "password"=>array(
+         "type"=>"hidden",
+         "length"	=>"350",
+         "dojoType"=>"dijit.form.ValidationTextBox",
+         "value"=>"",
       ),
       /*
       "phone"=>array(

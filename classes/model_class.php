@@ -144,23 +144,23 @@ class Model{
          ),
          */
       //Primary key and unique keys
-      protected $keys=array();
+      protected $keys      =array();
 
       //form, grid, toolbar, widget arrays loaded from model
-      protected $form=array();
-      protected $grids=array();
-      protected $toolbar=array();
-      protected $widgets=array();
+      protected $form      =array();
+      protected $grids     =array();
+      protected $toolbar   =array();
+      protected $widgets   =array();
 
+      //Callback functions fr the model class
+      protected $callbacks =array();
 
-      /*
-       A data tuple of the given table will be filled to this array
-       */
+      //A data tuple of the given table will be filled to this array
       protected $data=array();
 
-      /*
-       Load configuration from the file if exits
-       els load default configuration from the raw database
+      /**
+       * Load configuration from the file if exits
+       * els load default configuration from the raw database
        */
 
       public function load_modifier(){
@@ -169,10 +169,12 @@ class Model{
             require_once($config);
             if(isset($GLOBALS['MODEL'])){
                //Load all the arrays into class variables
+               $this->keys    =get_from_model('KEYS');
                $this->form    =get_from_model('FORM');
                $this->grids   =get_from_model('GRIDS');
                $this->toolbar =get_from_model('TOOLBAR');
                $this->widgets =get_from_model('WIDGETS');
+               $this->callbacks =get_from_model('CALLBACKS');
             }
          }else{
             $res=exec_query("SHOW COLUMNS FROM ".$this->table,Q_RET_ARRAY);
@@ -1030,7 +1032,7 @@ EOE;
          $comma   ="";
          /*set columns and values for each column*/
          foreach( $this->form as $key => $arr){
-            if( $this->key['PRIMARY_KEY'] == $key){
+            if( $this->keys['PRIMARY_KEY'] == $key){
                continue; 
             }
             /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
@@ -1115,10 +1117,9 @@ EOE;
             foreach( $this->form as $key => $arr){
 
                //primary key,custom and disabled fields will be excluded do not update
-               if( $this->key['PRIMARY_KEY'] == $key || (isset($arr['custom']) && $arr['custom'] == 'true') || (isset($arr['disabled']) && $arr['disabled'] == 'true')){
+               if( $this->keys['PRIMARY_KEY'] == $key || (isset($arr['custom']) && $arr['custom'] == 'true') || (isset($arr['disabled']) && $arr['disabled'] == 'true')){
                   continue; 
                }
-
 
                /*check for valid json strings to use as json strings in database*/
                $value=isset($_REQUEST[$key])?$_REQUEST[$key]:'';
@@ -1205,9 +1206,11 @@ EOE;
          /*report error/success */
          if(get_affected_rows() > 0){
             return_status_json('OK','record deleted successfully');
+            callback(__FUNCTION__,'OK');
             return true;
          }else{
             return_status_json('OK','error deleting record');
+            callback(__FUNCTION__,'ERROR');
             return false;
          }
       }
