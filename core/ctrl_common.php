@@ -64,7 +64,7 @@ if(isset($_REQUEST['form'])){
             if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
                $param=$br[1];
             }
-            if($_REQUEST[$_REQUEST['param']] == 'NULL'){
+            if(isset($_REQUEST['param']) && isset($_REQUEST[$_REQUEST['param']]) && $_REQUEST[$_REQUEST['param']] == 'NULL'){
                //rest the session variable corresponding to the given value if  it is NULL
                unset($_SESSION[PAGE][$param]);
                return_status_json('OK',"Reset ".$_REQUEST['param']);
@@ -94,7 +94,6 @@ if(isset($_REQUEST['form'])){
                echo json_encode($_SESSION[PAGE]['FILTER_ARRAY']);
             }
          break;
-
          case 'csv':
             //Custom field lists are accepted
             $field_list=null;
