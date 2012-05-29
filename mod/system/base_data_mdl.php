@@ -82,7 +82,7 @@ $GLOBALS['MODEL']=array(
          "length"=>"170",
          "dojoType"=>"dijit.form.FilteringSelect",
          "required"=>"false",
-         "label"=>"Label",
+         "label"=>"Base Key",
          "label_pos"=>"left",
 
          "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',

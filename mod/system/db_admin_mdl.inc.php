@@ -92,11 +92,11 @@ function db_migration_form(){
          if(is_array($migrate[$i])){
             $html.= "<ol>";
             foreach($migrate[$i] as $value){
-               $html.= "<li><pre class='code'>".sprintf($value,$schema_prefix."_")."</pre></li>";
+               $html.= "<li><pre class='code'>".str_replace('%s',$schema_prefix."_",$value)."</pre></li>";
             }
             $html.= "</ol>";
          }else{
-            $html.= "<ol><li><pre class='code'>".sprintf($migrate[$i],$schema_prefix."_")."</pre></li></ol>";
+            $html.= "<ol><li><pre class='code'>".str_replace('%s',$schema_prefix."_",$migrate[$i])."</pre></li></ol>";
          }
          $html.= "</div></td>";
          //Only in here the program database migration form differ from system database migration form
@@ -366,7 +366,8 @@ function migrate_db(){
                foreach($migrate[$version] as $key => $value){
                   //program table/migration rule prefix rallback
                   if(isset($schema_prefix)){
-                     $value=sprintf($value,$schema_prefix."_");
+                     //$value=sprintf($value,$schema_prefix."_");
+                     $value=str_replace('%s',$schema_prefix."_",$value);
                   }
 
                   exec_query($value,Q_RET_NON);
@@ -381,7 +382,8 @@ function migrate_db(){
                $value=$migrate[$version];
                //program table/migration rule prefix rallback
                if(isset($schema_prefix)){
-                  $value=sprintf($value,$schema_prefix."_");
+                  //$value=sprintf($value,$schema_prefix."_");
+                  $value=str_replace('%s',$schema_prefix."_",$value);
                }
                exec_query($value,Q_RET_NON);
                if(get_sql_error() != false){

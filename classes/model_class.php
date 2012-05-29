@@ -178,7 +178,7 @@ class Model{
             $res=exec_query("SHOW COLUMNS FROM ".$this->table,Q_RET_ARRAY);
 
             /*If no result returned*/
-            if(get_num_rows() <= 0){
+            if(sizeof($res) <= 0){
                echo "Error showing table '".$this->table."' !";   
                return;
             }
@@ -802,7 +802,7 @@ EOE;
          $data=exec_query($query,Q_RET_ARRAY);
          $file_name='gird.json';
          set_file_header($file_name);
-         print '/*'.json_encode(array('numRows'=>get_num_rows(),'items'=>$data,'identity'=>'id')).'*/';  
+         print '/*'.json_encode(array('numRows'=>sizeof($data),'items'=>$data,'identity'=>'id')).'*/';  
       }
 
 
@@ -1002,8 +1002,8 @@ EOE;
          }
 
          $sql="SELECT * FROM ".$this->table." WHERE ".$filter;
-         exec_query($sql,Q_RET_NON);
-         if(get_num_rows() > 0){
+         $arr=exec_query($sql,Q_RET_ARRAY);
+         if(sizeof($arr) > 0){
             return true;
          }else{
             return false;

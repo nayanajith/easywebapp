@@ -25,7 +25,7 @@ $GLOBALS['MODEL']=array(
          "length"	=>"350",
          "dojoType"	=>"dijit.form.ValidationTextBox",
          "required"	=>"true",
-         "label"	=>"Group name",
+         "label"	=>"Role name",
          "label_pos"	=>"top",
          "value"=>""
       ),
@@ -90,7 +90,7 @@ $GLOBALS['MODEL']=array(
          "length"=>"100",
          "dojoType"=>"dijit.form.FilteringSelect",
          "required"=>"false",
-         "label"=>"Label",
+         "label"=>"Role",
          "label_pos"=>"left",
 
          "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',
