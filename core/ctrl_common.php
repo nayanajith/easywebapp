@@ -85,7 +85,7 @@ if(isset($_REQUEST['form'])){
          case 'filler':
             //request for a record related to a given id
             if(isset($_REQUEST['id'])){
-               $model->xhr_form_filler_data($_REQUEST['id'],null,$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
+               $model->xhr_form_filler_data($_REQUEST['id'],null,get_pri_keys());
             }
          break;
          case 'filter_filler':
@@ -174,8 +174,8 @@ if(isset($_REQUEST['form'])){
    $view->gen_toolbar();
 
    //Generate search grid
-   if(isset($GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'])){
-      $view->gen_data_grid(array('rid'),$GLOBALS['MODEL']['KEYS']['PRIMARY_KEY']);
+   if(!is_null(get_pri_keys())){
+      $view->gen_data_grid(array('rid'),get_pri_keys());
    }
 
    //finish view

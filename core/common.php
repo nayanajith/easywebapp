@@ -1,26 +1,46 @@
 <?php
 /**
- * Return module/system  schema variables
- * $var_name: 
+ * Return the primary key of effective form
  */
-/*
-function effective_schema_vars($module){
-   $schema_file=A_MODULES.'/'.$module.'/core/database_schema.php';
-   if(file_exists($schema_file)){
-      return array(
-         "schema_version"        =>$schema_version,
-         "system_table_schema"   =>$schema_version,
-         "system_table_migrate"  =>$schema_version,
-         "program_table_schema"  =>$schema_version,
-         "program_table_migrate" =>$schema_version,
-         "program_stored_functions" =>$schema_version,
-      );
+function get_pri_keys(){
+   if(isset($GLOBALS['MODEL']) && isset($GLOBALS['MODEL']['KEYS'])){
+      if(isset($GLOBALS['MODEL']['KEYS']['PRI']) && is_array($GLOBALS['MODEL']['KEYS']['PRI'])){
+         return $GLOBALS['MODEL']['KEYS']['PRI'][0];
+      }elseif(isset($GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'])){
+         return $GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'];
+      }
    }else{
-      return  false;
+      return null; 
    }
 }
 
+/**
+ * Return the effective unique keys
  */
+function get_uni_keys(){
+   if(isset($GLOBALS['MODEL']) && isset($GLOBALS['MODEL']['KEYS'])){
+      if(isset($GLOBALS['MODEL']['KEYS']['UNI'])){
+         return $GLOBALS['MODEL']['KEYS']['UNI'];
+      }
+   }else{
+      return array(); 
+   }
+}
+
+/**
+ * Return the foreign keys (references) 
+ */
+function get_for_keys(){
+   if(isset($GLOBALS['MODEL']) && isset($GLOBALS['MODEL']['KEYS'])){
+      if(isset($GLOBALS['MODEL']['KEYS']['FOR'])){
+         return $GLOBALS['MODEL']['KEYS']['FOR'];
+      }
+   }else{
+      return array(); 
+   }
+
+}
+
 /**
  * layouts html/dojo parameters
  * data-dojo-props='id:"border1-left", region:"left", style:"background-color: #acb386; border: 10px green solid; width: 100px;",
@@ -28,25 +48,25 @@ function effective_schema_vars($module){
  */
 $GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
    "MAIN_TOP"     =>array(
-      "style"=>"border:1px solid silver;padding:0px;height:25%",
+      "style"=>"border:1px solid whitesmoke;padding:0px;height:25%",
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_LEFT"    =>array(
-      "style"=>"border:1px solid silver;padding:0px;width:50%",
+      "style"=>"border:1px solid whitesmok;padding:0px;width:50%",
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_RIGHT"   =>array(
-      "style"=>"border:1px solid silver;padding:0px;width:50%",
+      "style"=>"border:1px solid whitesmoke;padding:0px;width:50%",
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_BOTTOM"  =>array(
-      "style"=>"border:1px solid silver;padding:0px;height:75%",
+      "style"=>"border:1px solid whitesmoke;padding:0px;height:75%",
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
@@ -208,7 +228,7 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false){
    }else{
       foreach($filter_ids as $id){
          if(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='NULL'){
-            $filter.= "$and $id='".$array[$id]."'";
+            $filter.= " $and $id='".$array[$id]."'";
             $and="AND";
          }
       }
@@ -287,7 +307,7 @@ function get_temp_filter($table_as=null){
    $filter="";
    $and="";
    foreach(array_keys($GLOBALS['MODEL']['FORM']) as $key){
-      if($key != $GLOBALS['MODEL']['KEYS']['PRIMARY_KEY'] && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
+      if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
          $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
          $and=' AND ';
          //keep the filter array for future use
@@ -343,8 +363,10 @@ function get_from_model($path){
          }
       }
       return $model;
-   }else{
+   }elseif(isset($model[$path])){
       return $model[$path];
+   }else{
+      return null;
    }
 }
 

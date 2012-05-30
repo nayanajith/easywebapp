@@ -652,7 +652,7 @@ dojo.ready(function(){
       </thead>
       </table>";
          if(!isset($grid['event_key'])){
-            $grid['event_key']=$this->keys['PRIMARY_KEY'];
+            $grid['event_key']=get_pri_keys();
          }
 
          if(isset($grid['selector_id'])){
@@ -663,7 +663,7 @@ dojo.ready(function(){
                load_selected_value(".$grid['selector_id'].",selectedValue);
                //alert('selected cell Value is '+selectedValue);
                //fill_form(selectedValue);
-               //dijit.byId('".$this->keys['PRIMARY_KEY']."').setValue(selectedValue);
+               //dijit.byId('".get_pri_keys()."').setValue(selectedValue);
             }
             </script>";
          }

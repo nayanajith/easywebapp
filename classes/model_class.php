@@ -186,23 +186,7 @@ class Model{
             }
 
             foreach($res as $row) {
-               //Find the primary key
-               if(strtoupper($row['Key'])=='PRI'){
-                  $this->keys['PRIMARY_KEY']=$row['Field'];
-               }elseif(strtoupper($row['Key'])=='UNI'){
-                  //Find the unique key
-                  if(!isset($this->keys['UNIQUE_KEY'])){
-                     $this->keys['UNIQUE_KEY']=array();
-                  }
-                  $this->keys['UNIQUE_KEY'][]=$row['Field'];
-               }elseif(strtoupper($row['Key'])=='MUL'){
-                  //Find the multiple key
-                  if(!isset($this->keys['UNIQUE_KEY'])){
-                     $this->keys['MULTY_KEY']=array();
-                  }
-                  $this->keys['MULTY_KEY'][]=$row['Field'];
-               }
-               if(strtoupper($row['Extra'])!='AUTO_INCREMENT'){
+                             if(strtoupper($row['Extra'])!='AUTO_INCREMENT'){
                   $this->form[$row['Field']]=array(
                   "length"      =>$this->get_field_width($row['Type'],false),
                   "dojoType"    =>$this->get_field_type($row['Type']),
@@ -221,6 +205,38 @@ class Model{
                   );
                }
             }
+            $arr=exec_query("SELECT COLUMN_NAME,REFERENCED_COLUMN_NAME,CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME='".$this->table."' and CONSTRAINT_SCHEMA='".$GLOBALS['DB']."'",Q_RET_ARRAY);
+            /**
+             * +---------------+------------------------+--------------------+
+             * | COLUMN_NAME   | REFERENCED_COLUMN_NAME | CONSTRAINT_NAME    |
+             * +---------------+------------------------+--------------------+
+             * | rid           | NULL                   | PRIMARY            | <- primary key
+             * | bid           | NULL                   | PRIMARY            | <- primary key
+             * | group_user_id | NULL                   | group_user_id      | <- unique key first
+             * | module        | NULL                   | group_user_id      | <- unique key secondary
+             * | page          | NULL                   | group_user_id      | <- unique key secondary
+             * | department_id | rid                    | cadre_cadre_ibfk_2 | <- foreign key1
+             * | institute_id  | rid                    | cadre_cadre_ibfk_3 | <- foreign key2
+             * +---------------+------------------------+--------------------+
+             */
+            //phase 1 : detection of first level keys
+            foreach($arr as $key => $row){
+               if($row['CONSTRAINT_NAME']=='PRIMARY'){//Find the primary key
+                  $this->keys['PRI'][]=$row['COLUMN_NAME'];
+               }elseif($row['COLUMN_NAME']==$row['CONSTRAINT_NAME']){//Find first level unique keys
+                  $this->keys['UNI'][$row['COLUMN_NAME']]=array();
+               }elseif($row['REFERENCED_COLUMN_NAME']!='NULL'){//Find foreign keys (references)
+                  $this->keys['FOR'][]=$row['COLUMN_NAME'];
+               }
+            }
+
+            //phase 2: detection of second level unique keys
+            foreach($arr as $key => $row){
+               if(isset($this->keys['UNI'][$row['CONSTRAINT_NAME']])){//Find first unique key
+                  $this->keys['UNI'][$row['CONSTRAINT_NAME']][]=$row['COLUMN_NAME'];
+               }
+            }
+
             $this->write_config();
          }
       }
@@ -232,7 +248,7 @@ class Model{
 
 
       public function write_config(){
-         $main_right=<<<EOE
+         $grids=<<<EOE
    'GRIDS'=>array(
        'GRID'=>array(
           'columns'      =>array('rid'=>array('hidden'=>'true'),'timestamp'),
@@ -332,6 +348,28 @@ EOE;
          "showLabbel"=>'true',
        ),
 EOE;
+
+         $callbacks=<<<EOE
+ 'CALLBACKS'=>array(
+      "add_record"=>array(
+         "OK"     =>array(
+            "func"   =>null,
+            "vars"   =>array(),
+            "status" =>false,
+            "return" =>null
+         ),  
+         "ERROR"  =>array(),
+      ),  
+      "modify_record"=>array(
+         "OK"     =>array(),
+         "ERROR"  =>array(),
+      ),  
+      "delete_record"=>array(
+         "OK"     =>array(),  
+         "ERROR"  =>array(),
+      ),  
+   ),  
+EOE;
     
          $config=$this->model;
          if(!file_exists($config)){
@@ -341,13 +379,18 @@ EOE;
             fwrite($file_handler, "\$GLOBALS['MODEL']=array(\n");
             fwrite($file_handler, "//-----------------KEY FIELDS OF THE MODEL----------------------\n");
             fwrite($file_handler, tab(1)."'KEYS'=>array(\n");
-            fwrite($file_handler, tab(2)."'PRIMARY_KEY'\t=>'".$this->keys['PRIMARY_KEY']."',\n");
-            fwrite($file_handler, tab(2)."'UNIQUE_KEY'\t=>array('".(isset($this->keys['UNIQUE_KEY'])?implode("','",$this->keys['UNIQUE_KEY']):'')."'),\n");
-            fwrite($file_handler, tab(2)."'MULTY_KEY'\t=>array('".(isset($this->keys['MULTY_KEY'])?implode("','",$this->keys['MULTY_KEY']):'')."'),\n");
+            fwrite($file_handler, tab(2)."'PRI'\t=>array('".(isset($this->keys['PRI'])?implode("','",$this->keys['PRI']):'')."'),\n");
+            fwrite($file_handler, tab(2)."'UNI'\t=>array(");
+            if(isset($this->keys['UNI'])){
+               foreach($this->keys['UNI'] as $key => $arr){
+                  fwrite($file_handler, tab(2)."'$key'\t=>array('".implode("','",$arr)."'),\n");
+               }
+            }
+            fwrite($file_handler, tab(2)."),\n");
+            fwrite($file_handler, tab(2)."'FOR'\t=>array('".(isset($this->keys['FOR'])?implode("','",$this->keys['FOR']):'')."'),\n");
             fwrite($file_handler, tab(1)."),\n");
 
             fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN FORM-------------------\n");
-            fwrite($file_handler, "//---------------THIS ALSO REFLECT THE TABLE--------------------\n");
             //write in to form related fields which reflect the form
             fwrite($file_handler, tab(1)."'FORM'=>array(");
 
@@ -366,11 +409,12 @@ EOE;
 
             
             fwrite($file_handler, "//---------------------GRID CONFIGURATION-----------------------\n");
-            fwrite($file_handler, $main_right."\n");
+            fwrite($file_handler, $grids."\n");
             //write the toolbar related fields
             fwrite($file_handler, "//--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------\n");
             fwrite($file_handler, tab(1)."'TOOLBAR'=>array(\n".$common_toolbar_buttons."\n".tab(1)."),\n");
-            fwrite($file_handler, tab(1)."'WIDGETS'=>array(\n".tab(1)."),\n");
+            fwrite($file_handler, "//--------------------CALLBACK FUNCTIONS------------------------\n");
+            fwrite($file_handler, $callbacks."\n");
             fwrite($file_handler, ");");
             fwrite($file_handler, "\n?>\n");
             fclose($file_handler);
@@ -1032,11 +1076,16 @@ EOE;
          $comma   ="";
          /*set columns and values for each column*/
          foreach( $this->form as $key => $arr){
-            if( $this->keys['PRIMARY_KEY'] == $key){
+            if( get_pri_keys() == $key){
                continue; 
             }
+
+            //If the foreign keys does not have values ignore them
+            if(in_array(get_for_keys(),$key) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]))){
+               continue; 
+            }
+
             /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
-            //if( !( isset($arr['type']) && $arr['type'] == 'hidden') && !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
             if( !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
                $cols      .=$comma.$key;
             
@@ -1111,13 +1160,18 @@ EOE;
 
          if(sizeof($res)>0){
             //key available  -> modify
-            $values   =""; //valus to be changes in the tupple
+            $values  =""; //valus to be changes in the tupple
             $comma   ="";
             /*generate values string*/
             foreach( $this->form as $key => $arr){
 
                //primary key,custom and disabled fields will be excluded do not update
-               if( $this->keys['PRIMARY_KEY'] == $key || (isset($arr['custom']) && $arr['custom'] == 'true') || (isset($arr['disabled']) && $arr['disabled'] == 'true')){
+               if( get_pri_keys() == $key || (isset($arr['custom']) && $arr['custom'] == 'true') || (isset($arr['disabled']) && $arr['disabled'] == 'true')){
+                  continue; 
+               }
+
+               //If the foreign keys does not have values ignore them
+               if(in_array(get_for_keys(),$key) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]))){
                   continue; 
                }
 
