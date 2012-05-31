@@ -640,7 +640,7 @@ dojo.ready(function(){
                if(isset($this->form[$h_key]['label'])){
                   $label   =$this->form[$h_key]['label'];
                }else{
-                  $label   =$h_key;
+                  $label   =style_text($h_key);
                }
             }
 

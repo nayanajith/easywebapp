@@ -177,7 +177,8 @@ function table_creation_form(){
       foreach($schemas as $key => $value){
          //program table normally has a prefix, add the prefix to the table name 
          if(isset($schema_prefix)){
-            $key=sprintf($key,$schema_prefix."_");
+            $key  =sprintf($key,$schema_prefix."_");
+            $value=str_replace('%s',$schema_prefix."_",$value);
          }
          $html.= "<tr>";
          if(array_search($key,$tables)===false){

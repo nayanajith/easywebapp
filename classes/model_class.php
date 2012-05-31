@@ -1081,7 +1081,7 @@ EOE;
             }
 
             //If the foreign keys does not have values ignore them
-            if(in_array(get_for_keys(),$key) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]))){
+            if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null)){
                continue; 
             }
 
