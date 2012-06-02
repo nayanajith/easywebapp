@@ -1,22 +1,7 @@
-<script type='text/javascript'>
-//var first_time=true;
-
-/*function will not execute for the fist load*/
-function load_page(module,page,program){
-//   if(!first_time){
-      /*open page*/
-      window.open('<?php echo $GLOBALS['PAGE_GEN']; ?>?module='+module+'&page='+page+'&program='+program,'_parent');
-//   }else{
-//      first_time=false;
-//   }
-}
-</script>
-
 <?php
-/*gen_tabs function is in this file*/
 include A_CORE."/manage_module.php";
 
-/*Generate array with tabs and sub-tabs for modules and pages*/
+/*Generate array with menus and sub-menus for modules and pages*/
 $modules_array=gen_visible_module_array();
 
 /*Add nested tab contgainers for each module*/
@@ -39,19 +24,27 @@ foreach($modules_array as $module => $pages){
 
    /*Add a tab inside the nested tab continer for each page*/
    foreach($pages as $page => $name){
-
+      $tooltip="";
       //if $name is an array this will do
-      if(is_array($name))$name=$name['PAGE'];
+      if(is_array($name)){
+         //set tooltip ondemand
+         if(isset($name['tooltip']) || isset($name['TOOLTIP'])){
+            $tooltip="<div dojoType='dijit.Tooltip' connectId='".$module."__$page' >".(isset($name['TOOLTIP'])?$name['TOOLTIP']:$name['tooltip'])."</div>";
+         }
+
+         $name=isset($name['LABEL'])?$name['LABEL']:$name['label'];
+      }
 
       /*active tab is selected*/
       if(PAGE == $page && MODULE == $module){
-         echo "<div dojoType='dijit.MenuItem'  style='font-weight:bold;'>
+
+         echo "<div dojoType='dijit.MenuItem' id='".$module."__$page' style='font-weight:bold;'>
            ".$name." 
-         </div>\n";
+         </div>$tooltip\n";
       }else{
-         echo "<div dojoType='dijit.MenuItem' onClick=\"load_page('".$module."','".$page."','".PROGRAM."')\">
+         echo "<div dojoType='dijit.MenuItem' id='".$module."__$page' onClick=\"load_page('".$module."','".$page."','".PROGRAM."')\">
            ".$name." 
-         </div>\n";
+         </div>$tooltip\n";
       }
    }
    echo "</div>\n";

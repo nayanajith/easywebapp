@@ -24,10 +24,7 @@ echo $reflector->getStartLine();
  */
 $model    = new Model(
    $GLOBALS['PAGE']['table'],
-   $GLOBALS['PAGE']['primary_key'],
-   $GLOBALS['PAGE']['name'],
-   $GLOBALS['PAGE']['filter_table'],
-   $GLOBALS['PAGE']['filter_primary_key']
+   $GLOBALS['PAGE']['name']
 );
 
 if(isset($_REQUEST['form'])){
@@ -68,7 +65,7 @@ if(isset($_REQUEST['form'])){
                //rest the session variable corresponding to the given value if  it is NULL
                unset($_SESSION[PAGE][$param]);
                return_status_json('OK',"Reset ".$_REQUEST['param']);
-            }else{
+            }elseif(isset($_REQUEST[$_REQUEST['param']])){
             //Set session variable corresponding to the value changed in front end
                $_SESSION[PAGE][$param]=$_REQUEST[$_REQUEST['param']];
                return_status_json('OK',"Set ".$_REQUEST['param']." as ".$_REQUEST[$_REQUEST['param']]);

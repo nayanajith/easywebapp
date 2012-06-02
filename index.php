@@ -83,6 +83,27 @@ include A_CORE."/program.php";
 /*---------------------------------Load modules-------------------------------*/
 include ("modules.php");
 
+///////////////////////////////MIGRATION TO REST////////////////////////////////
+if(array_key_exists('PATH_INFO', $_SERVER)) {
+   $resource   = $_SERVER['PATH_INFO'];
+   $method     = $_SERVER['REQUEST_METHOD'];
+
+   if($method == 'POST' || $method == 'PUT'){
+      parse_str(file_get_contents('php://input'), $_DATA);
+   }else{
+      $_DATA = $_GET;
+   }   
+
+   $_REQUEST            =$_DATA;
+
+   $res=explode('/',$resource);
+   $_REQUEST['module']  =$res[1];
+   $_REQUEST['page']    =$res[2];
+   $_REQUEST['program'] =$res[3];
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 /*--------------------------validate module request---------------------------*/
 //System user login exception [ page=slogin is used to login as system user ]
 if(isset($_REQUEST['page'])&&$_REQUEST['page']=='slogin'){

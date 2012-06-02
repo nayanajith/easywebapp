@@ -60,11 +60,10 @@ class Model{
       /*
       Constructure
       */
-      function __construct($table,$primary_key,$name,$filter_table=null,$filter_primary_key=null) {
+      function __construct($table,$name) {
          $this->table               =$table;
-         $this->primary_key         =$primary_key;
-         $this->filter_table        =$filter_table;
-         $this->filter_primary_key  =$filter_primary_key;
+         $this->filter_table        =s_t('filter');
+         $this->filter_primary_key  ='rid';
 
          if(isset($data_load_key) && $data_load_key != null ){
             $this->data_load_key=$data_load_key;
@@ -96,17 +95,6 @@ class Model{
       }
 
       
-      /*Change default table and key*/
-      function set_table($table=null,$key=null){
-         if($table != null){
-            $this->table =$table;
-         }
-
-         if($key != null){
-            $this->primary_key = $key;
-         }
-      }
-
       /*
        fields of the table
 
@@ -175,6 +163,8 @@ class Model{
                $this->toolbar =get_from_model('TOOLBAR');
                $this->widgets =get_from_model('WIDGETS');
                $this->callbacks =get_from_model('CALLBACKS');
+
+               $this->primary_key   =get_pri_keys();
             }
          }else{
             $res=exec_query("SHOW COLUMNS FROM ".$this->table,Q_RET_ARRAY);
@@ -186,7 +176,7 @@ class Model{
             }
 
             foreach($res as $row) {
-                             if(strtoupper($row['Extra'])!='AUTO_INCREMENT'){
+               if(strtoupper($row['Extra'])!='AUTO_INCREMENT'){
                   $this->form[$row['Field']]=array(
                   "length"      =>$this->get_field_width($row['Type'],false),
                   "dojoType"    =>$this->get_field_type($row['Type']),
@@ -374,8 +364,10 @@ EOE;
          $config=$this->model;
          if(!file_exists($config)){
             $file_handler = fopen($config, 'w');
+            if(!$file_handler)return;
 
             fwrite($file_handler, "<?php\n");
+            fwrite($file_handler, "//--------------------------MODEL-------------------------------\n");
             fwrite($file_handler, "\$GLOBALS['MODEL']=array(\n");
             fwrite($file_handler, "//-----------------KEY FIELDS OF THE MODEL----------------------\n");
             fwrite($file_handler, tab(1)."'KEYS'=>array(\n");
@@ -1171,7 +1163,7 @@ EOE;
                }
 
                //If the foreign keys does not have values ignore them
-               if(in_array(get_for_keys(),$key) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]))){
+               if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]))){
                   continue; 
                }
 

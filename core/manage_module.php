@@ -66,10 +66,10 @@ items: [
          $comma2         ="";
          foreach($menu_array as $page_key => $page){
             if(is_array($page)){
-                if(isset($page['VISIBLE']) && $page['VISIBLE']=='false'){
+                if((isset($page['VISIBLE']) && $page['VISIBLE']=='false')||(isset($page['visible']) && $page['visible']=='false')){
                   continue;
                }else{
-                  $page=$page['PAGE'];
+                  $page=isset($page['label'])?$page['label']:$page_key;
                }
             }
             /*Skip not permitted pages*/
@@ -124,7 +124,7 @@ function gen_module_array(){
 
             /*pages can be arrays to express the visibility*/
             if(is_array($page)){
-               $page=$page['PAGE'];
+               $page=isset($page['label'])?$page['label']:$page_key;
             }
 
             /*Skip not permitted pages*/
@@ -165,9 +165,17 @@ function gen_visible_module_array(){
 
             /*pages can be arrays to express the visibility*/
             if(is_array($page)){
-                if(isset($page['VISIBLE']) && $page['VISIBLE']=='false'){
+                if((isset($page['VISIBLE']) && $page['VISIBLE']=='false')||(isset($page['visible']) && $page['visible']=='false')){
                   continue;
-               }
+                }else{
+                  $label=isset($page['label'])?$page['label']:$page_key;
+                  //Tooltip for the menu/tab/tree item
+                  if(isset($page['tooltip'])){
+                     $page=array('label'=>$label,'tooltip'=>$page['tooltip']);
+                  }else{
+                     $page=$label; 
+                  }
+                }
             }
 
             if(!is_page_permitted($mod_key,$page_key)){

@@ -18,10 +18,8 @@ function get_pri_keys(){
  * Return the effective unique keys
  */
 function get_uni_keys(){
-   if(isset($GLOBALS['MODEL']) && isset($GLOBALS['MODEL']['KEYS'])){
-      if(isset($GLOBALS['MODEL']['KEYS']['UNI'])){
-         return $GLOBALS['MODEL']['KEYS']['UNI'];
-      }
+   if(isset($GLOBALS['MODEL']) && isset($GLOBALS['MODEL']['KEYS']) && isset($GLOBALS['MODEL']['KEYS']['UNI'])){
+      return $GLOBALS['MODEL']['KEYS']['UNI'];
    }else{
       return array(); 
    }
@@ -31,10 +29,8 @@ function get_uni_keys(){
  * Return the foreign keys (references) 
  */
 function get_for_keys(){
-   if(isset($GLOBALS['MODEL']) && isset($GLOBALS['MODEL']['KEYS'])){
-      if(isset($GLOBALS['MODEL']['KEYS']['FOR'])){
-         return $GLOBALS['MODEL']['KEYS']['FOR'];
-      }
+   if(isset($GLOBALS['MODEL']) && isset($GLOBALS['MODEL']['KEYS']) && isset($GLOBALS['MODEL']['KEYS']['FOR'])){
+      return $GLOBALS['MODEL']['KEYS']['FOR'];
    }else{
       return array(); 
    }
@@ -167,8 +163,8 @@ function module_program_table($key){
  */
 function page_name($page_id){
    $page_name=$GLOBALS['MENU_ARRAY'][$page_id];
-   if(is_array($page_name)){
-      $page_name=$page_name['PAGE'];
+   if(is_array($page_name) && isset($page_name['label'])){
+      $page_name=$page_name['label'];
    }
    return $page_name;
 }
@@ -944,38 +940,10 @@ default -> base url with module, page and program
 2 -> with all current key,value pairs 
 */
 define('NO_FILTER','3');
-function gen_url($type=null){
-   switch($type){
-      case 3:
-         $url=$GLOBALS['PAGE_GEN']."?";
-         $amp='';
-         $skip=array('filter_name');
-         foreach($_REQUEST as $key=>$value){
-            if(in_array($key,$skip))continue;
-            $url.=$amp.$key.'='.$value;
-            $amp='&';
-         }
-         return $url;
-      break;
-
-      case 2:
-         $url=$GLOBALS['PAGE_GEN']."?";
-         $amp='';
-         foreach($_REQUEST as $key=>$value){
-            $url.=$amp.$key.'='.$value;
-            $amp='&';
-         }
-         return $url;
-      break;
-      case 1:
-      default :
-         $filter_name="";
-         if(isset($_REQUEST['filter_name'])){
-            $filter_name="&filter_name=".$_REQUEST['filter_name'];
-         }
-         return $GLOBALS['PAGE_GEN']."?module=".MODULE."&page=".PAGE."&program=".PROGRAM.$filter_name;
-      break;
-   }
+function gen_url(){
+   $program="";
+   if(PROGRAM != "")$program="/".PROGRAM;
+   return W_ROOT."/".$GLOBALS['PAGE_GEN']."/".MODULE."/".PAGE.$program."?";
 }
 
 

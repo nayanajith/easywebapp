@@ -196,12 +196,19 @@ function copy_to_clipboard(object){
  * This returns the basic target from the url
  */
 function gen_url(){
-   var page_gen      ='<?php echo $GLOBALS['PAGE_GEN']; ?>';
-   var module        =get_request_value('module');
-   var page          =get_request_value('page');
-   var filter_name   =get_request_value('filter_name')?'filter_name='.get_request_value('filter_name'):'';
-   var program       =get_request_value('program');
-   return page_gen+"?module="+module+"&page="+page+"&program="+program+filter_name;
+   //var module        =get_request_value('module');
+   //var page          =get_request_value('page');
+   //var program       =get_request_value('program');
+   
+   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
+   var module        ='<?php echo MODULE; ?>';
+   var page          ='<?php echo PAGE; ?>';
+   var program       ='<?php echo PROGRAM; ?>';
+   if(program != ''){
+      program="/"+program;
+   }
+
+   return page_gen+"/"+module+"/"+page+program;
 }
 
 /**
@@ -892,4 +899,13 @@ function popup(content){
    var myWin=window.open('','RINT','width=1024,height=600,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1,location=0');
    myWin.document.writeln(content);
    myWin.document.close();
+}
+
+/**
+ * Load specific page in a module
+ */
+function load_page(module,page,program){
+   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
+   if(program != '')program='/'+program;
+   window.open(page_gen+'/'+module+'/'+page+'/'+program,'_parent');
 }

@@ -19,11 +19,19 @@ function db_migration_form(){
       $query="SELECT * FROM base_data WHERE base_class='VARIABLE' AND base_key='".strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION'";
    }
 
+   $db_version=-1;
    $arr=exec_query($query,Q_RET_ARRAY);
-   $arr=@$arr[0];
+   log_msg(isset($arr[0]));
+   if(isset($arr[0])){//If array is available that means there is a previouse version in base_data
+      $arr=$arr[0];
+      //The current database version
+      $db_version=$arr['base_value'] ;
+   }else{//If there is no previous vaersion set set ther version as 0
+      $db_version=0;
+      exec_query("INSERT INTO `base_data`(`base_value`,`base_class`,`base_key`)VALUES('$db_version','VARIABLE','".strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION')",Q_RET_NON);
+      $arr=array($db_version,'VARIABLE',strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION");
+   }
 
-   //The current database version
-   $db_version=$arr['base_value'] ;
 
    //requre dojo modules
    d_r('dijit.form.Form');
