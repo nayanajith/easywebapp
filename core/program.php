@@ -22,19 +22,6 @@ $GLOBALS['PROGRAMS']=$programs;
 
 function program_select($program){
    d_r('dijit.form.FilteringSelect');
-   echo "
-   <script type='text/javascript'>
-
-   function change_program(program,desc){
-      URL=\"".$GLOBALS['PAGE_GEN']."?module=".MODULE."&page=".PAGE."&program=\"+desc;
-      if(confirm('Press OK to confirm scheme change to '+desc)){
-         open(URL,'_self');
-      }   
-   }
-   </script>
-   ";
-
-
    echo "<select dojoType='dijit.form.FilteringSelect' 
    style='width:100px;'
 	title='Select Program'

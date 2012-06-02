@@ -1,16 +1,3 @@
-<script type='text/javascript'>
-//var first_time=true;
-
-/*function will not execute for the fist load*/
-function load_page(module,page,program){
-//   if(!first_time){
-      /*open page*/
-      window.open('<?php echo $GLOBALS['PAGE_GEN']; ?>?module='+module+'&page='+page+'&program='+program,'_parent');
-//   }else{
-//      first_time=false;
-//   }
-}
-</script>
 <?php
 /*
 tab bar genertion for the modules

@@ -1,13 +1,3 @@
-<script type='text/javascript' >
-function open_module(module){
-   window.open('<?php echo $GLOBALS['PAGE_GEN']; ?>?module='+module+'&program=<?php echo PROGRAM; ?>','_parent');
-}
-
-function open_page(module,page){
-   window.open('<?php echo $GLOBALS['PAGE_GEN']; ?>?module='+module+'&page='+page+'&program=<?php echo PROGRAM; ?>','_parent');
-}
-</script>
-
 <?php
 /*
 link list genertion for the modules
@@ -24,7 +14,7 @@ link list genertion for the modules
       if(is_array($GLOBALS['MODULES'][$module_key])){
          $module_name=$GLOBALS['MODULES'][$module_key]['MODULE'];
       }
-       echo "<a href=\"javascript:open_module('$module_key')\" style='font-weight:bold;text-decoration:none;color:gray'>".$module_name."</a><br>";
+       echo "<a href=\"javascript:load_page('$module_key',null,null)\" style='font-weight:bold;text-decoration:none;color:gray'>".$module_name."</a><br>";
 
       $vbar="";
       foreach($module as $page_key => $page){
@@ -32,7 +22,7 @@ link list genertion for the modules
          if(is_array($page)){
             $page=$page['PAGE'];
          }
-          echo $vbar."<a href=\"javascript:open_page('$module_key','$page_key')\" >$page</a>";
+          echo $vbar."<a href=\"javascript:load_page('$module_key','$page_key')\" >$page</a>";
          $vbar=" | ";
       }
       echo "<br><br>";

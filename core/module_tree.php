@@ -28,7 +28,7 @@ d_r('dijit.Tree');
       //Open the requested module/page from tree
       if(moduleTreeStore.getValue(item, "url")){
          //url="<?php echo $GLOBALS['PAGE_GEN']; ?>?"+moduleTreeStore.getValue(item, "url")+"&program=<?php echo PROGRAM; ?>&xhr=true";
-         url="<?php echo $GLOBALS['PAGE_GEN']; ?>?"+moduleTreeStore.getValue(item, "url")+"&program=<?php echo PROGRAM; ?>";
+         url="<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>?"+moduleTreeStore.getValue(item, "url")+"&program=<?php echo PROGRAM; ?>";
          open(url,'_self');
 
          //ajax

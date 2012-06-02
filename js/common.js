@@ -98,7 +98,8 @@ function show_xhr_dialog(url_,title,width,height,no_buttons){
 /*--help viewer--*/
 function show_help_dialog(){
 	dojo.xhrPost({
-      url 		: gen_url()+'&help=true',
+      url 		: gen_url(),
+      postData : 'help=true',
   	   handleAs :'text',
       timeout  : timeout_,
   	   load 		: function(response, ioArgs) {	     
@@ -144,22 +145,7 @@ function download(url){
 /*-----------------------------------view_class mostly using these functions-----------------------------*/
 
 
-function get_request_value( name ){
-   return get_url_value( name ,window.location.href);
-}
 
-//acquire GET request key,values from the current url 
-function get_url_value( name , url){
-   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-   var regexS = "[\\?&]"+name+"=([^&#]*)";
-   var regex = new RegExp( regexS );
-   var results = regex.exec( url );
-   if( results == null ){
-		return "";
-   }else{
-		return results[1];
-	}
-}
 
 //Info dialog will  show the information as floating dialog box
 function info_dialog(info,title,more_buttons,width,height){
@@ -192,35 +178,16 @@ function copy_to_clipboard(object){
 }
 
 /**
- * javascript version of gen_url
- * This returns the basic target from the url
- */
-function gen_url(){
-   //var module        =get_request_value('module');
-   //var page          =get_request_value('page');
-   //var program       =get_request_value('program');
-   
-   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
-   var module        ='<?php echo MODULE; ?>';
-   var page          ='<?php echo PAGE; ?>';
-   var program       ='<?php echo PROGRAM; ?>';
-   if(program != ''){
-      program="/"+program;
-   }
-
-   return page_gen+"/"+module+"/"+page+program;
-}
-
-/**
  * change the user using XHR requests in backend
  */
 function switch_user(value) {
    var url=gen_url();
    dojo.xhrPost({
-      url       : url+'&form=system&action=switch_user&data=json&user_id='+value,
-        handleAs :'json',
-        timeout  : timeout_,
-        load     : function(response, ioArgs) {        
+         url      : url,
+         postData : 'form=system&action=switch_user&data=json&user_id='+value,
+         handleAs : 'json',
+         timeout  : timeout_,
+         load     : function(response, ioArgs) {        
             update_status_bar(response.status,response.info);
             if(response.status == 'OK'){
                reload_page();
@@ -240,8 +207,9 @@ function switch_user(value) {
 function set_param(key,value) {
    var url=gen_url();
    dojo.xhrPost({
-      url       : url+'&form=main&action=param&data=json&param='+key+'&'+key+'='+value,
-        handleAs :'json',
+        url      : url,
+        postData : 'form=main&action=param&data=json&param='+key+'&'+key+'='+value,
+        handleAs : 'json',
         timeout  : timeout_,
         load     : function(response, ioArgs) {        
             update_status_bar(response.status,response.info);
@@ -287,7 +255,8 @@ function request_html(target,source_array,action_) {
 
    //If index number is blank return 
    dojo.xhrPost({
-      url      : url+'&form=main&data=json&action='+action+param,
+      url      : url,
+      postData : 'form=main&data=json&action='+action+param,
       handleAs :'text',
       timeout  : timeout_,
       load     : function(response, ioArgs) {        
@@ -466,7 +435,8 @@ function submit_form(action,param1,param2){
    //Some actions do not require form submission
    if (action=='del_filter' ) {
     dojo.xhrPost({
-         url         : url+'&form='+form+'&action='+action,
+         url         : url,
+         postData    : 'form='+form+'&action='+action,
          handleAs    : 'json',
          timeout     : timeout_,
 
@@ -493,7 +463,8 @@ function submit_form(action,param1,param2){
 
    if (action=='delete' || action=='add_filter' || action=='add_backup' || action=='del_backup' || dijit.byId(form).validate()) {
       dojo.xhrPost({
-         url         : url+'&form='+form+'&action='+action, 
+         url         : url, 
+         postData    : 'form='+form+'&action='+action,
          handleAs    : 'json',
          form        : form, 
          timeout     : timeout_,
@@ -572,7 +543,8 @@ function xhr_generic(submit_form,action,handle_as){
       handleAs_=handle_as;
    }
    dojo.xhrPost({
-      url         : url+'&form='+submit_form+'&action='+action+'&data=true',
+      url         : url,
+      postData    : 'form='+submit_form+'&action='+action+'&data=true',
       handleAs    : handleAs_,
       form        : submit_form, 
       timeout     : timeout_,
@@ -679,7 +651,8 @@ function fill_form(rid,form) {
 
    if(!(rid == '' || rid == 'new' || rid == "-none-" || rid == "-all-")){
    dojo.xhrPost({
-      url       : gen_url()+'&action=filler&data=json&id='+rid+'&form='+form,
+      url      : gen_url(),
+      postData : 'action=filler&data=json&id='+rid+'&form='+form,
       handleAs :'json',
       load       : function(response, ioArgs) {        
          if(response.status && response.status == 'ERROR'){
@@ -793,8 +766,9 @@ function dialog_submit(arg_form,action){
    if(arg_form.validate()){
       var json_req=dojo.toJson(arg_form.getValues(), true);
       dojo.xhrPost({
-         url: gen_url()+'&xhr=true&form=filter&filter='+json_req+'&action='+action, 
-         handleAs:'text',
+         url      : gen_url(), 
+         postData : 'xhr=true&form=filter&filter='+json_req+'&action='+action,
+         handleAs :'text',
          handle: function(response){
             update_status_bar('OK',response.info);
          },
@@ -825,8 +799,9 @@ function fill_filter_form(form) {
    }
 
    dojo.xhrPost({
-      url       : gen_url()+'&action=filter_filler&data=json&form='+form,
-      handleAs :'json',
+      url      : gen_url(),
+      postData : 'action=filter_filler&data=json&form='+form,
+      handleAs : 'json',
       load       : function(response, ioArgs) {        
          if(!response){
             return;
@@ -901,11 +876,93 @@ function popup(content){
    myWin.document.close();
 }
 
+//Get a requested value from the url
+function get_request_value( name ){
+   return get_url_value( name ,window.location.href);
+}
+
+//acquire GET request key,values from the current url  rest
+function get_url_value( name , url){
+   url = url.replace("//","/").replace("//","/");
+   var regexS  = "<?php echo $GLOBALS['PAGE_GEN'] ?>/.*";
+   var regex   = new RegExp( regexS );
+   var results = regex.exec( url );
+   var mpp     = results[0].split("/");
+   switch(name){
+   case 'module':
+      return mpp[1];
+   break;
+   case 'page':
+      return mpp[2];
+   break;
+   case 'program':
+      return mpp[3];
+   break;
+   }
+}
+
+//acquire GET request key,values from the current  key=value
+function get_url_value_( name , url){
+   name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+   var regexS = "[\\?&]"+name+"=([^&#]*)";
+   var regex = new RegExp( regexS );
+   var results = regex.exec( url );
+   if( results == null ){
+		return "";
+   }else{
+		return results[1];
+	}
+}
+
+/**
+ * javascript version of gen_url
+ * This returns the basic target from the url
+ */
+function gen_url(){
+   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
+   var module        =get_request_value('module');
+   var page          =get_request_value('page');
+   var program       =get_request_value('program');
+
+   if(program != ''){
+      program="/"+program;
+   }
+
+   return page_gen+"/"+module+"/"+page+program;
+}
+
+/**
+ * Load specific page in a module
+ */
+function load_page(module,page,program){
+   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
+   if(program != '' || program == null)program='/'+program;
+   if(page == '' || page == null)page='';
+   window.open(page_gen+'/'+module+'/'+page+program,'_parent');
+}
+
+
+
 /**
  * Load specific page in a module
  */
 function load_page(module,page,program){
    var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
    if(program != '')program='/'+program;
-   window.open(page_gen+'/'+module+'/'+page+'/'+program,'_parent');
+   window.open(page_gen+'/'+module+'/'+page+program,'_parent');
+}
+
+/**
+ * change the effective program since
+ */
+function change_program(program,desc){
+   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
+   var module        ='<?php echo MODULE; ?>';
+   var page          ='<?php echo PAGE; ?>';
+
+   var URL=page_gen+"/"+module+"/"+page+"/"+program;
+
+   if(confirm('Press OK to confirm scheme change to '+desc)){
+      open(URL,'_self');
+   }   
 }
