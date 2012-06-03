@@ -642,14 +642,14 @@ function clear_footer(){
  * Add return the field for the given field_id from $GLOBALS['PREVIEW']['FORM']
  */
 function get_field($field_id){
-   return get_pviw_property('FORM',$field_id,'field');
+   return get_pviw_property(array('FORM',$field_id,'field'));
 }
 
 /**
  * Add return the label for the given field_id from $GLOBALS['PREVIEW']['FORM']
  */
 function get_label($field_id){
-   return get_pviw_property('FORM',$field_id,'label');
+   return get_pviw_property(array('FORM',$field_id,'label'));
 }
 
 /**
