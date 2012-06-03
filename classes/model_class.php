@@ -157,12 +157,12 @@ class Model{
             require_once($config);
             if(isset($GLOBALS['MODEL'])){
                //Load all the arrays into class variables
-               $this->keys    =get_from_model('KEYS');
-               $this->form    =get_from_model('FORM');
-               $this->grids   =get_from_model('GRIDS');
-               $this->toolbar =get_from_model('TOOLBAR');
-               $this->widgets =get_from_model('WIDGETS');
-               $this->callbacks =get_from_model('CALLBACKS');
+               $this->keys    =get_mdl_property('KEYS');
+               $this->form    =get_mdl_property('FORM');
+               $this->grids   =get_mdl_property('GRIDS');
+               $this->toolbar =get_mdl_property('TOOLBAR');
+               $this->widgets =get_mdl_property('WIDGETS');
+               $this->callbacks =get_mdl_property('CALLBACKS');
 
                $this->primary_key   =get_pri_keys();
             }
@@ -340,7 +340,7 @@ EOE;
 EOE;
 
          $callbacks=<<<EOE
- 'CALLBACKS'=>array(
+   'CALLBACKS'=>array(
       "add_record"=>array(
          "OK"     =>array(
             "func"   =>null,

@@ -33,7 +33,7 @@ fill_form_callback['ok']=load_editor;
 ";
 add_to_main_left($content_editor);
 add_to_main_right(
-   get_from_preview('GRIDS','GRID')
+   get_pviw_property(array('GRIDS','GRID'))
 );
 
 ?>

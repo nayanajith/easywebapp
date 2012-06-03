@@ -326,20 +326,8 @@ $GLOBALS['MODEL']=array(
 /**
  * Add value to model add a value to a given lear of the model tree
  */
-function add_to_model($value,$path){
-
-   $model=&$GLOBALS['MODEL'];
-   if(is_array($path)){
-      foreach($path as $key){
-         //Create new array element if not available
-         if(!isset($model[$key])){
-            $model[$key]=null;
-         }
-         $model=&$model[$key];
-     }
-     $model=$value;
-     return;
-   }
+function set_mdl_property($path,$value){
+   return set_property(&$GLOBALS['MODEL'],$path,$value);
 }
 
 /**
@@ -347,23 +335,43 @@ function add_to_model($value,$path){
  * Brows thour the array and return the value if available else return null
  * $path is an arry of nodes 
  */
-function get_from_model($path){
-   $model=$GLOBALS['MODEL'];
-   //Brows thour the array and return the value if available else return null
-   if(is_array($path)){
-      foreach($path as $key){
-         if(!isset($model[$key])){
-            return null;
-         }else{
-            $model=$model[$key];
-         }
-      }
-      return $model;
-   }elseif(isset($model[$path])){
-      return $model[$path];
-   }else{
-      return null;
+function get_mdl_property($path){
+   return get_property($GLOBALS['MODEL'],$path);
+}
+
+/**
+ * Set property from the model array
+ */
+function set_property($arr,$path,$value){
+   if(!is_array($path)){
+      $path=explode('.',$path);
    }
+   foreach($path as $key){
+      //Create new array element if not available
+      if(!isset($arr[$key])){
+         $arr[$key]=null;
+      }
+      $arr=&$arr[$key];
+   }
+   $arr=$value;
+}
+
+/**
+ * Get property from the model array
+ */
+function get_property($arr,$path){
+   if(!is_array($path)){
+      $path=explode('.',$path);
+   }
+
+   foreach($path as $key){
+      if(!isset($arr[$key])){
+         return null;
+      }else{
+         $arr=$arr[$key];
+      }
+   }
+   return $arr;
 }
 
 /**
@@ -396,19 +404,19 @@ function get_from_model($path){
  */
 function callback($caller,$status,$func_array=null){
    if(is_null($func_array)){
-      $func_array=get_from_model(array('CALLBACKS',$caller,$status));
+      $func_array=get_mdl_property(array('CALLBACKS',$caller,$status));
    }
 
    //Callback the function and set returning value back in the array as return
-   add_to_model(
-      call_user_func_array($func_array['func'],$func_array['vars']),
-      array('CALLBACKS',$caller,$status,'return')
+   set_mdl_property(
+      array('CALLBACKS',$caller,$status,'return'),
+      call_user_func_array($func_array['func'],$func_array['vars'])
    );
 
    //Set callback function status as true to denote it is executed
-   add_to_model(
-      true,
-      array('CALLBACKS',$caller,$status,'status')
+   set_mdl_property(
+      array('CALLBACKS',$caller,$status,'status'),
+      true
    );
 } 
 
@@ -424,30 +432,16 @@ $GLOBALS['PREVIEW']=array(
 /**
  * Set value to preview,up to 3 levels can be set
  */
-function add_to_preview($value,$l1_id,$l2_id=null,$l3_id=null){
-   if(!is_null($l2_id) && !is_null($l3_id)){
-      $GLOBALS['PREVIEW'][$l1_id][$l2_id][$l3_id]=$value;
-   }elseif(!is_null($l2_id)){
-      $GLOBALS['PREVIEW'][$l1_id][$l2_id]=$value;
-   }else{
-      $GLOBALS['PREVIEW'][$l1_id]=$value;
-   }
-
+function set_pviw_property($path,$value){
+   set_property(&$GLOBALS['PREVIEW'],$path,$value);
 }
 
 /**
  * Get array of elements from preview,up to 3 levels can be get
  */
-function get_from_preview($l1_id,$l2_id=null,$l3_id=null){
-   if(!is_null($l2_id) && !is_null($l3_id) && isset($GLOBALS['PREVIEW'][$l1_id]) && isset($GLOBALS['PREVIEW'][$l1_id][$l2_id]) && isset($GLOBALS['PREVIEW'][$l1_id][$l2_id][$l3_id])){
-      return $GLOBALS['PREVIEW'][$l1_id][$l2_id][$l3_id];
-   }elseif(!is_null($l2_id) && isset($GLOBALS['PREVIEW'][$l1_id]) && isset($GLOBALS['PREVIEW'][$l1_id][$l2_id])){
-      return $GLOBALS['PREVIEW'][$l1_id][$l2_id];
-   }elseif(isset($GLOBALS['PREVIEW'][$l1_id])){
-      return $GLOBALS['PREVIEW'][$l1_id];
-   }else{
-      return array();
-   }
+function get_pviw_property($path){
+   //Brows thour the array and return the value if available else return null
+   return get_property($GLOBALS['PREVIEW'],$path);
 }
 
 
@@ -648,14 +642,14 @@ function clear_footer(){
  * Add return the field for the given field_id from $GLOBALS['PREVIEW']['FORM']
  */
 function get_field($field_id){
-   return get_from_preview('FORM',$field_id,'field');
+   return get_pviw_property('FORM',$field_id,'field');
 }
 
 /**
  * Add return the label for the given field_id from $GLOBALS['PREVIEW']['FORM']
  */
 function get_label($field_id){
-   return get_from_preview('FORM',$field_id,'label');
+   return get_pviw_property('FORM',$field_id,'label');
 }
 
 /**

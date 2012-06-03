@@ -65,11 +65,11 @@ class View{
          include_once $this->model;
 
          if(isset($GLOBALS['MODEL'])){
-           $this->keys    =get_from_model('KEYS');
-           $this->form    =get_from_model('FORM');
-           $this->grids   =get_from_model('GRIDS');
-           $this->toolbar =get_from_model('TOOLBAR');
-           $this->widgets =get_from_model('WIDGETS');
+           $this->keys    =get_mdl_property('KEYS');
+           $this->form    =get_mdl_property('FORM');
+           $this->grids   =get_mdl_property('GRIDS');
+           $this->toolbar =get_mdl_property('TOOLBAR');
+           $this->widgets =get_mdl_property('WIDGETS');
          }
       }
 
@@ -250,7 +250,7 @@ class View{
     * <field>
     */
    public function form_flow_layout(){
-      $form_preview=get_from_preview('FORM');
+      $form_preview=get_pviw_property('FORM');
       d_r('dijit.form.Form');
       $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px'>";
       $html.="<div >Required fields marked as <font color='red'>*</font>";
@@ -271,7 +271,7 @@ class View{
     * <label><field>
     */
    public function form_table_layout(){
-      $form_preview=get_from_preview('FORM');
+      $form_preview=get_pviw_property('FORM');
       d_r('dijit.form.Form');
       $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px'>";
       $html.="Required fields marked as <font color='red'>*</font><table>";
@@ -303,7 +303,7 @@ class View{
 
       //Fill the preview array with the field/labels
       foreach($this->form as $field => $field_array){
-          add_to_preview($this->gen_field_entry($field,$field_array,true),'FORM',$field);
+          set_pviw_property(array('FORM',$field),$this->gen_field_entry($field,$field_array,true));
       }
 
       //layout the fields and labels according to the requested layout
@@ -563,6 +563,8 @@ dojo.ready(function(){
       d_r('dojox.grid.EnhancedGrid');
       $html=""; 
       foreach($this->grids as $grid_key => $grid){
+         //If jsId is not set explicitly set the key with grid__ prefix as jsId
+         if(!isset($grid['jsId']))$grid['jsId']="grid__".$grid_key;
 
          //$html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>";
          $html.="<span dojoType='dojox.data.QueryReadStore' requestMethod='post' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=json'></span>";
@@ -669,7 +671,7 @@ dojo.ready(function(){
             }
             </script>";
          }
-         add_to_preview($html,'GRIDS',$grid_key);
+         set_pviw_property(array('GRIDS',$grid_key),$html);
          if(!file_exists($this->view)){
             add_to_main_right($html); 
          }
