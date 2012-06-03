@@ -101,7 +101,9 @@ if(array_key_exists('PATH_INFO', $_SERVER)) {
    $res=explode('/',$resource);
    $_REQUEST['module']  =$res[1];
    $_REQUEST['page']    =$res[2];
-   $_REQUEST['program'] =$res[3];
+   if(isset($res[3])){
+      $_REQUEST['program'] =$res[3];
+   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
