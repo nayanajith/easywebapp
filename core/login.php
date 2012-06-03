@@ -157,7 +157,7 @@ $LOGIN      =false;
 if (isset($_SESSION['username'])) {
    if ($logout == "logout") {
 
-      exec_query("UPDATE ".s_t('users')." SET last_logout=CURRENT_TIMESTAMP WHERE username='".$_SESSION['username']."'", Q_RET_NON);
+      exec_query("UPDATE ".s_t('users')." SET last_logout=CURRENT_TIMESTAMP WHERE username='".$_SESSION['username']."'", Q_RET_NONE);
       unset($_SESSION['username']);
       unset($_SESSION['permission']);
       unset($_SESSION['group']);
@@ -241,9 +241,9 @@ if (isset($_SESSION['username'])) {
          }
          if(isset($RESULT_ARR[0])){
             $LOGIN=true;   
-            exec_query("UPDATE ".s_t('users')." SET last_login=CURRENT_TIMESTAMP,failed_logins=0 WHERE username='".$user."'", Q_RET_NON);
+            exec_query("UPDATE ".s_t('users')." SET last_login=CURRENT_TIMESTAMP,failed_logins=0 WHERE username='".$user."'", Q_RET_NONE);
          }else{
-            exec_query("UPDATE ".s_t('users')." SET failed_logins=failed_logins+1 WHERE username='".$user."'", Q_RET_NON);
+            exec_query("UPDATE ".s_t('users')." SET failed_logins=failed_logins+1 WHERE username='".$user."'", Q_RET_NONE);
             $LOGIN=false;   
             $RESULT_ARR=null;
          }

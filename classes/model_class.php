@@ -350,7 +350,7 @@ EOE;
          ),  
          "ERROR"  =>array(),
       ),  
-      "modify_record"=>array(
+      "update_record"=>array(
          "OK"     =>array(),
          "ERROR"  =>array(),
       ),  
@@ -594,7 +594,7 @@ EOE;
          }
 
          $insert=sprintf($insert,$cols,$values);
-         exec_query($insert,Q_RET_NON);
+         exec_query($insert,Q_RET_NONE);
 
          /*report error/success*/
          if(get_affected_rows() != 0){
@@ -626,7 +626,7 @@ EOE;
          }
 
 
-         $res=exec_query($delete,Q_RET_NON);
+         $res=exec_query($delete,Q_RET_NONE);
 
          /*report error/success*/
          if(get_affected_rows()!= 0){
@@ -639,7 +639,7 @@ EOE;
        }
 
       //TODO:
-      public function modify_filter($table=null){
+      public function update_filter($table=null){
          $_REQUEST['filter']=str_replace(
             array('&quot;','NaN','false','[]','["on"]'),
             array('"','""','null','null','"on"'),
@@ -662,7 +662,7 @@ EOE;
             $update="UPDATE ".$table." SET  filter='$filter' WHERE filter_name='$filter_name''";
          }
 
-         exec_query($update,Q_RET_NON);
+         exec_query($update,Q_RET_NONE);
          
          /*report error/success*/
          if(get_affected_rows() != 0){
@@ -1142,13 +1142,16 @@ EOE;
 
 
       /*Validate and update record in the table */
-      public function modify_record(){
+      public function update_record(){
          $sql="SELECT * FROM ".$this->table." WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
 
          //Log users activity
          act_log(null,$sql);
 
          $res=exec_query($sql,Q_RET_ARRAY);
+
+         //Isolated fields for update -> these fields will be updated individually
+         $isolated_fieds=array();
 
          if(sizeof($res)>0){
             //key available  -> modify
@@ -1164,6 +1167,14 @@ EOE;
 
                //If the foreign keys does not have values ignore them
                if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]))){
+                  continue; 
+               }
+
+
+               //Select Isolated fiels to be updated seperately
+               if(isset($arr['isolate']) && $arr['isolate']=='update'){
+                  $isolated_fieds[$key]=$_REQUEST[$key];
+                  unset($_REQUEST[$key]);
                   continue; 
                }
 
@@ -1219,6 +1230,11 @@ EOE;
             $update_query   ="UPDATE ".$this->table." SET %s WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
             $update_query   =sprintf($update_query,$values);
             $res            =exec_query($update_query,Q_RET_MYSQL_RES);
+
+            //Update isolated fields
+            foreach($isolated_fieds as $key => $value){
+               $res     =exec_query("UPDATE ".$this->table." SET $key='$value' WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'",Q_RET_NONE);
+            }
 
             /*report error/success */
             if(get_affected_rows() > 0){

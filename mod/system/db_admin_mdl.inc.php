@@ -28,7 +28,7 @@ function db_migration_form(){
       $db_version=$arr['base_value'] ;
    }else{//If there is no previous vaersion set set ther version as 0
       $db_version=0;
-      exec_query("INSERT INTO `base_data`(`base_value`,`base_class`,`base_key`)VALUES('$db_version','VARIABLE','".strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION')",Q_RET_NON);
+      exec_query("INSERT INTO `base_data`(`base_value`,`base_class`,`base_key`)VALUES('$db_version','VARIABLE','".strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION')",Q_RET_NONE);
       $arr=array($db_version,'VARIABLE',strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION");
    }
 
@@ -238,7 +238,7 @@ function create_recreate_tables(){
          case 'create':
             $schemas=$system_table_schemas;
             //creating the table
-            exec_query($schemas[$table],Q_RET_NON);
+            exec_query($schemas[$table],Q_RET_NONE);
             //gather the sql execute state(errors)
             if(get_sql_error() != false){
                $status  ="ERROR";
@@ -258,7 +258,7 @@ function create_recreate_tables(){
             }
             //create table
             $schemas=$system_table_schemas;
-            exec_query($schemas[$table],Q_RET_NON);
+            exec_query($schemas[$table],Q_RET_NONE);
             if(get_sql_error() != false){
                $status  ="ERROR";
                $info.="Table $table creation ".get_sql_error()."<br>";
@@ -274,7 +274,7 @@ function create_recreate_tables(){
             }
 
             //creating the table
-            exec_query($schemas[$table],Q_RET_NON);
+            exec_query($schemas[$table],Q_RET_NONE);
             if(get_sql_error() != false){
                $status  ="ERROR";
                $info.="Table $table creation ".get_sql_error().";";
@@ -299,7 +299,7 @@ function create_recreate_tables(){
                $table=str_replace($schema_prefix."_",'%s',$table);
             }
 
-            exec_query($schemas[$table],Q_RET_NON);
+            exec_query($schemas[$table],Q_RET_NONE);
             if(get_sql_error() != false){
                $status  ="ERROR";
                $info.="Table $table creation ".get_sql_error()."<br>";
@@ -347,7 +347,7 @@ function migrate_db(){
             //Migration can be consists of multiple steps hence array  and iterate through array and execute
             if(is_array($migrate[$version])){
                foreach($migrate[$version] as $key => $value){
-                  exec_query($value,Q_RET_NON);
+                  exec_query($value,Q_RET_NONE);
                   if(get_sql_error() != false){
                      $status  ="ERROR";
                      $info.="[$version][$key] migration ".get_sql_error().";";
@@ -357,7 +357,7 @@ function migrate_db(){
                }
             }else{
                //if the migration is a single step procedure then this..
-               exec_query($migrate[$version],Q_RET_NON);
+               exec_query($migrate[$version],Q_RET_NONE);
                if(get_sql_error() != false){
                   $status  ="ERROR";
                   $info.="[$version] migration ".get_sql_error().";";
@@ -379,7 +379,7 @@ function migrate_db(){
                      $value=str_replace('%s',$schema_prefix."_",$value);
                   }
 
-                  exec_query($value,Q_RET_NON);
+                  exec_query($value,Q_RET_NONE);
                   if(get_sql_error() != false){
                      $status  ="ERROR";
                      $info.="[$version][$key] migration ".get_sql_error().";";
@@ -394,7 +394,7 @@ function migrate_db(){
                   //$value=sprintf($value,$schema_prefix."_");
                   $value=str_replace('%s',$schema_prefix."_",$value);
                }
-               exec_query($value,Q_RET_NON);
+               exec_query($value,Q_RET_NONE);
                if(get_sql_error() != false){
                   $status  ="ERROR";
                   $info.="[$version] migration ".get_sql_error().";";
@@ -413,9 +413,9 @@ function migrate_db(){
    //After successful migration the database version (system/program) will be upgraded to the current version
    if($status == 'OK'){
       if(isset($_SESSION[PAGE]) && isset($_SESSION[PAGE]['schema_module']) && $_SESSION[PAGE]['schema_module'] != 'core' && $_SESSION[PAGE]['schema_module'] != ''){
-         exec_query("UPDATE `base_data` SET `base_value` ='$version' WHERE `base_class`='VARIABLE' AND `base_key`='".strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION'",Q_RET_NON);
+         exec_query("UPDATE `base_data` SET `base_value` ='$version' WHERE `base_class`='VARIABLE' AND `base_key`='".strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION'",Q_RET_NONE);
       }else{
-         exec_query("UPDATE `base_data` SET `base_value` ='$version' WHERE `base_class`='VARIABLE' AND `base_key`='SYSTEM__DB_VERSION'",Q_RET_NON);
+         exec_query("UPDATE `base_data` SET `base_value` ='$version' WHERE `base_class`='VARIABLE' AND `base_key`='SYSTEM__DB_VERSION'",Q_RET_NONE);
       }
    }
    return_status_json($status,$info);

@@ -99,7 +99,7 @@ function show_xhr_dialog(url_,title,width,height,no_buttons){
 function show_help_dialog(){
 	dojo.xhrPost({
       url 		: gen_url(),
-      postData : 'help=true',
+      content  : {help:'true'},
   	   handleAs :'text',
       timeout  : timeout_,
   	   load 		: function(response, ioArgs) {	     
@@ -184,7 +184,7 @@ function switch_user(value) {
    var url=gen_url();
    dojo.xhrPost({
          url      : url,
-         postData : 'form=system&action=switch_user&data=json&user_id='+value,
+         content  : {form:'system',action:'switch_user',data:'json',user_id:value},
          handleAs : 'json',
          timeout  : timeout_,
          load     : function(response, ioArgs) {        
@@ -206,9 +206,17 @@ function switch_user(value) {
  */
 function set_param(key,value) {
    var url=gen_url();
+
+   //content array to set explicit variables to the form
+   var contentArr={form:'main',action:'param',data:'json'};
+
+   //when key is also a variable you have to tweak it externally
+   contentArr['param']  =key;
+   contentArr[key]      =value;
+
    dojo.xhrPost({
         url      : url,
-        postData : 'form=main&action=param&data=json&param='+key+'&'+key+'='+value,
+        content  : contentArr,
         handleAs : 'json',
         timeout  : timeout_,
         load     : function(response, ioArgs) {        
@@ -256,7 +264,7 @@ function request_html(target,source_array,action_) {
    //If index number is blank return 
    dojo.xhrPost({
       url      : url,
-      postData : 'form=main&data=json&action='+action+param,
+      content  : {form:'main',data:'json',action:action+param},
       handleAs :'text',
       timeout  : timeout_,
       load     : function(response, ioArgs) {        
@@ -436,7 +444,7 @@ function submit_form(action,param1,param2){
    if (action=='del_filter' ) {
     dojo.xhrPost({
          url         : url,
-         postData    : 'form='+form+'&action='+action,
+         content     : {form:form,action:action},
          handleAs    : 'json',
          timeout     : timeout_,
 
@@ -464,7 +472,8 @@ function submit_form(action,param1,param2){
    if (action=='delete' || action=='add_filter' || action=='add_backup' || action=='del_backup' || dijit.byId(form).validate()) {
       dojo.xhrPost({
          url         : url, 
-         postData    : 'form='+form+'&action='+action,
+         //postData    : 'form='+form+'&action='+action,
+         content     : {form:form,action:action},
          handleAs    : 'json',
          form        : form, 
          timeout     : timeout_,
@@ -536,6 +545,7 @@ var xhr_generic_callback={
 function xhr_generic(submit_form,action,handle_as){
    var x_g_c=xhr_generic_callback;
    callback(x_g_c,'before');
+
    var url=gen_url();
    update_progress_bar(0);
    var handleAs_='text';
@@ -544,7 +554,7 @@ function xhr_generic(submit_form,action,handle_as){
    }
    dojo.xhrPost({
       url         : url,
-      postData    : 'form='+submit_form+'&action='+action+'&data=true',
+      content     : {form:submit_form,action:action,data:'true'},
       handleAs    : handleAs_,
       form        : submit_form, 
       timeout     : timeout_,
@@ -652,7 +662,7 @@ function fill_form(rid,form) {
    if(!(rid == '' || rid == 'new' || rid == "-none-" || rid == "-all-")){
    dojo.xhrPost({
       url      : gen_url(),
-      postData : 'action=filler&data=json&id='+rid+'&form='+form,
+      content  : {form:form,action:'filler',data:'json',id:rid},
       handleAs :'json',
       load       : function(response, ioArgs) {        
          if(response.status && response.status == 'ERROR'){
@@ -767,7 +777,7 @@ function dialog_submit(arg_form,action){
       var json_req=dojo.toJson(arg_form.getValues(), true);
       dojo.xhrPost({
          url      : gen_url(), 
-         postData : 'xhr=true&form=filter&filter='+json_req+'&action='+action,
+         content  : {form:'filter',action:action,filter:json_req,xhr:'true'},
          handleAs :'text',
          handle: function(response){
             update_status_bar('OK',response.info);
@@ -800,7 +810,7 @@ function fill_filter_form(form) {
 
    dojo.xhrPost({
       url      : gen_url(),
-      postData : 'action=filter_filler&data=json&form='+form,
+      content  : {form:form,action:'filter_filler',data:'json'},
       handleAs : 'json',
       load       : function(response, ioArgs) {        
          if(!response){

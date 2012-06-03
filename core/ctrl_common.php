@@ -36,7 +36,7 @@ if(isset($_REQUEST['form'])){
            return $model->add_record();
          break;
          case 'modify':
-           return $model->modify_record();
+           return $model->update_record();
          break;
          case 'delete':
            return $model->delete_record(true);

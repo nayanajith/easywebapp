@@ -77,7 +77,7 @@ function opendb2($DB) {
 
 define('Q_RET_ARRAY'      ,'0');//default
 define('Q_RET_MYSQL_RES','1');
-define('Q_RET_NON'      ,'2');
+define('Q_RET_NONE'      ,'2');
 
 /*Store affected rows*/
 $aff_rows=0;
@@ -220,7 +220,7 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
             return $results[0];
          }
       break;
-      case Q_RET_NON:
+      case Q_RET_NONE:
       break;
       case Q_RET_ARRAY:
       default:
@@ -255,7 +255,11 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
          if(sizeof($res_array) > 1){
             return $res_array;
          }else{
-            return $res_array[0];
+            if(isset($res_array[0])){
+               return $res_array[0];
+            }else{
+               return array();
+            }
          }
 
          if($no_connect != true ){
@@ -375,7 +379,7 @@ function csv_to_db($csv_file,$table,$field_array,$delimiter=',',$enclosure="'",$
             $comma   =",";
          }
       }
-      exec_query($query,Q_RET_NON,$db);
+      exec_query($query,Q_RET_NONE,$db);
    }else{
       return false; 
    }
