@@ -108,7 +108,7 @@ function show_help_dialog(){
             style: "width: 800px;"
          });
 
-         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"window.open('?module='+get_request_value('module')+'&page='+get_request_value('page')+'&help=true&fullscreen=true','help_window');help_Dialog.hide()\" >Show in Fullscreen</button><button dojoType='dijit.form.Button' onClick=\"help_Dialog.hide()\" >OK</button></center>";
+         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"window.open(get_url()+'help=true&fullscreen=true','help_window');help_Dialog.hide()\" >Show in Fullscreen</button><button dojoType='dijit.form.Button' onClick=\"help_Dialog.hide()\" >OK</button></center>";
          help_Dialog.attr("content", response+button);
          help_Dialog.show();
   	   },
@@ -308,7 +308,7 @@ function submit_display_values(action){
             if(!target_module && !target_page){
                update_progress_bar(100);
             }else{
-               window.open('?module='+module+'&page='+page,'_parent');
+               window.open(gen_url(),'_parent');
             }
          }else{
             update_status_bar('ERROR',response.info);
@@ -408,15 +408,15 @@ function submit_form(action,param1,param2){
    var url=gen_url();
    switch(action){
       case 'print':
-         window.open(url+'&form='+form+'&action='+action,'width=800px,height=600px');
+         window.open(url+'form='+form+'&action='+action,'width=800px,height=600px');
          return;
       break;   
       case 'csv':
-         download(url+'&form='+form+'&action='+action+'&list='+param1);
+         download(url+'form='+form+'&action='+action+'&list='+param1);
          return;
       break;
       case 'pdf':
-         download(url+'&form='+form+'&action='+action);
+         download(url+'form='+form+'&action='+action);
          return;
       break;   
       case 'reload':
@@ -490,7 +490,7 @@ function submit_form(action,param1,param2){
                if(!target_module && !target_page){
                   update_progress_bar(100);
                }else{
-                  window.open('?module='+module+'&page='+page,'_parent');
+                  window.open(gen_url(),'_parent');
                }
 
                //call the error callback function
@@ -607,7 +607,20 @@ function reload_grid(grid){
    update_progress_bar(100);
 }
 
-
+/**
+ * Select value in  a filtering select connected to store programatically
+ */
+function load_combo_value(field,value_to_load){
+   //TODO: checking for the field with store has a bug
+   if(!field || !field.store)return;
+   field.store.fetch({
+      query:{ 'id': value_to_load },
+      onItem : function(item, request) {
+         field.setValue(item['i'][field.store._labelAttr]);
+         return;
+      }
+   });
+}
 
 /**
  * Select value in  a filtering select connected to store programatically
@@ -704,6 +717,10 @@ function fill_form(rid,form) {
                         }
                      break;
                      case 'dijit.form.RadioButton':
+                     break;
+                     case 'dijit.form.ComboBox':
+                        //dijit.byId(key).setValue(response[key]); 
+                        load_combo_value(dijit.byId(key),response[key]);
                      break;
                      case 'dijit.form.FilteringSelect':
                         dijit.byId(key).setValue(response[key]); 
@@ -938,7 +955,7 @@ function gen_url(){
       program="/"+program;
    }
 
-   return page_gen+"/"+module+"/"+page+program;
+   return page_gen+"/"+module+"/"+page+program+"?";
 }
 
 /**

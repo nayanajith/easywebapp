@@ -302,8 +302,17 @@ function get_temp_filter($table_as=null){
 
    $filter="";
    $and="";
-   foreach(array_keys($GLOBALS['MODEL']['FORM']) as $key){
+   foreach($GLOBALS['MODEL']['FORM'] as $key => $arr){
       if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
+
+         //Handle combobx visualkey rid problem
+         if($arr['dojoType']=='dijit.form.ComboBox' && isset($arr['key_sql'])){
+            $res=exec_query(sprintf($arr['key_sql'],$_REQUEST[$key]),Q_RET_ARRAY);
+            if(isset($res[0])){
+               $_REQUEST[$key]=$res[0][$arr['ref_key']];
+            }
+         }
+
          $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
          $and=' AND ';
          //keep the filter array for future use
@@ -319,7 +328,7 @@ $GLOBALS['MODEL']=array(
    'FORM'   =>array(),
    'GRIDS'  =>array(),
    'TOOLBAR'=>array(),
-   'WIDGETS'=>array(),
+   'NOTIFY'=>array(),
    'CALLBACKS'=>array(),
 );
 
@@ -426,7 +435,7 @@ $GLOBALS['PREVIEW']=array(
    'FORM'   =>array(),
    'GRIDS'  =>array(),
    'TOOLBAR'=>array(),
-   'WIDGETS'=>array(),
+   'NOTIFY'=>array(),
 );
 
 /**
@@ -460,7 +469,7 @@ $GLOBALS['VIEW']=array(
    'MAIN_LEFT'    =>'',
    'MAIN_RIGHT'   =>'',
    'MAIN_BOTTOM'  =>'',
-   'WIDGETS'      =>'',
+   'NOTIFY'      =>'',
    'MENUBAR'      =>'',
    'TOOLBAR_TR'   =>'',
    'TOOLBAR_TL'   =>'',
@@ -551,8 +560,8 @@ function add_to_breadcrumb($content,$before=false){
 function add_to_navigator($content,$before=false){
    add_to_view('NAVIGATOR',$content,$before);
 }
-function add_to_widgets($content,$before=false){
-   add_to_view('WIDGETS',$content,$before);
+function add_to_notify($content,$before=false){
+   add_to_view('NOTIFY',$content,$before);
 }
 function add_to_menubar($content,$before=false){
    add_to_view('MENUBAR',$content,$before);
@@ -616,8 +625,8 @@ function clear_breadcrumb(){
 function clear_navigator(){
    clear_view('NAVIGATOR');
 }
-function clear_widgets(){
-   clear_view('WIDGETS');
+function clear_notify(){
+   clear_view('NOTIFY');
 }
 function clear_menubar(){
    clear_view('MENUBAR');

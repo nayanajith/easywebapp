@@ -77,8 +77,8 @@ class Model{
          }
 
          //Setting group wise model file if available else drop to default
-         if(isset($_SESSION['group_id'])){
-            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
+         if(isset($_SESSION['role_id'])){
+            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['role_id']."'",Q_RET_ARRAY);
             $group_prefix='_'.$arr[0]['file_prefix'];
             $file=sprintf($this->model,$group_prefix);
 
@@ -182,7 +182,7 @@ class Model{
                   "dojoType"    =>$this->get_field_type($row['Type']),
                   "required"    =>($row['Null']=='YES')?"false":"true",
                   "label"       =>style_text($row['Field']),
-                  "label_pos"   =>$this->get_label_pos($this->get_field_type($row['Type']))
+                  //"label_pos"   =>$this->get_label_pos($this->get_field_type($row['Type']))
                   );
                }else{
                   $this->form[$row['Field']]=array(
@@ -191,7 +191,7 @@ class Model{
                   "type"        =>"hidden",
                   "required"    =>"false",
                   "label"       =>style_text($row['Field']),
-                  "label_pos"   =>$this->get_label_pos($this->get_field_type($row['Type']))
+                  //"label_pos"   =>$this->get_label_pos($this->get_field_type($row['Type']))
                   );
                }
             }
@@ -266,7 +266,6 @@ EOE;
          "dojoType"=>"dijit.form.FilteringSelect",
          "required"=>"false",
          "label"=>"Label",
-         "label_pos"=>"left",
 
          "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',
          "searchAttr"=>"label",
@@ -912,34 +911,49 @@ EOE;
             $field_array=$this->form[$key];
          }
 
+         //Reference key of the table
          if(isset($field_array['ref_key'])){
             $key=$field_array['ref_key'];
          }
 
+         //Visible id (label)
          if(isset($field_array['vid'])){
             $key_=array($key=>$field_array['vid']);
          }else{
             $key_=$key; 
          }
 
+         //Custom table if available 
          $table   =$this->table;
          if(isset($field_array['ref_table'])){
             $table   =$field_array['ref_table'];
          }
 
+         //Filter the list according to this filter
          $filter  =null;
          if(isset($field_array['filter'])){
             $filter=$field_array['filter'];
          }
 
+         //Result will be order by this statement
          $order_by  =null;
          if(isset($field_array['order_by'])){
             $order_by=$field_array['order_by'];
          }
 
-         header('Content-Type', 'application/json');
+         //Default value to be listed at the end of the values
+         $default  ="-none-";
+         if(isset($field_array['default'])){
+            if($field_array['default'] === false){
+               $default  =null;
+            }else{
+               $default  =$field_array['default'];
+            }
+         }
+
+         //header('Content-Type', 'application/json');
          include 'qread_store_class.php';
-         $query_read_store = new Query_read_store($table,$key_,$filter,$order_by,$key);
+         $query_read_store = new Query_read_store($table,$key_,$filter,$order_by,$key,$default);
          echo $query_read_store->gen_json_data();
       }
       /*
@@ -1062,6 +1076,7 @@ EOE;
             return false;
          }
 
+         $errors=array();
          
          $cols      =""; //coumns of the table
          $values   =""; //value for each column of the table
@@ -1075,6 +1090,32 @@ EOE;
             //If the foreign keys does not have values ignore them
             if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null)){
                continue; 
+            }
+
+            //Handle the isolated fields adding
+            if(isset($arr['isolate']) && is_array($arr['isolate']) && isset($arr['isolate']['add'])){
+               //For comboboxes, if user request to add a value 
+               if($arr['dojoType']=='dijit.form.ComboBox'){
+                  //check if the value already available using get_key query
+                  $res=exec_query(sprintf($arr['key_sql'],$_REQUEST[$key]),Q_RET_ARRAY);
+                  $errors[]=get_sql_error();
+                  if(isset($res[0])){
+                     //If there is a value in database set it in request array
+                     $_REQUEST[$key]=$res[0][$arr['ref_key']];
+                  }else{
+                     //If there is no value in database add the value to the database and get it's key and set it as the request[key]
+                     exec_query(sprintf($arr['isolate']['add'],$_REQUEST[$key]),Q_RET_NONE);
+                     $errors[]=get_sql_error();
+                     $res=exec_query(sprintf($arr['key_sql'],$_REQUEST[$key]),Q_RET_ARRAY);
+                     $errors[]=get_sql_error();
+                     $_REQUEST[$key]=$res[0][$arr['ref_key']];
+                  }
+               }else{
+                  exec_query(sprintf($arr['isolate']['add'],$_REQUEST[$key]),Q_RET_NONE);
+                  $errors[]=get_sql_error();
+                  unset($_REQUEST[$key]);
+                  continue; 
+               }
             }
 
             /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
@@ -1126,16 +1167,18 @@ EOE;
             }
          }
 
-         $insert_query   ="INSERT INTO ".$this->table."(%s) VALUES(%s)";
-         $insert_query   =sprintf($insert_query,$cols,$values);
-         $res            =exec_query($insert_query,Q_RET_MYSQL_RES);
+         $insert_query  ="INSERT INTO ".$this->table."(%s) VALUES(%s)";
+         $insert_query  =sprintf($insert_query,$cols,$values);
+         $res           =exec_query($insert_query,Q_RET_MYSQL_RES);
+         $errors[]      =get_sql_error();
 
          /*report error/success*/
          if(get_affected_rows() > 0){
             return_status_json('OK','record inserted successfully');
             return true;
          }else{
-            return_status_json('ERROR',get_sql_error());
+            return_status_json('ERROR',implode(';',$errors));
+            //return_status_json('ERROR',get_sql_error());
             return false;
          }
       }
@@ -1150,8 +1193,7 @@ EOE;
 
          $res=exec_query($sql,Q_RET_ARRAY);
 
-         //Isolated fields for update -> these fields will be updated individually
-         $isolated_fieds=array();
+         $errors=array();
 
          if(sizeof($res)>0){
             //key available  -> modify
@@ -1170,10 +1212,15 @@ EOE;
                   continue; 
                }
 
-
-               //Select Isolated fiels to be updated seperately
-               if(isset($arr['isolate']) && $arr['isolate']=='update'){
-                  $isolated_fieds[$key]=$_REQUEST[$key];
+               //Handle the isolated fields updates
+               if(isset($arr['isolate'])){
+                  if(is_array($arr['isolate']) && isset($arr['update'])){
+                     exec_query(sprintf($arr['update'],$_REQUEST[$key]),Q_RET_NONE);
+                     $errors[]=get_sql_error();
+                  }else{
+                     exec_query("UPDATE ".$this->table." SET $key='".$_REQUEST[$key]."' WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'",Q_RET_NONE);
+                     $errors[]=get_sql_error();
+                  }
                   unset($_REQUEST[$key]);
                   continue; 
                }
@@ -1227,14 +1274,11 @@ EOE;
                   }
                }
 
-            $update_query   ="UPDATE ".$this->table." SET %s WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
-            $update_query   =sprintf($update_query,$values);
-            $res            =exec_query($update_query,Q_RET_MYSQL_RES);
+            $update_query  ="UPDATE ".$this->table." SET %s WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
+            $update_query  =sprintf($update_query,$values);
+            $res           =exec_query($update_query,Q_RET_MYSQL_RES);
 
-            //Update isolated fields
-            foreach($isolated_fieds as $key => $value){
-               $res     =exec_query("UPDATE ".$this->table." SET $key='$value' WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'",Q_RET_NONE);
-            }
+            $errors[]      =get_sql_error();
 
             /*report error/success */
             if(get_affected_rows() > 0){
@@ -1245,7 +1289,8 @@ EOE;
                return false;
             }
          }else{
-            return_status_json('ERROR','error updating record key does not exists');
+            return_status_json('OK',implode(';',$errors));
+            //return_status_json('ERROR','error updating record key does not exists');
             return false;
          }
       }

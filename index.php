@@ -220,12 +220,21 @@ if($GLOBALS['DATA']||$GLOBALS['PRINT']){
 }
 
 /*---------------------------Check for help request---------------------------*/
+$GLOBALS['NOTIFY']=false;
+if ($GLOBALS['DATA'] && $_REQUEST['action']=='notify'){
+   $GLOBALS['NOTIFY']=true;
+   include A_CORE."/notify.php";
+   return;
+}
+
+/*---------------------------Check for help request---------------------------*/
 $GLOBALS['HELP']=false;
 if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
    $GLOBALS['HELP']=true;
    include A_CORE."/help_layout.php";
    return;
 }
+
 /*-------------------------get and set group theme and layout ----------------*/
 //will override by user theme and layout
 if(isset($_SESSION['role_id'])){

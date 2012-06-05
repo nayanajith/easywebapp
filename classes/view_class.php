@@ -40,8 +40,8 @@ class View{
 
         //Determine group prefix according to the group of the user
         $group_prefix='';
-        if(isset($_SESSION['group_id'])){
-            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['group_id']."'",Q_RET_ARRAY);
+        if(isset($_SESSION['role_id'])){
+            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['role_id']."'",Q_RET_ARRAY);
             $group_prefix='_'.$arr[0]['file_prefix'];
         }
          $model=sprintf($this->model,$group_prefix);
@@ -92,7 +92,7 @@ class View{
          if($GLOBALS['LAYOUT']=='app2'){
             add_to_toolbar(
                "\n<span dojoType='dojox.data.QueryReadStore' 
-               url='".gen_url()."&data=json&action=combo&form=main&field=".$field_id."'
+               url='".gen_url()."data=json&action=combo&form=main&field=".$field_id."'
                jsId='".$store_id."'
                requestMethod='post'
                >
@@ -101,7 +101,7 @@ class View{
          }else{
             add_to_main_top(
                "\n<span dojoType='dojox.data.QueryReadStore' 
-               url='".gen_url()."&data=json&action=combo&form=main&field=".$field_id."'
+               url='".gen_url()."data=json&action=combo&form=main&field=".$field_id."'
                jsId='".$store_id."'
                requestMethod='post'
                >
@@ -196,7 +196,7 @@ class View{
          $options        =" jsId='$field' id='$field' name='$field' ";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','tooltip');
+         $bypass=array('default','isolate','inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','tooltip');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -401,7 +401,6 @@ function get_csv(){
       if(isset($_SESSION[PAGE]) && isset($_SESSION[PAGE][$field])){
          $fill=$_SESSION[PAGE][$field];
       }
-
       //original field id
       $field_=$field;
 
@@ -463,7 +462,7 @@ function get_csv(){
          $options       =" jsId='$field' id='$field' title='".$field_array['label']."' $data_dojo_props ";
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder','checked_fields');
+         $bypass=array('default','isolate','inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder','checked_fields');
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -567,7 +566,7 @@ dojo.ready(function(){
          if(!isset($grid['jsId']))$grid['jsId']="grid__".$grid_key;
 
          //$html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>";
-         $html.="<span dojoType='dojox.data.QueryReadStore' requestMethod='post' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=json'></span>";
+         $html.="<span dojoType='dojox.data.QueryReadStore' requestMethod='post' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."form=".$grid['store']."&data=json'></span>";
          $html.="<div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>";
@@ -700,7 +699,7 @@ dojo.ready(function(){
       return "
    <div dojoType='dijit.form.Form' jsId='".$js_function."_frm' id='".$js_function."_frm' >
    <div dojoType='dojox.data.QueryReadStore' 
-      url='".gen_url().$filter_name."&data=json$form'
+      url='".gen_url().'?'.$filter_name."&data=json$form'
       jsId='".$js_function."_select_store'
       >
    </div>

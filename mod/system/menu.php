@@ -4,7 +4,7 @@ $menu_array  = array(
 //   "modules"            =>"Modules",
    "users"              =>"Users",
    "role"               =>"Roles",
-   "permission"         =>"Users/Group Permission2",
+//   "permission"         =>"Users/Group Permission2",
    "manage_permission"  =>"Users/Group Permission",
    "base_data"          =>"Base Data",
    "reset_password"     =>array("PAGE"=>"Reset Password","VISIBLE"=>"false"),
@@ -12,7 +12,7 @@ $menu_array  = array(
    "system_log"         =>"System Log",
    "backup"             =>"Backup",
    "db_admin"           =>"Database Administration",
-   "init_db"            =>"Regenerate Database",
+ //  "init_db"            =>"Regenerate Database",
 );
 
 $toolbar   =array(

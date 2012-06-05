@@ -270,7 +270,8 @@ function create_recreate_tables(){
             $schemas=$program_table_schemas;
             //program table prefix rallback
             if(isset($schema_prefix)){
-               $table=str_replace($schema_prefix."_",'%s',$table);
+               //only the first occurence of the given phrase will be replaced
+               $table=preg_replace("/".$schema_prefix."_/","%s",$table,1);
             }
 
             //creating the table
@@ -296,7 +297,7 @@ function create_recreate_tables(){
             //program table prefix rallback
             $schemas=$program_table_schemas;
             if(isset($schema_prefix)){
-               $table=str_replace($schema_prefix."_",'%s',$table);
+               $table=preg_replace("/".$schema_prefix."_/","%s",$table,1);
             }
 
             exec_query($schemas[$table],Q_RET_NONE);

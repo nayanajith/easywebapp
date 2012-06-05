@@ -1,3 +1,13 @@
+<?php if (trim($GLOBALS['view']['NOTIFY']) != ''){ ?>
+<div dojoType="dijit.form.DropDownButton" iconClass="notifyIconRed" showLabel="false" >
+  <span >Notification</span>
+  <div dojoType="dijit.TooltipDialog" style="width:200px;">
+      <?php echo $GLOBALS['view']['NOTIFY'] ?>
+      <br><button dojoType="dijit.form.Button" type="submit">OK</button>
+  </div>
+</div>
+<?php } ?>
+
 <?php
 d_r("dijit.form.Button");
 

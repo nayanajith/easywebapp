@@ -189,6 +189,8 @@ echo "<option value='U:".$row['username']."'>".$row['username']."</option>";
 echo "</select><br><br>";
 
 gen_permission_tree();
+
+set_layout_properties('app2','MAIN_TOP','style',"border:1px solid whitesmoke;padding:0px;height:100%");
 ?>
 </div>
 </div>

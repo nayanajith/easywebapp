@@ -29,9 +29,10 @@ class Query_read_store{
    )
 
    */
-   public function __construct($table,$key,$filter='',$order_by=null,$id=null) {
+   public function __construct($table,$key,$filter='',$order_by=null,$id=null,$default="-none-") {
       $this->key        =$key;   
       $this->table      =$table;
+      $this->default    =$default;
       $this->pre_filter =$filter;
       $this->order_by   =$order_by;
       $this->id         =$id;   
@@ -107,14 +108,17 @@ class Query_read_store{
    public function gen_json_data(){
       $res=array();
       $res=array_merge($res,exec_query($this->_gen_query()));
-      if(isset($this->key_a) && is_array($this->key_a)){
-         if(is_array($this->key_a[key($this->key_a)])){
-            $res[]=array(key($this->key_a)=>'NULL','label'=>'-none-');
+      //Default value will be appended to the end of the list according to the user request
+      if(!is_null($this->default)){
+         if(isset($this->key_a) && is_array($this->key_a)){
+            if(is_array($this->key_a[key($this->key_a)])){
+               $res[]=array(key($this->key_a)=>'NULL','label'=>$this->default);
+            }else{
+               $res[]=array(key($this->key_a)=>'NULL','label'=>$this->default);
+            }
          }else{
-            $res[]=array(key($this->key_a)=>'NULL','label'=>'-none-');
+            $res[]=array($this->key=>'NULL','label'=>$this->default);
          }
-      }else{
-         $res[]=array($this->key=>'NULL','label'=>'-none-');
       }
 
       //Return as JSON formatted data

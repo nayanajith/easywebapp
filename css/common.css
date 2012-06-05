@@ -85,6 +85,22 @@ img {
    text-align: center;
 }
 
+.notifyIcon {
+   background-image: url("<?php echo IMG.'/icons/08-chat.png'; ?>"); 
+   background-repeat: no-repeat;
+   width: 16px;
+   height: 16px;
+   text-align: center;
+}
+
+.notifyIconRed {
+   background-image: url("<?php echo IMG.'/icons/08-chat-red.png'; ?>"); 
+   background-repeat: no-repeat;
+   width: 16px;
+   height: 16px;
+   text-align: center;
+}
+
 /*------------------------------news styles------------------------------*/
 .news_title{
    font-size:150%;

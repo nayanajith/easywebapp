@@ -201,9 +201,6 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
          while(true){
             if ($result = mysqli_store_result($GLOBALS['CONNECTION'])) {
                $results[]=$result;
-               while($row=mysqli_fetch_assoc($result)){
-                  log_msg($row);
-               }
                mysqli_free_result($result);
             }
             if(mysqli_more_results($GLOBALS['CONNECTION'])){
@@ -318,7 +315,8 @@ function db_to_csv($query,$csv_file,$db=null){
 db to csv data export function for non root users
 */
 function db_to_csv_nr($query,$csv_file,$header_array=null,$delimiter=",",$enclosure='"',$terminator="\n",$db=null){
-   $res    = exec_query($query,Q_RET_MYSQL_RES,$db);
+   //$res    = exec_query($query,Q_RET_MYSQL_RES,$db);
+   $res    = exec_query($query,Q_RET_ARRAY,$db);
    set_file_header($csv_file);
    $header=false;
 
@@ -329,13 +327,13 @@ function db_to_csv_nr($query,$csv_file,$header_array=null,$delimiter=",",$enclos
    }
 
    //print lines
-   while($row = mysql_fetch_assoc($res)){
+   //while($row = mysql_fetch_assoc($res)){
+   foreach($res as $key => $row){
       if(!$header){
          echo $enclosure.implode($enclosure.$delimiter.$enclosure,array_keys($row)).$enclosure.$terminator;
          $header=true;
-      }else{
-         echo $enclosure.implode($enclosure.$delimiter.$enclosure,array_values($row)).$enclosure.$terminator;
       }
+      echo $enclosure.implode($enclosure.$delimiter.$enclosure,array_values($row)).$enclosure.$terminator;
    }
    exit();
 }
@@ -399,7 +397,8 @@ function csv_to_db2($csv_file,$table,$field_array,$delimiter,$encloser,$terminat
 
 /*Addd prefix to each array entrye*/
 function add_prefix(&$value,$key,$prefix){
-   $value=sprintf($value,$prefix,$prefix,$prefix,$prefix,$prefix,$prefix,$prefix,$prefix);
+   //$value=sprintf($value,$prefix,$prefix,$prefix,$prefix,$prefix,$prefix,$prefix,$prefix);
+   $value=str_replace('%s',$prefix,$value);
 }
 
 /*Addd prefix to each table to reflect the module*/
