@@ -577,7 +577,7 @@ dojo.ready(function(){
             selectable='true'
             plugins='{
                 pagination: {
-                    pageSizes: [\"25\", \"50\", \"100\", \"All\"],
+                    pageSizes: [\"25\", \"50\", \"100\", \"200\"],
                     description: true,
                     sizeSwitch: true,
                     pageStepper: true,

@@ -170,7 +170,7 @@ echo  "<div dojoType='dijit.form.Form' id='permission_frm' jsId='permission_frm'
          action='".$GLOBALS['PAGE_GEN']."';
          method='GET' >
          ";
-echo "Select User/Role: <select name='username' id='username' dojoType='dijit.form.Select' jsId='username' onChange='fill_form(this.value);'>";
+echo "Select User/Role: <select name='username' id='username' dojoType='dijit.form.FilteringSelect' pageSize='20' jsId='username' onChange='fill_form(this.value);'>";
 
 //List of groups
 echo "<option value='none'>-roles-</option>";

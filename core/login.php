@@ -239,6 +239,7 @@ if (isset($_SESSION['username'])) {
          }else{
             $RESULT_ARR    = exec_query($SQL, Q_RET_ARRAY);
          }
+         log_msg($RESULT_ARR);
          if(isset($RESULT_ARR[0])){
             $LOGIN=true;   
             exec_query("UPDATE ".s_t('users')." SET last_login=CURRENT_TIMESTAMP,failed_logins=0 WHERE username='".$user."'", Q_RET_NONE);

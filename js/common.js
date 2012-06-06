@@ -357,7 +357,9 @@ var fill_form_callback={
 function callback(callback_array,function_name,response){
    if(callback_array && function_name && callback_array[function_name] && callback_array[function_name] != null){
       for(var i in callback_array[function_name]){
-         callback_array[function_name][i](response);
+         var cb=callback_array[function_name][i];
+         console.log(cb);
+         cb['func'](cb['param'],response);
       }
       callback_array[function_name]=[];
    }
@@ -366,8 +368,9 @@ function callback(callback_array,function_name,response){
 /**
  * Add to callback array
  */
-function add_callback(callback_array,callback_name,callback_function){
-   callback_array[callback_name].push(callback_function);
+function add_callback(callback_array,callback_name,callback_function,param){
+   var cb={'func':callback_function,'param':param};
+   callback_array[callback_name].push(cb);
 }
 
 /**
@@ -380,8 +383,8 @@ function clear_callback(callback_array){
 }
 
 //wrapper for submit_form callbacks
-function s_f_c_add(callback_name,callback_function){
-   add_callback(submit_form_callback,callback_name,callback_function);
+function s_f_c_add(callback_name,callback_function,param){
+   add_callback(submit_form_callback,callback_name,callback_function,param);
 }
 
 /** Submit the given form
@@ -437,7 +440,7 @@ function submit_form(action,param1,param2){
 
       //call the error callback function
       callback(s_f_c,'error');
-      return;   
+      return false;   
    }
 
    //Some actions do not require form submission
@@ -595,8 +598,8 @@ function xhr_generic(submit_form,action,handle_as){
  * reload the grid
  */
 function reload_grid(grid){
-   update_status_bar('OK','Reloading grid...');
-   update_progress_bar(50);
+   //update_status_bar('OK','Reloading grid...');
+   //update_progress_bar(50);
 
    var url_=grid.store.url;
    //var new_store = new dojox.data.CsvStore({url: url_ });
@@ -604,7 +607,7 @@ function reload_grid(grid){
 
    //setTimeout(function(){grid.setStore(new_store)},2000); 
    grid.setStore(new_store);
-   update_progress_bar(100);
+   //update_progress_bar(100);
 }
 
 /**

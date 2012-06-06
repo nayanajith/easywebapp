@@ -21,13 +21,34 @@ $GLOBALS['MODEL']=array(
          "value"=>""
       ),
       "base_class"=>array(
-         "length"	=>"100",
-         "dojoType"	=>"dijit.form.Select",
+         "length"	=>"250",
+         "dojoType"	=>"dijit.form.ComboBox",
          "required"	=>"true",
-         "inner"  =>$base_class_inner,
          "label"	=>"Base class",
-         "label_pos"	=>"top",
-         "value"=>""
+         "store"=>"base_class_store",
+         "searchAttr"=>"label",
+         "pageSize"=>"20",
+         "tooltip"=>"Select the group from existing group list or enter a new group name.",
+         "default"=>false,
+
+         "key_sql"=>"SELECT base_class FROM ".m_p_t('base_data')." WHERE base_class='%s'",
+
+         /*
+         "isolate"=>array(
+            "add"=>"INSERT INTO ".m_p_t('base_data')."(base_class,base_key)value('EXT_GROUP','%s')",
+            "update"=>null,
+            "delete"=>null,
+         ),
+          */
+
+         //"hasDownArrow"=> "false",
+         "autoComplete"=>"false",
+
+         "ref_table"=>m_p_t('base_data'),
+         "ref_key"=>'base_class',
+         "order_by"=>'ORDER BY base_class DESC',
+         "vid"=>array('base_class'),
+
       ),
       "base_key"=>array(
          "length"	=>"350",
@@ -46,6 +67,7 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
+      /*
       "status"=>array(
          "length"	=>"100",
          "dojoType"	=>"dijit.form.Select",
@@ -55,6 +77,7 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
+       */
    ),
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
    'GRIDS'=>array(
@@ -139,7 +162,7 @@ $GLOBALS['MODEL']=array(
          "label"=>"Delete filter",
          "iconClass"=>get_icon_class('Cancel'),
          "showLabbel"=>'true',
-         "onClick"=>'submit_form("del_filter");reload_grid(main_grid)',
+         "onClick"=>'s_f_c_add("ok",reload_grid,main_grid);submit_form("del_filter")',
       ),
       "reload_grid"=>array(
          "dojoType"=>"dijit.form.Button",

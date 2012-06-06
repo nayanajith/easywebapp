@@ -348,7 +348,7 @@ function migrate_db(){
             //Migration can be consists of multiple steps hence array  and iterate through array and execute
             if(is_array($migrate[$version])){
                foreach($migrate[$version] as $key => $value){
-                  exec_query($value,Q_RET_NONE);
+                  exec_multy_query($value,Q_RET_NONE);
                   if(get_sql_error() != false){
                      $status  ="ERROR";
                      $info.="[$version][$key] migration ".get_sql_error().";";
@@ -358,7 +358,7 @@ function migrate_db(){
                }
             }else{
                //if the migration is a single step procedure then this..
-               exec_query($migrate[$version],Q_RET_NONE);
+               exec_multy_query($migrate[$version],Q_RET_NONE);
                if(get_sql_error() != false){
                   $status  ="ERROR";
                   $info.="[$version] migration ".get_sql_error().";";
@@ -380,7 +380,7 @@ function migrate_db(){
                      $value=str_replace('%s',$schema_prefix."_",$value);
                   }
 
-                  exec_query($value,Q_RET_NONE);
+                  exec_multy_query($value,Q_RET_NONE);
                   if(get_sql_error() != false){
                      $status  ="ERROR";
                      $info.="[$version][$key] migration ".get_sql_error().";";
@@ -395,7 +395,7 @@ function migrate_db(){
                   //$value=sprintf($value,$schema_prefix."_");
                   $value=str_replace('%s',$schema_prefix."_",$value);
                }
-               exec_query($value,Q_RET_NONE);
+               exec_multy_query($value,Q_RET_NONE);
                if(get_sql_error() != false){
                   $status  ="ERROR";
                   $info.="[$version] migration ".get_sql_error().";";
