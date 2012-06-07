@@ -293,35 +293,35 @@ EOE;
          "label"=>"Add",
          "iconClass"=>get_icon_class('NewPage'),
          "showLabbel"=>'true',
-         "onClick"=>'submit_form("add");reload_grid(main_grid)',
+         "onClick"=>'s_f_c_add("ok",reload_grid,main_grid);submit_form("add")',
       ),  
       "save"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Save",
          "iconClass"=>get_icon_class('Save'),
          "showLabbel"=>'true',
-         "onClick"=>'submit_form("modify");reload_grid(main_grid)',
+         "onClick"=>'s_f_c_add("ok",reload_grid,main_grid);submit_form("modify")',
       ),  
       "remove"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Delete",
          "iconClass"=>get_icon_class('Delete'),
          "showLabbel"=>'true',
-         "onClick"=>'submit_form("delete");reload_grid(main_grid)',
+         "onClick"=>'s_f_c_add("ok",reload_grid,main_grid);submit_form("delete")',
       ),
      "add_filter"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Add fIlter",
          "iconClass"=>get_icon_class('Filter'),
          "showLabbel"=>'true',
-         "onClick"=>'submit_form("add_filter");reload_grid(main_grid)',
+         "onClick"=>'s_f_c_add("ok",reload_grid,main_grid);submit_form("add_filter")',
       ),  
       "del_filter"=>array(
          "dojoType"=>"dijit.form.Button",
          "label"=>"Delete filter",
          "iconClass"=>get_icon_class('Cancel'),
          "showLabbel"=>'true',
-         "onClick"=>'submit_form("del_filter");reload_grid(main_grid)',
+         "onClick"=>'s_f_c_add("ok",reload_grid,main_grid);submit_form("del_filter")',
       ),
       "reload_grid"=>array(
          "dojoType"=>"dijit.form.Button",
@@ -1281,15 +1281,15 @@ EOE;
             $errors[]      =get_sql_error();
 
             /*report error/success */
-            if(get_affected_rows() > 0){
+            if(implode('',$errors)==''){
                return_status_json('OK','record updated successfully');
                return true;
             }else{
-               return_status_json('OK','zero records affected');
+               return_status_json('ERROR',implode(';',$errors));
                return false;
             }
          }else{
-            return_status_json('OK',implode(';',$errors));
+            return_status_json('ERROR',implode(';',$errors));
             //return_status_json('ERROR','error updating record key does not exists');
             return false;
          }
