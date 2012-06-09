@@ -1040,9 +1040,9 @@ function style_text($ROW_TEXT) {
 }
 
 /**
- * array walk wrapper function for style_text function
+ * wrapper function for style_text function to insert in array walk 
  */
-function walk_style_text(&$item,$key,$var){
+function walk_style_text(&$item,$key,$var=null){
    $item=style_text($item);
 }
 
@@ -1284,6 +1284,35 @@ function tab($num){
       $ret.=$tab;
    }
    return $ret;
+}
+
+function on_each_td(&$item,$key,$var=null){
+   $item=str_replace(',','<br>',$item);
+}
+
+/**
+ * Turn query result into a html table
+ */
+function query_to_htable($query){
+   $arr=exec_query($query,Q_RET_ARRAY);
+   
+   if(!isset($arr[0]))return false;
+
+   $headers=array_keys($arr[0]);
+   array_walk($headers,'walk_style_text');
+
+   $report="<table class='clean' border='1' style='border-collapse:collapse;'><tr><th>";
+   $report.=implode('</th><th>',$headers);
+   $report.="</th></tr>";
+   foreach($arr as $row){
+      $report.="<tr><td>";
+      $values=array_values($row);
+      array_walk($values,'on_each_td');
+      $report.=implode('</td><td>',$values);
+      $report.="</td></tr>";
+   }
+   $report.="</table>";
+   return  $report;
 }
 
 ?>

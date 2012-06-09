@@ -565,33 +565,51 @@ dojo.ready(function(){
          //If jsId is not set explicitly set the key with grid__ prefix as jsId
          if(!isset($grid['jsId']))$grid['jsId']="grid__".$grid_key;
 
-         //$html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>";
-         $html.="<span dojoType='dojox.data.QueryReadStore' requestMethod='post' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."form=".$grid['store']."&data=json'></span>";
+         //If store is not set explicitly set the grid_key formatted into grid__$grid_key_store 
+         if(!isset($grid['store']))$grid['store']="grid__".$grid_key."_store";
+
+         //Page stepper only enable for csvstore
+         $page_stepper='false';
+
+         //Switch between csv store and qreadstore
+         if(isset($grid['store_type'])){
+            switch($grid['store_type']){
+            case 'csv':
+               $html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>";
+               $page_stepper='true';
+            break;
+            case 'query':
+               $html.="<span dojoType='dojox.data.QueryReadStore' requestMethod='post' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."form=".$grid['store']."&data=json'></span>";
+            break;
+            }
+         }else{
+            $html.="<span dojoType='dojox.data.QueryReadStore' requestMethod='post' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."form=".$grid['store']."&data=json'></span>";
+         }
+
+         //Menu for the right click on grid
          $html.="<div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
       </div>";
-         $html .="<table
-            autoHeight='false'
-            dojoType='dojox.grid.EnhancedGrid'
-            errorMessage='No records to display!'
-            selectable='true'
-            plugins='{
+
+         //EnhancedGrid table with pagination plugin
+         $html .='<table
+            autoHeight="false"
+            errorMessage="No records to display!"
+            selectable="true"
+            plugins=\'{
                 pagination: {
-                    pageSizes: [\"25\", \"50\", \"100\", \"200\"],
+                    pageSizes: ["25", "50", "100", "200","500"],
                     description: true,
                     sizeSwitch: true,
-                    pageStepper: true,
+                    pageStepper: '.$page_stepper.',
                     gotoButton: true,
-                            /*page step to be displayed*/
                     maxPageStep: 4,
-                            /*position of the pagination bar*/
-                    position: \"bottom\"
+                    position: "bottom"
                 }
-              }'
-            \n";
+              }\'';
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('filter','rowSelector','dojoType','columns','selector_id','ref_table','ref_key','event_key','sql');
+         $bypass=array('filter','rowSelector','columns','selector_id','ref_table','ref_key','event_key','sql');
 
          /*all paremeters will be inserted to the options string*/
          foreach($grid as $key => $value){

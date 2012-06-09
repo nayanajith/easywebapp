@@ -14,6 +14,7 @@ $GLOBALS['PAGE']=array(
 
 
 include_once A_CLASSES."/model_class.php";
+
 //include_once A_MODULES."/".MODULE."/".$GLOBALS['PAGE']['name']."_mdl.php";
 
 //DEBUG: find where a class is declared
@@ -28,6 +29,9 @@ $model    = new Model(
 );
 
 if(isset($_REQUEST['form'])){
+   //Create common switch for the all grid store requests
+   if(strstr(strtoupper($_REQUEST['form']),'GRID') != '')$_REQUEST['form']='grid';
+
    switch($_REQUEST['form']){
    case 'main':
       if(isset($_REQUEST['action'])){
@@ -108,8 +112,7 @@ if(isset($_REQUEST['form'])){
          }
     }
    break;
-   case 'main_grid_store':
-   case 'store3':
+   case 'grid':
       if(isset($_REQUEST['data'])){
          switch($_REQUEST['data']){
          case 'csv':
