@@ -11,6 +11,8 @@ $GRIDS=array(
 );
 
 //--------------FIELDS TO BE INCLUDED IN TOOLBAR----------------
+$TOOLBAR=array();
+if(!isset($LOAD_DEFAULT_TOOLBAR) || $LOAD_DEFAULT_TOOLBAR){
 $TOOLBAR=array(
    "clear"=>array(
       "dojoType"=>"dijit.form.Button",
@@ -69,6 +71,7 @@ $TOOLBAR=array(
       "showLabbel"=>'true',
    ),
 );
+}
 $CALLBACKS=array(
    "add_record"=>array(
       "OK"     =>array(

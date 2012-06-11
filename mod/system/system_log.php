@@ -28,14 +28,13 @@ function read_file($file, $lines) {
 }
 $numLines=isset($_REQUEST['lines'])?$_REQUEST['lines']:20;
 $lines = read_file(LOG,$numLines);
-echo "<div id='dd'><pre >";
+$report.="<div id='dd'><pre >";
 foreach ($lines as $line) {
-    echo $line;
+    $report.=$line;
 }
-echo "</pre></div>";
-?>
+$report.="</pre></div>";
 
-<script type='text/javascript'>
+$report.="<script type='text/javascript'>
 function get_lines(){
    var lines=document.getElementById('toolbar.numLines').value;
    url='<?php echo gen_url();?>&lines='+lines;
@@ -47,5 +46,6 @@ function print_data(){
    mywin.innerHTML=document.getElementById('dd').innerHTML;
    mywin.print();
 }
-
-</script>
+</script>";
+add_to_main_top($report);
+?>

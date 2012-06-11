@@ -44,43 +44,68 @@ function get_for_keys(){
  */
 $GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
    "MAIN_TOP"     =>array(
-      "style"=>"border:1px solid whitesmoke;padding:0px;height:25%",
-      "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
-   ),
-   "MAIN_LEFT"    =>array(
-      "style"=>"border:1px solid whitesmok;padding:0px;width:50%",
-      "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
-   ),
-   "MAIN_RIGHT"   =>array(
-      "style"=>"border:1px solid whitesmoke;padding:0px;width:50%",
+      "style"=>array("border"=>"1px solid whitesmoke","padding"=>"0px","height"=>"25%"),
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_BOTTOM"  =>array(
-      "style"=>"border:1px solid whitesmoke;padding:0px;height:75%",
+      "style"=>array("border"=>"1px solid whitesmoke","padding"=>"0px","height"=>"75%"),
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
+   "MAIN_LEFT"    =>array(
+      "style"=>array("border"=>"1px solid whitesmoke","padding"=>"0px","width"=>"40%"),
+      "splitter"=>"false",
+      "minSize"=>"0",
+      "maxSize"=>"850",
+   ),
+   "MAIN_RIGHT"   =>array(
+      "style"=>array("border"=>"1px solid whitesmoke","padding"=>"0px","width"=>"60%"),
+      "splitter"=>"false",
+      "minSize"=>"0",
+      "maxSize"=>"850",
+   ),
+
 );
-function set_layout_properties($layout='app2',$section='MAIN_TOP',$key,$value){
-   $GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]=$value;
+function set_layout_property($layout='app2',$section='MAIN_TOP',$p1,$p2,$p3=null){
+   if(!is_null($p3)){
+      $GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$p1][$p2]=$p3;
+   }else{
+      $GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$p1]=$p2;
+   }
 }
 
-function get_layout_properties($layout='app2',$section='MAIN_TOP',$key=null){
-   $options="";
-   if(is_null($key)){
-      foreach($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section] as $key => $value){
-         $options.=$key."='$value' ";
+function get_layout_property($layout='app2',$section='MAIN_TOP',$key=null,$key2=null){
+   $out="";
+   if(!is_null($key2)){
+      return $key2."='".$GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key][$key2]."' ";
+   }elseif(!is_null($key)){
+      if(is_array($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]) && in_array(strtolower($key) ,array('style'))){
+         $out=$key."'";
+         foreach($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key] as $key_ => $value_){
+            $out.=$key_.":".$value_.";";
+         }
+         $out.="'";
+         return $out;
+      }else{
+         return $key."='".$GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]."' ";
       }
-      return $options;
    }else{
-      return $key."='".$GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]."' ";
+      foreach($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section] as $key => $value){
+         $out.=$key."='";
+         if(is_array($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]) && in_array(strtolower($key) ,array('style'))){
+            foreach($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key] as $key_ => $value_){
+               $out.=$key_.":".$value_.";";
+            }
+         }else{
+            $out.=$GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key];
+         }
+         return $out.="' ";
+      }
+      log_msg($out);
+      return $out;
    }
 }
 

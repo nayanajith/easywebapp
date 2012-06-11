@@ -7,6 +7,10 @@ foreach($GLOBALS['MODULES'] as $key => $value){
    }
 }
 $schema_module_inner=gen_select_inner($modules_have_schema,null,true);
+
+//Disable deafult toolbar controls loading
+$LOAD_DEFAULT_TOOLBAR=false;
+
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
    'KEYS'=>array(

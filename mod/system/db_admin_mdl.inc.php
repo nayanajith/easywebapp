@@ -120,11 +120,11 @@ function db_migration_form(){
 
    //If there are any migration available MAIN_TOP will expand to 40% else it will be 10% of the MAIN
    if($migration_avail){
-      set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:40%;');
-      set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:60%;');
+      set_layout_property('app2','MAIN_TOP','style','height','40%');
+      set_layout_property('app2','MAIN_BOTTOM','style','height','60%');
    }else{
-      set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:20%;');
-      set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:80%;');
+      set_layout_property('app2','MAIN_TOP','style','height','20%');
+      set_layout_property('app2','MAIN_BOTTOM','style','height','80%');
    }
 
    $html.= "</table>";

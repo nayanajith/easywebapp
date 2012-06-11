@@ -7,7 +7,7 @@ $menu_array  = array(
 //   "permission"         =>"Users/Group Permission2",
    "manage_permission"  =>"Users/Group Permission",
    "base_data"          =>"Base Data",
-   "reset_password"     =>array("PAGE"=>"Reset Password","VISIBLE"=>"false"),
+   "reset_password"     =>array("label"=>"Reset Password","visible"=>"true"),
    "activity"           =>"Activity Log",
    "system_log"         =>"System Log",
    "backup"             =>"Backup",

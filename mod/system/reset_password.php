@@ -1,4 +1,3 @@
-
 <h3>Rest password</h3>
 <br>
 <br>
@@ -59,4 +58,7 @@ d_r("dijit.form.ValidationTextBox");
 
 <?php
 }
+
+set_layout_property('app2','MAIN_TOP','style','height','100%');
+set_layout_property('app2','MAIN_BOTTOM','style','height','0%');
 ?>

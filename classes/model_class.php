@@ -281,64 +281,6 @@ EOE;
          "order_by"=>'ORDER BY rid DESC',
          "vid"=>array('rid'),
       ),  
-
-      "clear"=>array(
-         "dojoType"=>"dijit.form.Button",
-         "label"=>"Clear form",
-         "iconClass"=>get_icon_class('Clear'),
-         "showLabbel"=>'true',
-         "onClick"=>'clear_form("main")',
-         //"onClick"=>'load_selected_value(toolbar__rid,"NULL")',
-      ),
-
-      "add"=>array(
-         "dojoType"=>"dijit.form.Button",
-         "label"=>"Add",
-         "iconClass"=>get_icon_class('NewPage'),
-         "showLabbel"=>'true',
-         "onClick"=>'s_f_c_add("ok",reload_grid,grid__GRID);submit_form("add")',
-      ),  
-      "save"=>array(
-         "dojoType"=>"dijit.form.Button",
-         "label"=>"Save",
-         "iconClass"=>get_icon_class('Save'),
-         "showLabbel"=>'true',
-         "onClick"=>'s_f_c_add("ok",reload_grid,grid__GRID);submit_form("modify")',
-      ),  
-      "remove"=>array(
-         "dojoType"=>"dijit.form.Button",
-         "label"=>"Delete",
-         "iconClass"=>get_icon_class('Delete'),
-         "showLabbel"=>'true',
-         "onClick"=>'s_f_c_add("ok",reload_grid,grid__GRID);submit_form("delete")',
-      ),
-     "add_filter"=>array(
-         "dojoType"=>"dijit.form.Button",
-         "label"=>"Add fIlter",
-         "iconClass"=>get_icon_class('Filter'),
-         "showLabbel"=>'true',
-         "onClick"=>'s_f_c_add("ok",reload_grid,grid__GRID);submit_form("add_filter")',
-      ),  
-      "del_filter"=>array(
-         "dojoType"=>"dijit.form.Button",
-         "label"=>"Delete filter",
-         "iconClass"=>get_icon_class('Cancel'),
-         "showLabbel"=>'true',
-         "onClick"=>'s_f_c_add("ok",reload_grid,grid__GRID);submit_form("del_filter")',
-      ),
-      "reload_grid"=>array(
-         "dojoType"=>"dijit.form.Button",
-         "label"=>"Reload grid",
-         "iconClass"=>get_icon_class('Undo'),
-         "showLabbel"=>'true',
-         "onClick"=>'reload_grid(grid__GRID)',
-      ),
-      "csv"=>array(
-         "dojoType"=>"dijit.form.DropDownButton",
-         "label"=>"CSV",
-         "iconClass"=>get_icon_class('Table'),
-         "showLabbel"=>'true',
-       ),
 EOE;
 
          $callbacks=<<<EOE
@@ -370,6 +312,7 @@ EOE;
 
             fwrite($file_handler, "<?php\n");
             fwrite($file_handler, "//--------------------------MODEL-------------------------------\n");
+            fwrite($file_handler, "\$LOAD_DEFAULT_TOOLBAR=true;\n");
             fwrite($file_handler, "\$GLOBALS['MODEL']=array(\n");
             fwrite($file_handler, "//-----------------KEY FIELDS OF THE MODEL----------------------\n");
             fwrite($file_handler, tab(1)."'KEYS'=>array(\n");
@@ -982,7 +925,7 @@ EOE;
          //Dates request formatted from MySQL
          foreach( $this->form as $key => $arr){
             //if(isset($arr['custom']) || isset($arr['store'])){
-            if(isset($arr['custom'])){
+            if(isset($arr['custom']) || in_array(strtolower($key),$this->pwd_field_guess)){
                continue;
             }else{
                if($arr['dojoType']=="dijit.form.DateTextBox"){

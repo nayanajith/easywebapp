@@ -543,7 +543,9 @@ dojo.ready(function(){
     */
    function gen_toolbar(){
       foreach($GLOBALS['MODEL']['TOOLBAR'] as $field => $field_array){
-         add_to_toolbar("\n".$this->gen_toolbar_entry($field,$field_array)."\n");
+         if(is_array($field_array)){
+            add_to_toolbar("\n".$this->gen_toolbar_entry($field,$field_array)."\n");
+         }
       }
    }
 
@@ -593,20 +595,21 @@ dojo.ready(function(){
 
          //EnhancedGrid table with pagination plugin
          $html .='<table
-            autoHeight="false"
-            errorMessage="No records to display!"
-            selectable="true"
-            plugins=\'{
-                pagination: {
-                    pageSizes: ["25", "50", "100", "200","500"],
-                    description: true,
-                    sizeSwitch: true,
-                    pageStepper: '.$page_stepper.',
-                    gotoButton: true,
-                    maxPageStep: 4,
-                    position: "bottom"
-                }
-              }\'';
+autoHeight="false"
+errorMessage="No records to display!"
+selectable="true"
+plugins=\'{
+    pagination: {
+        pageSizes: ["25", "50", "100", "200","500"],
+        description: true,
+        sizeSwitch: true,
+        pageStepper: '.$page_stepper.',
+        gotoButton: true,
+        maxPageStep: 4,
+        position: "bottom"
+    }
+}\'
+';
 
          /*Fields to bypass when creating forms*/
          $bypass=array('filter','rowSelector','columns','selector_id','ref_table','ref_key','event_key','sql');

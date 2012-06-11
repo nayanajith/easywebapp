@@ -29,6 +29,6 @@ add_to_main_bottom('<h2>Activity LOG</h2>');
 add_to_main_bottom(get_pviw_property(array('GRIDS','GRID')));
 add_to_main_bottom("<script>dojo.ready(function(){fill_filter_form()});</script>");
 
-set_layout_properties('app2','MAIN_TOP','style','padding:0px;height:28%');
-set_layout_properties('app2','MAIN_BOTTOM','style','padding:0px;height:72%');
+set_layout_property('app2','MAIN_TOP','style','padding:0px;height:28%');
+set_layout_property('app2','MAIN_BOTTOM','style','padding:0px;height:72%');
 ?>
