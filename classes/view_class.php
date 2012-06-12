@@ -366,12 +366,17 @@ function get_csv(){
          }else{
             $checked="checked='true'";
          }
+         
+         $label=$id;
+         if(isset($arr['label'])){
+            $label=$arr['label'];
+         }
 
          $csv_inner.="<td>
             <input type='checkbox' dojoType='dijit.form.CheckBox' value='$id' id='csv__".$id."' jsId='csv__".$id."' $checked >
             </td>
             <td>
-            <label for='csv__".$id."'>".$arr['label']."</label>
+            <label for='csv__".$id."'>".$label."</label>
             </td>";
          $td++;
          if($td==$cols || !next($this->form)){

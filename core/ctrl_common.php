@@ -74,7 +74,6 @@ if(isset($_REQUEST['form'])){
                $_SESSION[PAGE][$param]=$_REQUEST[$_REQUEST['param']];
                return_status_json('OK',"Set ".$_REQUEST['param']." as ".$_REQUEST[$_REQUEST['param']]);
             }
-            log_msg('-----------------------',$_SESSION[PAGE]);
          break;
          case 'add_filter':
             $_SESSION[PAGE]['FILTER']=get_temp_filter();
