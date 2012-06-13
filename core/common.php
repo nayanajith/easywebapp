@@ -968,10 +968,17 @@ default -> base url with module, page and program
 2 -> with all current key,value pairs 
 */
 define('NO_FILTER','3');
-function gen_url(){
-   $program="";
-   if(PROGRAM != "")$program="/".PROGRAM;
-   return W_ROOT."/".$GLOBALS['PAGE_GEN']."/".MODULE."/".PAGE.$program."?";
+function gen_url($module=null,$page=null,$program=null){
+   if(is_null($program) && PROGRAM != "" )$program=PROGRAM;
+   if(is_null($module))$module=MODULE;
+   if(is_null($page))$page=PAGE;
+
+   if(!is_null($program) || $program != ''){
+      $program="/".$program;
+   }else{
+      $program="";
+   }
+   return W_ROOT."/".$GLOBALS['PAGE_GEN']."/".$module."/".$page.$program."?";
 }
 
 

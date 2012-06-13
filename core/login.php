@@ -68,12 +68,10 @@ function before_login() {
 
    return '
    <div dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" encType="multipart/form-data"
-   action="'.$GLOBALS['AUTH_PROTOCOLE'].'://'.$server.$_SERVER['SCRIPT_NAME'].'?module='.MODULE.'&page='.$page.'" method="POST"
+   action="'.$GLOBALS['AUTH_PROTOCOLE'].'://'.$server.$_SERVER['SCRIPT_NAME'].'/'.MODULE.'/'.$page.'" method="POST"
    onSubmit="if(loginForm.validate()){return true;}else{return false}"
    >
-'.
-(isset($_REQUEST['user'])?'<div style="padding:5px;color:red;">Invallid login please try again...</div>':"")
-.'
+'.(isset($_REQUEST['user'])?'<div style="padding:5px;color:red;">Invallid login please try again...</div>':"").'
             <input type="hidden" name="module" value="'.MODULE.'" >
             <input type="hidden" name="page" value="'.$page.'" >
             <table cellpadding=0 cellspacing=0 >
@@ -110,7 +108,7 @@ function before_login() {
         </div>';   
 
 /*Set redirect url to redirect page to previouse location*/
-$_SESSION['REDIRECT']="?page=".$_SESSION['PREV_PAGE']."&module=".$_SESSION['PREV_MODULE'];
+$_SESSION['REDIRECT']=gen_url($_SESSION['PREV_MODULE'],$_SESSION['PREV_PAGE']);
 /*Unset prev module and pages from session*/
 unset($_SESSION['PREV_PAGE']);
 unset($_SESSION['PREV_MODULE']);
@@ -143,7 +141,7 @@ function after_login() {
 
    return "
    <div dojoType='dijit.form.Form' id='loginForm' jsId='loginForm' encType='multipart/form-data' 
-   action='".$GLOBALS['PAGE_GEN']."?page=".PAGE."&module=".MODULE."' method='REQUEST' >
+   action='".gen_url()."' method='REQUEST' >
    <span>Loged in as ".$_SESSION['fullname']."</span>
    <button dojoType='dijit.form.Button' style='color:black;' type=submit name=logout value=logout>Logout</button><br>
    $user_changer
@@ -167,7 +165,7 @@ if (isset($_SESSION['username'])) {
       session_destroy();
 
       //After logout take the user to home
-      header('Location: ?module=home');
+      header('Location: '.gen_url('home'));
    }
 } elseif(isset($_REQUEST['loginBtn'])){
    //Log users activity
