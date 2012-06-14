@@ -48,4 +48,7 @@ function print_data(){
 }
 </script>";
 add_to_main_top($report);
+
+set_layout_property('app2','MAIN_TOP','style','height','100%');
+set_layout_property('app2','MAIN_BOTTOM','style','height','20%');
 ?>

@@ -1,4 +1,5 @@
 <?php
+$LOAD_DEFAULT_TOOLBAR=false;
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
    'KEYS'=>array(
@@ -45,7 +46,6 @@ $GLOBALS['MODEL']=array(
          "showLabbel"=>'false',
          "onClick"=>'submit_form("del_backup")',
       ),
-
    ),
 );
 
@@ -97,6 +97,6 @@ function del_backup(){
    return_status_json('OK',$msg);
 }
 
+set_layout_property('app2','MAIN_TOP','style','height','100%');
+set_layout_property('app2','MAIN_BOTTOM','style','height','0%');
 ?>
-
-
