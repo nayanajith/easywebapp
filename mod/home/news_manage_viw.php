@@ -22,12 +22,12 @@ function read_editor(){
    content.setValue(news_editor.get(\"value\"));
 }
 
-function load_editor(){
+function write_editor(){
    news_editor.setValue(content.getValue());
 }
 
-submit_form_callback['before']=read_editor;
-fill_form_callback['ok']=load_editor;
+s_f_c_add('before',read_editor);
+f_f_c_add('ok',write_editor);
 
 </script>
 ";
@@ -35,5 +35,9 @@ add_to_main_left($content_editor);
 add_to_main_right(
    get_pviw_property(array('GRIDS','GRID'))
 );
+
+
+set_layout_property('app2','MAIN_LEFT','style','width','48%');
+set_layout_property('app2','MAIN_RIGHT','style','width','50%');
 
 ?>

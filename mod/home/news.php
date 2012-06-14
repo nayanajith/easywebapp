@@ -27,4 +27,6 @@ foreach($arr as $row){
 $news="<h3>News</h3><table width='100%'>".$news."</table>";
 
 add_to_main_top($news);
+set_layout_property('app2','MAIN_TOP','style','height','100%');
+set_layout_property('app2','MAIN_BOTTOM','style','height','0%');
 ?>

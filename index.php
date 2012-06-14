@@ -2,6 +2,7 @@
 /**
 Author: nayanajith mahendra laxaman -> nml@ucsc.lk
 */
+/*
 if($_SERVER['REMOTE_ADDR'] == '192.248.16.11' || isset($_SESSION['username'])){
    $GLOBALS['MAINTENANCE_MODE']=true;
 }else{
@@ -9,6 +10,7 @@ if($_SERVER['REMOTE_ADDR'] == '192.248.16.11' || isset($_SESSION['username'])){
    echo "<br><br><br><center>System down for maintenance!<br>will be back soon</center>";
    exit();
 }
+ */
 /*redirec through https*/
 /*
 if($_SERVER['HTTPS']!="on")
