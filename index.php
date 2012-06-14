@@ -2,12 +2,13 @@
 /**
 Author: nayanajith mahendra laxaman -> nml@ucsc.lk
 */
-/*
-if($_SERVER['REMOTE_ADDR'] != '10.16.76.100'){
-   echo "<br><br><br><center>System down for maintenance!<br>will be back in few minutes</center>";
+if($_SERVER['REMOTE_ADDR'] == '192.248.16.11' || isset($_SESSION['username'])){
+   $GLOBALS['MAINTENANCE_MODE']=true;
+}else{
+   echo "<p style='color:white'>".$_SERVER['REMOTE_ADDR']."</p>";
+   echo "<br><br><br><center>System down for maintenance!<br>will be back soon</center>";
    exit();
 }
-*/
 /*redirec through https*/
 /*
 if($_SERVER['HTTPS']!="on")
@@ -50,6 +51,9 @@ ini_set('max_input_time','120');
 
 /*-------------------Load configuration and common needs ---------------------*/
 include "config.php";
+if(isset($GLOBALS['MAINTENANCE_MODE']) && $GLOBALS['MAINTENANCE_MODE']){
+   $GLOBALS['TITLE']=$GLOBALS['TITLE']."[<span style='color:red'>MAINTENANCE</span>]";
+}
 include A_CORE."/common.php";
 
 /*--------------------------Set global error log -----------------------------*/

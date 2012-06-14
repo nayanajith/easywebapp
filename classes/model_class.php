@@ -689,11 +689,16 @@ EOE;
          $query      ='';
          $grid       =$this->grids['GRID'];
 
-         if(!isset($grid['sql'])){
-            if(isset($grid['filter']) && $grid['filter']){
-               $filter_str =" WHERE ".$grid['filter'];
-            }
+         if(isset($grid['filter']) && $grid['filter']){
+            $filter_str =" WHERE ".$grid['filter'];
+         }
          
+         $order_by="";
+         if(isset($grid['order_by'])){
+            $order_by=" ".$grid['order_by'];
+         }
+
+         if(!isset($grid['sql'])){
             if(isset($grid['columns'])){
                //Compatible with any array (associative or normal)
                foreach($grid['columns'] as $key => $value){
@@ -706,21 +711,15 @@ EOE;
             }else{
                $columns =array_keys($this->form);
             }
-
+         
             if(isset($grid['ref_table'])){
                $table=$grid['ref_table'];
             }
-
-            $order_by="";
-            if(isset($grid['order_by'])){
-               $order_by=" ".$grid['order_by'];
-            }
          
             $fields  =implode(",",$columns);
-         
             $query="SELECT $fields FROM ".$table.$filter_str.$order_by;
          }else{
-            $query   =$grid['sql'];
+            $query   =$grid['sql'].$filter_str.$order_by;;
          }
          
          $csv_file= $table.".csv";
@@ -748,11 +747,16 @@ EOE;
          $query      ='';
          $grid       =$this->grids['GRID'];
 
-         if(!isset($grid['sql'])){
-            if(isset($grid['filter']) && $grid['filter']){
-               $filter_str =" WHERE ".$grid['filter'];
-            }
+         if(isset($grid['filter']) && $grid['filter']){
+            $filter_str =" WHERE ".$grid['filter'];
+         }
          
+         $order_by="";
+         if(isset($grid['order_by'])){
+            $order_by=" ".$grid['order_by'];
+         }
+
+         if(!isset($grid['sql'])){
             if(isset($grid['columns'])){
                //Compatible with any array (associative or normal)
                foreach($grid['columns'] as $key => $value){
@@ -770,16 +774,12 @@ EOE;
                $table=$grid['ref_table'];
             }
 
-            $order_by="";
-            if(isset($grid['order_by'])){
-               $order_by=" ".$grid['order_by'];
-            }
-         
+                  
             $fields  =implode(",",$columns);
          
             $query="SELECT $fields FROM ".$table.$filter_str.$order_by.$limit;
          }else{
-            $query   =$grid['sql'].$limit;
+            $query   =$grid['sql'].$filter_str.$order_by;;
          }
 
          $data=exec_query($query,Q_RET_ARRAY);

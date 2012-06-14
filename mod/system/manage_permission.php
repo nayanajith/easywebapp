@@ -144,7 +144,7 @@ function gen_permission_tree(){
 
             //Handle array type pages
             if(is_array($page)){
-               $page=$page['PAGE'];
+               $page=$page['label'];
             }
 
             echo "<tr>
