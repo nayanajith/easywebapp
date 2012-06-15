@@ -2,7 +2,7 @@
 /*
 System Database tables
 */
-$schema_version=3;
+$schema_version=4;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -164,4 +164,17 @@ insert into base_data(base_class,base_key,base_value,status) select 'LIST',list_
 $system_table_migrate[3][]="
 drop table common_lists;
 ";
+
+$system_table_migrate[4][]="REPLACE INTO `base_data` (`base_class`,`base_key`,`base_value`,`status`)VALUES 
+('LIST','cadre_base_class','[\"SERVICE\",\"SERVICE_LEVEL\",\"GRADE_CLASS\",\"SALARY_SCALE\",\"EXT_GROUP\",\"SECTOR\",\"CLUSTER\"]','ENABLED'),
+('LIST','base_class','[\"LIST\",\"VARIABLE\",\"EXT_GROUP\",\"CLUSTER\",\"SECTOR\"]','ENABLED'),
+('LIST','status','[\"ENABLED\",\"DISABLED\"]','ENABLED'),
+('LIST','days_of_week','[\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"]',NULL),
+('LIST','district','{\"17\":\"Ampara\",\"20\":\"Anuradhapura\",\"22\":\"Badulla\",\"16\":\"Batticaloa\",\"1\":\"Colombo\",\"7\":\"Galle\",\"2\":\"G',NULL),
+('LIST','province','[\"Central\",\"Eastern\",\"North Central\",\"Northern\",\"North Western\",\"Sabaragamuwa\",\"Southern\",\"Uva\",\"Wes',NULL),
+('LIST','title','[\"MR\",\"MS\",\"MISS\",\"DR\",\"Dr\",\"PROF\"]',NULL),
+('LIST','theme','{\"claro\":\"CLARO\",\"nihino\":\"NIHINO\",\"soria\":\"SORIA\"}','ENABLED'),
+('LIST','layout','{\"app\":\"APP\",\"web\":\"WEB\",\"pub\":\"PUB\",\"app2\":\"APP2\"}','ENABLED'),
+('LIST','auth_mod','[\"AUTO\",\"LDAP\"]','ENABLED')";
+
 ?>

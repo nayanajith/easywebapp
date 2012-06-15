@@ -252,8 +252,8 @@ class View{
    public function form_flow_layout(){
       $form_preview=get_pviw_property('FORM');
       d_r('dijit.form.Form');
-      $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px'>";
-      $html.="<div >Required fields marked as <font color='red'>*</font>";
+      $html= "<div><div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px'>";
+      $html.="Required fields marked as <font color='red'>*</font>";
       /*Set html table background and padding/spacing*/
       foreach($form_preview as $key => $arr){
          $html.=$arr['label']."<br>";
@@ -273,7 +273,7 @@ class View{
    public function form_table_layout(){
       $form_preview=get_pviw_property('FORM');
       d_r('dijit.form.Form');
-      $html= "<div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px'>";
+      $html= "<div><div dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' style='padding:10px;'>";
       $html.="Required fields marked as <font color='red'>*</font><table>";
       /*Set html table background and padding/spacing*/
       foreach($form_preview as $key => $arr){
@@ -281,7 +281,7 @@ class View{
          $html.="<td>".$arr['field']."</td></tr>";
       }
 
-      $html.="</table></div>";
+      $html.="</table></div></div>";
 
       //add generated form to MAIN_LEFT 
       add_to_main_left($html);

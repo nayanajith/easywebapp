@@ -29,7 +29,7 @@ function program_select($program){
    onChange='change_program(this.get(\"value\"),this.get(\"displayedValue\"))'>\n";
 
    foreach($GLOBALS['PROGRAMS'] as $key => $value){
-      if($program == $key){
+      if($program == $value){
          echo "<option value='$value' selected=true>$key</option>\n";
       }else{
          echo "<option value='$value' >$key</option>\n";

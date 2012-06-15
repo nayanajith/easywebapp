@@ -948,11 +948,18 @@ function get_url_value_( name , url){
  * javascript version of gen_url
  * This returns the basic target from the url
  */
-function gen_url(){
+function gen_url(module,page,program){
    var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
-   var module        =get_request_value('module');
-   var page          =get_request_value('page');
-   var program       =get_request_value('program');
+   if(!module || module == null || module == ''){
+      module        =get_request_value('module');
+   }
+   if(!page || page == null || page == ''){
+      page          =get_request_value('page');
+   }
+
+   if(!program || program == null || program == ''){
+      program       =get_request_value('program');
+   }
 
    if(program != ''){
       program="/"+program;
@@ -986,11 +993,7 @@ function load_page(module,page,program){
  * change the effective program since
  */
 function change_program(program,desc){
-   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
-   var module        ='<?php echo MODULE; ?>';
-   var page          ='<?php echo PAGE; ?>';
-
-   var URL=page_gen+"/"+module+"/"+page+"/"+program;
+   var URL=gen_url(null,null,program);
 
    if(confirm('Press OK to confirm scheme change to '+desc)){
       open(URL,'_self');

@@ -896,7 +896,7 @@ function get_common_list($list_name,$no_title=false){
          return json_decode($arr[0]['base_value'],true);
       }else{
          return array(
-            'title'  =>style_text($arr[0]['base_name']),
+            'title'  =>style_text($arr[0]['base_key']),
             'list'   =>json_decode($arr[0]['base_value'],true)
          );
       }

@@ -65,7 +65,7 @@ case 'app':
    //Program selector
    ob_start();
    echo "Change Program:";
-   program_select($program); 
+   program_select(PROGRAM); 
    $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
    ob_end_clean();
 
@@ -95,7 +95,7 @@ case 'web':
    //Program selector
    ob_start();
    echo "Change Program:";
-   program_select($program); 
+   program_select(PROGRAM); 
    $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
    ob_end_clean();
 
@@ -118,7 +118,7 @@ break;
 case 'app2':
    //Program selector
    ob_start();
-   program_select($program); 
+   program_select(PROGRAM); 
    $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
    ob_end_clean();
 
