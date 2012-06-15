@@ -63,11 +63,13 @@ case 'pub':
 break;
 case 'app':
    //Program selector
-   ob_start();
-   echo "Change Program:";
-   program_select(PROGRAM); 
-   $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
-   ob_end_clean();
+   if(defined('P_SELECTOR') && P_SELECTOR=='YES'){
+      ob_start();
+      echo "Change Program:";
+      program_select(PROGRAM); 
+      $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
+      ob_end_clean();
+   }
 
    //login/logout 
    ob_start();
@@ -93,11 +95,13 @@ case 'app':
 break;
 case 'web':
    //Program selector
-   ob_start();
-   echo "Change Program:";
-   program_select(PROGRAM); 
-   $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
-   ob_end_clean();
+   if(defined('P_SELECTOR') && P_SELECTOR=='YES'){
+      ob_start();
+      echo "Change Program:";
+      program_select(PROGRAM); 
+      $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
+      ob_end_clean();
+   }
 
    //login/logout 
    ob_start();
@@ -117,10 +121,12 @@ case 'web':
 break;
 case 'app2':
    //Program selector
-   ob_start();
-   program_select(PROGRAM); 
-   $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
-   ob_end_clean();
+   if(defined('P_SELECTOR') && P_SELECTOR=='YES'){
+      ob_start();
+      program_select(PROGRAM); 
+      $GLOBALS['VIEW']['PROGRAM'] .= ob_get_contents();
+      ob_end_clean();
+   }
 
    //login/logout 
    ob_start();

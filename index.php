@@ -84,7 +84,9 @@ if(!opendb()){
 }
 
 /*-----------------------------Program selector-------------------------------*/
-include A_CORE."/program.php";
+if(defined('P_SELECTOR') && P_SELECTOR=='YES'){
+   include A_CORE."/program.php";
+}
 
 /*---------------------------------Load modules-------------------------------*/
 include ("modules.php");
@@ -178,15 +180,13 @@ if (!isset($program)){
    global $program;
    if (isset($_REQUEST['program']) && $_REQUEST['program'] != ''){
       $program = $_REQUEST['program'];
-   }else{
+   }elseif(isset($programs)){
       $program = key($programs);
    }
 }
 
 /*---------------Generate program tables for the selected program-------------*/
 define('PROGRAM'   , $program);
-//gen_program_tables($program);
-
 
 /*----------------include configuration of the the active module--------------*/
 include (A_MODULES."/".MODULE."/config.php");

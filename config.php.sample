@@ -25,6 +25,9 @@ define('ERROR_LOG'   , A_ROOT.'/errors.log');
 /*Enable disable HTTP compression YES/NO */
 define('COMPRESS' , 'NO'); 
 
+/*Enable Program selector YES/NO */
+define('P_SELECTOR' , 'NO'); 
+
 /*------------------------------title info------------------------------------*/
 $GLOBALS['TITLE_SHORT'] = 'UIS';
 $GLOBALS['TITLE']       = 'UCSC Information System';
