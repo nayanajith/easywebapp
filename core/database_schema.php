@@ -170,11 +170,13 @@ $system_table_migrate[4][]="REPLACE INTO `base_data` (`base_class`,`base_key`,`b
 ('LIST','base_class','[\"LIST\",\"VARIABLE\",\"EXT_GROUP\",\"CLUSTER\",\"SECTOR\"]','ENABLED'),
 ('LIST','status','[\"ENABLED\",\"DISABLED\"]','ENABLED'),
 ('LIST','days_of_week','[\"SUN\",\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\"]',NULL),
-('LIST','district','{\"17\":\"Ampara\",\"20\":\"Anuradhapura\",\"22\":\"Badulla\",\"16\":\"Batticaloa\",\"1\":\"Colombo\",\"7\":\"Galle\",\"2\":\"G',NULL),
-('LIST','province','[\"Central\",\"Eastern\",\"North Central\",\"Northern\",\"North Western\",\"Sabaragamuwa\",\"Southern\",\"Uva\",\"Wes',NULL),
+('LIST','district','[\"Ampara\",\"Anuradhapura\",\"Badulla\",\"Batticaloa\",\"Colombo\",\"Galle\",\"Gampaha\",\"Hambantota\",\"Jaffna\",\"Kalutara\",\"Kandy\",\"Kegalle\",\"Kilinochchi\",\"Kurunegala\",\"Mannar\",\"Matale\",\"Matara\",\"Moneragala\",\"Mullaitivu\",\"Nuwara Eliya\",\"Polonnaruwa\",\"Puttalam\",\"Ratnapura\",\"Trincomalee\",\"Vavuniya\"]',NULL),
+('LIST','province','[\"Central\",\"Eastern\",\"North Central\",\"Northern\",\"North Western\",\"Sabaragamuwa\",\"Southern\",\"Uva\",\"Western\"]',NULL),
 ('LIST','title','[\"MR\",\"MS\",\"MISS\",\"DR\",\"Dr\",\"PROF\"]',NULL),
 ('LIST','theme','{\"claro\":\"CLARO\",\"nihino\":\"NIHINO\",\"soria\":\"SORIA\"}','ENABLED'),
-('LIST','layout','{\"app\":\"APP\",\"web\":\"WEB\",\"pub\":\"PUB\",\"app2\":\"APP2\"}','ENABLED'),
+('LIST','layout','{\"app2\":\"APP2\",\"web\":\"WEB\",\"pub\":\"PUB\",\"app\":\"APP\"}','ENABLED'),
 ('LIST','auth_mod','[\"AUTO\",\"LDAP\"]','ENABLED')";
+
+$system_table_migrate[4][]="ALTER TABLE news ADD role_id VARCHAR(100)";
 
 ?>

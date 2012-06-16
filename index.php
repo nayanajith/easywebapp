@@ -104,13 +104,20 @@ if(array_key_exists('PATH_INFO', $_SERVER)) {
    }   
 
    $_REQUEST            =$_DATA;
-    */
+   */
 
    $res=explode('/',$resource);
    $_REQUEST['module']  =$res[1];
    $_REQUEST['page']    =$res[2];
    if(isset($res[3])){
       $_REQUEST['program'] =$res[3];
+   }
+
+   //If the user request for other than slogin page before login, he will be redirected to news page
+   if(!isset($_SESSION['username']) &&  $_REQUEST['module'] != 'home'){
+      $_REQUEST['module']  ='home';
+      $_REQUEST['page']    ='news';
+      unset($_REQUEST['program']);
    }
 }
 

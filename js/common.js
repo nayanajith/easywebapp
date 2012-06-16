@@ -595,6 +595,61 @@ function xhr_generic(submit_form,action,handle_as){
 }
 
 /**
+ * export visible rows of the grid to csv
+ */
+function grid_to_csv(grid_id){
+   if(grid_id){
+      grid_id.exportGrid('csv', {
+         fetchArgs: {
+            start: grid_id.query.start, 
+            count: grid_id.query.count
+         },
+         writerArgs: {
+            separator: ","
+         }
+      }, function(str){
+         info_dialog("Copy CSV from here<center><textarea cols='105' rows='29'>"+str+"</textarea></center>",'Grid to CSV',null,700,500);
+      });
+   }
+}
+
+/**
+ * export visible rows of the grid to html
+ */
+function grid_to_table(grid_id,title){
+   if(grid_id){
+      grid_id.exportToHTML({
+         title: title,
+         body:{'align':'center'},
+         cssFiles: ['<?php echo CSS ?>/grid_print.css'],
+         fetchArgs: {
+            start: grid_id.query.start, 
+            count: grid_id.query.count
+         }
+      }, function(str){
+         //info_dialog("<div>"+str+"</div>",'Grid to table',null,700,500);
+         popup(str);
+      });
+   }
+}
+
+/**
+ * Print visible rows of the grid
+ */
+function grid_print(grid_id,title){
+   if(grid_id){
+      grid_id.printGrid({
+         title: title,
+         cssFiles: ['<?php echo CSS ?>/grid_print.css'],
+         fetchArgs: {
+            start: grid_id.query.start, 
+            count: grid_id.query.count
+         }
+      });
+   }
+}
+
+/**
  * reload the grid
  */
 function reload_grid(grid){
@@ -904,6 +959,7 @@ function popup(content){
    var myWin=window.open('','RINT','width=1024,height=600,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1,location=0');
    myWin.document.writeln(content);
    myWin.document.close();
+   return myWin;
 }
 
 //Get a requested value from the url
@@ -973,19 +1029,12 @@ function gen_url(module,page,program){
  */
 function load_page(module,page,program){
    var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
-   if(program != '' || program == null)program='/'+program;
+   if(program == '' || program == null || program ==undefined){
+      program='';
+   }else{
+      program='/'+program;
+   }
    if(page == '' || page == null)page='';
-   window.open(page_gen+'/'+module+'/'+page+program,'_parent');
-}
-
-
-
-/**
- * Load specific page in a module
- */
-function load_page(module,page,program){
-   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
-   if(program != '')program='/'+program;
    window.open(page_gen+'/'+module+'/'+page+program,'_parent');
 }
 

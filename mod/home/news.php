@@ -1,11 +1,11 @@
 <?php
-if(!isset($_SESSION['user_id'])){
-include "slogin.php";
-return;
+$role='NULL';
+if(!isset($_SESSION['role_id'])){
+$role='NULL';
 }
 
 $news_tpl="";
-$arr=exec_query("SELECT * FROM ".s_t('news')." WHERE display_until >= curdate() AND display_from <= curdate() ",Q_RET_ARRAY);
+$arr=exec_query("SELECT * FROM ".s_t('news')." WHERE display_until >= curdate() AND display_from <= curdate() AND role_id='$role'",Q_RET_ARRAY);
 $news="";
 foreach($arr as $row){
    $news.="

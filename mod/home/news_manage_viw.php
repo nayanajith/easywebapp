@@ -2,15 +2,12 @@
 $main_left="<form dojoType='dijit.form.Form' id='main' jsId='main' encType='multipart/form-data' method='POST' >";
 $main_left.=get_field('rid');
 $main_left.="<table>
-   <tr>
-   <td>".get_label('title').":".get_field('title')."</td>
-   </tr>
-   <tr>
-   <td>".get_label('display_from').":".get_field('display_from')." ".get_label('display_until').":".get_field('display_until')."</td>
-   </tr>
-   <tr>
-   <td>".get_field('content')."</td>
-   </tr></table></form>";
+   <tr><td>".get_label('title')."</td><td>".get_field('title')."</td></tr> 
+   <tr><td>".get_label('role_id')."</td><td>".get_field('role_id')."</td></tr>
+   <tr><td>".get_label('display_from')."</td><td>".get_field('display_from')."</td></tr>
+   <tr><td>".get_label('display_until')."</td><td>".get_field('display_until')."</td></tr>
+   <tr><td colspan='2'>".get_field('content')."</td></tr>
+   </table></form>";
 
 add_to_main_left($main_left);
 //content.value=this.value

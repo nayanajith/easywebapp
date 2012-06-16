@@ -561,12 +561,18 @@ dojo.ready(function(){
     return: data grid containing the key fields provided in $key_array
     */
    public function gen_data_grid($field_array,$key=null){
-      d_r('dojox.data.CsvStore');
-      //d_r('dojox.data.JsonRestStore');
       d_r('dojox.widget.PlaceholderMenuItem');
-      d_r('dojox.grid.DataGrid');
-      d_r('dojox.grid.enhanced.plugins.Pagination');
       d_r('dojox.grid.EnhancedGrid');
+      d_r('dojox.grid.enhanced.plugins.Pagination');
+      d_r('dojox.grid.enhanced.plugins.Filter');
+      d_r("dojox.grid.enhanced.plugins.DnD");
+      d_r("dojox.grid.enhanced.plugins.Menu");
+      d_r("dojox.grid.enhanced.plugins.NestedSorting");
+      d_r("dojox.grid.enhanced.plugins.IndirectSelection");
+      d_r("dojox.grid.enhanced.plugins.Search");
+      d_r("dojox.grid.enhanced.plugins.Printer");
+      d_r("dojox.grid.enhanced.plugins.exporter.CSVWriter");
+      d_r("dojox.grid.enhanced.plugins.exporter.TableWriter");
       $html=""; 
       foreach($this->grids as $grid_key => $grid){
          //If jsId is not set explicitly set the key with grid__ prefix as jsId
@@ -576,43 +582,87 @@ dojo.ready(function(){
          if(!isset($grid['store']))$grid['store']="grid__".$grid_key."_store";
 
          //Page stepper only enable for csvstore
-         $page_stepper='false';
+         $page_stepper='true';
 
          //Switch between csv store and qreadstore
          if(isset($grid['store_type'])){
             switch($grid['store_type']){
             case 'csv':
+               d_r('dojox.data.CsvStore');
                $html.="<span dojoType='dojox.data.CsvStore' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."&form=".$grid['store']."&data=csv'></span>";
-               $page_stepper='true';
             break;
             case 'query':
+               d_r('dojox.data.JsonRestStore');
                $html.="<span dojoType='dojox.data.QueryReadStore' requestMethod='post' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."form=".$grid['store']."&data=json'></span>";
             break;
             }
          }else{
+            d_r('dojox.data.JsonRestStore');
             $html.="<span dojoType='dojox.data.QueryReadStore' requestMethod='post' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."form=".$grid['store']."&data=json'></span>";
+            //d_r('dojo.data.ItemFileWriteStore');
+            //$html.="<span dojoType='dojo.data.ItemFileWriteStore' requestMethod='post' clearOnClose='true' jsId='".$grid['store']."' url='".gen_url()."form=".$grid['store']."&data=json'></span>";
          }
 
          //Menu for the right click on grid
          $html.="<div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
+         </div>
+      <div dojoType='dijit.Menu' id='cellMenu'  style='display: none;'>
+         <div dojoType='dijit.MenuItem' onclick='grid_to_table(".$grid['jsId'].",\"".style_text($grid['ref_table'])."\")'>Print Preview</div>
+         <div dojoType='dijit.MenuItem' onclick='grid_print(".$grid['jsId'].",\"".style_text($grid['ref_table'])."\")'>Print</div>
+         <div dojoType='dijit.MenuItem' onclick='grid_to_csv(".$grid['jsId'].")'>CSV</div>
       </div>";
+/*
+      <div dojoType='dijit.Menu' id='rowMenu'  style='display: none;'>
+         <div dojoType='dijit.MenuItem'>Row Menu Item 1</div>
+         <div dojoType='dijit.MenuItem'>Row Menu Item 2</div>
+         <div dojoType='dijit.MenuItem'>Row Menu Item 3</div>
+         <div dojoType='dijit.MenuItem'>Row Menu Item 4</div>
+      </div>
+      <div dojoType='dijit.Menu' id='headerMenu'  style='display: none;'>
+         <div dojoType='dijit.MenuItem'>Cell Menu Item 1</div>
+         <div dojoType='dijit.MenuItem'>Cell Menu Item 2</div>
+         <div dojoType='dijit.MenuItem'>Cell Menu Item 3</div>
+         <div dojoType='dijit.MenuItem'>Cell Menu Item 4</div>
+      </div>
+      <div dojoType='dijit.Menu' id='selectedRegionMenu'  style='display: none;'>
+         <div dojoType='dijit.MenuItem'>Action 1 for Selected Region</div>
+         <div dojoType='dijit.MenuItem'>Action 2 for Selected Region</div>
+         <div dojoType='dijit.MenuItem'>Action 3 for Selected Region</div>
+         <div dojoType='dijit.MenuItem'>Action 4 for Selected Region</div>
+      </div>
+ */
 
          //EnhancedGrid table with pagination plugin
          $html .='<table
 autoHeight="false"
+rowsPerPage="25"
 errorMessage="No records to display!"
 selectable="true"
 plugins=\'{
     pagination: {
-        pageSizes: ["25", "50", "100", "200","500"],
+        pageSizes: ["25", "50", "100", "200","all"],
+        defaultPageSize:25,
         description: true,
         sizeSwitch: true,
         pageStepper: '.$page_stepper.',
         gotoButton: true,
         maxPageStep: 4,
         position: "bottom"
-    }
+    },
+   filter:true,
+   printer:true,
+   exporter: true,
+   nestedSorting: true,
+   //search:true,
+   //dnd: true,
+   //indirectSelection: true,
+   menus:{
+      //headerMenu:"headerMenu", 
+      //rowMenu:"rowMenu", 
+      cellMenu:"cellMenu",
+      //selectedRegionMenu:"selectedRegionMenu"
+   }
 }\'
 ';
 

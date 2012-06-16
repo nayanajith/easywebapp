@@ -122,7 +122,7 @@ class Query_read_store{
       }
 
       //Return as JSON formatted data
-      return json_encode(array("identifier"=>$this->key,"label"=>"label","items"=>$res));
+      return "{}&&".json_encode(array("identifier"=>$this->key,"label"=>"label","items"=>$res));
    }
 }
 

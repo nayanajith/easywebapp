@@ -68,41 +68,48 @@ function before_login() {
 
    return '
    <div dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" encType="multipart/form-data"
-   action="'.$GLOBALS['AUTH_PROTOCOLE'].'://'.$server.$_SERVER['SCRIPT_NAME'].'/'.MODULE.'/'.$page.'" method="POST"
-   onSubmit="if(loginForm.validate()){return true;}else{return false}"
+      action="'.$GLOBALS['AUTH_PROTOCOLE'].'://'.$server.$_SERVER['SCRIPT_NAME'].'/'.MODULE.'/'.$page.'" method="POST"
+      onSubmit="if(loginForm.validate()){return true;}else{return false}"
+      class="round bgBottom"
+      style="width:340px;padding:5px;border:1px solid #5B92C8;padding-top:20px;padding-bottom:20px;"
    >
 '.(isset($_REQUEST['user'])?'<div style="padding:5px;color:red;">Invallid login please try again...</div>':"").'
             <input type="hidden" name="module" value="'.MODULE.'" >
             <input type="hidden" name="page" value="'.$page.'" >
-            <table cellpadding=0 cellspacing=0 >
+            <table cellpadding=5 cellspacing=0 >
                 <tr>
                     <td>
-                        <label for="user">
+                        <label for="user"  style="font-size:18px">
                             Username:
                         </label>
                     </td>
                     <td>
-                        <input type="text" id="user" name="user" required="true" style="color:black;width:60px;width:120px;" 
+                        <input type="text" id="user" name="user" required="true" style="color:black;width:60px;width:200px;font-size:18px;" 
                         dojoType="dijit.form.ValidationTextBox"
                         value="'.(isset($_REQUEST['user'])?$_REQUEST['user']:"").'"
                         >
                     </td>
+                </tr>
+                <tr>
                     <td>
-                        <label for="password">
-                            &nbsp;Password:
+                        <label for="password"  style="font-size:18px">
+                            Password:
                         </label>
                     </td>
                     <td>
-                        <input type="password" id="password" name="password" required="true" style="color:black;width:60px;width:120px" 
+                        <input type="password" id="password" name="password" required="true" style="color:black;width:60px;width:200px;font-size:18px" 
                         dojoType="dijit.form.ValidationTextBox"
                         value="'.(isset($_REQUEST['password'])?$_REQUEST['password']:"").'"
                         >
                     </td>
-                    <td>
-                        <button dojoType="dijit.form.Button" type="submit" name="loginBtn" value="Submit" >
-                            Login   
+                </tr>
+                <tr>
+                   <td colspan="2" align="center">
+                        <button dojoType="dijit.form.Button" type="submit" name="loginBtn" value="Submit" style="font-size:16px" >
+                            Login
                         </button>
                     </td>
+                </tr>
             </table>
 
         </div>';   
@@ -165,7 +172,7 @@ if (isset($_SESSION['username'])) {
       session_destroy();
 
       //After logout take the user to home
-      header('Location: '.gen_url('home'));
+      header('Location: '.gen_url('home','news',null));
    }
 } elseif(isset($_REQUEST['loginBtn'])){
    //Log users activity

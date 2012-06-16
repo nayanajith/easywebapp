@@ -26,6 +26,21 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
+      "role_id"=>array(
+          "length"=>"200",
+         "dojoType"=>"dijit.form.FilteringSelect",
+         "required"=>"true",
+         "label"=>"Role",
+
+         "searchAttr"=>"label",
+         "pageSize"=>"10",
+         "store"=>"role_id_store",
+
+         "ref_table"=>s_t('role'),
+         "ref_key"=>'group_name',
+         "order_by"=>'ORDER BY group_name DESC',
+         "vid"=>array('group_name')
+      ),
       "content"=>array(
          "dojoType"	=>"dijit.form.SimpleTextarea",
          "required"	=>"true",
@@ -57,12 +72,12 @@ $GLOBALS['MODEL']=array(
 //---------------------GRID CONFIGURATION-----------------------
    'GRIDS'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid'=>array('hidden'=>'true'),'title','display_from','display_until'),
+          'columns'      =>array('rid'=>array('hidden'=>'true'),'role_id','title','display_from','display_until'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
           'ref_table'    =>s_t('news'),
           'event_key'    =>'rid',
-          'dojoType'     =>'dojox.grid.DataGrid',
+          'dojoType'     =>'dojox.grid.EnhancedGrid',
           'query'        =>'{ "rid": "*" }',
           'rowsPerPage'  =>'40',
           'clientSort'   =>'true',

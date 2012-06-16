@@ -4,6 +4,6 @@ $menu_array  = array(
    "news_manage" =>array('label'=>"Manage News",'visible'=>'true'),
    "about"=>"About",
    "help" =>"Help",
-   "slogin"        =>array('label'=>"Login",'visible'=>'false')
+   "slogin"        =>array('label'=>"Login",'visible'=>'true')
 );
 ?>

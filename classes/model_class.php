@@ -785,7 +785,7 @@ EOE;
          $data=exec_query($query,Q_RET_ARRAY);
          $file_name='gird.json';
          set_file_header($file_name);
-         print '/*'.json_encode(array('numRows'=>sizeof($data),'items'=>$data,'identity'=>'id')).'*/';  
+         print '{}&&'.json_encode(array('numRows'=>sizeof($data),'items'=>$data,'identity'=>'id'));  
       }
 
 
