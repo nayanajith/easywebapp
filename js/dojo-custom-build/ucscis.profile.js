@@ -1,5 +1,6 @@
 dependencies={
 	stripConsole: "normal",
+	selectorEngine:"acme",
 	layers: [
 		{
 			name: "../dijit/ucscis.js",
@@ -17,7 +18,7 @@ dependencies={
  	         "dijit.MenuSeparator",
  	 	 	 	"dijit.PopupMenuItem",
  	 	 	 	"dijit.Toolbar",
-            "dijit.ToolbarSeparator"
+            "dijit.ToolbarSeparator",
  	 	 	   "dijit.Tree",
 				"dijit.InlineEditBox",
 				"dijit.TooltipDialog",
@@ -53,6 +54,7 @@ dependencies={
             "dojo.fx.Toggler",
             "dojo.dnd.AutoSource",
             "dojo.dnd.Target",
+            "dojo.query",
 			]
 		},
 		{
@@ -62,6 +64,7 @@ dependencies={
             "dojox.grid.EnhancedGrid",
             "dojox.grid.enhanced.plugins.exporter.CSVWriter",
             "dojox.grid.enhanced.plugins.Printer",
+            "dojox.grid.enhanced.plugins.Pagination",
             "dojox.data.HtmlTableStore",
  	 	 	 	"dojox.data.QueryReadStore",
  	 	 	 	"dojox.data.CsvStore",
@@ -72,8 +75,7 @@ dependencies={
 	],
 
 	prefixes: [
-		[ "dojo", "../dojo" ],
 		[ "dijit", "../dijit" ],
 		[ "dojox", "../dojox" ]
 	]
-};
+}

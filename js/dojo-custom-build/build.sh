@@ -51,7 +51,8 @@ fi
 echo "Extracting file";
 tar -xzvf $SAVE_AS
 
-RELEASENAME="releaseName=dojo-ucscis";
+RELEASENAME="dojo-ucscis";
+RELEASENAME_="releaseName=$RELEASENAME";
 #optimize -> shrinksafe / shrinksafe.keepLines / closur / packer
 #cssOptimize -> comments / comments.KeepLines
 #layerOptimize -> shrinksafe | default:shrinksafe
@@ -62,7 +63,7 @@ OPTIMIZE_DEV="optimize=shrinksafe.keepLines cssOptimize=comments.keepLines";
 ACTION="action=clean,release";
 pushd .
 cd $BASE_DIR/util/buildscripts/
-./build.sh profile=../../../ucscis.profile.js $ACTION $OPTIMIZE_PROD version=$VERSION $RELEASENAME
+./build.sh profile=../../../ucscis.profile.js $ACTION $OPTIMIZE_DEV version=$VERSION $RELEASENAME_
   
 
 if [[ $? == 0 ]]
