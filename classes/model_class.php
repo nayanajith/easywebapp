@@ -245,12 +245,12 @@ class Model{
          $grids=<<<EOE
    'GRIDS'=>array(
       'GRID'=>array(
-         'columns'      =>array('rid'=>array('hidden'=>'true'),'updated'),
-         'filter'       =>isset(\$_SESSION[PAGE]['FILTER'])?\$_SESSION[PAGE]['FILTER']:null,
+         'columns'      =>array('rid'=>array('hidden'=>'true'),'timestamp'=>array('width'=>'50')),
+         'filter'       =>get_filter(),
          'selector_id'  =>'toolbar__rid',
          'ref_table'    =>m_p_t(''),
          'event_key'    =>'rid',
-         'order_by'     =>'ORDER BY updated DESC',
+         'order_by'     =>'ORDER BY timestamp DESC',
          'dojoType'     =>'dojox.grid.EnhancedGrid',
          'query'        =>'{ "rid": "*" }',
          'clientSort'   =>'true',
@@ -267,14 +267,14 @@ EOE;
          "dojoType"     =>"dijit.form.FilteringSelect",
          "required"     =>"false",
          "label"        =>"Label",
-         "onChange"     =>'set_param(this.name,this.value);fill_form(this.value,"main")',
+         "onChange"     =>'s_p_c_add(fill_form,this.value);set_param(this.id,this.value)',
          "searchAttr"   =>"label",
          "pageSize"     =>"10",
          "store"        =>"rid_store",
-         "filter"       =>isset(\$_SESSION[PAGE]['FILTER'])?" AND ".\$_SESSION[PAGE]['FILTER']:null,
+         "filter"       =>get_filter(),
          "ref_table"    =>m_p_t(''),
          "ref_key"      =>'rid',
-         "order_by"     =>'ORDER BY updated DESC',
+         "order_by"     =>'ORDER BY timestamp DESC',
          "vid"          =>array('rid'),
       ),  
 EOE;

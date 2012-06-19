@@ -84,7 +84,7 @@ function show_xhr_dialog(url_,title,width,height,no_buttons){
 
          content="<div style='width:"+width+"px;min-height:"+height+"px;'>"+response+"</div>"+content;
 
-         xhr_Dialog.attr("content", content);
+         xhr_Dialog.set("content", content);
          xhr_Dialog.show();
   	   },
   	   error : function(response, ioArgs) {
@@ -109,7 +109,7 @@ function show_help_dialog(){
          });
 
          var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"window.open(get_url()+'help=true&fullscreen=true','help_window');help_Dialog.hide()\" >Show in Fullscreen</button><button dojoType='dijit.form.Button' onClick=\"help_Dialog.hide()\" >OK</button></center>";
-         help_Dialog.attr("content", response+button);
+         help_Dialog.set("content", response+button);
          help_Dialog.show();
   	   },
   	   error : function(response, ioArgs) {
@@ -159,7 +159,7 @@ function info_dialog(info,title,more_buttons,width,height){
    });
 
    var buttons="<br/><center>"+more_buttons+"<button dojoType='dijit.form.Button' onClick=\"infoDialog.hide()\" >OK</button></center>";
-   infoDialog.attr("content", info+buttons);
+   infoDialog.set("content", info+buttons);
    infoDialog.show();
 }
 
@@ -201,8 +201,8 @@ function switch_user(value) {
 }   
 
 //wrapper for filter form callbacks
-function s_p_c_add(callback_name,callback_function){
-   add_callback(set_param_callback,callback_name,callback_function);
+function s_p_c_add(callback_name,callback_function,param){
+   add_callback(set_param_callback,callback_name,callback_function,param);
 }
 
 
@@ -302,17 +302,17 @@ function request_html(target,source_array,action_) {
 function submit_display_values(action){
    var form='main';
    var url_=gen_url()+'&form=main&action='+action;
-   dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
+   dojo.forEach(dijit.byId(form).getChildren(), function(widget) {
       if(widget.store){
          if(widget.get('displayedValue')){
-            url_=url_+'&'+widget.attr('name')+'='+widget.get('displayedValue');
+            url_=url_+'&'+widget.get('name')+'='+widget.get('displayedValue');
          }
       }else if(widget.get('value')){
          var value=widget.get('value');
          if(isNaN(widget.get('value'))){
             value='';
          } 
-         url_=url_+'&'+widget.attr('name')+'='+value;
+         url_=url_+'&'+widget.get('name')+'='+value;
       }
    });
 
@@ -378,7 +378,6 @@ function callback(callback_array,function_name,response){
    if(callback_array && function_name && callback_array[function_name] && callback_array[function_name] != null){
       for(var i in callback_array[function_name]){
          var cb=callback_array[function_name][i];
-         console.log(cb);
          cb['func'](cb['param'],response);
       }
       callback_array[function_name]=[];
@@ -766,11 +765,11 @@ function fill_form(rid,form) {
          }
 
          /*reset form*/
-         dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
+         dojo.forEach(dijit.byId(form).getChildren(), function(widget) {
             if(widget.store){
-               widget.attr('value', 'NULL');
+               widget.set('value', 'NULL');
             }else{
-               widget.attr('value', null);
+               widget.set('value', null);
             }
          });
          /*fill the form with returned values from json*/
@@ -786,12 +785,12 @@ function fill_form(rid,form) {
                         switch(response[key]){
                            case '1':
                            case 'on':
-                              dijit.byId(key).attr('checked',true); 
+                              dijit.byId(key).set('checked',true); 
                            break;
                            case '0':
                            case 'off':
                            default:
-                              dijit.byId(key).attr('checked',false); 
+                              dijit.byId(key).set('checked',false); 
                            break;
                         }
                      break;
@@ -824,9 +823,9 @@ function fill_form(rid,form) {
    });
    }else{
       /*reset form*/
-      dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
+      dojo.forEach(dijit.byId(form).getChildren(), function(widget) {
          if(!widget.store){
-            widget.attr('value', null);
+            widget.set('value', null);
          }
       });
 
@@ -845,13 +844,13 @@ function show_dialog(){
 /*clear the form first*/
 function clear_form(frm,selector_field){
    //load_selected_value(selector_field,'NULL');
-   dojo.forEach(dijit.byId(frm).getDescendants(),function(widget){
+   dojo.forEach(dijit.byId(frm).getChildren(),function(widget){
       switch(widget.declaredClass){
       case 'dijit.form.CheckBox':
-         widget.attr('checked', false);
+         widget.set('checked', false);
       break;
       default:
-         widget.attr('value', null);
+         widget.set('value', null);
          if (typeof widget.setValue == 'function'){
             widget.set('value',null);
          }
@@ -920,11 +919,11 @@ function fill_filter_form(form) {
          }
 
          /*reset form*/
-         dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
+         dojo.forEach(dijit.byId(form).getChildren(), function(widget) {
             if(widget.store){
-               widget.attr('value', 'NULL');
+               widget.set('value', 'NULL');
             }else{
-               widget.attr('value', null);
+               widget.set('value', null);
             }
          });
 
@@ -941,12 +940,12 @@ function fill_filter_form(form) {
                         switch(response[key]){
                            case '1':
                            case 'on':
-                              dijit.byId(key).attr('checked',true); 
+                              dijit.byId(key).set('checked',true); 
                            break;
                            case '0':
                            case 'off':
                            default:
-                              dijit.byId(key).attr('checked',false); 
+                              dijit.byId(key).set('checked',false); 
                            break;
                         }
                      break;

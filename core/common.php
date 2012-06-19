@@ -273,7 +273,7 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false){
 /**
  * Regenerate the filter with customizations
  */
-function gen_filter($table_as=null){
+function get_filter($table_as=null){
    if(isset($_SESSION[PAGE]['FILTER_ARRAY']) && is_array($_SESSION[PAGE]['FILTER_ARRAY']) && sizeof($_SESSION[PAGE]['FILTER_ARRAY']) > 0){ 
    }else{
       return null;
