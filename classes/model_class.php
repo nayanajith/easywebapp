@@ -244,42 +244,38 @@ class Model{
       public function write_config(){
          $grids=<<<EOE
    'GRIDS'=>array(
-       'GRID'=>array(
-          'columns'      =>array('rid'=>array('hidden'=>'true'),'timestamp'),
-          'filter'       =>isset(\$_SESSION[PAGE]['FILTER'])?\$_SESSION[PAGE]['FILTER']:null,
-          'selector_id'  =>'toolbar__rid',
-          'ref_table'    =>m_p_t(''),
-          'event_key'    =>'rid',
-          'dojoType'     =>'dojox.grid.DataGrid',
-          'store'        =>'main_grid_store' ,
-          'query'        =>'{ "rid": "*" }',
-          'rowsPerPage'  =>'40',
-          'clientSort'   =>'true',
-          'style'        =>'width:100%;height:400px',
-          'onClick'      =>'load_grid_item',
-          'rowSelector'  =>'20px',
-          'columnReordering'=>'true',
-          'headerMenu'   =>'gridMenu',
+      'GRID'=>array(
+         'columns'      =>array('rid'=>array('hidden'=>'true'),'updated'),
+         'filter'       =>isset(\$_SESSION[PAGE]['FILTER'])?\$_SESSION[PAGE]['FILTER']:null,
+         'selector_id'  =>'toolbar__rid',
+         'ref_table'    =>m_p_t(''),
+         'event_key'    =>'rid',
+         'order_by'     =>'ORDER BY updated DESC',
+         'dojoType'     =>'dojox.grid.EnhancedGrid',
+         'query'        =>'{ "rid": "*" }',
+         'clientSort'   =>'true',
+         'style'        =>'width:100%;height:400px',
+         'onClick'      =>'load_grid_item',
+         'columnReordering'=>'true',
+         'headerMenu'   =>'gridMenu',
        ),
     ),
 EOE;
          $common_toolbar_buttons=<<<EOE
       "rid"=>array(
-         "length"=>"100",
-         "dojoType"=>"dijit.form.FilteringSelect",
-         "required"=>"false",
-         "label"=>"Label",
-
-         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',
-         "searchAttr"=>"label",
-         "pageSize"=>"10",
-         "store"=>"rid_store",
-
-         "filter"=>isset(\$_SESSION[PAGE]['FILTER'])?" AND ".\$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>m_p_t(''),
-         "ref_key"=>'rid',
-         "order_by"=>'ORDER BY rid DESC',
-         "vid"=>array('rid'),
+         "length"       =>"100",
+         "dojoType"     =>"dijit.form.FilteringSelect",
+         "required"     =>"false",
+         "label"        =>"Label",
+         "onChange"     =>'set_param(this.name,this.value);fill_form(this.value,"main")',
+         "searchAttr"   =>"label",
+         "pageSize"     =>"10",
+         "store"        =>"rid_store",
+         "filter"       =>isset(\$_SESSION[PAGE]['FILTER'])?" AND ".\$_SESSION[PAGE]['FILTER']:null,
+         "ref_table"    =>m_p_t(''),
+         "ref_key"      =>'rid',
+         "order_by"     =>'ORDER BY updated DESC',
+         "vid"          =>array('rid'),
       ),  
 EOE;
 
@@ -782,10 +778,14 @@ EOE;
             $query   =$grid['sql'].$filter_str.$order_by;;
          }
 
+         //Find the total count returned for the given query
+         $count=exec_query("SELECT count(*) count FROM ".$table.$filter_str,Q_RET_ARRAY);
+         $count=$count[0]['count'];
+
          $data=exec_query($query,Q_RET_ARRAY);
          $file_name='gird.json';
          set_file_header($file_name);
-         print '{}&&'.json_encode(array('numRows'=>sizeof($data),'items'=>$data,'identity'=>'id'));  
+         print '{}&&'.json_encode(array('numRows'=>$count,'items'=>$data,'identity'=>'id'));  
       }
 
 

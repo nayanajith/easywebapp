@@ -72,7 +72,7 @@ if(isset($_REQUEST['form'])){
             }elseif(isset($_REQUEST[$_REQUEST['param']])){
             //Set session variable corresponding to the value changed in front end
                $_SESSION[PAGE][$param]=$_REQUEST[$_REQUEST['param']];
-               return_status_json('OK',"Set ".$_REQUEST['param']." as ".$_REQUEST[$_REQUEST['param']]);
+               return_status_json('OK',"Set ".$param." as ".$_REQUEST[$_REQUEST['param']]);
             }
          break;
          case 'add_filter':
@@ -123,18 +123,6 @@ if(isset($_REQUEST['form'])){
          }
       }
    break;
-   case 'filter':
-      switch($_REQUEST['action']){
-         case 'add':
-           return $model->add_filter();
-         break;
-         case 'modify':
-           return $model->modify_filter();
-         break;
-         case 'delete':
-           return $model->delete_filter(null,true);
-         break;
-      }
    case 'system':
       if(isset($_REQUEST['action']) && isset($_REQUEST['user_id'])){
          switch($_REQUEST['action']){

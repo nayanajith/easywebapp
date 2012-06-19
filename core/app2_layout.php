@@ -84,30 +84,32 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                <div dojoType="dijit.layout.BorderContainer" style="width:100%; height:100%; padding:0px;" gutters="false">
                      
                   <!--TOP box of BorderContainer-2 (BorderContainer-3)-->
-                  <div dojoType="dijit.layout.ContentPane" region="top" style="height:57px; padding:0px;">
-                                <div dojoType="dijit.layout.BorderContainer"   gutters="false" liveSplitters="true" >
-               
-               <div dojoType="dijit.layout.ContentPane" region="center" gutter="false" style="padding:0px;">
-                     <?php
-                     d_r("dijit.MenuBar");
-                     d_r("dijit.Menu");
-                     d_r("dijit.MenuItem");
-                     d_r("dijit.PopupMenuBarItem");
-                     echo "<div id='menubar' jsId='menubar' dojoType='dijit.MenuBar' style='height:26px;padding-left:1px;border-right:0px;border-left:0px;border-top:1px solid whitesmoke;'>";
-                     echo $GLOBALS['VIEW']['MENUBAR'];
-                     echo "</div>";
-                     ?>
-               </div>
-               <div dojoType="dijit.layout.ContentPane" region="bottom" gutter="false" style="padding:0px">
-                  <?php
-                    d_r("dijit.layout.ContentPane");
-                    d_r("dijit.Toolbar");
-                    echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
-                    echo $GLOBALS['VIEW']['TOOLBAR'];
-                    echo "</div>";
-                 ?>
-               </div>
-            </div>
+                  <div dojoType="dijit.layout.ContentPane" region="top" style="height:80px; padding:0px;">
+                     <!-- BorderContainer-4-->
+                     <div dojoType="dijit.layout.BorderContainer"   gutters="false" liveSplitters="true" >
+                        <!-- Center box of BorderContainer-4 menubar-->
+                        <div dojoType="dijit.layout.ContentPane" region="top" gutter="false" style="padding:0px;">
+                              <?php
+                              d_r("dijit.MenuBar");
+                              d_r("dijit.Menu");
+                              d_r("dijit.MenuItem");
+                              d_r("dijit.PopupMenuBarItem");
+                              echo "<div id='menubar' jsId='menubar' dojoType='dijit.MenuBar' style='height:26px;padding-left:1px;border-right:0px;border-left:0px;border-top:1px solid whitesmoke;'>";
+                              echo $GLOBALS['VIEW']['MENUBAR'];
+                              echo "</div>";
+                              ?>
+                        </div>
+                        <!-- Bottom box of BorderContainer-4 toolbar-->
+                        <div dojoType="dijit.layout.ContentPane" region="center" gutter="false" style="padding:0px">
+                           <?php
+                             d_r("dijit.layout.ContentPane");
+                             d_r("dijit.Toolbar");
+                             echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
+                             echo $GLOBALS['VIEW']['TOOLBAR'];
+                             echo "</div>";
+                          ?>
+                        </div>
+                     </div>
                   </div>
                   <!--end TOP box of BorderContainer-2 (BorderContainer-3)-->
 
@@ -117,7 +119,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
 <!--design:headline,sidebar -->
                      <div dojoType="dijit.layout.BorderContainer" style="padding:0px;" gutters="false" design="headline" style="width:100%;height:100%">
                         <?php if ($GLOBALS['VIEW']['MAIN_TOP'] != ""): ?>
-                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP" class="bgTop" <?php echo get_layout_property('app2','MAIN_TOP'); ?>>
+                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP" <?php echo get_layout_property('app2','MAIN_TOP'); ?>>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_TOP'];
                               ?>

@@ -70,8 +70,8 @@ function before_login() {
    <div dojoType="dijit.form.Form" id="loginForm" jsId="loginForm" encType="multipart/form-data"
       action="'.$GLOBALS['AUTH_PROTOCOLE'].'://'.$server.$_SERVER['SCRIPT_NAME'].'/'.MODULE.'/'.$page.'" method="POST"
       onSubmit="if(loginForm.validate()){return true;}else{return false}"
-      class="round bgBottom"
-      style="width:340px;padding:5px;border:1px solid #5B92C8;padding-top:20px;padding-bottom:20px;"
+      class="round bgBottom shadow"
+      style="width:340px;padding:5px;border:1px solid silver;padding-top:20px;padding-bottom:20px;"
    >
 '.(isset($_REQUEST['user'])?'<div style="padding:5px;color:red;">Invallid login please try again...</div>':"").'
             <input type="hidden" name="module" value="'.MODULE.'" >
@@ -244,7 +244,6 @@ if (isset($_SESSION['username'])) {
          }else{
             $RESULT_ARR    = exec_query($SQL, Q_RET_ARRAY);
          }
-         log_msg($RESULT_ARR);
          if(isset($RESULT_ARR[0])){
             $LOGIN=true;   
             exec_query("UPDATE ".s_t('users')." SET last_login=CURRENT_TIMESTAMP,failed_logins=0 WHERE username='".$user."'", Q_RET_NONE);
@@ -266,6 +265,8 @@ if (isset($_SESSION['username'])) {
          }
       }
       $_SESSION['loged_module']    = MODULE;
+      //After login redirect to news page
+      header('Location: '.gen_url('home','news',null));
    }else{
       //echo "<div style='float:left;padding:5px;color:brown;'>Invallid login please try again...</div>";
       //echo "<script type='text/javascript' language=javascript>alert('Invalid login please try again...');</script>";

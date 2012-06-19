@@ -104,7 +104,6 @@ function get_layout_property($layout='app2',$section='MAIN_TOP',$key=null,$key2=
          }
          return $out.="' ";
       }
-      log_msg($out);
       return $out;
    }
 }
@@ -257,7 +256,6 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false){
 
    //Prepend and if requested
    if($start_and && $filter!=''){
-      log_msg($filter);
       $filter="AND ".$filter;
    }
 

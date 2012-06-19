@@ -70,6 +70,27 @@ $TOOLBAR=array(
       "iconClass"=>get_icon_class('Table'),
       "showLabbel"=>'true',
    ),
+   "csv_grid"=>array(
+      "dojoType"=>"dijit.form.Button",
+      "label"=>"Grid to CSV",
+      "iconClass"=>get_icon_class('Table'),
+      "showLabbel"=>'true',
+      "onClick"=>'grid_to_csv(grid__GRID)',
+   ),
+   "print_grid"=>array(
+      "dojoType"=>"dijit.form.Button",
+      "label"=>"Grid print",
+      "iconClass"=>get_icon_class('Print'),
+      "showLabbel"=>'true',
+      "onClick"=>'grid_print(grid__GRID,get_request_value("page"))',
+   ),
+   "table_grid"=>array(
+      "dojoType"=>"dijit.form.Button",
+      "label"=>"Grid html",
+      "iconClass"=>get_icon_class('Table'),
+      "showLabbel"=>'true',
+      "onClick"=>'grid_to_table(grid__GRID,get_request_value("page"))',
+   ),
 );
 }
 $CALLBACKS=array(

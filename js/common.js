@@ -29,7 +29,7 @@ dojo.isChrome);
 var halt_page_reloading=true;
 
 //timeout for XHR request is 60 secons
-var timeout_ = 60*1000;
+var timeout_ = 100*1000;
 
 /**
  * Turn on reloading the page
@@ -200,13 +200,30 @@ function switch_user(value) {
    });
 }   
 
+//wrapper for filter form callbacks
+function s_p_c_add(callback_name,callback_function){
+   add_callback(set_param_callback,callback_name,callback_function);
+}
+
+
+/**
+ * Populate the data in form for the selected key
+ */
+var set_param_callback={
+   'ok':[],
+   'error':[],
+   'before':[]
+};
 
 /**
  * Set session parameters using XHR requests in backend
  */
 function set_param(key,value) {
+   var s_p_c=set_param_callback;
+
    var url=gen_url();
 
+   callback(s_p_c,'before');
    //content array to set explicit variables to the form
    var contentArr={form:'main',action:'param',data:'json'};
 
@@ -220,12 +237,15 @@ function set_param(key,value) {
         handleAs : 'json',
         timeout  : timeout_,
         load     : function(response, ioArgs) {        
-            update_status_bar(response.status,response.info);
-            if(response.status == 'OK'){
+            update_status_bar(response.status_code,response.info);
+            if(response.status_code == 'OK'){
+               callback(s_p_c,'ok');
                update_progress_bar(100);
             }
+            callback(s_p_c,'error');
          },
          error : function(response, ioArgs) {
+            callback(s_p_c,'error');
             update_status_bar(response.status,response.info);
          }
    });
@@ -323,7 +343,7 @@ function submit_display_values(action){
             update_progress_bar(50);
          }
       }, 
-      error: function() {
+      error: function(response,ioArgs) {
          if(!target_module && !target_page){
             update_status_bar('ERROR','Error on submission!');
             update_progress_bar(0);
@@ -460,7 +480,7 @@ function submit_form(action,param1,param2){
             callback(s_f_c,'ok');
 
          }, 
-         error: function() {
+         error: function(response,ioArgs) {
             update_status_bar('ERROR','Error on submission!');
             update_progress_bar(0);
 
@@ -509,7 +529,7 @@ function submit_form(action,param1,param2){
 
             }
          }, 
-         error: function() {
+         error: function(response,ioArgs) {
             if(!target_module && !target_page){
                update_status_bar('ERROR','Error on submission!');
                update_progress_bar(0);
@@ -583,7 +603,7 @@ function xhr_generic(submit_form,action,handle_as){
             }
          }
       }, 
-      error: function() {
+      error: function(response,ioArgs) {
          update_status_bar('ERROR','Error on submission!');
          update_progress_bar(0);
 
@@ -674,7 +694,7 @@ function load_combo_value(field,value_to_load){
    field.store.fetch({
       query:{ 'id': value_to_load },
       onItem : function(item, request) {
-         field.setValue(item['i'][field.store._labelAttr]);
+         field.set('value',item['i'][field.store._labelAttr]);
          return;
       }
    });
@@ -696,7 +716,8 @@ function load_selected_value(field,value_to_load){
          }
          //TODO:remove  undefined != request.store and find alternative method
         if (undefined != request.store && request.store.getValue(item, searchKey) == value_to_load) {
-            field.setValue(request.store.getValue(item, searchKey));
+            field.set('value',request.store.getValue(item, searchKey));
+            //field.set('value',request.store.getValue(item, searchKey));
             return;
         }
       }
@@ -757,7 +778,7 @@ function fill_form(rid,form) {
             if(response[key] && dijit.byId(key)){
                if(response[key]['_type']=='Date'){
                   //Convert ISO standard date string to javascript Date object
-                      dijit.byId(key).setValue(dojo.date.stamp.fromISOString(response[key]['_value'])); 
+                      dijit.byId(key).set('value',dojo.date.stamp.fromISOString(response[key]['_value'])); 
                }else{
                   //Handle different types of fields
                   switch(dijit.byId(key).declaredClass){
@@ -777,15 +798,15 @@ function fill_form(rid,form) {
                      case 'dijit.form.RadioButton':
                      break;
                      case 'dijit.form.ComboBox':
-                        //dijit.byId(key).setValue(response[key]); 
+                        //dijit.byId(key).set('value',response[key]); 
                         load_combo_value(dijit.byId(key),response[key]);
                      break;
                      case 'dijit.form.FilteringSelect':
-                        dijit.byId(key).setValue(response[key]); 
+                        dijit.byId(key).set('value',response[key]); 
                         load_selected_value(dijit.byId(key),response[key]);
                      break;
                      default:
-                        dijit.byId(key).setValue(response[key]); 
+                        dijit.byId(key).set('value',response[key]); 
                      break;
                   }
                }
@@ -832,7 +853,7 @@ function clear_form(frm,selector_field){
       default:
          widget.attr('value', null);
          if (typeof widget.setValue == 'function'){
-            widget.setValue(null);
+            widget.set('value',null);
          }
          widget.set('value',null);
       break;
@@ -861,7 +882,7 @@ function dialog_submit(arg_form,action){
          load: function(response) {
             update_status_bar('OK','form successfully submitted');
          }, 
-         error: function() {
+         error: function(response,ioArgs) {
             update_status_bar('ERROR','Error on submission!');
          }
       });
@@ -912,7 +933,7 @@ function fill_filter_form(form) {
             if(response[key] && dijit.byId(key)){
                if(response[key]['_type']=='Date'){
                   //Convert ISO standard date string to javascript Date object
-                      dijit.byId(key).setValue(dojo.date.stamp.fromISOString(response[key]['_value'])); 
+                      dijit.byId(key).set('value',dojo.date.stamp.fromISOString(response[key]['_value'])); 
                }else{
                   //Handle different types of fields
                   switch(dijit.byId(key).declaredClass){
@@ -932,11 +953,11 @@ function fill_filter_form(form) {
                      case 'dijit.form.RadioButton':
                      break;
                      case 'dijit.form.FilteringSelect':
-                        dijit.byId(key).setValue(response[key]); 
+                        dijit.byId(key).set('value',response[key]); 
                         load_selected_value(dijit.byId(key),response[key]);
                      break;
                      default:
-                        dijit.byId(key).setValue(response[key]); 
+                        dijit.byId(key).set('value',response[key]); 
                      break;
                   }
                }

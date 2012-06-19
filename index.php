@@ -188,7 +188,7 @@ if (!isset($program)){
    if (isset($_REQUEST['program']) && $_REQUEST['program'] != ''){
       $program = $_REQUEST['program'];
    }elseif(isset($programs)){
-      $program = key($programs);
+      $program = $programs[key($programs)];
    }
 }
 

@@ -45,7 +45,7 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   `deleted`          BOOLEAN     DEFAULT false,
   `note`             VARCHAR(300) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY (`username`),
+  UNIQUE KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['role']="CREATE TABLE `role`(
@@ -175,6 +175,7 @@ $system_table_migrate[4][]="REPLACE INTO `base_data` (`base_class`,`base_key`,`b
 ('LIST','title','[\"MR\",\"MS\",\"MISS\",\"DR\",\"Dr\",\"PROF\"]',NULL),
 ('LIST','theme','{\"claro\":\"CLARO\",\"nihino\":\"NIHINO\",\"soria\":\"SORIA\"}','ENABLED'),
 ('LIST','layout','{\"app2\":\"APP2\",\"web\":\"WEB\",\"pub\":\"PUB\",\"app\":\"APP\"}','ENABLED'),
+('LIST','al_subjects','{\"1\":\"PHYSICS\",\"2\":\"CHEMISTERY\",\"10\":\"COMBINED MATHEMATICS\",\"09\":\"BIOLOGY\",\"71\":\"SINHALA\",\"23\":\"ELEMENT OF POLITICAL SCIENCE\",\"24\":\"LOGIC &amp; SCIENTIFIC METHOD\",\"21\":\"ECONOMICS\",\"31\":\"BUSINESS STATISTICS\",\"32\":\"BUSINESS STUDIES\",\"33\":\"ACCOUNTING\",\"22\":\"GEOGRAPHY\",\"25\":\"HISTORY\",\"44\":\"ISLAM\"} ','ENABLED'),
 ('LIST','auth_mod','[\"AUTO\",\"LDAP\"]','ENABLED')";
 
 $system_table_migrate[4][]="ALTER TABLE news ADD role_id VARCHAR(100)";

@@ -157,7 +157,7 @@ function exec_multy_query($query,$type=null,$db=null,$array_key=null,$deleted=nu
    }
 
    //Enable this to log all the queries
-   log_msg($db.":".$query);
+   if(!strstr($query,'INSERT INTO log'))log_msg($db.":".$query);
 
    /*Execute query*/
    if(mysqli_multi_query($GLOBALS['CONN_I'],$query)){
@@ -280,7 +280,7 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
     */
 
    //Enable this to log all the queries
-   log_msg('exec_query',$db.":".$query);
+   if(!strstr($query,'INSERT INTO log'))log_msg('exec_query',$db.":".$query);
 
    /*Execute query*/
    $result    = mysql_query($query, $GLOBALS['CONNECTION']);

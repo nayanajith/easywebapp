@@ -564,15 +564,16 @@ dojo.ready(function(){
       d_r('dojox.widget.PlaceholderMenuItem');
       d_r('dojox.grid.EnhancedGrid');
       d_r('dojox.grid.enhanced.plugins.Pagination');
-      d_r('dojox.grid.enhanced.plugins.Filter');
-      d_r("dojox.grid.enhanced.plugins.DnD");
-      d_r("dojox.grid.enhanced.plugins.Menu");
+      //d_r('dojox.grid.enhanced.plugins.Filter');
+      //d_r("dojox.grid.enhanced.plugins.DnD");
+      //d_r("dojox.grid.enhanced.plugins.Menu");
       d_r("dojox.grid.enhanced.plugins.NestedSorting");
-      d_r("dojox.grid.enhanced.plugins.IndirectSelection");
-      d_r("dojox.grid.enhanced.plugins.Search");
+      //d_r("dojox.grid.enhanced.plugins.IndirectSelection");
+      //d_r("dojox.grid.enhanced.plugins.Search");
       d_r("dojox.grid.enhanced.plugins.Printer");
       d_r("dojox.grid.enhanced.plugins.exporter.CSVWriter");
       d_r("dojox.grid.enhanced.plugins.exporter.TableWriter");
+
       $html=""; 
       foreach($this->grids as $grid_key => $grid){
          //If jsId is not set explicitly set the key with grid__ prefix as jsId
@@ -606,34 +607,32 @@ dojo.ready(function(){
          //Menu for the right click on grid
          $html.="<div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
-         </div>
-      <div dojoType='dijit.Menu' id='cellMenu'  style='display: none;'>
+         </div>";
+
+         /*
+         $html.="<div dojoType='dijit.Menu' id='cellMenu'  style='display: none;'>
          <div dojoType='dijit.MenuItem' onclick='grid_to_table(".$grid['jsId'].",\"".style_text($grid['ref_table'])."\")'>Print Preview</div>
          <div dojoType='dijit.MenuItem' onclick='grid_print(".$grid['jsId'].",\"".style_text($grid['ref_table'])."\")'>Print</div>
          <div dojoType='dijit.MenuItem' onclick='grid_to_csv(".$grid['jsId'].")'>CSV</div>
-      </div>";
-/*
-      <div dojoType='dijit.Menu' id='rowMenu'  style='display: none;'>
-         <div dojoType='dijit.MenuItem'>Row Menu Item 1</div>
-         <div dojoType='dijit.MenuItem'>Row Menu Item 2</div>
-         <div dojoType='dijit.MenuItem'>Row Menu Item 3</div>
-         <div dojoType='dijit.MenuItem'>Row Menu Item 4</div>
-      </div>
-      <div dojoType='dijit.Menu' id='headerMenu'  style='display: none;'>
-         <div dojoType='dijit.MenuItem'>Cell Menu Item 1</div>
-         <div dojoType='dijit.MenuItem'>Cell Menu Item 2</div>
-         <div dojoType='dijit.MenuItem'>Cell Menu Item 3</div>
-         <div dojoType='dijit.MenuItem'>Cell Menu Item 4</div>
-      </div>
-      <div dojoType='dijit.Menu' id='selectedRegionMenu'  style='display: none;'>
-         <div dojoType='dijit.MenuItem'>Action 1 for Selected Region</div>
-         <div dojoType='dijit.MenuItem'>Action 2 for Selected Region</div>
-         <div dojoType='dijit.MenuItem'>Action 3 for Selected Region</div>
-         <div dojoType='dijit.MenuItem'>Action 4 for Selected Region</div>
-      </div>
- */
+         </div>";
+          */
 
-         //EnhancedGrid table with pagination plugin
+         /*
+         <div dojoType='dijit.Menu' id='rowMenu'  style='display: none;'>
+            <div dojoType='dijit.MenuItem'>Row Menu Item 1</div>
+            <div dojoType='dijit.MenuItem'>Row Menu Item 2</div>
+         </div>
+         <div dojoType='dijit.Menu' id='headerMenu'  style='display: none;'>
+            <div dojoType='dijit.MenuItem'>Cell Menu Item 1</div>
+            <div dojoType='dijit.MenuItem'>Cell Menu Item 2</div>
+         </div>
+         <div dojoType='dijit.Menu' id='selectedRegionMenu'  style='display: none;'>
+            <div dojoType='dijit.MenuItem'>Action 1 for Selected Region</div>
+            <div dojoType='dijit.MenuItem'>Action 2 for Selected Region</div>
+         </div>
+         */
+
+         //EnhancedGrid table with plugins
          $html .='<table
 autoHeight="false"
 rowsPerPage="25"
@@ -641,8 +640,31 @@ errorMessage="No records to display!"
 selectable="true"
 plugins=\'{
     pagination: {
-        pageSizes: ["25", "50", "100", "200","all"],
-        defaultPageSize:25,
+        pageSizes: ["20", "50", "100", "200","all"],
+        defaultPageSize:20,
+        description: true,
+        sizeSwitch: true,
+        pageStepper: '.$page_stepper.',
+        gotoButton: true,
+        maxPageStep: 4,
+        position: "bottom"
+    },
+   printer:true,
+   exporter: true,
+   nestedSorting: true,
+}\'';
+
+         /*
+         //Sample grid table with several options
+         $html .='<table
+autoHeight="false"
+rowsPerPage="25"
+errorMessage="No records to display!"
+selectable="true"
+plugins=\'{
+    pagination: {
+        pageSizes: ["20", "50", "100", "200","all"],
+        defaultPageSize:20,
         description: true,
         sizeSwitch: true,
         pageStepper: '.$page_stepper.',
@@ -654,17 +676,18 @@ plugins=\'{
    printer:true,
    exporter: true,
    nestedSorting: true,
-   //search:true,
-   //dnd: true,
-   //indirectSelection: true,
+   search:true,
+   dnd: true,
+   indirectSelection: true,
    menus:{
-      //headerMenu:"headerMenu", 
-      //rowMenu:"rowMenu", 
+      headerMenu:"headerMenu", 
+      rowMenu:"rowMenu", 
       cellMenu:"cellMenu",
-      //selectedRegionMenu:"selectedRegionMenu"
+      selectedRegionMenu:"selectedRegionMenu"
    }
 }\'
 ';
+          */
 
          /*Fields to bypass when creating forms*/
          $bypass=array('filter','rowSelector','columns','selector_id','ref_table','ref_key','event_key','sql');
@@ -683,6 +706,7 @@ plugins=\'{
             $h_key         ='';
             $options       ='';
             $label         ='';
+            $style         ='';
             $bypass        =array('label');
 
             
@@ -709,9 +733,16 @@ plugins=\'{
                   $label   =$array['label'];
                }
 
+               //if label is set internally then set it as label
+               if(isset($array['style'])){
+                  $style   =$array['style'];
+               }
+               $style.=';word-wrap:break-word;';
+
             }else{
                $options =' width="auto" ';
                $h_key   =$array;
+               $style   ='word-wrap:break-word;';
             }
 
             //If the lable is not internally set then check for the lable from FORM else set label as column name
@@ -723,7 +754,7 @@ plugins=\'{
                }
             }
 
-            $html.= "<th field='$h_key' $options >
+            $html.= "<th field='$h_key' $options title='$label' style='$style' >
                ".$label."
             </th>";
          }
@@ -740,9 +771,6 @@ plugins=\'{
             function load_grid_item(e){
                var selectedValue = ".$grid['jsId'].".store.getValue(".$grid['jsId'].".getItem(e.rowIndex),'".$grid['event_key']."');
                load_selected_value(".$grid['selector_id'].",selectedValue);
-               //alert('selected cell Value is '+selectedValue);
-               //fill_form(selectedValue);
-               //dijit.byId('".get_pri_keys()."').setValue(selectedValue);
             }
             </script>";
          }

@@ -12,7 +12,7 @@ class MYPDF extends TCPDF {
    /*Set header infor*/
    public function set_header_info(){
       /*Header information of the mark book*/
-      $this->header_info['logo']            = A_IMG."/".$GLOBALS['LOGO'];
+      $this->header_info['logo']            = $GLOBALS['A_LOGO'];
       $this->header_info['year']            ="2010/2011";
    }
 
