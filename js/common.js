@@ -782,20 +782,15 @@ function fill_form(rid,form) {
          }
 
          /*reset form*/
-<<<<<<< HEAD
+			/*
          dojo.forEach(dijit.byId(form).getChildren(), function(widget) {
-=======
-         /*
-         dojo.forEach(dijit.byId(form).getDescendants(), function(widget) {
->>>>>>> ee4618683798202265ce08aa8428919ee23f5eff
             if(widget.store){
                widget.set('value', 'NULL');
             }else{
                widget.set('value', null);
             }
          });
-         */
-
+			*/
          /*fill the form with returned values from json*/
          for(var key in response){
             //Clean the field values if responce does not contain values for the given key (blank or null)
@@ -811,11 +806,7 @@ function fill_form(rid,form) {
             if(response[key] && dijit.byId(key)){
                if(response[key]['_type']=='Date'){
                   //Convert ISO standard date string to javascript Date object
-<<<<<<< HEAD
-                      dijit.byId(key).set('value',dojo.date.stamp.fromISOString(response[key]['_value'])); 
-=======
-                  dijit.byId(key).setValue(dojo.date.stamp.fromISOString(response[key]['_value'])); 
->>>>>>> ee4618683798202265ce08aa8428919ee23f5eff
+                  dijit.byId(key).set('value',dojo.date.stamp.fromISOString(response[key]['_value'])); 
                }else{
                   //Handle different types of fields
                   switch(dijit.byId(key).declaredClass){
