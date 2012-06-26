@@ -36,7 +36,7 @@ $GLOBALS['MODEL']=array(
 			"label_pos"=>"left",
          "iconClass"=>get_icon_class('NewPage'),
          "showLabbel"=>'false',
-         "onClick"=>'submit_form("add_backup")',
+         "onClick"=>'s_f_c_add("ok",reload_page);submit_form("add_backup")',
       ),
      "remove"=>array(
          "dojoType"=>"dijit.form.Button",
@@ -44,7 +44,7 @@ $GLOBALS['MODEL']=array(
 			"label_pos"=>"left",
          "iconClass"=>get_icon_class('Delete'),
          "showLabbel"=>'false',
-         "onClick"=>'submit_form("del_backup")',
+         "onClick"=>'s_f_c_add("ok",reload_page);submit_form("del_backup")',
       ),
    ),
 );
@@ -72,7 +72,7 @@ function list_backups(){
 function backup_now(){
    $backup_file=MOD_BACKUP."/".$GLOBALS['DB']."_".date("j-n-Y_H:m:s").".sql.gz";
    log_msg("mysqldump -u".$GLOBALS['DB_USER']." -p".$GLOBALS['DB_PASS']."  ".$GLOBALS['DB']." | gzip > $backup_file");
-   exec("mysqlnump -u".$GLOBALS['DB_USER']." -p".$GLOBALS['DB_PASS']."  ".$GLOBALS['DB']." | gzip > $backup_file");
+   exec("mysqldump -u".$GLOBALS['DB_USER']." -p".$GLOBALS['DB_PASS']."  ".$GLOBALS['DB']." | gzip > $backup_file");
    if(file_exists($backup_file)){
       return_status_json('OK','Backup successful!');
    }else{
