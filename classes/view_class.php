@@ -118,6 +118,7 @@ class View{
        "dijit.form.FilteringSelect"   =>"<select %s>%s</select>",
        "dijit.form.ComboBox"          =>"<select %s>%s</select>",
        "dijit.form.Select"            =>"<select %s>%s</select>",
+       "dojox.form.CheckedMultiSelect"=>"<select %s>%s</select>",
        "dijit.form.MultiSelect"       =>"<select %s>%s</select>",
        "dijit.form.SimpleTextarea"    =>"<textarea %s>%s</textarea>",
        "dijit.form.NumberTextBox"     =>"<input %s>",
@@ -325,8 +326,7 @@ class View{
       d_r('dijit.form.CheckBox');
       d_r('dijit.form.DropDownButton');
       d_r('dojo.query');
-      add_to_js("
-<script>
+      js("
 function get_csv(){
    var field_list=new Array();
 	nodes = dojo.query('table#csv__table input[type=checkbox]'); 
@@ -342,14 +342,13 @@ function get_csv(){
 		list+=comma+field_list[key];
 		comma=',';
 	}
-   submit_form('csv',list)
-}
-</script>");
+   submit_form('csv',list);
+}");
 
       $csv_inner="
 <span>CSV</span>
 <div dojoType='dijit.TooltipDialog' align='center'>
-<h4>Check the fields you want to include in the CSV</h4>
+<b>Select the fields you want to include in the CSV</b>
 <table  id='csv__table'>";
       $cols=3;
       $td=0;
@@ -364,7 +363,7 @@ function get_csv(){
                $checked="checked='true'";
             }
          }else{
-            $checked="checked='true'";
+            $checked="checked='false'";
          }
          
          $label=$id;
@@ -379,7 +378,7 @@ function get_csv(){
             <label for='csv__".$id."'>".$label."</label>
             </td>";
          $td++;
-         if($td==$cols || !next($this->form)){
+         if($td==$cols || !next($this->form) || is_null(next($this->form))){
             $csv_inner.="</tr>";
             $td=0;
          }

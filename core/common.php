@@ -483,6 +483,7 @@ function get_pviw_property($path){
 $GLOBALS['VIEW']=array(
    'CSS'          =>'',
    'JS'           =>'',
+   'DYNAMIC_JS'   =>'',
    'LOADING'      =>'',
    'LOGIN'        =>'',
    'PROGRAM'      =>'',
@@ -492,7 +493,7 @@ $GLOBALS['VIEW']=array(
    'MAIN_LEFT'    =>'',
    'MAIN_RIGHT'   =>'',
    'MAIN_BOTTOM'  =>'',
-   'NOTIFY'      =>'',
+   'NOTIFY'       =>'',
    'MENUBAR'      =>'',
    'TOOLBAR_TR'   =>'',
    'TOOLBAR_TL'   =>'',
@@ -567,6 +568,12 @@ function add_to_css($content,$before=false){
 }
 function add_to_js($content,$before=false){
    add_to_view('JS',$content,$before);
+}
+function js($content,$before=false){
+   add_to_dynamic_js($content,$before);
+}
+function add_to_dynamic_js($content,$before=false){
+   add_to_view('DYNAMIC_JS',$content,$before);
 }
 function add_to_loading($content,$before=false){
    add_to_view('LOADING',$content,$before);

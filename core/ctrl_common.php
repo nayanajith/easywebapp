@@ -108,6 +108,11 @@ if(isset($_REQUEST['form'])){
                $model->gen_csv($field_list);
             }
          break;
+         case 'js':
+            if(isset($GLOBALS['VIEW']['DYNAMIC_JS'])){
+               echo $GLOBALS['VIEW']['DYNAMIC_JS'];
+            }
+         break;
          }
     }
    break;

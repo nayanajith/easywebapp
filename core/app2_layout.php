@@ -104,7 +104,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                            <?php
                              d_r("dijit.layout.ContentPane");
                              d_r("dijit.Toolbar");
-                             echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar'>";
+                             echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar' onMouseOver='reloading_on();set_param_on();'>";
                              echo $GLOBALS['VIEW']['TOOLBAR'];
                              echo "</div>";
                           ?>

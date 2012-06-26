@@ -28,6 +28,11 @@ dojo.isChrome);
 //halt reloading the page or grid temporaly 
 var halt_page_reloading=true;
 
+//halt parameter setting temporaly 
+var halt_set_param=true;
+
+
+
 //timeout for XHR request is 60 secons
 var timeout_ = 100*1000;
 
@@ -37,6 +42,15 @@ var timeout_ = 100*1000;
 function reloading_on(){
    halt_page_reloading=false;
 }
+
+/**
+ * parameter setting is enabled under users request
+ */
+function set_param_on(){
+   halt_set_param=false;
+}
+
+
 
 /**
  * Turn off reloading the page
@@ -219,6 +233,9 @@ var set_param_callback={
  * Set session parameters using XHR requests in backend
  */
 function set_param(key,value) {
+
+   if(halt_set_param)return;
+
    var s_p_c=set_param_callback;
 
    var url=gen_url();
