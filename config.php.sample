@@ -39,11 +39,14 @@ $GLOBALS['ADMIN_MAIL']  = 'uis@ucsc.cmb.ac.lk';
 $GLOBALS['INFO_MAIL']   = 'info@ucsc.cmb.ac.lk';
 $GLOBALS['NOREPLY_MAIL']= 'noreply@ucsc.cmb.ac.lk';
 $GLOBALS['LOGO']        = IMG.'/ucsc-logo.png';
+$GLOBALS['A_LOGO']      = A_IMG.'/ucsc-logo.png';
 $GLOBALS['LOGO2']       = IMG.'/uoc-logo.png';
 $GLOBALS['FAVICON']     = IMG.'/favicon.ico';
 $GLOBALS['LAYOUT']      = 'pub'; //web,app,pub
 $GLOBALS['THEME']       = 'claro'; //claro,nihilo,soria,tundra
-$GLOBALS['PAGE_GEN']    = '';
+
+/*-----------------------------Request parser----------------------------------*/
+$GLOBALS['PAGE_GEN']    = 'index.php';
 
 /*-----------------common status for all the table records---------------------*/
 $GLOBALS['STSTUS']      = array('ENABLED','DISABLED');
