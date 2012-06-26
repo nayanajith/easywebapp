@@ -19,6 +19,7 @@ djConfig = {
 <script src="<?php echo JS; ?>/dijit/ucscis.js" type='text/javascript'></script>
 <script src="<?php echo JS; ?>/dojox/ucscis.js" type='text/javascript'></script>
 <script src="<?php echo JS; ?>/common_js.php" type='text/javascript'></script>
+<script src="?action=js&form=main" type='text/javascript'></script>
 <?php
 
 
