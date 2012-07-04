@@ -29,7 +29,7 @@ foreach($modules_array as $module => $pages){
       if(is_array($name)){
          //set tooltip ondemand
          if(isset($name['tooltip']) || isset($name['TOOLTIP'])){
-            $tooltip="<div dojoType='dijit.Tooltip' connectId='".$module."__$page' >".(isset($name['TOOLTIP'])?$name['TOOLTIP']:$name['tooltip'])."</div>";
+            $tooltip="<div dojoType='dijit.Tooltip' connectId='".$module."__$page' ><div style='max-width:400px;text-align:justify'>".(isset($name['TOOLTIP'])?$name['TOOLTIP']:$name['tooltip'])."</div></div>";
          }
 
          $name=isset($name['LABEL'])?$name['LABEL']:$name['label'];

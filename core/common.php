@@ -336,7 +336,8 @@ function get_temp_filter($table_as=null){
             }
          }
 
-         $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
+         //$filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
+         $filter.=$and.$table_as."`".$key."` LIKE '".$_REQUEST[$key]."'";
          $and=' AND ';
          //keep the filter array for future use
          $_SESSION[PAGE]['FILTER_ARRAY'][$key]=$_REQUEST[$key];
@@ -930,11 +931,11 @@ function gen_select_inner($arr,$label=null,$null_select=false){
       return null;
    }
 
-   $select="<option value='NULL'>-none-</option>";
+   $select="<option value='NULL'>-none-</option>\n";
    if($null_select===true){
       $select='';
    }elseif($null_select !== true && $null_select != ""){
-      $select="<option value='NULL'>$null_select</option>";
+      $select="<option value='NULL'>$null_select</option>\n";
    }
 
    if(is_assoc_array($arr)){
@@ -943,24 +944,24 @@ function gen_select_inner($arr,$label=null,$null_select=false){
          //case: exec_query("SELECT rid,batch_id FROM ".$GLOBALS['P_TABLES']['batch'],Q_RET_ARRAY,null,'rid');
          if($label != null){
             foreach($arr as $key=>$value ){
-               $select.="<option value=\"$key\">".$value[$label]."</option>";
+               $select.="<option value=\"$key\">".$value[$label]."</option>\n";
             }
          }else{
             //case: exec_query("SELECT batch_id FROM ".$GLOBALS['P_TABLES']['batch'],Q_RET_ARRAY,null,'batch_id');
             foreach($arr as $key=>$value ){
-               $select.="<option value=\"$key\">$key</option>";
+               $select.="<option value=\"$key\">$key</option>\n";
             }
          }
       }else{
          //Associative array with ke=>value
          foreach($arr as $key=>$value ){
-            $select.="<option value=\"$key\">$value</option>";
+            $select.="<option value=\"$key\">$value</option>\n";
          }
       }
    }else{
       //1D array with values
       foreach($arr as $value ){
-         $select.="<option value=\"$value\">$value</option>";
+         $select.="<option value=\"$value\">$value</option>\n";
       }
    }
    return $select;

@@ -127,8 +127,8 @@ class View{
        "dijit.form.ValidationTextBox" =>"<input %s>",
        "dijit.form.DateTextBox"       =>"<input %s constraints=\"{datePattern:'yyyy-MM-dd'}\" promptMessage='yyyy-MM-dd' invalidMessage='Invalid date. Please use yyyy-MM-dd format.' >",
        "dijit.form.TimeTextBox"       =>"<input %s constraints=\"{'timePattern':'hh:mm:ss'}\" promptMessage='hh:mm:ss' invalidMessage='Invalid time. Please use hh:mm:ss format.' >",
-       "dijit.form.CheckBox"          =>"<div %s></div>",
-       "dijit.form.RadioButton"       =>"<div %s></div>",
+       "dijit.form.CheckBox"          =>"<input %s>%s",
+       "dijit.form.RadioButton"       =>"<input %s>%s",
        "dijit.InlineEditBox"          =>"<span %s></span>",
        "dijit.form.Button"            =>"<button %s>%s</button>",
        "dijit.form.DropDownButton"    =>"<div %s>%s</div>",
@@ -198,6 +198,11 @@ class View{
 
          /*Fields to bypass when creating forms*/
          $bypass=array('default','isolate','inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','tooltip');
+
+         //If tooltip is set then bypass title
+         if(isset($field_array['tooltip'])){
+            $bypass[]='title';
+         }
 
          /*all paremeters will be inserted to the options string*/
          foreach($field_array as $key => $value){
@@ -453,34 +458,39 @@ function get_csv(){
          d_r($field_array['dojoType']);
          $form_control  =$this->form_controls[$field_array['dojoType']];
 			
-			//dojo data-dojo-props (to put placeholder and more)
-			$data_dojo_props	="";
-			if(isset($field_array['data-dojo-props'])){
-				$data_dojo_props	=$field_array['data-dojo-props'];
-			}elseif(isset($field_array['label'])){
-				$data_dojo_props	="data-dojo-props=\"placeHolder:'".$field_array['label']."'\"";
-			}elseif(isset($field_array['title'])){
-				$data_dojo_props	="data-dojo-props=\"placeHolder:'".$field_array['title']."'\"";
-			}
-
-         $options       =" jsId='$field' id='$field' title='".$field_array['label']."' $data_dojo_props ";
-
-         /*Fields to bypass when creating forms*/
-         $bypass=array('default','isolate','inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder','checked_fields');
-
-         /*all paremeters will be inserted to the options string*/
-         foreach($field_array as $key => $value){
-            if(!in_array($key,$bypass)){
-               $options.=$key."='$value'\n";
-            }
-         }
-
-
          //hidden fields make not visible
          if(isset($field_array['type']) && $field_array['type'] == "hidden"){
             $options .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
             $html .=sprintf($form_control,$options,$inner);
          }else{
+            //dojo data-dojo-props (to put placeholder and more)
+				$data_dojo_props	="";
+				if(isset($field_array['data-dojo-props'])){
+					$data_dojo_props	=$field_array['data-dojo-props'];
+				}elseif(isset($field_array['label'])){
+					$data_dojo_props	="data-dojo-props=\"placeHolder:'".$field_array['label']."'\"";
+				}elseif(isset($field_array['title'])){
+					$data_dojo_props	="data-dojo-props=\"placeHolder:'".$field_array['title']."'\"";
+				}
+         
+            $options ="\njsId='$field'\nid='$field'\n$data_dojo_props\n";
+         
+            /*Fields to bypass when creating forms*/
+            $bypass=array('default','isolate','inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder','checked_fields','tooltip');
+         
+            //If tooltip is set bypass title
+            if(isset($field_array['tooltip'])){
+               $bypass[]='title';
+            }elseif(!isset($field_array['tooltip']) && isset($field_array['label'])){
+               $field_array['title']=$field_array['label'];
+            }
+         
+            //all paremeters will be inserted to the options string other than thos to be bypassed
+            foreach($field_array as $key => $value){
+               if(!in_array($key,$bypass)){
+                  $options.=$key."='$value'\n";
+               }
+            }
 
             //Set style and length of the field
             $style ="";
@@ -498,8 +508,21 @@ function get_csv(){
                $options .="style='".$style."'";
             }
 
-            //combining the dojo type mapping in above array with the generated content
-            $html            .=sprintf($form_control,$options,$inner);
+            //Add label to the endo of the checkboxes  and radio buttons
+            if(in_array($field_array['dojoType'] ,array('dijit.form.CheckBox','dijit.form.RadioButton'))){
+               $html .=sprintf($form_control,$options,"<label for='$field' style='padding-left:0px'>".$field_array['label']."</label>");
+            }else{
+               //combining the dojo type mapping in above array with the generated content
+               $html .=sprintf($form_control,$options,$inner);
+            }
+
+            /*if tooltip is set add tooltip */
+            $tooltip      ="";
+            if(isset($field_array['tooltip']) && $field_array['tooltip'] != ""){
+               $tooltip="<div dojoType='dijit.Tooltip' id='tooltip_".$field."' connectId='$field'>\n<div style='max-width:400px;text-align:justify'>\n".$field_array['tooltip']."\n</div>\n</div>\n";
+            }
+
+            $html .=$tooltip;
          }
       }
       if(
