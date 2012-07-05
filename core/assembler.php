@@ -22,7 +22,6 @@ if($GLOBALS['LAYOUT']=='pub'){
    }
 }
 
-
 //Main file contains the module+page specific features and outputs which will affect the view 
 add_to_main_top($main);
 
@@ -152,6 +151,8 @@ case 'app2':
 
    //Tool bar for web/app layouts
    add_to_toolbar(A_CORE."/toolbar.php");
+break;
+case 'clean':
 break;
 
 }

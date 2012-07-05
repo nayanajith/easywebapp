@@ -268,9 +268,66 @@ function set_param(key,value) {
    });
 }   
 
+/**
+Get xhr html data from backend and put them in main_body, parse and refresh the content
+@source_array: array of input field ids which are required to send with the request
+*/
+function reload_main(source_array) {
+   
+   var param='';   
+   var url=gen_url();
+   if(source_array != null){
+      for(var i=0;i< source_array.length;i++){
+         alert(source_array[i]);
+         var tmp_val   =dijit.byId(source_array[i]).get('value');
+         if(tmp_val=='')return;
+         param+='&'+source_array[i]+'='+tmp_val;
+      }
+   }
+
+   //Update the progress bar 
+   update_status_bar('OK','Processing...');
+   update_progress_bar(10);
+
+   //If index number is blank return 
+   dojo.xhrPost({
+      url      : url,
+      content  : {form:'main',data:'json',action:'html'+param},
+      handleAs :'text',
+      timeout  : timeout_,
+      load     : function(response, ioArgs) {        
+         //Id of the data body
+         var data_body   =dijit.byId('data_body');
+
+         //Delete the MAIN and anything inside
+         var main_area = dijit.byId('MAIN');
+         if (main_area) {
+               main_area.destroyRecursive(true);
+         }
+
+         //Put the html content in data_body
+         data_body.innerHTML=response;
+
+         //parse the dojo content of the new code
+         dojo.parser.parse(data_body);
+
+         data_body.refresh(); 
+
+         update_status_bar('OK','Done');
+         update_progress_bar(100);
+      },
+      error : function(response, ioArgs) {
+         update_status_bar('ERROR',response);
+      }
+   });
+}
+
 
 /**
 request html from the backend
+@target: target ID
+@source_array array of IDs of input fields which should be submitted
+@action_ probably html or any
 */
 function request_html(target,source_array,action_) {
    var content_obj   =document.getElementById(target);
@@ -377,7 +434,8 @@ function reload_page(){
       return;
    }
 
-   setTimeout('window.location.reload()',2000); 
+   //setTimeout('window.location.reload()',2000); 
+   setTimeout('MAIN.refresh()',2000); 
    setTimeout('update_status_bar("OK","Reloading page...")',2000);
    halt_page_reloading==true;
 }

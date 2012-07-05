@@ -217,7 +217,6 @@ if(isset($_REQUEST['data']) || (isset($_REQUEST['action']) )){
    $GLOBALS['DATA']=true;
 }
 
-
 /*----------------------execute data/print request----------------------------*/
 //CSV generation request sent to particular page and stop further execution in this page
 if($GLOBALS['DATA']||$GLOBALS['PRINT']){
@@ -227,7 +226,10 @@ if($GLOBALS['DATA']||$GLOBALS['PRINT']){
    if(isset($_REQUEST['mod_tree']) && $_REQUEST['mod_tree'] == 'true'){
       include A_CORE."/manage_module.php";
    }else{
-      include A_MODULES."/".MODULE."/".PAGE.".php";
+      //include A_MODULES."/".MODULE."/".PAGE.".php";
+      $GLOBALS['LAYOUT']='clean';
+      include A_CORE."/assembler.php";
+      include A_CORE."/".$GLOBALS['LAYOUT']."_layout.php";
    }
    return;
 }
