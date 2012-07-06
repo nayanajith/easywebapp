@@ -223,13 +223,15 @@ if($GLOBALS['DATA']||$GLOBALS['PRINT']){
    /*Disable any worning or error messages while providing data*/
    //ini_set('display_errors',0);
    //Special case to retrieve the json for the tree menu
+
    if(isset($_REQUEST['mod_tree']) && $_REQUEST['mod_tree'] == 'true'){
       include A_CORE."/manage_module.php";
-   }else{
-      //include A_MODULES."/".MODULE."/".PAGE.".php";
-      $GLOBALS['LAYOUT']='clean';
+   }elseif(isset($_REQUEST['action']) && $_REQUEST['action']=='html'){
+    	$GLOBALS['LAYOUT']='clean';
       include A_CORE."/assembler.php";
       include A_CORE."/".$GLOBALS['LAYOUT']."_layout.php";
+	}else{
+      include A_MODULES."/".MODULE."/".PAGE.".php";
    }
    return;
 }

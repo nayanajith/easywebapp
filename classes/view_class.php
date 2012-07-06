@@ -331,24 +331,7 @@ class View{
       d_r('dijit.form.CheckBox');
       d_r('dijit.form.DropDownButton');
       d_r('dojo.query');
-      js("
-function get_csv(){
-   var field_list=new Array();
-	nodes = dojo.query('table#csv__table input[type=checkbox]'); 
-   dojo.forEach(nodes,function(node){
-      if(dijit.getEnclosingWidget(node).get(\"checked\") == true){
-	      field_list.push(node.value);
-      }
-   });
-
-	var comma='';
-	var list	='';
-	for(var key in field_list){
-		list+=comma+field_list[key];
-		comma=',';
-	}
-   submit_form('csv',list);
-}");
+		//NOTE: related javascript function available in js/common.js
 
       $csv_inner="
 <span>CSV</span>

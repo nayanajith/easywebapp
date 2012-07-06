@@ -41,6 +41,7 @@ var timeout_ = 100*1000;
  */
 function reloading_on(){
    halt_page_reloading=false;
+	//MAIN.set('href',gen_url()+"data=html&section=main");
 }
 
 /**
@@ -434,9 +435,14 @@ function reload_page(){
       return;
    }
 
-   //setTimeout('window.location.reload()',2000); 
-   setTimeout('MAIN.refresh()',2000); 
-   setTimeout('update_status_bar("OK","Reloading page...")',2000);
+	if(MAIN.get('href')){
+   	update_status_bar("OK","Reloading page...");
+   	MAIN.refresh(); 
+   	update_status_bar("OK","Page reloaded");
+	}else{
+   	setTimeout('window.location.reload()',200); 
+   	setTimeout('update_status_bar("OK","Reloading page...")',200);
+	}
    halt_page_reloading==true;
 }
 
@@ -564,7 +570,6 @@ function submit_form(action,param1,param2){
       });
       return;
    }
-
 
    if (action=='delete' || action=='add_filter' || action=='add_backup' || action=='del_backup' || dijit.byId(form).validate()) {
       dojo.xhrPost({
@@ -1154,4 +1159,22 @@ function change_program(program,desc){
    if(confirm('Press OK to confirm scheme change to '+desc)){
       open(URL,'_self');
    }   
+}
+
+function get_csv(){
+   var field_list=new Array();
+	nodes = dojo.query('table#csv__table input[type=checkbox]'); 
+   dojo.forEach(nodes,function(node){
+      if(dijit.getEnclosingWidget(node).get("checked") == true){
+	      field_list.push(node.value);
+      }
+   });
+
+	var comma='';
+	var list	='';
+	for(var key in field_list){
+		list+=comma+field_list[key];
+		comma=',';
+	}
+   submit_form('csv',list);
 }

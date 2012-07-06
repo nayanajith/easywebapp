@@ -114,7 +114,8 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <!--end TOP box of BorderContainer-2 (BorderContainer-3)-->
 
                   <!--CENTER box of BorderContainer-2-->
-                  <div dojoType="dijit.layout.ContentPane" region="center"  jsId='MAIN' class="bgBottom" style="padding:5px;" href="<?php gen_url()?>?data=html&section=main" action="post">
+                  <!-- div dojoType="dijit.layout.ContentPane" region="center"  jsId='MAIN' class="bgBottom" style="padding:5px;" href="<?php gen_url()?>?data=html&section=main" action="post"  -->
+                  <div dojoType="dijit.layout.ContentPane" region="center"  jsId='MAIN' class="bgBottom" style="padding:5px;" action="post">
 <!--________________________start data_body area_____________________________-->
                      <!--design:headline,sidebar -->
                      <div dojoType="dijit.layout.BorderContainer" style="padding:0px;"  gutters="false" design="headline" style="width:100%;height:100%">
