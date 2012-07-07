@@ -43,7 +43,8 @@ d_r('dijit.form.Button');
       }
       <?php if($GLOBALS['LAYOUT']!='pub'){ ?>
       /*If the message too lengthy show it as a dialog*/
-      var status_bar = document.getElementById('status_bar') ;
+      //var status_bar = document.getElementById('STATUSBAR') ;
+      var status_bar = STATUSBAR;
       if(info.length < max_status_length){
          status_bar.innerHTML=info;
          status_bar.title=orig_info;

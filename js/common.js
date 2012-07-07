@@ -434,7 +434,13 @@ function reload_page(){
    if(halt_page_reloading==true){
       return;
    }
-
+   //var sections=[TOOLBAR_TOP,MENUBAR,TOOLBAR,STATUSBAR,MAIN];
+   var sections=[TOOLBAR,MAIN];
+   for(var i in sections){
+      var section=sections[i];
+   	section.refresh(); 
+   }
+   /*
 	if(MAIN.get('href')){
    	update_status_bar("OK","Reloading page...");
    	MAIN.refresh(); 
@@ -443,6 +449,7 @@ function reload_page(){
    	setTimeout('window.location.reload()',200); 
    	setTimeout('update_status_bar("OK","Reloading page...")',200);
 	}
+   */
    halt_page_reloading==true;
 }
 
@@ -860,9 +867,9 @@ function fill_form(rid,form) {
             if(dijit.byId(key) && (response[key] == '' || response[key] =='null' || response[key] =='NULL' || response[key] == null)){
                var widget=dijit.byId(key);
                if(widget.store){
-                  widget.attr('value', 'NULL');
+                  widget.set('value', 'NULL');
                }else{
-                  widget.attr('value', null);
+                  widget.set('value', null);
                }
             }
 
@@ -1085,17 +1092,19 @@ function get_url_value( name , url){
    var regexS  = "<?php echo $GLOBALS['PAGE_GEN'] ?>/.*";
    var regex   = new RegExp( regexS );
    var results = regex.exec( url );
-   var mpp     = results[0].split("/");
-   switch(name){
-   case 'module':
-      return mpp[1];
-   break;
-   case 'page':
-      return mpp[2];
-   break;
-   case 'program':
-      return mpp[3];
-   break;
+   if(results){
+      var mpp     = results[0].split("/");
+      switch(name){
+      case 'module':
+         return mpp[1];
+      break;
+      case 'page':
+         return mpp[2];
+      break;
+      case 'program':
+         return mpp[3];
+      break;
+      }
    }
 }
 
@@ -1133,22 +1142,41 @@ function gen_url(module,page,program){
       program="/"+program;
    }
 
-   return page_gen+"/"+module+"/"+page+program+"?";
+   //return page_gen+"/"+module+"/"+page+program+"?";
+   return page_gen+"?";
 }
 
 /**
  * Load specific page in a module
  */
 function load_page(module,page,program){
-   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
+   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN'] ?>';
    if(program == '' || program == null || program ==undefined){
       program='';
    }else{
       program='/'+program;
    }
    if(page == '' || page == null)page='';
-   window.open(page_gen+'/'+module+'/'+page+program,'_parent');
+
+   //app2 layout have special section loading facility so setting the program,module, and page using xhr is enough
+   if('<?php echo $_SESSION['LAYOUT'] ?>'=='app2'){
+      dojo.xhrPost({
+         url      : page_gen+'/'+module+'/'+page+program, 
+         handleAs :'text',
+         handle: function(response){
+         },
+         load: function(response) {
+            reload_page();
+         }, 
+         error: function(response,ioArgs) {
+            update_status_bar('ERROR','Error on submission!');
+         }
+      });
+   }else{
+      window.open(page_gen+'/'+module+'/'+page+program,'_parent');
+   }
 }
+
 
 /**
  * change the effective program since

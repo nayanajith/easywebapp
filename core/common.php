@@ -984,7 +984,8 @@ function gen_url($module=null,$page=null,$program=null){
    }else{
       $program="";
    }
-   return W_ROOT."/".$GLOBALS['PAGE_GEN']."/".$module."/".$page.$program."?";
+   //return W_ROOT."/".$GLOBALS['PAGE_GEN']."/".$module."/".$page.$program."?";
+   return W_ROOT."/".$GLOBALS['PAGE_GEN']."?";
 }
 
 

@@ -12,7 +12,6 @@ $GLOBALS['PAGE']=array(
 */
 
 
-
 include_once A_CLASSES."/model_class.php";
 
 //include_once A_MODULES."/".MODULE."/".$GLOBALS['PAGE']['name']."_mdl.php";
@@ -108,7 +107,7 @@ if(isset($_REQUEST['form'])){
                $model->gen_csv($field_list);
             }
          break;
-         case 'js':
+         case 'js_d':
             if(isset($GLOBALS['VIEW']['DYNAMIC_JS'])){
                echo $GLOBALS['VIEW']['DYNAMIC_JS'];
             }

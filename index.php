@@ -121,6 +121,17 @@ if(array_key_exists('PATH_INFO', $_SERVER)) {
    }
 }
 
+//Recall the session program,module,page and set if user does not set them in request
+if(isset($_SESSION['program']) && (!isset($_REQUEST['program']) || $_REQUEST['program'] == '' )){
+   $_REQUEST['program'] =$_SESSION['program'];
+}
+if(isset($_SESSION['module']) && (!isset($_REQUEST['module']) || $_REQUEST['module'] == '')){
+   $_REQUEST['module']  =$_SESSION['module'];
+}
+if(isset($_SESSION['page']) && (!isset($_REQUEST['page']) || $_REQUEST['page'] == '')){
+   $_REQUEST['page']    =$_SESSION['page'];
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /*--------------------------validate module request---------------------------*/
@@ -136,9 +147,13 @@ if (!isset($module)){
    }
    if (isset($_REQUEST['module']) && is_module_permitted($_REQUEST['module'])){
       $module = $_REQUEST['module'];
+      //Module will keep in session to allow user to send requests without provideing module
+      $_SESSION['module']=$module;
 /*---------------------------validate page request----------------------------*/
       if (isset($_REQUEST['page']) && is_page_permitted($module,$_REQUEST['page'])){
          $page = $_REQUEST['page'];
+         //Page will keep in session to allow userto send requests without provindeing module
+         $_SESSION['page']=$page;
       }else{
          $page = '';
       }
@@ -148,6 +163,7 @@ if (!isset($module)){
       foreach($GLOBALS['MODULES'] as $mod => $arr){
          if(is_module_permitted($mod)){
             $module = $mod;
+            $_SESSION['module']=$module;
             break;   
          }
       }
@@ -187,8 +203,12 @@ if (!isset($program)){
    global $program;
    if (isset($_REQUEST['program']) && $_REQUEST['program'] != ''){
       $program = $_REQUEST['program'];
+      //Keep the program in session to allow userto send program less requests
+      $_SESSION['program']=$program;
    }elseif(isset($programs)){
       $program = $programs[key($programs)];
+      //Keep the program in session to allow userto send program less requests
+      $_SESSION['program']=$program;
    }
 }
 
@@ -215,41 +235,6 @@ if (isset($_REQUEST['print']) && $_REQUEST['print']=='true'){
 $GLOBALS['DATA']=false;
 if(isset($_REQUEST['data']) || (isset($_REQUEST['action']) )){
    $GLOBALS['DATA']=true;
-}
-
-/*----------------------execute data/print request----------------------------*/
-//CSV generation request sent to particular page and stop further execution in this page
-if($GLOBALS['DATA']||$GLOBALS['PRINT']){
-   /*Disable any worning or error messages while providing data*/
-   //ini_set('display_errors',0);
-   //Special case to retrieve the json for the tree menu
-
-   if(isset($_REQUEST['mod_tree']) && $_REQUEST['mod_tree'] == 'true'){
-      include A_CORE."/manage_module.php";
-   }elseif(isset($_REQUEST['action']) && $_REQUEST['action']=='html'){
-    	$GLOBALS['LAYOUT']='clean';
-      include A_CORE."/assembler.php";
-      include A_CORE."/".$GLOBALS['LAYOUT']."_layout.php";
-	}else{
-      include A_MODULES."/".MODULE."/".PAGE.".php";
-   }
-   return;
-}
-
-/*---------------------------Check for help request---------------------------*/
-$GLOBALS['NOTIFY']=false;
-if ($GLOBALS['DATA'] && $_REQUEST['action']=='notify'){
-   $GLOBALS['NOTIFY']=true;
-   include A_CORE."/notify.php";
-   return;
-}
-
-/*---------------------------Check for help request---------------------------*/
-$GLOBALS['HELP']=false;
-if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
-   $GLOBALS['HELP']=true;
-   include A_CORE."/help_layout.php";
-   return;
 }
 
 /*-------------------------get and set group theme and layout ----------------*/
@@ -280,6 +265,44 @@ if(isset($_SESSION['user_id'])){
 
 /*custom layout can be set from url for testing*/
 $GLOBALS['LAYOUT']=isset($_REQUEST['layout'])?$_REQUEST['layout']:$GLOBALS['LAYOUT'];
+$_SESSION['LAYOUT']=$GLOBALS['LAYOUT'];
+
+/*---------------------------returning commonjs file--------------------------*/
+if ($GLOBALS['DATA'] && $_REQUEST['action']=='js'){
+   include A_JS."/common.js";
+   return;
+}
+
+/*---------------------------Check for help request---------------------------*/
+$GLOBALS['NOTIFY']=false;
+if ($GLOBALS['DATA'] && $_REQUEST['action']=='notify'){
+   $GLOBALS['NOTIFY']=true;
+   include A_CORE."/notify.php";
+   return;
+}
+
+/*----------------------execute data/print request----------------------------*/
+//CSV generation request sent to particular page and stop further execution in this page
+if($GLOBALS['DATA']||$GLOBALS['PRINT']){
+   /*Disable any worning or error messages while providing data*/
+   //ini_set('display_errors',0);
+   //Special case to retrieve the json for the tree menu
+
+   if(isset($_REQUEST['mod_tree']) && $_REQUEST['mod_tree'] == 'true'){
+      include A_CORE."/manage_module.php";
+	}else{
+      include A_MODULES."/".MODULE."/".PAGE.".php";
+   }
+   return;
+}
+
+/*---------------------------Check for help request---------------------------*/
+$GLOBALS['HELP']=false;
+if (isset($_REQUEST['help']) && $_REQUEST['help']=='true'){
+   $GLOBALS['HELP']=true;
+   include A_CORE."/help_layout.php";
+   return;
+}
 
 
 /*---------------------Redirect if requested in session------------------------*/
@@ -302,7 +325,6 @@ include A_CORE."/assembler.php";
 if(COMPRESS=='YES'){
    ob_start('ob_gzhandler');
 }
-
 /*---------------------include layout web,app or pub--------------------------*/
 include A_CORE."/".$GLOBALS['LAYOUT']."_layout.php";
 
