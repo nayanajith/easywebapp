@@ -20,7 +20,51 @@ djConfig = {
 <script src="<?php echo JS; ?>/dojox/ucscis.js" type='text/javascript'></script>
 <script src="<?php echo gen_url() ?>action=js&form=main" type='text/javascript'></script>
 <script src="<?php echo gen_url() ?>action=js_d&form=main" type='text/javascript'></script>
+
+
 <?php
+d_r("dijit.MenuBar");
+d_r("dijit.Menu");
+d_r("dijit.MenuItem");
+d_r("dijit.PopupMenuBarItem");
+d_r("dijit.DropDownMenu");
+d_r("dijit.layout.ContentPane");
+d_r("dijit.Toolbar");
+d_r('dijit.form.NumberTextBox');
+d_r('dijit.form.ValidationTextBox');
+d_r('dijit.form.Select');
+d_r('dojox.data.QueryReadStore');
+d_r('dijit.form.FilteringSelect');
+d_r('dijit.form.DateTextBox');
+d_r('dijit.form.TimeTextBox');
+d_r('dijit.form.Form');
+d_r('dijit.TooltipDialog');
+d_r('dijit.form.CheckBox');
+d_r('dijit.form.DropDownButton');
+d_r('dojo.query');
+d_r('dojox.widget.PlaceholderMenuItem');
+d_r('dojox.grid.EnhancedGrid');
+d_r('dojox.grid.enhanced.plugins.Pagination');
+d_r('dojox.grid.enhanced.plugins.NestedSorting');
+d_r('dojox.grid.enhanced.plugins.Printer');
+d_r('dojox.grid.enhanced.plugins.exporter.CSVWriter');
+d_r('dojox.grid.enhanced.plugins.exporter.TableWriter');
+d_r('dojox.data.JsonRestStore');
+d_r('dijit.ProgressBar');
+d_r('dijit.Dialog');
+d_r('dijit.form.Button');
+d_r('dijit.Toolbar');
+d_r('dijit.layout.BorderContainer');
+d_r('dijit.MenuBar');
+d_r('dijit.Menu');
+d_r('dijit.MenuItem');
+d_r('dijit.PopupMenuBarItem');
+d_r('dijit.DropDownMenu');
+d_r('dijit.layout.ContentPane');
+d_r('dijit.form.NumberSpinner');
+d_r('dijit.form.SimpleTextarea');
+d_r('dojo.cookie');
+d_r('dojo.parser');
 
 
 /*call this function in page where you want to parse dojo javascript*/

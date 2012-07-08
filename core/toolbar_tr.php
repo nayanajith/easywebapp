@@ -1,12 +1,16 @@
-<?php if (trim($GLOBALS['view']['NOTIFY']) != ''){ ?>
-<div dojoType="dijit.form.DropDownButton" iconClass="notifyIconRed" showLabel="false" >
-  <span >Notification</span>
-  <div dojoType="dijit.TooltipDialog" style="width:200px;">
-      <?php echo $GLOBALS['view']['NOTIFY'] ?>
-      <br><button dojoType="dijit.form.Button" type="submit">OK</button>
+<div dojoType="dijit.form.DropDownButton" iconClass="notifyIcon" showLabel="true" id='notify_ddb' >
+  <span ></span>
+  <div 
+   dojoType="dijit.TooltipDialog" 
+   style="max-width:300px;overflow:wrap" 
+   jsId='notify_ttd' 
+   loadingMessage="" 
+   refreshOnShow=true 
+   preventCache=true 
+   href="<?php echo gen_url() ?>section=NOTIFY">
+      <!-- content will load dynamically -->
   </div>
 </div>
-<?php } ?>
 
 <?php
 d_r("dijit.form.Button");
@@ -30,4 +34,3 @@ echo $GLOBALS['VIEW']['PROGRAM'];
      <input dojoType="dijit.form.TextBox" id="hobby" name="hobby"><button dojoType="dijit.form.Button" type="submit">Find</button>
   </div>
 </div>
-

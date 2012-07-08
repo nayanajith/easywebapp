@@ -9,6 +9,6 @@ d_r("dijit.form.DropDownButton");
         <div dojoType="dijit.MenuItem" onClick="show_xhr_dialog('?module=home&page=about_framework&data=dojo','About',400,320,true)" iconClass="<?php echo get_icon_class('Documents'); ?>">About Framework</div>
     </div>
 </div>
-<button dojoType="dijit.form.Button" style="font-weight:bold;color:gray" iconClass="<?php echo get_icon_class('Package') ?>">
+<button dojoType="dijit.form.Button" style="font-weight:bold;color:gray" id="breadcrumb" iconClass="<?php echo get_icon_class('Package') ?>">
 <?php  echo module_name(MODULE)." / ".page_name(PAGE) ?>
 </button>

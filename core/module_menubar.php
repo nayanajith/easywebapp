@@ -13,13 +13,11 @@ foreach($modules_array as $module => $pages){
 
    /*Active module is selected*/
    if(MODULE == $module){
-      echo "<div dojoType='dijit.PopupMenuBarItem' style='font-weight:bold;'>
-         <span>".$module_label."</span>
-         <div dojoType='dijit.Menu' id='menubar__".$module."'>\n";
+      echo "<div dojoType='dijit.PopupMenuBarItem' style='font-weight:bold;' id='menu__".$module."' label='".$module_label."' title='".$module_label."' showTitle='true' tooltip='tt'>
+         <div dojoType='dijit.Menu'>\n";
    }else{
-    echo "<div dojoType='dijit.PopupMenuBarItem'>
-         <span>".$module_label."</span>
-         <div dojoType='dijit.Menu' id='menubar__".$module."'>\n";
+    echo "<div dojoType='dijit.PopupMenuBarItem' id='menu__".$module."' label='".$module_label."' showTitle='true' tooltip='tt' title='".$module_label."'>
+         <div dojoType='dijit.Menu'>\n";
    }
 
    /*Add a tab inside the nested tab continer for each page*/
@@ -42,7 +40,7 @@ foreach($modules_array as $module => $pages){
            ".$name." 
          </div>$tooltip\n";
       }else{
-         echo "<div dojoType='dijit.MenuItem' id='".$module."__$page' onClick=\"load_page('".$module."','".$page."','".PROGRAM."')\">
+         echo "<div dojoType='dijit.MenuItem' id='".$module."__$page' onClick=\"p_m_p('".$module."','".$page."','".PROGRAM."')\">
            ".$name." 
          </div>$tooltip\n";
       }

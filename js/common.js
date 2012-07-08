@@ -270,61 +270,6 @@ function set_param(key,value) {
 }   
 
 /**
-Get xhr html data from backend and put them in main_body, parse and refresh the content
-@source_array: array of input field ids which are required to send with the request
-*/
-function reload_main(source_array) {
-   
-   var param='';   
-   var url=gen_url();
-   if(source_array != null){
-      for(var i=0;i< source_array.length;i++){
-         alert(source_array[i]);
-         var tmp_val   =dijit.byId(source_array[i]).get('value');
-         if(tmp_val=='')return;
-         param+='&'+source_array[i]+'='+tmp_val;
-      }
-   }
-
-   //Update the progress bar 
-   update_status_bar('OK','Processing...');
-   update_progress_bar(10);
-
-   //If index number is blank return 
-   dojo.xhrPost({
-      url      : url,
-      content  : {form:'main',data:'json',action:'html'+param},
-      handleAs :'text',
-      timeout  : timeout_,
-      load     : function(response, ioArgs) {        
-         //Id of the data body
-         var data_body   =dijit.byId('data_body');
-
-         //Delete the MAIN and anything inside
-         var main_area = dijit.byId('MAIN');
-         if (main_area) {
-               main_area.destroyRecursive(true);
-         }
-
-         //Put the html content in data_body
-         data_body.innerHTML=response;
-
-         //parse the dojo content of the new code
-         dojo.parser.parse(data_body);
-
-         data_body.refresh(); 
-
-         update_status_bar('OK','Done');
-         update_progress_bar(100);
-      },
-      error : function(response, ioArgs) {
-         update_status_bar('ERROR',response);
-      }
-   });
-}
-
-
-/**
 request html from the backend
 @target: target ID
 @source_array array of IDs of input fields which should be submitted
@@ -434,12 +379,8 @@ function reload_page(){
    if(halt_page_reloading==true){
       return;
    }
-   //var sections=[TOOLBAR_TOP,MENUBAR,TOOLBAR,STATUSBAR,MAIN];
-   var sections=[TOOLBAR,MAIN];
-   for(var i in sections){
-      var section=sections[i];
-   	section.refresh(); 
-   }
+   var sections=[TOOLBAR_TOP,MENUBAR,TOOLBAR,STATUSBAR,MAIN];
+   reload_sections(sections);
    /*
 	if(MAIN.get('href')){
    	update_status_bar("OK","Reloading page...");
@@ -451,6 +392,38 @@ function reload_page(){
 	}
    */
    halt_page_reloading==true;
+}
+
+/**
+ * Reload set of sections as requested in the array
+ */
+function reload_sections(sections){
+   for(var i in sections){
+      var section=sections[i];
+	   if(section.get('href')){
+         section.parseOnLoad=false;
+   	   section.refresh(); 
+         section.parseOnLoad=true;
+      }
+   }
+}
+
+function reload_main(){
+   reload_sections([MAIN]);
+}
+
+function reload_toolbar(){
+   reload_sections([TOOLBAR]);
+}
+
+function reload_menubar(){
+   reload_sections([MENUBAR]);
+}
+function reload_toolbar_top(){
+   reload_sections([TOOLBAR_TOP]);
+}
+function reload_toolbar_top(){
+   reload_sections([TOOLBAR_TOP]);
 }
 
 /*
@@ -1147,6 +1120,83 @@ function gen_url(module,page,program){
 }
 
 /**
+ * Set Program module and page
+ */
+dojo.require('dojo.cookie');
+dojo.cookie('program', '<?php echo PROGRAM ?>', {expires: 10});
+dojo.cookie('module', '<?php echo MODULE ?>', {expires: 10});
+dojo.cookie('page', '<?php echo PAGE ?>', {expires: 10});
+
+function p_m_p(module,page,program){
+   
+   //How to clean all
+   /*
+   dojo.query("#menubar > div > *").forEach(function(node, index, arr){
+      dojo.style(node,{
+         "fontWeight":"normal"
+      });
+   });
+   dojo.query("#menubar > div > div > *").forEach(function(node, index, arr){
+      dojo.style(node,{
+         "fontWeight":"normal"
+      });
+   });
+   */
+   //Get previouse pmp
+   var prid_old=dojo.cookie('program');
+   var mid_old =dojo.cookie('module');
+   var pid_old =dojo.cookie('page');
+
+   pid_old=mid_old+'__'+pid_old;
+   mid_old='menu__'+mid_old;
+
+   //Clear(normal font) previuse selection
+   dojo.style(mid_old,{"fontWeight":"normal"});
+   dojo.style(pid_old,{"fontWeight":"normal"});
+
+   var mid='menu__'+module;
+   var pid=module+'__'+page;
+
+   //Set breadcrumb 
+   dijit.byId('breadcrumb').set('label',dijit.byId(mid).get('label')+" / "+dijit.byId(pid).get('label'));
+
+   //Set(bold font) current selection
+   dojo.style(mid,{"fontWeight":"bold"});
+   dojo.style(pid,{"fontWeight":"bold"});
+
+   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN'] ?>';
+   if(program == '' || program == null || program ==undefined){
+      program='';
+   }else{
+      program='/'+program;
+   }
+   if(page == '' || page == null)page='';
+
+   //app2 layout have special section loading facility so setting the program,module, and page using xhr is enough
+   if('<?php echo $_SESSION['LAYOUT'] ?>'=='app2'){
+      dojo.xhrPost({
+         url      : page_gen+'/'+module+'/'+page+program, 
+         handleAs :'text',
+         handle: function(response){
+         },
+         load: function(response) {
+            reload_sections([TOOLBAR,MAIN]);
+         }, 
+         error: function(response,ioArgs) {
+            update_status_bar('ERROR','Error on submission!');
+         }
+      });
+   }else{
+      window.open(page_gen+'/'+module+'/'+page+program,'_parent');
+   }
+
+   //Set cookie for pmp
+   dojo.cookie('program', program, {expires: 10});
+   dojo.cookie('module', module, {expires: 10});
+   dojo.cookie('page', page, {expires: 10});
+}
+
+/**
  * Load specific page in a module
  */
 function load_page(module,page,program){
@@ -1189,6 +1239,9 @@ function change_program(program,desc){
    }   
 }
 
+/**
+ * Select the relevant columns and regquest a csv includig the selected columns
+ */
 function get_csv(){
    var field_list=new Array();
 	nodes = dojo.query('table#csv__table input[type=checkbox]'); 
@@ -1205,4 +1258,117 @@ function get_csv(){
 		comma=',';
 	}
    submit_form('csv',list);
+}
+
+/**
+ *populate the related data in form when a row in the grid is clicked
+ */
+function load_grid_item(grid,event_key,selector_id,e){
+   var selectedValue = grid.store.getValue(grid.getItem(e.rowIndex),event_key);
+   load_selected_value(selector_id,selectedValue);
+}
+
+/**
+ * Array of functions to be polled
+ */
+var poll_function_array=[];
+
+/**
+ * wrapper function to add poll functions to array
+ */
+function p_f_add(callback_function,param){
+   var cb={'func':callback_function,'param':param};
+   poll_function_array.push(cb);
+}
+
+/**
+ * poll given set of functions
+ */
+var secs=5;
+var auto_save_timeout=secs*1000;
+var stop_auto_save=false;
+function poll(){
+  if(stop_auto_save){
+     return;
+  }
+  for(var i in poll_function_array){
+     var pf=poll_function_array[i];
+     pf['func'](pf['param']);
+  }
+  setTimeout('poll()',auto_save_timeout);
+}
+
+//--------------Starting poll function------------------
+poll();
+//--------------Starting poll function------------------
+
+/**
+ * Check for the available notifications and notify if available
+ */
+dojo.require("dojo.fx");
+dojo.require("dijit.popup");
+function notify(){
+   dojo.xhrPost({
+      url      :'?section=ISNOTIFY', 
+      handleAs :'json',
+      handle: function(response){
+      },
+      load: function(response) {
+         var notify_ddb=dijit.byId('notify_ddb');
+         if(response != null && response && response.count > 0){
+            //Set the the iconclass to notify red
+            notify_ddb.set('iconClass',"notifyIconRed");
+            
+            //Fade IN,OUT animation of the drop dowb box
+            dojo.fx.chain([
+               dojo.fadeOut({ 
+                  node: 'notify_ddb', 
+                  duration:1000,
+               }),
+               dojo.fadeIn({ 
+                  node: 'notify_ddb', 
+                  duration:1000,
+               })
+            ]).play();
+
+            //Set the count of notifications
+            notify_ddb.set('label',response.count);
+         
+            //Popup the tooltip automatically
+            /*
+            dijit.popup.open({
+               popup: notify_ttd,
+               around: dojo.byId('notify_ddb')
+            });
+            */
+         }else{
+            //Set the the iconclass to notify red
+            notify_ddb.set('iconClass',"notifyIcon");
+
+            //Set the count of notifications
+            notify_ddb.set('label','');
+
+            //Popup the tooltip automatically
+            /*
+            dijit.popup.close({
+               popup: notify_ttd,
+               around: dojo.byId('notify_ddb')
+            });
+            */
+         }
+      }, 
+      error: function(response,ioArgs) {
+      }
+   });
+   
+}
+
+//Add notification function to the poll
+//p_f_add(notify);
+
+/**
+ * Convert phrase to titlecase
+ */
+function to_title_case(str){
+   return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }

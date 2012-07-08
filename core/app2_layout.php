@@ -1,82 +1,94 @@
 <?php 
+//Return section wise content to the frontends xhr requests
 if(isset($_REQUEST['section'])){
    switch($_REQUEST['section']){
    case 'TOOLBAR_TOP':
       ?>
-            <div id='toolbar_top' jsId='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;'>
-               <table width="100%" cellpadding="0" cellspacing="0">
-                  <tr>
-                     <td width="30%">
+         <div id='toolbar_top' jsId='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;'>
+            <table width="100%" cellpadding="0" cellspacing="0">
+               <tr>
+                  <td width="30%">
+                     <?php
+                     echo $GLOBALS['VIEW']['TOOLBAR_TL'];
+                     ?>
+                  </td>
+                  <td width="40%"  align="center">
+                     <button dojoType="dijit.form.Button" style="font-size:14px;font-weight:bold">
+                     <img src="<?php echo $GLOBALS['LOGO']; ?>" height=30px>
+                     <?php echo $GLOBALS['TITLE']; ?>
+                     </button>
+                  </td>
+                  <td width="30%">
+                     <div style="float:right" >
                         <?php
-                        echo $GLOBALS['VIEW']['TOOLBAR_TL'];
+                        echo $GLOBALS['VIEW']['TOOLBAR_TR'];
                         ?>
-                     </td>
-                     <td width="40%"  align="center">
-                        <button dojoType="dijit.form.Button" style="font-size:14px;font-weight:bold">
-                        <img src="<?php echo $GLOBALS['LOGO']; ?>" height=30px>
-                        <?php echo $GLOBALS['TITLE']; ?>
-                        </button>
-                     </td>
-                     <td width="30%">
-                        <div style="float:right" >
-                           <?php
-                           echo $GLOBALS['VIEW']['TOOLBAR_TR'];
-                           ?>
-                        </div>
-                     </td>
-                  </tr>
-               </table>
-            </div>
+                     </div>
+                  </td>
+               </tr>
+            </table>
+         </div>
       <?php
    break;
    case 'MENUBAR':
-      echo "<div id='menubar' jsId='menubar' dojoType='dijit.MenuBar' style='height:26px;padding-left:1px;border-right:0px;border-left:0px;border-top:1px solid whitesmoke;'>";
+      echo "<div id='menubar' dojoType='dijit.MenuBar' style='height:26px;padding-left:1px;border-right:0px;border-left:0px;border-top:1px solid whitesmoke;'>";
       echo $GLOBALS['VIEW']['MENUBAR'];
       echo "</div>";
    break;
    case 'TOOLBAR':
-      echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar' onMouseOver='reloading_on();set_param_on();'>";
+      //echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar' onMouseOver='reloading_on();set_param_on();'>";
+      echo "<div id='toolbar' dojoType='dijit.Toolbar'>";
       echo $GLOBALS['VIEW']['TOOLBAR'];
       echo "</div>";
    break;
    case 'MAIN':
       ?>
-                  <!--design:headline,sidebar -->
-                  <div dojoType="dijit.layout.BorderContainer" style="padding:0px;"  gutters="false" design="headline" style="width:100%;height:100%">
-                        <?php if ($GLOBALS['VIEW']['MAIN_TOP'] != ""): ?>
-                        <div dojoType="dijit.layout.ContentPane" region="top" <?php echo get_layout_property('app2','MAIN_TOP'); ?>>
-                              <?php 
-                              echo $GLOBALS['VIEW']['MAIN_TOP'];
-                              ?>
-                        </div>
-                        <?php endif ?>
-                        <?php if ($GLOBALS['VIEW']['MAIN_LEFT'] != ""): ?>
-                        <div dojoType="dijit.layout.ContentPane" region="left" <?php echo get_layout_property('app2','MAIN_LEFT'); ?> >
-                              <?php 
-                              echo $GLOBALS['VIEW']['MAIN_LEFT'];
-                              ?>
-                        </div>
-                        <?php endif ?>
-                        <?php if ($GLOBALS['VIEW']['MAIN_RIGHT'] != ""): ?>
-                        <div dojoType="dijit.layout.ContentPane" region="right" <?php echo get_layout_property('app2','MAIN_RIGHT'); ?>>
-                              <?php 
-                              echo $GLOBALS['VIEW']['MAIN_RIGHT'];
-                              ?>
-                        </div>
-                        <?php endif ?>
-                        <?php if ($GLOBALS['VIEW']['MAIN_BOTTOM'] != ""): ?>
-                        <div dojoType="dijit.layout.ContentPane" region="bottom"  class="bgBottom" <?php echo get_layout_property('app2','MAIN_BOTTOM'); ?>>
-                              <?php 
-                              echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
-                              ?>
-                        </div>
-                        <?php endif ?>
-                    </div>
-
+         <div dojoType="dijit.layout.BorderContainer" style="padding:0px;"  gutters="false" design="headline" style="width:100%;height:100%">
+               <?php if ($GLOBALS['VIEW']['MAIN_TOP'] != ""): ?>
+               <div dojoType="dijit.layout.ContentPane" region="top" <?php echo get_layout_property('app2','MAIN_TOP'); ?>>
+                     <?php 
+                     echo $GLOBALS['VIEW']['MAIN_TOP'];
+                     ?>
+               </div>
+               <?php endif ?>
+               <?php if ($GLOBALS['VIEW']['MAIN_LEFT'] != ""): ?>
+               <div dojoType="dijit.layout.ContentPane" region="left" <?php echo get_layout_property('app2','MAIN_LEFT'); ?> >
+                     <?php 
+                     echo $GLOBALS['VIEW']['MAIN_LEFT'];
+                     ?>
+               </div>
+               <?php endif ?>
+               <?php if ($GLOBALS['VIEW']['MAIN_RIGHT'] != ""): ?>
+               <div dojoType="dijit.layout.ContentPane" region="right" <?php echo get_layout_property('app2','MAIN_RIGHT'); ?>>
+                     <?php 
+                     echo $GLOBALS['VIEW']['MAIN_RIGHT'];
+                     ?>
+               </div>
+               <?php endif ?>
+               <?php if ($GLOBALS['VIEW']['MAIN_BOTTOM'] != ""): ?>
+               <div dojoType="dijit.layout.ContentPane" region="bottom"  class="bgBottom" <?php echo get_layout_property('app2','MAIN_BOTTOM'); ?>>
+                     <?php 
+                     echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
+                     ?>
+               </div>
+               <?php endif ?>
+           </div>
       <?php
    break;
    case 'STATUSBAR':
       echo $GLOBALS['VIEW']['STATUSBAR'];
+   break;
+   case 'NOTIFY':
+      echo date("d-m-y:H:M:S ");
+      echo date("d-m-y:H:M:S ");
+      echo date("d-m-y:H:M:S ");
+      echo date("d-m-y:H:M:S ");
+      echo date("d-m-y:H:M:S ");
+      echo date("d-m-y:H:M:S ");
+      //echo "<div align='right'><button dojoType='dijit.form.Button' iconClass='".get_icon_class('Delete')."' showLabel=false type='submit'>OK</button></div>";
+   break;
+   case 'ISNOTIFY':
+      echo "{'count':'3'}";
    break;
    }
 return;
@@ -192,47 +204,6 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
       <!--end of the BorderContainer-1 -->
 <!--_______________________________parse dojo________________________________-->
       <?php 
-      d_r("dijit.MenuBar");
-      d_r("dijit.Menu");
-      d_r("dijit.MenuItem");
-      d_r("dijit.PopupMenuBarItem");
-      d_r("dijit.DropDownMenu");
-      d_r("dijit.layout.ContentPane");
-      d_r("dijit.Toolbar");
-      d_r('dijit.form.NumberTextBox');
-      d_r('dijit.form.ValidationTextBox');
-      d_r('dijit.form.Select');
-      d_r('dojox.data.QueryReadStore');
-      d_r('dijit.form.FilteringSelect');
-      d_r('dijit.form.DateTextBox');
-      d_r('dijit.form.TimeTextBox');
-      d_r('dijit.form.Form');
-      d_r('dijit.TooltipDialog');
-      d_r('dijit.form.CheckBox');
-      d_r('dijit.form.DropDownButton');
-      d_r('dojo.query');
-      d_r('dojox.widget.PlaceholderMenuItem');
-      d_r('dojox.grid.EnhancedGrid');
-      d_r('dojox.grid.enhanced.plugins.Pagination');
-      d_r('dojox.grid.enhanced.plugins.NestedSorting');
-      d_r('dojox.grid.enhanced.plugins.Printer');
-      d_r('dojox.grid.enhanced.plugins.exporter.CSVWriter');
-      d_r('dojox.grid.enhanced.plugins.exporter.TableWriter');
-      d_r('dojox.data.JsonRestStore');
-      d_r('dijit.ProgressBar');
-      d_r('dijit.Dialog');
-      d_r('dijit.form.Button');
-      d_r('dijit.Toolbar');
-      d_r('dijit.layout.BorderContainer');
-      d_r('dijit.MenuBar');
-      d_r('dijit.Menu');
-      d_r('dijit.MenuItem');
-      d_r('dijit.PopupMenuBarItem');
-      d_r('dijit.DropDownMenu');
-      d_r('dijit.layout.ContentPane');
-      d_r('dojo.parser');
-      d_r('dijit.form.NumberSpinner');
-
       parse_dojo(); 
       ?>
    </body>

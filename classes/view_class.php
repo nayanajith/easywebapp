@@ -695,7 +695,7 @@ plugins=\'{
           */
 
          /*Fields to bypass when creating forms*/
-         $bypass=array('filter','rowSelector','columns','selector_id','ref_table','ref_key','event_key','sql');
+         $bypass=array('filter','rowSelector','columns','selector_id','ref_table','ref_key','event_key','sql','onClick');
 
          /*all paremeters will be inserted to the options string*/
          foreach($grid as $key => $value){
@@ -765,11 +765,15 @@ plugins=\'{
          }
          $html.= "</tr>
       </thead>
+      <script type='dojo/on' data-dojo-event='click' data-dojo-args='evt'>
+        load_grid_item(".$grid['jsId'].",'".$grid['event_key']."',".$grid['selector_id'].",evt);
+      </script>
       </table>";
          if(!isset($grid['event_key'])){
             $grid['event_key']=get_pri_keys();
          }
 
+         /*
          if(isset($grid['selector_id'])){
             $html.= "
             <script type='text/javascript'>
@@ -779,6 +783,7 @@ plugins=\'{
             }
             </script>";
          }
+          */
          set_pviw_property(array('GRIDS',$grid_key),$html);
          if(!file_exists($this->view)){
             add_to_main_right($html); 
