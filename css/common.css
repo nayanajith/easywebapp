@@ -133,12 +133,12 @@ img {
    vertical-align:middle;
 }
 #loaderInner {
+   /*
    padding:2px;
    position:relative;
    width:155px;
    background:gray;
    color:#fff;
-   /*
    margin-top:200px;
    margin-left:auto;
    margin-right:auto;

@@ -64,6 +64,8 @@ d_r('dijit.layout.ContentPane');
 d_r('dijit.form.NumberSpinner');
 d_r('dijit.form.SimpleTextarea');
 d_r('dojo.cookie');
+d_r('dojox.form.PasswordValidator');
+d_r('dijit.form.ComboBox');
 d_r('dojo.parser');
 
 
@@ -93,7 +95,7 @@ dojo.addOnLoad(function() {
    console.info("Total parse time: " + (+new Date() - start) + "ms");
 
    /*print done and fade out the loading message and hide*/
-   dojo.byId('loaderInner').innerHTML += " done.";
+   //dojo.byId('loaderInner').innerHTML += " done.";
    setTimeout(function hideLoader(){
       dojo.fadeOut({ 
          node: 'loader', 

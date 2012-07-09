@@ -24,6 +24,8 @@ dojo.isBrowser+':'+
 dojo.isWebKit+':'+
 dojo.isChrome);
 */
+//path to page genenrator aka the controler php (index.php)
+var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
 
 //halt reloading the page or grid temporaly 
 var halt_page_reloading=true;
@@ -204,9 +206,8 @@ function copy_to_clipboard(object){
  * change the user using XHR requests in backend
  */
 function switch_user(value) {
-   var url=gen_url();
    dojo.xhrPost({
-         url      : url,
+         url      : page_gen+'/home/news', 
          content  : {form:'system',action:'switch_user',data:'json',user_id:value},
          handleAs : 'json',
          timeout  : timeout_,
@@ -389,7 +390,7 @@ function reload_page(){
    }
    var sections=['TOOLBAR_TOP','MENUBAR','TOOLBAR','STATUSBAR','MAIN_LEFT','MAIN_RIGHT','MAIN_BOTTOM','MAIN_TOP'];
    //var sections=['MAIN_LEFT','MAIN_RIGHT','MAIN_BOTTOM','MAIN_TOP'];
-	if(dijit.byId('MAIN_LEFT').get('href')){
+	if(dijit.byId('MAIN_LEFT').get('href') && false){
    	update_status_bar("OK","Reloading page...");
       reload_sections(sections);
    	update_status_bar("OK","Page reloaded");
@@ -1185,7 +1186,6 @@ function get_url_value_( name , url){
  * This returns the basic target from the url
  */
 function gen_url(module,page,program){
-   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN']; ?>';
    if(!module || module == null || module == ''){
       module        =get_request_value('module');
    }
