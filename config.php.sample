@@ -6,6 +6,7 @@ define('IMG'         , W_ROOT.'/img');
 define('A_IMG'       , A_ROOT.'/img');
 define('CSS'         , W_ROOT.'/css');
 define('JS'          , W_ROOT.'/js');
+define('A_JS'        , A_ROOT.'/js');
 define('A_MODULES'   , A_ROOT.'/mod');
 define('W_MODULES'   , W_ROOT.'/mod');
 define('A_CORE'      , A_ROOT.'/core');
