@@ -9,7 +9,7 @@ d_r('dijit.form.Button');
    var stausDialog;
    //If the public kayout used set the javascript variable to used with
    var pub=false;
-   <?php if($GLOBALS['LAYOUT']=='pub'){ ?>
+   <?php if($_SESSION['LAYOUT']=='pub'){ ?>
    pub=true;
    <?php }?>
 
@@ -41,10 +41,9 @@ d_r('dijit.form.Button');
             info="<font color='orange'>"+info+"</font>";
          break;
       }
-      <?php if($GLOBALS['LAYOUT']!='pub'){ ?>
+      <?php if($_SESSION['LAYOUT']!='pub'){ ?>
       /*If the message too lengthy show it as a dialog*/
-      //var status_bar = document.getElementById('STATUSBAR') ;
-      var status_bar = STATUSBAR;
+      var status_bar = document.getElementById('status_bar') ;
       if(info.length < max_status_length){
          status_bar.innerHTML=info;
          status_bar.title=orig_info;

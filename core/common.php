@@ -44,25 +44,25 @@ function get_for_keys(){
  */
 $GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
    "MAIN_TOP"     =>array(
-      "style"=>array("border"=>"1px solid whitesmoke","padding"=>"0px","height"=>"25%"),
+      "style"=>array("padding"=>"0px","height"=>"0%"),
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_BOTTOM"  =>array(
-      "style"=>array("border"=>"1px solid whitesmoke","padding"=>"0px","height"=>"75%"),
+      "style"=>array("padding"=>"0px","height"=>"0%"),
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_LEFT"    =>array(
-      "style"=>array("border"=>"1px solid whitesmoke","padding"=>"0px","width"=>"40%"),
+      "style"=>array("padding"=>"0px","width"=>"40%"),
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",
    ),
    "MAIN_RIGHT"   =>array(
-      "style"=>array("border"=>"1px solid whitesmoke","padding"=>"0px","width"=>"60%"),
+      "style"=>array("padding"=>"0px","width"=>"60%"),
       "splitter"=>"false",
       "minSize"=>"0",
       "maxSize"=>"850",

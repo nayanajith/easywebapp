@@ -122,14 +122,14 @@ if(array_key_exists('PATH_INFO', $_SERVER)) {
 }
 
 //Recall the session program,module,page and set if user does not set them in request
-if(isset($_SESSION['program']) && (!isset($_REQUEST['program']) || $_REQUEST['program'] == '' )){
-   $_REQUEST['program'] =$_SESSION['program'];
+if(isset($_SESSION['PROGRAM']) && (!isset($_REQUEST['program']) || $_REQUEST['program'] == '' )){
+   $_REQUEST['program'] =$_SESSION['PROGRAM'];
 }
-if(isset($_SESSION['module']) && (!isset($_REQUEST['module']) || $_REQUEST['module'] == '')){
-   $_REQUEST['module']  =$_SESSION['module'];
+if(isset($_SESSION['MODULE']) && (!isset($_REQUEST['module']) || $_REQUEST['module'] == '')){
+   $_REQUEST['module']  =$_SESSION['MODULE'];
 }
-if(isset($_SESSION['page']) && (!isset($_REQUEST['page']) || $_REQUEST['page'] == '')){
-   $_REQUEST['page']    =$_SESSION['page'];
+if(isset($_SESSION['PAGE']) && (!isset($_REQUEST['page']) || $_REQUEST['page'] == '')){
+   $_REQUEST['page']    =$_SESSION['PAGE'];
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -148,12 +148,12 @@ if (!isset($module)){
    if (isset($_REQUEST['module']) && is_module_permitted($_REQUEST['module'])){
       $module = $_REQUEST['module'];
       //Module will keep in session to allow user to send requests without provideing module
-      $_SESSION['module']=$module;
+      $_SESSION['MODULE']=$module;
 /*---------------------------validate page request----------------------------*/
       if (isset($_REQUEST['page']) && is_page_permitted($module,$_REQUEST['page'])){
          $page = $_REQUEST['page'];
          //Page will keep in session to allow userto send requests without provindeing module
-         $_SESSION['page']=$page;
+         $_SESSION['PAGE']=$page;
       }else{
          $page = '';
       }
@@ -163,7 +163,7 @@ if (!isset($module)){
       foreach($GLOBALS['MODULES'] as $mod => $arr){
          if(is_module_permitted($mod)){
             $module = $mod;
-            $_SESSION['module']=$module;
+            $_SESSION['MODULE']=$module;
             break;   
          }
       }
@@ -204,16 +204,23 @@ if (!isset($program)){
    if (isset($_REQUEST['program']) && $_REQUEST['program'] != ''){
       $program = $_REQUEST['program'];
       //Keep the program in session to allow userto send program less requests
-      $_SESSION['program']=$program;
+      $_SESSION['PROGRAM']=$program;
    }elseif(isset($programs)){
       $program = $programs[key($programs)];
       //Keep the program in session to allow userto send program less requests
-      $_SESSION['program']=$program;
+      $_SESSION['PROGRAM']=$program;
    }
 }
 
 /*---------------Generate program tables for the selected program-------------*/
 define('PROGRAM'   , $program);
+
+
+/*------The reqeuest is just program,module and page change request-----------*/
+if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'p_m_p'){
+   echo "{'program':'".$_SESSION['PROGRAM']."','module':'".$_SESSION['MODULE']."','page':'".$_SESSION['PAGE']."'}"; 
+   return;
+}
 
 /*----------------include configuration of the the active module--------------*/
 include (A_MODULES."/".MODULE."/config.php");
@@ -237,47 +244,12 @@ if(isset($_REQUEST['data']) || (isset($_REQUEST['action']) )){
    $GLOBALS['DATA']=true;
 }
 
-/*-------------------------get and set group theme and layout ----------------*/
-//will override by user theme and layout
-if(isset($_SESSION['role_id'])){
-   $group_layout_theme=exec_query("SELECT layout,theme FROM ".s_t('role')." WHERE group_name='".$_SESSION['role_id']."'",Q_RET_ARRAY);
-
-   if(!is_null($group_layout_theme[0]['theme']) && $group_layout_theme[0]['theme'] != "" && $group_layout_theme[0]['theme'] != "NULL"){
-      $GLOBALS['THEME']=$group_layout_theme[0]['theme'];
-   }
-
-   if(!is_null($group_layout_theme[0]['layout']) && $group_layout_theme[0]['layout'] != "" && $group_layout_theme[0]['layout'] != "NULL"){
-      $GLOBALS['LAYOUT']=$group_layout_theme[0]['layout'];
-   }
-}
-/*--------------------------get and set users theme and layout----------------*/
-if(isset($_SESSION['user_id'])){
-   $user_layout_theme=exec_query("SELECT layout,theme FROM ".s_t('users')." WHERE user_id='".$_SESSION['user_id']."'",Q_RET_ARRAY);
-
-   if(!is_null($user_layout_theme[0]['theme']) && $user_layout_theme[0]['theme'] != "" && $user_layout_theme[0]['theme'] != "NULL"){
-      $GLOBALS['THEME']=$user_layout_theme[0]['theme'];
-   }
-
-   if(!is_null($user_layout_theme[0]['layout']) && $user_layout_theme[0]['layout'] != "" && $user_layout_theme[0]['layout'] != "NULL"){
-      $GLOBALS['LAYOUT']=$user_layout_theme[0]['layout'];
-   }
-}
-
-/*custom layout can be set from url for testing*/
-$GLOBALS['LAYOUT']=isset($_REQUEST['layout'])?$_REQUEST['layout']:$GLOBALS['LAYOUT'];
-$_SESSION['LAYOUT']=$GLOBALS['LAYOUT'];
+//custom layout can be set from url for testing or the users layout or default layout will be used
+$_SESSION['LAYOUT']=isset($_REQUEST['layout'])?$_REQUEST['layout']:(isset($_SESSION['LAYOUT'])?$_SESSION['LAYOUT']:$GLOBALS['LAYOUT']);
 
 /*---------------------------returning commonjs file--------------------------*/
-if ($GLOBALS['DATA'] && $_REQUEST['action']=='js'){
+if ($GLOBALS['DATA'] && isset($_REQUEST['action']) && $_REQUEST['action']=='js'){
    include A_JS."/common.js";
-   return;
-}
-
-/*---------------------------Check for help request---------------------------*/
-$GLOBALS['NOTIFY']=false;
-if ($GLOBALS['DATA'] && $_REQUEST['action']=='notify'){
-   $GLOBALS['NOTIFY']=true;
-   include A_CORE."/notify.php";
    return;
 }
 
@@ -325,8 +297,9 @@ include A_CORE."/assembler.php";
 if(COMPRESS=='YES'){
    ob_start('ob_gzhandler');
 }
+
 /*---------------------include layout web,app or pub--------------------------*/
-include A_CORE."/".$GLOBALS['LAYOUT']."_layout.php";
+include A_CORE."/".$_SESSION['LAYOUT']."_layout.php";
 
 /*------------IF compression enabled compress the page and out----------------*/
 if(COMPRESS=='YES'){

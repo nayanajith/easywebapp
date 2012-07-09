@@ -190,7 +190,8 @@ echo "</select><br><br>";
 
 gen_permission_tree();
 
-set_layout_property('app2','MAIN_TOP','style','height','100%');
+set_layout_property('app2','MAIN_LEFT','style','width','100%');
+set_layout_property('app2','MAIN_RIGHT','style','width','0%');
 ?>
 </div>
 </div>

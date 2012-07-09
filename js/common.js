@@ -45,20 +45,28 @@ function reloading_on(){
 }
 
 /**
+ * Turn off reloading the page
+ */
+function reloading_off(){
+   halt_page_reloading=true;
+}
+
+
+/**
  * parameter setting is enabled under users request
  */
 function set_param_on(){
    halt_set_param=false;
 }
 
-
-
 /**
- * Turn off reloading the page
+ * parameter setting is enabled under users request
  */
-function reloading_off(){
-   halt_page_reloading=true;
+function set_param_off(){
+   halt_set_param=true;
 }
+
+
 
 /**
  * find maching element in array
@@ -234,7 +242,6 @@ var set_param_callback={
  * Set session parameters using XHR requests in backend
  */
 function set_param(key,value) {
-
    if(halt_set_param)return;
 
    var s_p_c=set_param_callback;
@@ -255,6 +262,7 @@ function set_param(key,value) {
         handleAs : 'json',
         timeout  : timeout_,
         load     : function(response, ioArgs) {        
+           console.log(response);
             update_status_bar(response.status_code,response.info);
             if(response.status_code == 'OK'){
                callback(s_p_c,'ok');
@@ -379,51 +387,129 @@ function reload_page(){
    if(halt_page_reloading==true){
       return;
    }
-   var sections=[TOOLBAR_TOP,MENUBAR,TOOLBAR,STATUSBAR,MAIN];
-   reload_sections(sections);
-   /*
-	if(MAIN.get('href')){
+   var sections=['TOOLBAR_TOP','MENUBAR','TOOLBAR','STATUSBAR','MAIN_LEFT','MAIN_RIGHT','MAIN_BOTTOM','MAIN_TOP'];
+   //var sections=['MAIN_LEFT','MAIN_RIGHT','MAIN_BOTTOM','MAIN_TOP'];
+	if(dijit.byId('MAIN_LEFT').get('href')){
    	update_status_bar("OK","Reloading page...");
-   	MAIN.refresh(); 
+      reload_sections(sections);
    	update_status_bar("OK","Page reloaded");
 	}else{
    	setTimeout('window.location.reload()',200); 
    	setTimeout('update_status_bar("OK","Reloading page...")',200);
 	}
-   */
    halt_page_reloading==true;
 }
 
 /**
+ * Fill filtering selects in toolbar 
+ */
+function toolbar_load_selected(){
+   dojo.forEach(dijit.byId('toolbar').getChildren(),function(widget){
+      switch(widget.declaredClass){
+      case 'dijit.form.FilteringSelect':
+         load_selected_value(widget,widget._lastValueReported);
+         console.log(widget._lastValueReported);
+      break;
+      default:
+      break;
+      }  
+   });
+}
+/**
  * Reload set of sections as requested in the array
  */
 function reload_sections(sections){
+   var layout;
+   dojo.xhrPost({
+      url      :gen_url(), 
+      content  :{section:'LAYOUT'},
+      sync     :true,
+      handleAs :'json',
+      handle: function(response){
+      },
+      load: function(response) {
+         if(response != null && response){
+           layout=response; 
+         }
+      }
+   });
+
    for(var i in sections){
-      var section=sections[i];
+      var section=dijit.byId(sections[i]);
 	   if(section.get('href')){
-         section.parseOnLoad=false;
-   	   section.refresh(); 
-         section.parseOnLoad=true;
+         /*
+         dojo.fadeOut({ 
+            node: sections[i], 
+            sync:true,
+            duration:1000,
+         }).play();
+         */
+
+         switch(sections[i]){
+            case 'MAIN_RIGHT':
+               var parent_node = section.getParent();
+               section.destroy();
+               var right_pane = new dijit.layout.ContentPane({
+                  'id':sections[i],
+                   'region': 'right',
+                   'gutters':false,
+                   'style':layout[sections[i]].style,
+                   'href':gen_url()+'section='+sections[i]
+               }, sections[i]);
+               parent_node.addChild(right_pane);
+            break;
+            case 'MAIN_BOTTOM':
+               var parent_node = section.getParent();
+               section.destroy();
+               var bottom_pane = new dijit.layout.ContentPane({
+                  'id':sections[i],
+                   'region': 'bottom',
+                   'gutters':false,
+                   'style':layout[sections[i]].style,
+                   'href':gen_url()+'section='+sections[i]
+               }, sections[i]);
+               parent_node.addChild(bottom_pane);
+            break;
+            case 'TOOLBAR':
+               set_param_off();
+               reloading_off();
+   	         section.refresh(); 
+            break;
+            default:
+   	         section.refresh(); 
+            break;
+         }
+
+         //Set the style
+         if(layout[sections[i]]){
+            dojo.style(sections[i],layout[sections[i]].style);
+         }
+         
+         /*
+         dojo.fadeIn({ 
+            node: sections[i], 
+            sync:true,
+            duration:2000,
+         }).play();
+         */
       }
    }
 }
 
 function reload_main(){
-   reload_sections([MAIN]);
+   reload_sections(['MAIN_TOP','MAIN_LEFT','MAIN_RIGHT','MAIN_BOTTOM']);
 }
-
 function reload_toolbar(){
-   reload_sections([TOOLBAR]);
+   reload_sections(['TOOLBAR']);
 }
-
 function reload_menubar(){
-   reload_sections([MENUBAR]);
+   reload_sections(['MENUBAR']);
 }
 function reload_toolbar_top(){
-   reload_sections([TOOLBAR_TOP]);
+   reload_sections(['TOOLBAR_TOP']);
 }
 function reload_toolbar_top(){
-   reload_sections([TOOLBAR_TOP]);
+   reload_sections(['TOOLBAR_TOP']);
 }
 
 /*
@@ -1176,11 +1262,12 @@ function p_m_p(module,page,program){
    if('<?php echo $_SESSION['LAYOUT'] ?>'=='app2'){
       dojo.xhrPost({
          url      : page_gen+'/'+module+'/'+page+program, 
+         content  : {data:'true',action:'p_m_p'},
          handleAs :'text',
          handle: function(response){
          },
          load: function(response) {
-            reload_sections([TOOLBAR,MAIN]);
+            reload_sections(['TOOLBAR','MAIN_TOP','MAIN_LEFT','MAIN_RIGHT','MAIN_BOTTOM']);
          }, 
          error: function(response,ioArgs) {
             update_status_bar('ERROR','Error on submission!');
@@ -1189,6 +1276,9 @@ function p_m_p(module,page,program){
    }else{
       window.open(page_gen+'/'+module+'/'+page+program,'_parent');
    }
+
+
+
 
    //Set cookie for pmp
    dojo.cookie('program', program, {expires: 10});
@@ -1309,7 +1399,8 @@ dojo.require("dojo.fx");
 dojo.require("dijit.popup");
 function notify(){
    dojo.xhrPost({
-      url      :'?section=ISNOTIFY', 
+      url      :gen_url(), 
+      content  :{section:'ISNOTIFY'},
       handleAs :'json',
       handle: function(response){
       },
@@ -1364,7 +1455,9 @@ function notify(){
 }
 
 //Add notification function to the poll
-//p_f_add(notify);
+if('<?php echo $_SESSION['LAYOUT'] ?>'=='app2'){
+//   p_f_add(notify);
+}
 
 /**
  * Convert phrase to titlecase

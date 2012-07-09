@@ -1,7 +1,7 @@
 
 <?php echo $GLOBALS['FOOTER'] ?>
 
-<?php if($GLOBALS['LAYOUT'] == 'pub' ){ ?>
+<?php if($_SESSION['LAYOUT'] == 'pub' ){ ?>
 <a href="http://ucsc.lk/" style='color:white'>Home</a>&nbsp;|&nbsp;
 <a href="http://ucsc.lk/contact" style='color:white'>Contact Us</a>&nbsp;|&nbsp;
 <a href="http://ucsc.lk/about-us" style='color:white'>About Us</a>&nbsp;|&nbsp;

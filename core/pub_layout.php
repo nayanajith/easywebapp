@@ -81,26 +81,26 @@
 <!--________________________start data_body area_____________________________-->
                      <table width='100%'>
                         <tr>
-                            <td id='MAIN_TOP' colspan='2' valign='top' width='100%'>
+                            <td id='MAIN_TOP' colspan='2' valign='top' >
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_TOP'];
                               ?>
                            </td>
                         </tr>
                         <tr>
-                           <td id='MAIN_LEFT' valign='top' align='left' width='50%'>
+                           <td id='MAIN_LEFT' valign='top' align='left' width='100%'>
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_LEFT'];
                               ?>
                            </td>
-                           <td id='MAIN_RIGHT' valign='top'  align='right'  width='50%'>
+                           <td id='MAIN_RIGHT' valign='top'  align='right'  >
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_RIGHT'];
                               ?>
                            </td>
                         </tr>
                         <tr>
-                           <td id='MAIN_BOTTOM' colspan='2' valign='top' width='100%'>
+                           <td id='MAIN_BOTTOM' colspan='2' valign='top' >
                               <?php 
                               echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
                               ?>

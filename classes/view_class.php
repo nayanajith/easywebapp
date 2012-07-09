@@ -89,7 +89,7 @@ class View{
    public function add_store($field_id,$store_id){
       d_r('dojox.data.QueryReadStore');
       if(!isset($this->stores[$store_id])){
-         if($GLOBALS['LAYOUT']=='app2'){
+         if($_SESSION['LAYOUT']=='app2'){
             add_to_toolbar(
                "\n<span dojoType='dojox.data.QueryReadStore' 
                url='".gen_url()."data=json&action=combo&form=main&field=".$field_id."'
@@ -610,7 +610,7 @@ dojo.ready(function(){
          }
 
          //Menu for the right click on grid
-         $html.="<div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' id='".$grid['headerMenu']."' style='display: none;'>
+         $html.="<div dojoType='dijit.Menu' jsid='".$grid['headerMenu']."' style='display: none;'>
          <div dojoType='dojox.widget.PlaceholderMenuItem' label='GridColumns'></div>
          </div>";
 

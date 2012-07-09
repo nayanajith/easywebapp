@@ -30,6 +30,18 @@ if(isset($_REQUEST['form']) && $_REQUEST['form']=='system' && isset($_REQUEST['a
       }
    }
    $_SESSION['loged_module']    = MODULE;
+
+   //get and set users theme and layout
+   $user_layout_theme=exec_query("SELECT layout,theme FROM ".s_t('users')." WHERE user_id='".$_SESSION['user_id']."'",Q_RET_ARRAY);
+
+   if(!is_null($user_layout_theme[0]['theme']) && $user_layout_theme[0]['theme'] != "" && $user_layout_theme[0]['theme'] != "NULL"){
+      $_SESSION['THEME']=$user_layout_theme[0]['theme'];
+   }
+
+   if(!is_null($user_layout_theme[0]['layout']) && $user_layout_theme[0]['layout'] != "" && $user_layout_theme[0]['layout'] != "NULL"){
+      $_SESSION['LAYOUT']=$user_layout_theme[0]['layout'];
+   }
+
 }
 
 /*
@@ -265,6 +277,30 @@ if (isset($_SESSION['username'])) {
          }
       }
       $_SESSION['loged_module']    = MODULE;
+
+      //get and set group theme and layout
+      //will override by user theme and layout
+      $group_layout_theme=exec_query("SELECT layout,theme FROM ".s_t('role')." WHERE group_name='".$_SESSION['role_id']."'",Q_RET_ARRAY);
+
+      if(!is_null($group_layout_theme[0]['theme']) && $group_layout_theme[0]['theme'] != "" && $group_layout_theme[0]['theme'] != "NULL"){
+         $_SESSION['THEME']=$group_layout_theme[0]['theme'];
+      }
+
+      if(!is_null($group_layout_theme[0]['layout']) && $group_layout_theme[0]['layout'] != "" && $group_layout_theme[0]['layout'] != "NULL"){
+         $_SESSION['LAYOUT']=$group_layout_theme[0]['layout'];
+      }
+
+      //get and set users theme and layout
+      $user_layout_theme=exec_query("SELECT layout,theme FROM ".s_t('users')." WHERE user_id='".$_SESSION['user_id']."'",Q_RET_ARRAY);
+
+      if(!is_null($user_layout_theme[0]['theme']) && $user_layout_theme[0]['theme'] != "" && $user_layout_theme[0]['theme'] != "NULL"){
+         $_SESSION['THEME']=$user_layout_theme[0]['theme'];
+      }
+
+      if(!is_null($user_layout_theme[0]['layout']) && $user_layout_theme[0]['layout'] != "" && $user_layout_theme[0]['layout'] != "NULL"){
+         $_SESSION['LAYOUT']=$user_layout_theme[0]['layout'];
+      }
+
       //After login redirect to news page
       header('Location: '.gen_url('home','news',null));
    }else{

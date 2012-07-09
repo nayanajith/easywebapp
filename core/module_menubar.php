@@ -13,11 +13,11 @@ foreach($modules_array as $module => $pages){
 
    /*Active module is selected*/
    if(MODULE == $module){
-      echo "<div dojoType='dijit.PopupMenuBarItem' style='font-weight:bold;' id='menu__".$module."' label='".$module_label."' title='".$module_label."' showTitle='true' tooltip='tt'>
-         <div dojoType='dijit.Menu'>\n";
+      echo "<ol dojoType='dijit.PopupMenuBarItem' style='font-weight:bold;' id='menu__".$module."' label='".$module_label."'>
+   <ol dojoType='dijit.Menu'>\n";
    }else{
-    echo "<div dojoType='dijit.PopupMenuBarItem' id='menu__".$module."' label='".$module_label."' showTitle='true' tooltip='tt' title='".$module_label."'>
-         <div dojoType='dijit.Menu'>\n";
+    echo "<ol dojoType='dijit.PopupMenuBarItem' id='menu__".$module."' label='".$module_label."'>
+   <ol dojoType='dijit.Menu'>\n";
    }
 
    /*Add a tab inside the nested tab continer for each page*/
@@ -29,23 +29,18 @@ foreach($modules_array as $module => $pages){
          if(isset($name['tooltip']) || isset($name['TOOLTIP'])){
             $tooltip="<div dojoType='dijit.Tooltip' connectId='".$module."__$page' ><div style='max-width:400px;text-align:justify'>".(isset($name['TOOLTIP'])?$name['TOOLTIP']:$name['tooltip'])."</div></div>";
          }
-
          $name=isset($name['LABEL'])?$name['LABEL']:$name['label'];
       }
 
       /*active tab is selected*/
       if(PAGE == $page && MODULE == $module){
-
-         echo "<div dojoType='dijit.MenuItem' id='".$module."__$page' style='font-weight:bold;'>
-           ".$name." 
-         </div>$tooltip\n";
+         //echo "      <li dojoType='dijit.MenuItem' id='".$module."__$page' style='font-weight:bold;'>".$name."</li>$tooltip\n";
+         echo "      <li dojoType='dijit.MenuItem' id='".$module."__$page' style='font-weight:bold;' onClick=\"p_m_p('".$module."','".$page."','".PROGRAM."')\">".$name."</li>$tooltip\n";
       }else{
-         echo "<div dojoType='dijit.MenuItem' id='".$module."__$page' onClick=\"p_m_p('".$module."','".$page."','".PROGRAM."')\">
-           ".$name." 
-         </div>$tooltip\n";
+         echo "      <li dojoType='dijit.MenuItem' id='".$module."__$page' onClick=\"p_m_p('".$module."','".$page."','".PROGRAM."')\">".$name."</li>$tooltip\n";
       }
    }
-   echo "</div>\n";
-   echo "</div>\n";
+   echo "   </ol>\n";
+   echo "</ol>\n";
 }
 ?>

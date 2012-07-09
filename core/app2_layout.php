@@ -4,7 +4,7 @@ if(isset($_REQUEST['section'])){
    switch($_REQUEST['section']){
    case 'TOOLBAR_TOP':
       ?>
-         <div id='toolbar_top' jsId='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;'>
+         <div id='toolbar_top' id='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;'>
             <table width="100%" cellpadding="0" cellspacing="0">
                <tr>
                   <td width="30%">
@@ -36,47 +36,25 @@ if(isset($_REQUEST['section'])){
       echo "</div>";
    break;
    case 'TOOLBAR':
-      //echo "<div id='toolbar' jsId='toolbar' dojoType='dijit.Toolbar' onMouseOver='reloading_on();set_param_on();'>";
+      //echo "<div id='toolbar' id='toolbar' dojoType='dijit.Toolbar' '>";
       echo "<div id='toolbar' dojoType='dijit.Toolbar'>";
       echo $GLOBALS['VIEW']['TOOLBAR'];
       echo "</div>";
    break;
-   case 'MAIN':
-      ?>
-         <div dojoType="dijit.layout.BorderContainer" style="padding:0px;"  gutters="false" design="headline" style="width:100%;height:100%">
-               <?php if ($GLOBALS['VIEW']['MAIN_TOP'] != ""): ?>
-               <div dojoType="dijit.layout.ContentPane" region="top" <?php echo get_layout_property('app2','MAIN_TOP'); ?>>
-                     <?php 
-                     echo $GLOBALS['VIEW']['MAIN_TOP'];
-                     ?>
-               </div>
-               <?php endif ?>
-               <?php if ($GLOBALS['VIEW']['MAIN_LEFT'] != ""): ?>
-               <div dojoType="dijit.layout.ContentPane" region="left" <?php echo get_layout_property('app2','MAIN_LEFT'); ?> >
-                     <?php 
-                     echo $GLOBALS['VIEW']['MAIN_LEFT'];
-                     ?>
-               </div>
-               <?php endif ?>
-               <?php if ($GLOBALS['VIEW']['MAIN_RIGHT'] != ""): ?>
-               <div dojoType="dijit.layout.ContentPane" region="right" <?php echo get_layout_property('app2','MAIN_RIGHT'); ?>>
-                     <?php 
-                     echo $GLOBALS['VIEW']['MAIN_RIGHT'];
-                     ?>
-               </div>
-               <?php endif ?>
-               <?php if ($GLOBALS['VIEW']['MAIN_BOTTOM'] != ""): ?>
-               <div dojoType="dijit.layout.ContentPane" region="bottom"  class="bgBottom" <?php echo get_layout_property('app2','MAIN_BOTTOM'); ?>>
-                     <?php 
-                     echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
-                     ?>
-               </div>
-               <?php endif ?>
-           </div>
-      <?php
+   case 'MAIN_TOP':
+      echo $GLOBALS['VIEW']['MAIN_TOP'];
    break;
-   case 'STATUSBAR':
-      echo $GLOBALS['VIEW']['STATUSBAR'];
+   case 'MAIN_LEFT':
+      echo $GLOBALS['VIEW']['MAIN_LEFT'];
+   break;
+   case 'MAIN_RIGHT':
+      echo $GLOBALS['VIEW']['MAIN_RIGHT'];
+   break;
+   case 'MAIN_BOTTOM':
+      echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
+   break;
+   case 'LAYOUT':
+      echo json_encode($GLOBALS['LAYOUT_PROPERTIES']['app2']);
    break;
    case 'NOTIFY':
       echo date("d-m-y:H:M:S ");
@@ -142,7 +120,7 @@ bottom:      Tool bar
 <!--
 This contains the login box from core/login.php and program selector from core/program.php
 -->
-         <div dojoType="dijit.layout.ContentPane" region="top" parseOnLoad=true preventCache=true loadingMessage="" gutter="false" jsId='TOOLBAR_TOP' style="padding:0px;height:40px;overflow:hidden" href="<?php echo gen_url() ?>section=TOOLBAR_TOP" action="post">
+         <div dojoType="dijit.layout.ContentPane" region="top" parseOnLoad=true preventCache=true loadingMessage="" gutter="false" id='TOOLBAR_TOP' style="padding:0px;height:40px;overflow:hidden" href="<?php echo gen_url() ?>section=TOOLBAR_TOP" action="post">
             <!-- content will be served in switch at the top of this page -->
          </div>
 <!--___________________Leading area with the tree menu_______________________-->
@@ -161,11 +139,11 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                      <!-- BorderContainer-4-->
                      <div dojoType="dijit.layout.BorderContainer"   gutters="false" liveSplitters="true" >
                         <!-- Center box of BorderContainer-4 menubar-->
-                        <div dojoType="dijit.layout.ContentPane" parseOnLoad=true preventCache=true loadingMessage="" region="top" gutter="false" jsId='MENUBAR' style="padding:0px;height:27px;" href="<?php echo gen_url() ?>section=MENUBAR" action="post">
+                        <div dojoType="dijit.layout.ContentPane" parseOnLoad=true preventCache=true loadingMessage="" region="top" gutter="false" id='MENUBAR' style="padding:0px;height:27px;" href="<?php echo gen_url() ?>section=MENUBAR" action="post">
                            <!-- content will be served in switch at the top of this page -->
                         </div>
                         <!-- Bottom box of BorderContainer-4 toolbar-->
-                        <div dojoType="dijit.layout.ContentPane"  parseOnLoad=true preventCache=true loadingMessage="" region="center" gutter="false" jsId='TOOLBAR' style="padding:0px" href="<?php echo gen_url() ?>section=TOOLBAR" action="post">
+                        <div dojoType="dijit.layout.ContentPane"  parseOnLoad=true preventCache=true loadingMessage="" region="center" gutter="false" id='TOOLBAR' style="padding:0px" href="<?php echo gen_url() ?>section=TOOLBAR" action="post" onLoad="toolbar_load_selected()" onMouseOver="reloading_on();set_param_on();">
                            <!-- content will be served in switch at the top of this page -->
                         </div>
                      </div>
@@ -173,17 +151,26 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <!--end TOP box of BorderContainer-2 (BorderContainer-3)-->
 
                   <!--CENTER box of BorderContainer-2-->
-                  <div dojoType="dijit.layout.ContentPane" region="center"  parseOnLoad=true preventCache=true loadingMessage=""  jsId='MAIN' class="bgBottom" style="padding:5px;" href="<?php echo gen_url() ?>section=MAIN" action="post" >
-                  <!-- div dojoType="dijit.layout.ContentPane" region="center"  jsId='MAIN' class="bgBottom" style="padding:5px;" action="post" -->
+                  <div dojoType="dijit.layout.ContentPane" region="center"  parseOnLoad=true preventCache=true loadingMessage=""  id='MAIN' class="bgBottom" style="padding:5px;" action="post" >
+                  <!-- div dojoType="dijit.layout.ContentPane" region="center"  id='MAIN' class="bgBottom" style="padding:5px;" action="post" -->
                      <!--________________________start data_body area_____________________________-->
-                           <!-- content will be served in switch at the top of this page -->
+                     <div dojoType="dijit.layout.BorderContainer" gutters="false" design="headline" style="width:100%;height:100%;padding:0px;">
+                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP"  loadingMessage="" <?php echo get_layout_property('app2','MAIN_TOP'); ?> href="<?php echo gen_url() ?>section=MAIN_TOP">
+                        </div>
+                        <div dojoType="dijit.layout.ContentPane" region="center" id="MAIN_LEFT" loadingMessage="" <?php echo get_layout_property('app2','MAIN_LEFT'); ?> href="<?php echo gen_url() ?>section=MAIN_LEFT">
+                        </div>
+                        <div dojoType="dijit.layout.ContentPane" region="right" id="MAIN_RIGHT"  loadingMessage="" <?php echo get_layout_property('app2','MAIN_RIGHT'); ?> href="<?php echo gen_url() ?>section=MAIN_RIGHT">
+                        </div>
+                        <div dojoType="dijit.layout.ContentPane" region="bottom" id="MAIN_BOTTOM"  loadingMessage="" class="bgBottom" <?php echo get_layout_property('app2','MAIN_BOTTOM'); ?> href="<?php echo gen_url() ?>section=MAIN_BOTTOM">
+                        </div>
+                     </div>
                      <!--_________________________end data_body area______________________________-->
                   </div>
                   <!--end CENTER box of BorderContainer-2-->
 
                   <!--BOTTOM box of BorderContainer-2-->
-                  <div dojoType="dijit.layout.ContentPane" region="bottom" class="bgBottom"   parseOnLoad=true preventCache=true loadingMessage="" jsId="STATUSBAR" style='padding:0px;' href="<?php echo gen_url() ?>section=STATUSBAR" action="post">
-                     <!-- content will be served in switch at the top of this page -->
+                  <div dojoType="dijit.layout.ContentPane" region="bottom" class="bgBottom" style='padding:0px;' >
+                     <?php echo $GLOBALS['VIEW']['STATUSBAR']; ?>
                   </div>
                   <!--end BOTTOM box of BorderContainer-2-->
                </div>

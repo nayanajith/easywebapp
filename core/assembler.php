@@ -2,7 +2,7 @@
 //main page selection logic
 $main='';
 //TODO: group wise main file
-if($GLOBALS['LAYOUT']=='pub'){
+if($_SESSION['LAYOUT']=='pub'){
    if(!file_exists(A_MODULES."/".MODULE."/".PAGE.".php")){
       $main="error.php";
    }else{
@@ -23,7 +23,7 @@ if($GLOBALS['LAYOUT']=='pub'){
 }
 
 //Main file contains the module+page specific features and outputs which will affect the view 
-add_to_main_top($main);
+add_to_main_left($main);
 
 //Page footer
 add_to_footer(A_CORE."/footer.php");
@@ -45,7 +45,7 @@ add_to_css(A_CORE."/style.php");
 
 
 //Fill the view according to different layouts
-switch($GLOBALS['LAYOUT']){
+switch($_SESSION['LAYOUT']){
 case 'pub':
    
    //Stylesheets for the page
