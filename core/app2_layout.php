@@ -58,12 +58,6 @@ if(isset($_REQUEST['section'])){
    break;
    case 'NOTIFY':
       echo date("d-m-y:H:M:S ");
-      echo date("d-m-y:H:M:S ");
-      echo date("d-m-y:H:M:S ");
-      echo date("d-m-y:H:M:S ");
-      echo date("d-m-y:H:M:S ");
-      echo date("d-m-y:H:M:S ");
-      //echo "<div align='right'><button dojoType='dijit.form.Button' iconClass='".get_icon_class('Delete')."' showLabel=false type='submit'>OK</button></div>";
    break;
    case 'ISNOTIFY':
       echo "{'count':'3'}";
@@ -76,10 +70,14 @@ if(isset($_REQUEST['section'])){
          echo "No filter added!"; 
       }
    break;
+   case 'DYNAMIC_JS':
+      echo $GLOBALS['VIEW']['DYNAMIC_JS'];
+   break;
    }
 return;
 }
 ?>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <html>

@@ -57,7 +57,6 @@ if(isset($GLOBALS['MAINTENANCE_MODE']) && $GLOBALS['MAINTENANCE_MODE']){
    $GLOBALS['TITLE']=$GLOBALS['TITLE']."[<span style='color:red'>MAINTENANCE</span>]";
 }
 include A_CORE."/common.php";
-
 /*--------------------------Set global error log -----------------------------*/
 ini_set('error_log',ERROR_LOG);
 

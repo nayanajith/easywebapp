@@ -419,17 +419,32 @@ function toolbar_load_selected(){
  */
 function reload_sections(sections){
    var layout;
+   //Loading the layout of the env
    dojo.xhrPost({
       url      :gen_url(), 
       content  :{section:'LAYOUT'},
       sync     :true,
       handleAs :'json',
-      handle: function(response){
-      },
       load: function(response) {
          if(response != null && response){
            layout=response; 
          }
+      },
+      error: function(response) {
+         console.error("Error loading layout SECTION");
+      }
+   });
+
+   //Loading dynamic javascript
+   dojo.xhrPost({
+      url      :gen_url(), 
+      content  :{section:'DYNAMIC_JS'},
+      sync     :true,
+      handleAs :'javascript',
+      load: function(response) {
+      },
+      error: function() {
+         console.error("Error loading layout DYNAMIC_JS");
       }
    });
 

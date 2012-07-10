@@ -90,7 +90,7 @@ $GLOBALS['MODEL']=array(
          "label"=>"Label",
          "label_pos"=>"left",
 
-         "onChange"=>'set_param(this.name,this.value);fill_form(this.value,"main")',
+         "onChange"=>'s_p_c_add("ok",fill_form,this.value);set_param(this.id,this.value)',
          "searchAttr"=>"label",
          "pageSize"=>"10",
          "store"=>"rid_store",
