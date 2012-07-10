@@ -1,4 +1,9 @@
 <?php
+$del_filter_inner="
+<span>Delete Filter</span>
+   <div dojoType='dijit.TooltipDialog' preventCache='true' reloadOnShow='true' align='center' href='?section=FILTER'>
+   </div>
+";
 //-----------------KEY FIELDS OF THE MODEL----------------------
 $KEYS=array(
 );
@@ -48,14 +53,15 @@ $TOOLBAR=array(
       "label"=>"Add fIlter",
       "iconClass"=>get_icon_class('Filter'),
       "showLabbel"=>'true',
-      "onClick"=>'s_f_c_add("ok",reload_grid,grid__GRID);submit_form("add_filter")',
+      "onClick"=>'s_f_c_add("ok",reload_grid,grid__GRID);s_f_c_add("ok",w_e,toolbar__del_filter);submit_form("add_filter")',
    ),  
    "del_filter"=>array(
-      "dojoType"=>"dijit.form.Button",
+      "dojoType"=>"dijit.form.DropDownButton",
       "label"=>"Delete filter",
+      "disabled"=>(isset($_SESSION[PAGE]['FILTER'])?"false":"true"),
+      "inner"=>$del_filter_inner,
       "iconClass"=>get_icon_class('Cancel'),
       "showLabbel"=>'true',
-      "onClick"=>'s_f_c_add("ok",reload_grid,grid__GRID);submit_form("del_filter")',
    ),
    "reload_grid"=>array(
       "dojoType"=>"dijit.form.Button",

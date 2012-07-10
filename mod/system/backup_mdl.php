@@ -36,7 +36,7 @@ $GLOBALS['MODEL']=array(
 			"label_pos"=>"left",
          "iconClass"=>get_icon_class('NewPage'),
          "showLabbel"=>'false',
-         "onClick"=>'s_f_c_add("ok",reload_page);submit_form("add_backup")',
+         "onClick"=>'s_f_c_add("ok",reload_main);submit_form("add_backup")',
       ),
      "remove"=>array(
          "dojoType"=>"dijit.form.Button",
@@ -44,7 +44,7 @@ $GLOBALS['MODEL']=array(
 			"label_pos"=>"left",
          "iconClass"=>get_icon_class('Delete'),
          "showLabbel"=>'false',
-         "onClick"=>'s_f_c_add("ok",reload_page);submit_form("del_backup")',
+         "onClick"=>'s_f_c_add("ok",reload_main);submit_form("del_backup")',
       ),
    ),
 );
@@ -97,6 +97,6 @@ function del_backup(){
    return_status_json('OK',$msg);
 }
 
-set_layout_property('app2','MAIN_TOP','style','height','100%');
-set_layout_property('app2','MAIN_BOTTOM','style','height','0%');
+set_layout_property('app2','MAIN_LEFT','style','height','100%');
+set_layout_property('app2','MAIN_RIGHT','style','height','0%');
 ?>

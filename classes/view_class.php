@@ -428,7 +428,6 @@ class View{
          $inner="<span>".$field_array['label']."</span><div dojoType='dijit.TooltipDialog' align='center'></div>";
       }
 
-
       //If the field require a stor add a store
       if(isset($field_array['store'])){
          $this->add_store($field,$field_array['store']);

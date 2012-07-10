@@ -263,15 +263,16 @@ $GLOBALS['MODEL']=array(
          "label_pos"	=>"top",
          "value"=>""
       ),
-      "deleted"=>array(
+      */
+      "status"=>array(
          "length"	=>"70",
-         "dojoType"	=>"dijit.form.CheckBox",
+         "dojoType"	=>"dijit.form.Select",
          "required"	=>"false",
-         "label"	=>"Deleted",
+         "label"	=>"Status",
+         "inner" =>gen_select_inner($GLOBALS['STATUS'],null,false),
          "label_pos"	=>"right",
          "value"=>""
       ),
-       */
       "note"=>array(
          "length"	=>"350",
          "dojoType"	=>"dijit.form.ValidationTextBox",

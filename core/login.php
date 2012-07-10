@@ -210,7 +210,7 @@ if (isset($_SESSION['username'])) {
       case 'LDAP':
 
          //Getting user information for the given ldap user from the given login table
-         $SQL = "SELECT * FROM ".$GLOBALS['TBL_LOGIN']['table']." WHERE ldap_user_id='$user'";
+         $SQL = "SELECT * FROM ".$GLOBALS['TBL_LOGIN']['table']." WHERE ldap_user_id='$user' AND status != 'DISABLED'";
          $RESULT_ARR    = exec_query($SQL, Q_RET_ARRAY);
 
          //If there is a user for the given ldap user id check the password from the ldap server
@@ -236,9 +236,9 @@ if (isset($_SESSION['username'])) {
       case 'MYSQL':
       default:
          //Filters can be applied to extract only the relavant category
-         $filter="";
+         $filter=" AND status != 'DISABLED'";
          if(isset($GLOBALS['TBL_LOGIN']['filter']) && $GLOBALS['TBL_LOGIN']['filter']!=''){
-            $filter="AND ".$GLOBALS['TBL_LOGIN']['filter'];
+            $filter.=" AND ".$GLOBALS['TBL_LOGIN']['filter'];
          }
 
          //Login using native database from mysql user database

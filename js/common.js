@@ -1465,3 +1465,25 @@ if('<?php echo $_SESSION['LAYOUT'] ?>'=='app2'){
 function to_title_case(str){
    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
+
+/**
+ * Disable widget
+ */
+function w_d(widget){
+   if(widget){
+      widget.set('disabled',true);
+   }else if(dijit.byId(widget)){
+      dijit.byId(widget).set('disabled',true);
+   }
+}
+
+/**
+ * Enable widget
+ */
+function w_e(widget){
+   if(widget){
+      widget.set('disabled',false);
+   }else if(dijit.byId(widget)){
+      dijit.byId(widget).set('disabled',false);
+   }
+}

@@ -315,6 +315,8 @@ function del_temp_filter($table_as=null){
  * Generate temporary filter for the submitted values
  */
 function get_temp_filter($table_as=null){
+   //Enable/Disable enclosing with percentage marks (wild cards)
+   $auto_enclose_pr=false;
    //Reset the global filter array
    $_SESSION[PAGE]['FILTER_ARRAY']=array();
 
@@ -336,8 +338,11 @@ function get_temp_filter($table_as=null){
             }
          }
 
-         //$filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
-         $filter.=$and.$table_as."`".$key."` LIKE '".$_REQUEST[$key]."'";
+         if($auto_enclose_pr){
+            $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
+         }else{
+            $filter.=$and.$table_as."`".$key."` LIKE '".$_REQUEST[$key]."'";
+         }
          $and=' AND ';
          //keep the filter array for future use
          $_SESSION[PAGE]['FILTER_ARRAY'][$key]=$_REQUEST[$key];
