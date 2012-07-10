@@ -263,7 +263,6 @@ function set_param(key,value) {
         handleAs : 'json',
         timeout  : timeout_,
         load     : function(response, ioArgs) {        
-           console.log(response);
             update_status_bar(response.status_code,response.info);
             if(response.status_code == 'OK'){
                callback(s_p_c,'ok');
@@ -409,7 +408,6 @@ function toolbar_load_selected(){
       switch(widget.declaredClass){
       case 'dijit.form.FilteringSelect':
          load_selected_value(widget,widget._lastValueReported);
-         console.log(widget._lastValueReported);
       break;
       default:
       break;

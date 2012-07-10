@@ -267,7 +267,7 @@ EOE;
          "dojoType"     =>"dijit.form.FilteringSelect",
          "required"     =>"false",
          "label"        =>"Label",
-         "onChange"     =>'s_p_c_add(fill_form,this.value);set_param(this.id,this.value)',
+         "onChange"     =>'s_p_c_add("ok",fill_form,this.value);set_param(this.id,this.value)',
          "searchAttr"   =>"label",
          "pageSize"     =>"10",
          "store"        =>"rid_store",
