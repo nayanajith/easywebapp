@@ -1,7 +1,7 @@
 <?php
 $del_filter_inner="
 <span>Delete Filter</span>
-   <div dojoType='dijit.TooltipDialog' preventCache='true' reloadOnShow='true' align='center' href='?section=FILTER'>
+   <div dojoType='dijit.TooltipDialog' preventCache=true refreshOnShow=true parseOnLoad=true doLayout=true align='center' href='?section=FILTER'>
    </div>
 ";
 //-----------------KEY FIELDS OF THE MODEL----------------------

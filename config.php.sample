@@ -50,7 +50,7 @@ $GLOBALS['THEME']       = 'claro'; //claro,nihilo,soria,tundra
 $GLOBALS['PAGE_GEN']    = 'index.php';
 
 /*-----------------common status for all the table records---------------------*/
-$GLOBALS['STSTUS']      = array('ENABLED','DISABLED');
+$GLOBALS['STATUS']      = array('ENABLED','DISABLED');
 
 /*---------------------------configure Database--------------------------------*/
 $GLOBALS['DB']          = 'ucscsis';

@@ -54,6 +54,7 @@ d_r('dijit.layout.ContentPane');
 d_r('dijit.form.NumberSpinner');
 d_r('dijit.form.SimpleTextarea');
 d_r('dijit.form.ComboBox');
+d_r('dijit.TitlePane');
 
 d_r('dojox.grid.EnhancedGrid');
 d_r('dojox.grid.enhanced.plugins.Pagination');

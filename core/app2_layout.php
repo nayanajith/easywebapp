@@ -161,13 +161,13 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                   <!-- div dojoType="dijit.layout.ContentPane" region="center"  id='MAIN' class="bgBottom" style="padding:5px;" action="post" -->
                      <!--________________________start data_body area_____________________________-->
                      <div dojoType="dijit.layout.BorderContainer" gutters="false" design="headline" style="width:100%;height:100%;padding:0px;">
-                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP"  loadingMessage="" <?php echo get_layout_property('app2','MAIN_TOP'); ?> href="<?php echo gen_url() ?>section=MAIN_TOP">
+                        <div dojoType="dijit.layout.ContentPane" region="top" id="MAIN_TOP" preventCache=true loadingMessage="" <?php echo get_layout_property('app2','MAIN_TOP'); ?> href="<?php echo gen_url() ?>section=MAIN_TOP">
                         </div>
-                        <div dojoType="dijit.layout.ContentPane" region="center" id="MAIN_LEFT" loadingMessage="" <?php echo get_layout_property('app2','MAIN_LEFT'); ?> href="<?php echo gen_url() ?>section=MAIN_LEFT">
+                        <div dojoType="dijit.layout.ContentPane" region="center" id="MAIN_LEFT"  preventCache=true loadingMessage="" <?php echo get_layout_property('app2','MAIN_LEFT'); ?> href="<?php echo gen_url() ?>section=MAIN_LEFT">
                         </div>
-                        <div dojoType="dijit.layout.ContentPane" region="right" id="MAIN_RIGHT"  loadingMessage="" <?php echo get_layout_property('app2','MAIN_RIGHT'); ?> href="<?php echo gen_url() ?>section=MAIN_RIGHT">
+                        <div dojoType="dijit.layout.ContentPane" region="right" id="MAIN_RIGHT"   preventCache=true loadingMessage="" <?php echo get_layout_property('app2','MAIN_RIGHT'); ?> href="<?php echo gen_url() ?>section=MAIN_RIGHT">
                         </div>
-                        <div dojoType="dijit.layout.ContentPane" region="bottom" id="MAIN_BOTTOM"  loadingMessage="" class="bgBottom" <?php echo get_layout_property('app2','MAIN_BOTTOM'); ?> href="<?php echo gen_url() ?>section=MAIN_BOTTOM">
+                        <div dojoType="dijit.layout.ContentPane" region="bottom" id="MAIN_BOTTOM"   preventCache=true loadingMessage="" class="bgBottom" <?php echo get_layout_property('app2','MAIN_BOTTOM'); ?> href="<?php echo gen_url() ?>section=MAIN_BOTTOM">
                         </div>
                      </div>
                      <!--_________________________end data_body area______________________________-->
