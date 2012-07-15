@@ -119,7 +119,7 @@ $course_arr =null;
 function getCourseArr(){
    global $course_arr;
    if(is_null($course_arr)){
-      $course_arr  = exec_query("SELECT * FROM ".$GLOBALS['P_TABLES']['course'],Q_RET_ARRAY,null,'course_id');
+      $course_arr  = exec_query("SELECT * FROM ".p_t('course'),Q_RET_ARRAY,null,'course_id');
    }
    return  $course_arr;
 }
@@ -541,7 +541,7 @@ public function getTranscript(){
     */
 
    public function is_marks_course_updated_after_gpa(){
-      $arr=exec_query("SELECT MAX(m.timestamp)<g.timestamp OR MAX(c.timestamp)>MAX(m.timestamp) updated FROM ".$GLOBALS['P_TABLES']['marks']." m,".$GLOBALS['P_TABLES']['gpa']." g,".$GLOBALS['P_TABLES']['course']." c where m.index_no='".$this->self['index_no']."' AND m.index_no=g.index_no",Q_RET_ARRAY);
+      $arr=exec_query("SELECT MAX(m.timestamp)<g.timestamp OR MAX(c.timestamp)>MAX(m.timestamp) updated FROM ".p_t('marks')." m,".p_t('gpa')." g,".p_t('course')." c where m.index_no='".$this->self['index_no']."' AND m.index_no=g.index_no",Q_RET_ARRAY);
 
       return $arr[0]['updated'];
    }

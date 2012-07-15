@@ -1,9 +1,9 @@
 <?php
 $GLOBALS['PAGE']=array(
    'name'                =>'users',
-   'table'               =>$GLOBALS['S_TABLES']['users'],
+   'table'               =>s_t('users'),
    'primary_key'         =>'user_id',
-   'filter_table'        =>$GLOBALS['S_TABLES']['filter'],
+   'filter_table'        =>s_t('filter'),
    'filter_primary_key'  =>'rid',
 );
 

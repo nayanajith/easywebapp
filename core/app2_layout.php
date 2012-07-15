@@ -4,7 +4,7 @@ if(isset($_REQUEST['section'])){
    switch($_REQUEST['section']){
    case 'TOOLBAR_TOP':
       ?>
-         <div id='toolbar_top' id='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;'>
+         <div id='toolbar_top' id='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;background-color:#5B92C8'>
             <table width="100%" cellpadding="0" cellspacing="0">
                <tr>
                   <td width="30%">
@@ -37,30 +37,18 @@ if(isset($_REQUEST['section'])){
    break;
    case 'TOOLBAR':
       //echo "<div id='toolbar' id='toolbar' dojoType='dijit.Toolbar' '>";
-      echo "<div id='toolbar' dojoType='dijit.Toolbar'>";
+      echo "<div id='toolbar' dojoType='dijit.Toolbar' style='height:46px'>";
       echo $GLOBALS['VIEW']['TOOLBAR'];
       echo "</div>";
-   break;
-   case 'MAIN_TOP':
-      echo $GLOBALS['VIEW']['MAIN_TOP'];
-   break;
-   case 'MAIN_LEFT':
-      echo $GLOBALS['VIEW']['MAIN_LEFT'];
-   break;
-   case 'MAIN_RIGHT':
-      echo $GLOBALS['VIEW']['MAIN_RIGHT'];
-   break;
-   case 'MAIN_BOTTOM':
-      echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
    break;
    case 'LAYOUT':
       echo json_encode($GLOBALS['LAYOUT_PROPERTIES']['app2']);
    break;
    case 'NOTIFY':
-      echo date("d-m-y:H:M:S ");
+      print_r($GLOBALS['VIEW']['NOTIFY']);
    break;
    case 'ISNOTIFY':
-      echo "{'count':'3'}";
+      echo "{'count':'".sizeof($GLOBALS['VIEW']['NOTIFY'])."'}";
    break;
    case 'FILTER':
       if(isset($_SESSION[PAGE]['FILTER'])){
@@ -70,8 +58,19 @@ if(isset($_REQUEST['section'])){
          echo "No filter added!"; 
       }
    break;
+   case 'MAIN_TOP':
+   case 'MAIN_LEFT':
+   case 'MAIN_RIGHT':
+   case 'MAIN_BOTTOM':
    case 'DYNAMIC_JS':
-      echo $GLOBALS['VIEW']['DYNAMIC_JS'];
+   case 'MAIN_TOP':
+      echo $GLOBALS['VIEW'][$_REQUEST['section']];
+   break;
+   default:
+      //Custom views sections  which added by add_to_cview function
+      if(isset($GLOBALS['VIEW']['CUSTOM']) && isset($GLOBALS['VIEW']['CUSTOM'][$_REQUEST['section']])){
+         echo $GLOBALS['VIEW']['CUSTOM'][$_REQUEST['section']];
+      }
    break;
    }
 return;
@@ -145,7 +144,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
                      <!-- BorderContainer-4-->
                      <div dojoType="dijit.layout.BorderContainer"   gutters="false" liveSplitters="true" >
                         <!-- Center box of BorderContainer-4 menubar-->
-                        <div dojoType="dijit.layout.ContentPane" parseOnLoad=true preventCache=true loadingMessage="" region="top" gutter="false" id='MENUBAR' style="padding:0px;height:27px;" href="<?php echo gen_url() ?>section=MENUBAR" action="post">
+                        <div dojoType="dijit.layout.ContentPane" parseOnLoad=true preventCache=true loadingMessage="" region="top" gutter="false" id='MENUBAR' style="padding:0px;height:28px;" href="<?php echo gen_url() ?>section=MENUBAR" action="post">
                            <!-- content will be served in switch at the top of this page -->
                         </div>
                         <!-- Bottom box of BorderContainer-4 toolbar-->

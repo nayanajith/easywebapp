@@ -27,10 +27,10 @@ $password_custom='
 ';
 
 $arr=array('USER'=>'');
-$arr=array_merge($arr,exec_query("SELECT group_name,rid FROM ".$GLOBALS['S_TABLES']['role'],Q_RET_ARRAY,null,'group_name'));
+$arr=array_merge($arr,exec_query("SELECT group_name,rid FROM ".s_t('role'),Q_RET_ARRAY,null,'group_name'));
 $group_inner      =gen_select_inner(array_keys($arr),null,true);
 
-$res=exec_query("SELECT short_name,rid FROM ".$GLOBALS['S_TABLES']['program'],Q_RET_ARRAY,null,'rid');
+$res=exec_query("SELECT short_name,rid FROM ".s_t('program'),Q_RET_ARRAY,null,'rid');
 $program_inner  =gen_select_inner($res,'short_name');
 
 $auth_mod_inner   =gen_select_inner(get_common_list('auth_mod',true),null,true);
@@ -287,7 +287,7 @@ $GLOBALS['MODEL']=array(
           'columns'      =>array('user_id'=>array('hidden'=>'true'),'username','email','ldap_user_id','role_id'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__user_id',
-          'ref_table'    =>$GLOBALS['S_TABLES']['users'],
+          'ref_table'    =>s_t('users'),
           'order_by'     =>' ORDER BY user_id DESC ',
           'event_key'    =>'user_id',
           'dojoType'     =>'dojox.grid.EnhancedGrid',
@@ -316,7 +316,7 @@ $GLOBALS['MODEL']=array(
          "store"=>"rid_store",
 
          "filter"=>isset($_SESSION[PAGE]['FILTER'])?" AND ".$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>$GLOBALS['S_TABLES']['users'],
+         "ref_table"=>s_t('users'),
          "ref_key"=>'user_id',
          "order_by"=>'ORDER BY user_id DESC',
          "vid"=>array('username'),

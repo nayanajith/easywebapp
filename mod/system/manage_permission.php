@@ -8,7 +8,7 @@ if(isset($_REQUEST['data'])&&$_REQUEST['data']=='json'){
    $user_group   =$user_group_id[1];
 
    /*Select permission information for the given user from the db*/
-   $arr=exec_query("SELECT * FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=$is_user && group_user_id='".$user_group."'", Q_RET_ARRAY);
+   $arr=exec_query("SELECT * FROM ".s_t('permission')." WHERE is_user=$is_user && group_user_id='".$user_group."'", Q_RET_ARRAY);
    $return_array=array();
 
    /*Convert permission into form ids at the frontend*/
@@ -45,9 +45,9 @@ if(isset($_REQUEST['form'])){
          $user_group   =$user_group_id[1];
 
          /*Save json*/
-         //$res=exec_query("UPDATE ".$GLOBALS['S_TABLES']['users']." SET permission='".json_encode($permission_array)."' WHERE username='".$_REQUEST['username']."' ",Q_RET_MYSQL_RES);
+         //$res=exec_query("UPDATE ".s_t('users')." SET permission='".json_encode($permission_array)."' WHERE username='".$_REQUEST['username']."' ",Q_RET_MYSQL_RES);
          /*Delete all permission before set new settings TODO: recovery plan*/
-         if(!exec_query("DELETE FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=$is_user && group_user_id='".$user_group."'", Q_RET_MYSQL_RES)){
+         if(!exec_query("DELETE FROM ".s_t('permission')." WHERE is_user=$is_user && group_user_id='".$user_group."'", Q_RET_MYSQL_RES)){
             return_status_json('ERROR','error resetting permission');
             return;
          }
@@ -74,7 +74,7 @@ if(isset($_REQUEST['form'])){
             switch($break_down[0]){
                case "M":
                   $modules_permitted[$module]=$value;   
-                  if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','*','$value',$is_user)",Q_RET_MYSQL_RES)){
+                  if(!exec_query("REPLACE INTO ".s_t('permission')."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','*','$value',$is_user)",Q_RET_MYSQL_RES)){
                      return_status_json('ERROR','error updating permission');
                      return;
                   }
@@ -84,13 +84,13 @@ if(isset($_REQUEST['form'])){
                   if(isset($modules_permitted[$module])){
                      /*Prevent redundent permission ruls eg: module->w then page should not re assign 'w'*/
                      if($modules_permitted[$module] != $value){
-                        if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','$page','$value',$is_user)",Q_RET_MYSQL_RES)){
+                        if(!exec_query("REPLACE INTO ".s_t('permission')."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','$page','$value',$is_user)",Q_RET_MYSQL_RES)){
                            return_status_json('ERROR','error updating permission');
                            return;
                         }
                      }
                   }else{
-                     if(!exec_query("REPLACE INTO ".$GLOBALS['S_TABLES']['permission']."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','$page','$value',$is_user)",Q_RET_MYSQL_RES)){
+                     if(!exec_query("REPLACE INTO ".s_t('permission')."(group_user_id,module,page,access_right,is_user) values('".$user_group."','$module','$page','$value',$is_user)",Q_RET_MYSQL_RES)){
                         return_status_json('ERROR','error updating permission');
                         return;
                      }
@@ -174,14 +174,14 @@ echo "Select User/Role: <select name='username' id='username' dojoType='dijit.fo
 
 //List of groups
 echo "<option value='none'>-roles-</option>";
-$res=exec_query("SELECT group_name FROM ".$GLOBALS['S_TABLES']['role'],Q_RET_MYSQL_RES);
+$res=exec_query("SELECT group_name FROM ".s_t('role'),Q_RET_MYSQL_RES);
 while($row=mysql_fetch_assoc($res)){
 echo "<option value='G:".$row['group_name']."'>".$row['group_name']."</option>";
 }
 
 //List of users
 echo "<option value='none'>-users-</option>";
-$res=exec_query("SELECT username FROM ".$GLOBALS['S_TABLES']['users'],Q_RET_MYSQL_RES);
+$res=exec_query("SELECT username FROM ".s_t('users'),Q_RET_MYSQL_RES);
 while($row=mysql_fetch_assoc($res)){
 echo "<option value='U:".$row['username']."'>".$row['username']."</option>";
 }

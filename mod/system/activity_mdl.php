@@ -160,7 +160,7 @@ $GLOBALS['MODEL']=array(
           ),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
-          'ref_table'    =>$GLOBALS['S_TABLES']['log'],
+          'ref_table'    =>s_t('log'),
           'event_key'    =>'rid',
           'dojoType'     =>'dojox.grid.EnhancedGrid',
           'query'        =>'{ "rid": "*" }',
@@ -185,7 +185,7 @@ $GLOBALS['MODEL']=array(
          "store"=>"rid_store",
 
          "filter"=>isset($_SESSION[PAGE]['FILTER'])?" AND ".$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>$GLOBALS['S_TABLES']['log'],
+         "ref_table"=>s_t('log'),
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
          "vid"=>array('rid'),

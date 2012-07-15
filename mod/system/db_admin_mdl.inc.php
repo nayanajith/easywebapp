@@ -15,8 +15,8 @@ function db_migration_form(){
    $query="SELECT * FROM base_data WHERE base_class='VARIABLE' AND base_key='SYSTEM__DB_VERSION'";
 
    //If the database is s module database prefix the __DB_VERSION with module name as a convention to understand this is a module databa version
-   if(isset($_SESSION[PAGE]) && isset($_SESSION[PAGE]['schema_module']) && $_SESSION[PAGE]['schema_module'] != 'core' && $_SESSION[PAGE]['schema_module'] != ''){
-      $query="SELECT * FROM base_data WHERE base_class='VARIABLE' AND base_key='".strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION'";
+   if(isset($_SESSION[PAGE]) && !is_null(get_param('schema_module')) && get_param('schema_module') != 'core' && get_param('schema_module') != ''){
+      $query="SELECT * FROM base_data WHERE base_class='VARIABLE' AND base_key='".strtoupper(get_param('schema_module'))."__DB_VERSION'";
    }
 
    $db_version=-1;
@@ -28,8 +28,8 @@ function db_migration_form(){
       $db_version=$arr['base_value'] ;
    }else{//If there is no previous vaersion set set ther version as 0
       $db_version=0;
-      exec_query("INSERT INTO `base_data`(`base_value`,`base_class`,`base_key`)VALUES('$db_version','VARIABLE','".strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION')",Q_RET_NONE);
-      $arr=array($db_version,'VARIABLE',strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION");
+      exec_query("INSERT INTO `base_data`(`base_value`,`base_class`,`base_key`)VALUES('$db_version','VARIABLE','".strtoupper(get_param('schema_module'))."__DB_VERSION')",Q_RET_NONE);
+      $arr=array($db_version,'VARIABLE',strtoupper(get_param('schema_module'))."__DB_VERSION");
    }
 
 
@@ -413,8 +413,8 @@ function migrate_db(){
 
    //After successful migration the database version (system/program) will be upgraded to the current version
    if($status == 'OK'){
-      if(isset($_SESSION[PAGE]) && isset($_SESSION[PAGE]['schema_module']) && $_SESSION[PAGE]['schema_module'] != 'core' && $_SESSION[PAGE]['schema_module'] != ''){
-         exec_query("UPDATE `base_data` SET `base_value` ='$version' WHERE `base_class`='VARIABLE' AND `base_key`='".strtoupper($_SESSION[PAGE]['schema_module'])."__DB_VERSION'",Q_RET_NONE);
+      if(isset($_SESSION[PAGE]) && !is_null(get_param('schema_module')) && get_param('schema_module') != 'core' && get_param('schema_module') != ''){
+         exec_query("UPDATE `base_data` SET `base_value` ='$version' WHERE `base_class`='VARIABLE' AND `base_key`='".strtoupper(get_param('schema_module'))."__DB_VERSION'",Q_RET_NONE);
       }else{
          exec_query("UPDATE `base_data` SET `base_value` ='$version' WHERE `base_class`='VARIABLE' AND `base_key`='SYSTEM__DB_VERSION'",Q_RET_NONE);
       }
@@ -427,8 +427,8 @@ function effective_schema(){
    $schema_file=A_CORE.'/database_schema.php';
 
    //include the selected module database schema
-   if(isset($_SESSION[PAGE]) && isset($_SESSION[PAGE]['schema_module']) && $_SESSION[PAGE]['schema_module'] != 'core' && $_SESSION[PAGE]['schema_module'] != ''){
-      $schema_file=A_MODULES.'/'.$_SESSION[PAGE]['schema_module'].'/core/database_schema.php';
+   if(isset($_SESSION[PAGE]) && !is_null(get_param('schema_module')) && get_param('schema_module') != 'core' && get_param('schema_module') != ''){
+      $schema_file=A_MODULES.'/'.get_param('schema_module').'/core/database_schema.php';
    }
    return  $schema_file;
 }

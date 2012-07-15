@@ -1,5 +1,35 @@
 <?php
 /**
+ * Return a session variable values set by set_param() frontend function (javascript) 
+ */
+function set_param($key,$value){
+   $_SESSION[MODULE][PAGE][$key]=$value;
+}
+
+/**
+ * Store session variable relative to the MODULE and PAGE
+ */
+function get_param($key){
+   if(isset($_SESSION[MODULE][PAGE][$key])){
+      return $_SESSION[MODULE][PAGE][$key];
+   }else{
+      return null;
+   }
+}
+
+/**
+ * Delete session variable relative to the MODULE and PAGE
+ */
+function del_param($key){
+   if(isset($_SESSION[MODULE][PAGE][$key])){
+      unset($_SESSION[MODULE][PAGE][$key]);
+      return true;
+   }else{
+      return false;
+   }
+}
+
+/**
  * Return the primary key of effective form
  */
 function get_pri_keys(){
@@ -505,7 +535,9 @@ $GLOBALS['VIEW']=array(
    'TOOLBAR_TL'   =>'',
    'TOOLBAR'      =>'',
    'STATUSBAR'    =>'',
-   'FOOTER'       =>''
+   'FOOTER'       =>'',
+   //Custom view section array
+   'CUSTOM'       =>array()
 );
 
 /*
@@ -536,6 +568,37 @@ function add_to_view($view_id,$content,$before=false){
       }
    }else{
       return "key[$view_id] error!"; 
+   }
+}
+
+/*
+ * Add content to custom array which is consists of user defined view ids
+ * View_id : one of the ids in above array
+ * contet   : any html/css/js content or a include file which will generate any of the contet
+ * before : true/false
+ */
+
+function add_to_cview($view_id,$content,$before=false){
+   //IF the contet is a file then include and get the output to array using ob_func
+   if(!isset($GLOBALS['VIEW']['CUSTOM'][$view_id])){
+      $GLOBALS['VIEW']['CUSTOM'][$view_id]='';
+   }
+   if(is_file($content)){
+      ob_start();
+      include $content;
+      $content=ob_get_contents();
+      if($before){
+         $GLOBALS['VIEW']['CUSTOM'][$view_id] = $content.$GLOBALS['VIEW']['CUSTOM'][$view_id];
+      }else{
+         $GLOBALS['VIEW']['CUSTOM'][$view_id] .= $content;
+      }
+      ob_end_clean();
+   }elseif(!is_null($content) || $content != ''){
+      if($before){
+         $GLOBALS['VIEW']['CUSTOM'][$view_id] = $content.$GLOBALS['VIEW']['CUSTOM'][$view_id];
+      }else{
+         $GLOBALS['VIEW']['CUSTOM'][$view_id] .= $content;
+      }
    }
 }
 
@@ -946,13 +1009,13 @@ function gen_select_inner($arr,$label=null,$null_select=false){
    if(is_assoc_array($arr)){
       //Direct compatibility with  returning array of exec_query
       if(is_array($arr[key($arr)])){
-         //case: exec_query("SELECT rid,batch_id FROM ".$GLOBALS['P_TABLES']['batch'],Q_RET_ARRAY,null,'rid');
+         //case: exec_query("SELECT rid,batch_id FROM ".p_t('batch'),Q_RET_ARRAY,null,'rid');
          if($label != null){
             foreach($arr as $key=>$value ){
                $select.="<option value=\"$key\">".$value[$label]."</option>\n";
             }
          }else{
-            //case: exec_query("SELECT batch_id FROM ".$GLOBALS['P_TABLES']['batch'],Q_RET_ARRAY,null,'batch_id');
+            //case: exec_query("SELECT batch_id FROM ".p_t('batch'),Q_RET_ARRAY,null,'batch_id');
             foreach($arr as $key=>$value ){
                $select.="<option value=\"$key\">$key</option>\n";
             }

@@ -16,12 +16,12 @@ $no_reg	=true;
 $password="";
 
 if(isset($_REQUEST['email']) && $_REQUEST['email'] != '' ){
-	$user_arr=exec_query("SELECT * FROM ".$GLOBALS['S_TABLES']['users']." WHERE email='".$_REQUEST['email']."'",Q_RET_ARRAY);
+	$user_arr=exec_query("SELECT * FROM ".s_t('users')." WHERE email='".$_REQUEST['email']."'",Q_RET_ARRAY);
 	$user_arr=$user_arr[0];
 	if(get_num_rows() > 0 ){
 		$password=rand(11111,22222);
 		$password_md5=md5($password);
-		$arr=exec_query("UPDATE ".$GLOBALS['S_TABLES']['users']." SET password='".$password_md5."' WHERE email='".$_REQUEST['email']."'",Q_RET_MYSQL_RES);
+		$arr=exec_query("UPDATE ".s_t('users')." SET password='".$password_md5."' WHERE email='".$_REQUEST['email']."'",Q_RET_MYSQL_RES);
 		//echo $password;
 
 		/*TODO:send mail*/

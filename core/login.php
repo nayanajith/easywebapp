@@ -153,7 +153,7 @@ function after_login() {
    //User changing select box
    $user_changer="";
    if(isset($_SESSION['SUPER_USER']) && $_SESSION['SUPER_USER']){
-      $arr=exec_query('SELECT username,user_id FROM '.$GLOBALS['S_TABLES']['users'],Q_RET_ARRAY,null,'user_id');
+      $arr=exec_query('SELECT username,user_id FROM '.s_t('users'),Q_RET_ARRAY,null,'user_id');
       $inner=gen_select_inner($arr,'username',true);
       $user_changer="Switch user<select dojoType='dijit.form.FilteringSelect' value='".$_SESSION['user_id']."' style='width:90px' id='switch_user' onMouseOver='halt_page_reloading=false' onChange='switch_user(this.value);reload_page()'>$inner</select>";
    }

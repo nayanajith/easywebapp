@@ -41,7 +41,7 @@ class View{
         //Determine group prefix according to the group of the user
         $group_prefix='';
         if(isset($_SESSION['role_id'])){
-            $arr=exec_query("SELECT file_prefix FROM ".$GLOBALS['S_TABLES']['role']." WHERE group_name='".$_SESSION['role_id']."'",Q_RET_ARRAY);
+            $arr=exec_query("SELECT file_prefix FROM ".s_t('role')." WHERE group_name='".$_SESSION['role_id']."'",Q_RET_ARRAY);
             $group_prefix='_'.$arr[0]['file_prefix'];
         }
          $model=sprintf($this->model,$group_prefix);
@@ -390,8 +390,8 @@ class View{
       /*fill data from data array*/
       $fill ="";
 
-      if(isset($_SESSION[PAGE]) && isset($_SESSION[PAGE][$field])){
-         $fill=$_SESSION[PAGE][$field];
+      if(!is_null(get_param($field))){
+         $fill=get_param($field);
       }
       //original field id
       $field_=$field;

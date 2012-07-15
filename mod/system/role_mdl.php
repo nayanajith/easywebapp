@@ -69,7 +69,7 @@ $GLOBALS['MODEL']=array(
           'columns'      =>array('rid'=>array('hidden'=>'true'),'group_name','file_prefix','layout','theme'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
-          'ref_table'    =>$GLOBALS['S_TABLES']['role'],
+          'ref_table'    =>s_t('role'),
           'order_by'     =>'ORDER BY rid DESC',
           'event_key'    =>'rid',
           'dojoType'     =>'dojox.grid.EnhancedGrid',
@@ -98,7 +98,7 @@ $GLOBALS['MODEL']=array(
          "store"=>"rid_store",
 
          "filter"=>isset($_SESSION[PAGE]['FILTER'])?" AND ".$_SESSION[PAGE]['FILTER']:null,
-         "ref_table"=>$GLOBALS['S_TABLES']['role'],
+         "ref_table"=>s_t('role'),
          "ref_key"=>'rid',
          "order_by"=>'ORDER BY rid DESC',
          "vid"=>array('group_name'),

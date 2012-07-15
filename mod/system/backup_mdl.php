@@ -25,7 +25,7 @@ $GLOBALS['MODEL']=array(
          "store"=>"rid_store",
 
          "filter"=>null,
-         "ref_table"=>$GLOBALS['S_TABLES']['role'],
+         "ref_table"=>s_t('role'),
          "order_by"=>'ORDER BY group_name DESC',
          "vid"=>array('group_name'),
       ),

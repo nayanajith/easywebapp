@@ -25,12 +25,12 @@ function load_permission(){
 
    //permission inherited from the users group
    if(isset($_SESSION['role_id'])){
-      $GLOBALS['permission']['GROUP']=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE is_user=false && group_user_id='".$_SESSION['role_id']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
+      $GLOBALS['permission']['GROUP']=exec_query("SELECT module,page,access_right FROM ".s_t('permission')." WHERE is_user=false && group_user_id='".$_SESSION['role_id']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
    }
 
    //Permission will override from the users permission
    if(isset($_SESSION['username'])){
-      $GLOBALS['permission']['USER']=exec_query("SELECT module,page,access_right FROM ".$GLOBALS['S_TABLES']['permission']." WHERE  is_user=true && group_user_id='".$_SESSION['username']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
+      $GLOBALS['permission']['USER']=exec_query("SELECT module,page,access_right FROM ".s_t('permission')." WHERE  is_user=true && group_user_id='".$_SESSION['username']."' AND access_right IN ('WRITE','READ') ", Q_RET_ARRAY);
    }
    load_anon_permission();
 }

@@ -6,7 +6,7 @@ $GLOBALS['PAGE']=array(
    'name'                =>'acc_year';
    'table'               =>$GLOBALS['P_TABLES'][$NAME];
    'primary_key'         =>'id';
-   'filter_table'        =>$GLOBALS['P_TABLES']['filter'];
+   'filter_table'        =>p_t('filter');
    'filter_primary_key'  =>'id';
 );
 */
@@ -66,11 +66,11 @@ if(isset($_REQUEST['form'])){
             }
             if(isset($_REQUEST['param']) && isset($_REQUEST[$_REQUEST['param']]) && $_REQUEST[$_REQUEST['param']] == 'NULL'){
                //rest the session variable corresponding to the given value if  it is NULL
-               unset($_SESSION[PAGE][$param]);
+               del_param($param);
                return_status_json('OK',"Reset ".$_REQUEST['param']);
             }elseif(isset($_REQUEST[$_REQUEST['param']])){
             //Set session variable corresponding to the value changed in front end
-               $_SESSION[PAGE][$param]=$_REQUEST[$_REQUEST['param']];
+               set_param($param,$_REQUEST[$_REQUEST['param']]);
                return_status_json('OK',"Set ".$param." as ".$_REQUEST[$_REQUEST['param']]);
             }
          break;
