@@ -395,7 +395,7 @@ $GLOBALS['MODEL']=array(
  * Add value to model add a value to a given lear of the model tree
  */
 function set_mdl_property($path,$value){
-   return set_property(&$GLOBALS['MODEL'],$path,$value);
+   return set_property($GLOBALS['MODEL'],$path,$value);
 }
 
 /**
@@ -410,7 +410,7 @@ function get_mdl_property($path){
 /**
  * Set property from the model array
  */
-function set_property($arr,$path,$value){
+function set_property(&$arr,$path,$value){
    if(!is_array($path)){
       $path=explode('.',$path);
    }
@@ -501,7 +501,7 @@ $GLOBALS['PREVIEW']=array(
  * Set value to preview,up to 3 levels can be set
  */
 function set_pviw_property($path,$value){
-   set_property(&$GLOBALS['PREVIEW'],$path,$value);
+   set_property($GLOBALS['PREVIEW'],$path,$value);
 }
 
 /**

@@ -42,7 +42,7 @@ $system_table_schemas['users']="CREATE TABLE `users` (
   `last_login`       DATETIME,
   `last_logout`      DATETIME,
   `failed_logins`    INT NOT NULL DEFAULT 0,
-  `deleted`          BOOLEAN     DEFAULT false,
+  `status`           VARCHAR(100),
   `note`             VARCHAR(300) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY (`username`)

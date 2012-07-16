@@ -67,7 +67,7 @@ $GLOBALS['TBL_LOGIN']   = array(
    'password'  =>'password',
    'fullname'  =>'username',
    'user_id'   =>'user_id',
-   'group_id'  =>'group_id',
+   'role_id'   =>'role_id',
    'permission'=>'permission'       
 );
 $GLOBALS['AUTH_PROTOCOLE'] ='http'; //authentication communication protocol http,https
