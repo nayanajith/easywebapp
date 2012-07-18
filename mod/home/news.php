@@ -1,7 +1,7 @@
 <?php
 $role='NULL';
-if(!isset($_SESSION['role_id'])){
-$role='NULL';
+if(isset($_SESSION['role_id'])){
+   $role=$_SESSION['role_id'];
 }
 
 $news_tpl="";
@@ -22,6 +22,10 @@ foreach($arr as $row){
 </tr>
 ";
 
+}
+
+if(trim($news) ==''){
+   $news ='No news available to display';
 }
 
 $news="<h3>News</h3><table width='100%'>".$news."</table>";

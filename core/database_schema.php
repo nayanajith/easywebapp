@@ -2,7 +2,7 @@
 /*
 System Database tables
 */
-$schema_version=4;
+$schema_version=5;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -178,6 +178,6 @@ $system_table_migrate[4][]="REPLACE INTO `base_data` (`base_class`,`base_key`,`b
 ('LIST','al_subjects','{\"1\":\"PHYSICS\",\"2\":\"CHEMISTERY\",\"10\":\"COMBINED MATHEMATICS\",\"09\":\"BIOLOGY\",\"71\":\"SINHALA\",\"23\":\"ELEMENT OF POLITICAL SCIENCE\",\"24\":\"LOGIC &amp; SCIENTIFIC METHOD\",\"21\":\"ECONOMICS\",\"31\":\"BUSINESS STATISTICS\",\"32\":\"BUSINESS STUDIES\",\"33\":\"ACCOUNTING\",\"22\":\"GEOGRAPHY\",\"25\":\"HISTORY\",\"44\":\"ISLAM\"} ','ENABLED'),
 ('LIST','auth_mod','[\"AUTO\",\"LDAP\"]','ENABLED')";
 
-$system_table_migrate[4][]="ALTER TABLE news ADD role_id VARCHAR(100)";
+$system_table_migrate[5][]="ALTER TABLE news ADD role_id VARCHAR(100)";
 
 ?>

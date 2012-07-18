@@ -4,7 +4,7 @@ $GLOBALS['MODEL']=array(
    'KEYS'=>array(
       'PRIMARY_KEY'	=>'rid',
       'UNIQUE_KEY'	=>array(''),
-      'MULTY_KEY'	=>array(''),
+      'MULTY_KEY'	   =>array(''),
    ),
 //--------------FIELDS TO BE INCLUDED IN FORM-------------------
 //---------------THIS ALSO REFLECT THE TABLE--------------------
@@ -44,7 +44,7 @@ $GLOBALS['MODEL']=array(
       "content"=>array(
          "dojoType"	=>"dijit.form.SimpleTextarea",
          "required"	=>"true",
-         "type"   =>"hidden",
+         "type"      =>"hidden",
          "label"	   =>"Content",
          "label_pos"	=>"top",
          "read_func"=>"htmlspecialchars_decode",
