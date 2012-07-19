@@ -4,7 +4,8 @@ if(isset($_REQUEST['section'])){
    switch($_REQUEST['section']){
    case 'TOOLBAR_TOP':
       ?>
-         <div id='toolbar_top' id='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;background-color:#5B92C8'>
+         <!--div id='toolbar_top' id='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;background-color:#5B92C8'-->
+         <div id='toolbar_top' id='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px'>
             <table width="100%" cellpadding="0" cellspacing="0">
                <tr>
                   <td width="30%">
