@@ -54,7 +54,20 @@ if(isset($_REQUEST['section'])){
    case 'FILTER':
       if(isset($_SESSION[PAGE]['FILTER'])){
          echo "<p>".$_SESSION[PAGE]['FILTER']."</p>
-      <button dojoType='dijit.form.Button' type='submit' onClick=\"s_f_c_add('ok',reload_grid,grid__GRID);s_f_c_add('ok',w_d,toolbar__del_filter);submit_form('del_filter')\">Delete Filter</button>";
+            <button dojoType='dijit.form.Button' type='submit'>
+               <script type='dojo/method' event='onClick' args='item'> 
+                     if(typeof grid__GRID === 'undefined'){
+                        s_f_c_add('ok',reload_main);
+                     }else{
+                        s_f_c_add('ok',reload_grid,grid__GRID);
+                     }
+                     s_f_c_add('ok',w_d,toolbar__del_filter);
+                     submit_form('del_filter');
+               </script>
+                  Delete Filter
+            </button>
+            ";
+
       }else{
          echo "No filter added!"; 
       }
