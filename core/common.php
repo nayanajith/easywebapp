@@ -318,7 +318,7 @@ function get_filter($table_as=null){
    $and="";
    foreach($_SESSION[PAGE]['FILTER_ARRAY'] as $key => $value){
       //override the default values with the exceptions
-      if(isset($_SESSION[PAGE]['FILTER_ARRAY_EXP']) && $_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key]){
+      if(isset($_SESSION[PAGE]['FILTER_ARRAY_EXP']) && isset($_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key])){
          $value=$_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key]; 
       }else{
          $value=$table_as."`".$key."` LIKE '%".$value."%'"; 

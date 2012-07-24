@@ -942,7 +942,14 @@ function fill_form(rid,form) {
                if(widget.store){
                   widget.set('value', 'NULL');
                }else{
-                  widget.set('value', null);
+                  switch(widget.declaredClass){
+                  case 'dijit.form.SimpleTextarea':
+                     widget.set('value', '');
+                  break;
+                  default:
+                     widget.set('value', null);
+                  break;
+                  }
                }
             }
 
@@ -973,7 +980,7 @@ function fill_form(rid,form) {
                         load_combo_value(dijit.byId(key),response[key]);
                      break;
                      case 'dijit.form.FilteringSelect':
-                        dijit.byId(key).set('value',response[key]); 
+                        //dijit.byId(key).set('value',response[key]); 
                         load_selected_value(dijit.byId(key),response[key]);
                      break;
                      default:
@@ -1367,6 +1374,7 @@ function get_csv(){
  *populate the related data in form when a row in the grid is clicked
  */
 function load_grid_item(grid,event_key,selector_id,e){
+   set_param_on();
    var selectedValue = grid.store.getValue(grid.getItem(e.rowIndex),event_key);
    load_selected_value(selector_id,selectedValue);
 }
