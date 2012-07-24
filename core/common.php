@@ -76,30 +76,25 @@ $GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
    "MAIN_TOP"     =>array(
       "style"=>array("padding"=>"0px","height"=>"0%"),
       "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
    ),
    "MAIN_BOTTOM"  =>array(
       "style"=>array("padding"=>"0px","height"=>"0%"),
       "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
    ),
    "MAIN_LEFT"    =>array(
       "style"=>array("padding"=>"0px","width"=>"40%"),
       "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
    ),
    "MAIN_RIGHT"   =>array(
       "style"=>array("padding"=>"0px","width"=>"60%"),
       "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
+      //"minSize"=>"0",
+      //"maxSize"=>"850",
    ),
 
 );
-function set_layout_property($layout='app2',$section='MAIN_TOP',$p1,$p2,$p3=null){
+
+function set_layout_property($layout='app2',$section,$p1,$p2,$p3=null){
    if(!is_null($p3)){
       $GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$p1][$p2]=$p3;
    }else{
@@ -321,7 +316,8 @@ function get_filter($table_as=null){
       if(isset($_SESSION[PAGE]['FILTER_ARRAY_EXP']) && isset($_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key])){
          $value=$_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key]; 
       }else{
-         $value=$table_as."`".$key."` LIKE '%".$value."%'"; 
+         //$value=$table_as."`".$key."` LIKE '%".$value."%'"; 
+         $value=$table_as."`".$key."` LIKE '".$value."'"; 
       }   
 
       $filter.=$and.$value;

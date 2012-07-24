@@ -216,7 +216,11 @@ define('PROGRAM'   , $program);
 
 /*------The reqeuest is just program,module and page change request-----------*/
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'p_m_p'){
-   echo "{'program':'".$_SESSION['PROGRAM']."','module':'".$_SESSION['MODULE']."','page':'".$_SESSION['PAGE']."'}"; 
+   if(isset($_SESSION['PROGRAM'])){
+      echo "{'program':'".$_SESSION['PROGRAM']."','module':'".$_SESSION['MODULE']."','page':'".$_SESSION['PAGE']."'}"; 
+   }else{
+      echo "{'module':'".$_SESSION['MODULE']."','page':'".$_SESSION['PAGE']."'}"; 
+   }
    return;
 }
 

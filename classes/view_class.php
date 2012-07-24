@@ -90,8 +90,8 @@ class View{
       d_r('dojox.data.QueryReadStore');
       if(!isset($this->stores[$store_id])){
          if($_SESSION['LAYOUT']=='app2'){
-            //add_to_toolbar(
-            add_to_main_top(
+            add_to_toolbar(
+            //add_to_main_top(
                "\n<span dojoType='dojox.data.QueryReadStore' 
                url='".gen_url()."data=json&action=combo&form=main&field=".$field_id."'
                jsId='".$store_id."'
