@@ -259,8 +259,8 @@ function gen_print_html($content,$title){
  * $filter_array=array('id1','id2') -> and id1='val_id1' and id2='val_id2'
  */
 function gen_and_filter($filter_ids,$array=null,$start_and=false){
-   if(is_null($array) && isset($_SESSION[PAGE])){
-      $array=$_SESSION[PAGE];
+   if(is_null($array) && isset($_SESSION[MODULE][PAGE])){
+      $array=$_SESSION[MODULE][PAGE];
    }elseif(is_null($array)){
       return "";
    }
