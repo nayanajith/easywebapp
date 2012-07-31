@@ -441,12 +441,18 @@ function reload_sections(sections){
       content  :{section:'DYNAMIC_JS'},
       sync     :true,
       handleAs :'javascript',
+      headers: { "Accept": "text/javascript" },
       load: function(response) {
       },
       error: function() {
          console.error("Error loading layout DYNAMIC_JS");
       }
    });
+   /*
+   var dynamic_js=dojo.byId('DYNAMIC_JS');
+   var random=Math.floor(Math.random()*1000);
+   dynamic_js.src=gen_url()+"&section=DYNAMIC_JS&rand="+random;
+   */
 
    for(var i in sections){
       var section=dijit.byId(sections[i]);

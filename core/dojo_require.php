@@ -19,7 +19,7 @@ djConfig = {
 <script src="<?php echo JS; ?>/dijit/ucscis.js" type='text/javascript'></script>
 <script src="<?php echo JS; ?>/dojox/ucscis.js" type='text/javascript'></script>
 <script src="<?php echo gen_url() ?>action=js&form=main" type='text/javascript'></script>
-<script src="<?php echo gen_url() ?>action=js_d&form=main" type='text/javascript'></script>
+<script src="<?php echo gen_url() ?>action=js_d&form=main" type='text/javascript' id='DYNAMIC_JS'></script>
 
 
 <?php
