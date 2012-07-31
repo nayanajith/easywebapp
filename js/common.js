@@ -455,6 +455,7 @@ function reload_sections(sections){
    */
 
    for(var i in sections){
+      //section id
       var section=dijit.byId(sections[i]);
 	   if(section.get('href')){
          /*
@@ -500,9 +501,19 @@ function reload_sections(sections){
             break;
          }
 
-         //Set the style
+         //Set the style, layout, and properties
          if(layout[sections[i]]){
-            dojo.style(sections[i],layout[sections[i]].style);
+            var section_layout=layout[sections[i]];
+            for(var j in section_layout){
+               switch(j){
+               case 'style':
+                  dojo.style(sections[i],section_layout[j]);
+               break;
+               default:
+                  //section.set(j,section_layout[j]);
+               break;
+               }
+            }
          }
          
          /*
@@ -948,7 +959,14 @@ function fill_form(rid,form) {
                if(widget.store){
                   widget.set('value', 'NULL');
                }else{
-                  widget.set('value', null);
+                  switch(widget.declaredClass){
+                  case 'dijit.form.SimpleTextarea':
+                     widget.set('value', '');
+                  break;
+                  default:
+                     widget.set('value', null);
+                  break;
+                  }
                }
             }
 
@@ -979,7 +997,7 @@ function fill_form(rid,form) {
                         load_combo_value(dijit.byId(key),response[key]);
                      break;
                      case 'dijit.form.FilteringSelect':
-                        dijit.byId(key).set('value',response[key]); 
+                        //dijit.byId(key).set('value',response[key]); 
                         load_selected_value(dijit.byId(key),response[key]);
                      break;
                      default:
@@ -1373,6 +1391,7 @@ function get_csv(){
  *populate the related data in form when a row in the grid is clicked
  */
 function load_grid_item(grid,event_key,selector_id,e){
+   set_param_on();
    var selectedValue = grid.store.getValue(grid.getItem(e.rowIndex),event_key);
    load_selected_value(selector_id,selectedValue);
 }
@@ -1506,3 +1525,60 @@ function w_e(widget){
       dijit.byId(widget).set('disabled',false);
    }
 }
+
+//////////////////////////////these functions are specific to audit_mdl.php///////////////////////////
+function submit_frm_verify() {
+   var url=gen_url();
+
+   dojo.xhrPost({
+      url      : url+'&form=frm_verify&data=json',
+      form     : frm_verify.domNode,
+      handleAs :'json',
+      timeout  : timeout_,
+      load     : function(response, ioArgs) {        
+        update_status_bar(response.status_code,response.info);
+      },
+      error : function(response, ioArgs) {
+         update_status_bar('ERROR',response);
+      }
+   });
+}
+//dojo cookies used to check the autosave status
+dojo.require('dojo.cookie');
+
+//auto save in each 30 secs
+var secs=10;
+var auto_save_timeout=secs*1000;
+var stop_auto_save=false;
+
+var auto_save_off=function (){
+   update_status_bar('OK','Auto saving turned off...');
+   toolbar__auto_save.setLabel('Auto Save ON');
+   stop_auto_save=true;
+   dojo.cookie('stop_auto_save', null, {expires: -1});
+}
+
+function auto_save_on(){
+  
+  if(stop_auto_save){
+      update_status_bar('OK','Auto saving turned off...');
+      toolbar__auto_save.setLabel('Auto Save ON');
+      dojo.cookie('stop_auto_save', null, {expires: -1});
+      return;
+  }
+
+  dojo.connect(toolbar__auto_save, 'onClick', auto_save_off);
+  toolbar__auto_save.setLabel('Auto Save OFF');
+  dojo.cookie('stop_auto_save', 'false', {expires: 10});
+
+  submit_frm_verify();
+  setTimeout('update_status_bar("OK","Auto saving in 10s...")',2000);
+  setTimeout('auto_save_on()',auto_save_timeout);
+}
+
+dojo.ready(function(){
+   if(dojo.cookie('stop_auto_save') && dojo.cookie('stop_auto_save') =='false'){
+      auto_save_on();
+   }
+});
+//////////////////////////////above functions are specific to audit_mdl.php///////////////////////////

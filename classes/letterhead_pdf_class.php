@@ -45,7 +45,7 @@ class MYPDF extends TCPDF {
       
       /*Custom long header  with html formatted*/ 
       $header ="
-<h1>UNIVERSITY OF COLOMBO SCHOOL OF COMPUTING</h1>";
+<h1>".$GLOBALS['INSTITUTE']."</h1>";
 
    /*Header position from the top*/
    $this->SetY(10);

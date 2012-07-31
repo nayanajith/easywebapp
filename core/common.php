@@ -76,30 +76,25 @@ $GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
    "MAIN_TOP"     =>array(
       "style"=>array("padding"=>"0px","height"=>"0%"),
       "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
    ),
    "MAIN_BOTTOM"  =>array(
       "style"=>array("padding"=>"0px","height"=>"0%"),
       "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
    ),
    "MAIN_LEFT"    =>array(
       "style"=>array("padding"=>"0px","width"=>"40%"),
       "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
    ),
    "MAIN_RIGHT"   =>array(
       "style"=>array("padding"=>"0px","width"=>"60%"),
       "splitter"=>"false",
-      "minSize"=>"0",
-      "maxSize"=>"850",
+      //"minSize"=>"0",
+      //"maxSize"=>"850",
    ),
 
 );
-function set_layout_property($layout='app2',$section='MAIN_TOP',$p1,$p2,$p3=null){
+
+function set_layout_property($layout='app2',$section,$p1,$p2,$p3=null){
    if(!is_null($p3)){
       $GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$p1][$p2]=$p3;
    }else{
@@ -264,8 +259,8 @@ function gen_print_html($content,$title){
  * $filter_array=array('id1','id2') -> and id1='val_id1' and id2='val_id2'
  */
 function gen_and_filter($filter_ids,$array=null,$start_and=false){
-   if(is_null($array) && isset($_SESSION[PAGE])){
-      $array=$_SESSION[PAGE];
+   if(is_null($array) && isset($_SESSION[MODULE][PAGE])){
+      $array=$_SESSION[MODULE][PAGE];
    }elseif(is_null($array)){
       return "";
    }
@@ -318,10 +313,11 @@ function get_filter($table_as=null){
    $and="";
    foreach($_SESSION[PAGE]['FILTER_ARRAY'] as $key => $value){
       //override the default values with the exceptions
-      if(isset($_SESSION[PAGE]['FILTER_ARRAY_EXP']) && $_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key]){
+      if(isset($_SESSION[PAGE]['FILTER_ARRAY_EXP']) && isset($_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key])){
          $value=$_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key]; 
       }else{
-         $value=$table_as."`".$key."` LIKE '%".$value."%'"; 
+         //$value=$table_as."`".$key."` LIKE '%".$value."%'"; 
+         $value=$table_as."`".$key."` LIKE '".$value."'"; 
       }   
 
       $filter.=$and.$value;

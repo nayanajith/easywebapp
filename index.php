@@ -44,8 +44,7 @@ if(isset($_REQUEST['test_key']) && $_REQUEST['test_key']=='1400c95dd934343957b52
 */
 /*--------------------------Enable disable Errors ----------------------------*/
 error_reporting(E_ALL|E_STRICT);
-ini_set('display_errors',0);
-
+ini_set('display_errors',1);
 /*-----------------------advanced php configuration---------------------------*/
 ini_set('memory_limit','1024M');
 ini_set('max_execution_time','600');
@@ -217,7 +216,11 @@ define('PROGRAM'   , $program);
 
 /*------The reqeuest is just program,module and page change request-----------*/
 if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'p_m_p'){
-   echo "{'program':'".$_SESSION['PROGRAM']."','module':'".$_SESSION['MODULE']."','page':'".$_SESSION['PAGE']."'}"; 
+   if(isset($_SESSION['PROGRAM'])){
+      echo "{'program':'".$_SESSION['PROGRAM']."','module':'".$_SESSION['MODULE']."','page':'".$_SESSION['PAGE']."'}"; 
+   }else{
+      echo "{'module':'".$_SESSION['MODULE']."','page':'".$_SESSION['PAGE']."'}"; 
+   }
    return;
 }
 

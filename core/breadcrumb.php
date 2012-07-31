@@ -19,8 +19,10 @@ if(isset($page_arr[PAGE])){
    $page=$page_arr[PAGE];
 }
 
-if(is_array($page)){
+if(is_array($page) && isset($page['PAGE'])){
    $page=$page['PAGE'];
+}else{
+   $page=PAGE;
 }
 
 ?>
