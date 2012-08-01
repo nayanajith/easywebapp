@@ -1270,6 +1270,11 @@ function p_m_p(module,page,program){
    var mid_old =dojo.cookie('module');
    var pid_old =dojo.cookie('page');
 
+   //Set old values if no new value as default
+   if(program == null)program = prid_old;
+   if(module == null)module = mid_old;
+   if(page == null)page = pid_old;
+
    pid_old=mid_old+'__'+pid_old;
    mid_old='menu__'+mid_old;
 
@@ -1287,7 +1292,6 @@ function p_m_p(module,page,program){
    dojo.style(mid,{"fontWeight":"bold"});
    dojo.style(pid,{"fontWeight":"bold"});
 
-   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN'] ?>';
    if(program == '' || program == null || program ==undefined){
       program='';
    }else{
@@ -1314,9 +1318,6 @@ function p_m_p(module,page,program){
       window.open(page_gen+'/'+module+'/'+page+program,'_parent');
    }
 
-
-
-
    //Set cookie for pmp
    dojo.cookie('program', program, {expires: 10});
    dojo.cookie('module', module, {expires: 10});
@@ -1327,7 +1328,6 @@ function p_m_p(module,page,program){
  * Load specific page in a module
  */
 function load_page(module,page,program){
-   var page_gen      ='<?php echo W_ROOT."/".$GLOBALS['PAGE_GEN'] ?>';
    if(program == '' || program == null || program ==undefined){
       program='';
    }else{
@@ -1352,18 +1352,6 @@ function load_page(module,page,program){
    }else{
       window.open(page_gen+'/'+module+'/'+page+program,'_parent');
    }
-}
-
-
-/**
- * change the effective program since
- */
-function change_program(program,desc){
-   var URL=gen_url(null,null,program);
-
-   if(confirm('Press OK to confirm scheme change to '+desc)){
-      open(URL,'_self');
-   }   
 }
 
 /**
@@ -1525,60 +1513,3 @@ function w_e(widget){
       dijit.byId(widget).set('disabled',false);
    }
 }
-
-//////////////////////////////these functions are specific to audit_mdl.php///////////////////////////
-function submit_frm_verify() {
-   var url=gen_url();
-
-   dojo.xhrPost({
-      url      : url+'&form=frm_verify&data=json',
-      form     : frm_verify.domNode,
-      handleAs :'json',
-      timeout  : timeout_,
-      load     : function(response, ioArgs) {        
-        update_status_bar(response.status_code,response.info);
-      },
-      error : function(response, ioArgs) {
-         update_status_bar('ERROR',response);
-      }
-   });
-}
-//dojo cookies used to check the autosave status
-dojo.require('dojo.cookie');
-
-//auto save in each 30 secs
-var secs=10;
-var auto_save_timeout=secs*1000;
-var stop_auto_save=false;
-
-var auto_save_off=function (){
-   update_status_bar('OK','Auto saving turned off...');
-   toolbar__auto_save.setLabel('Auto Save ON');
-   stop_auto_save=true;
-   dojo.cookie('stop_auto_save', null, {expires: -1});
-}
-
-function auto_save_on(){
-  
-  if(stop_auto_save){
-      update_status_bar('OK','Auto saving turned off...');
-      toolbar__auto_save.setLabel('Auto Save ON');
-      dojo.cookie('stop_auto_save', null, {expires: -1});
-      return;
-  }
-
-  dojo.connect(toolbar__auto_save, 'onClick', auto_save_off);
-  toolbar__auto_save.setLabel('Auto Save OFF');
-  dojo.cookie('stop_auto_save', 'false', {expires: 10});
-
-  submit_frm_verify();
-  setTimeout('update_status_bar("OK","Auto saving in 10s...")',2000);
-  setTimeout('auto_save_on()',auto_save_timeout);
-}
-
-dojo.ready(function(){
-   if(dojo.cookie('stop_auto_save') && dojo.cookie('stop_auto_save') =='false'){
-      auto_save_on();
-   }
-});
-//////////////////////////////above functions are specific to audit_mdl.php///////////////////////////

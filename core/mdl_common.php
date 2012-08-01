@@ -1,6 +1,6 @@
 <?php
 $del_filter_inner="
-<span>Delete Filter</span>
+<span>Show Filter</span>
    <div dojoType='dijit.TooltipDialog' preventCache=true refreshOnShow=true parseOnLoad=true doLayout=true align='center' href='?section=FILTER'>
    </div>
 ";
@@ -57,7 +57,6 @@ $TOOLBAR=array(
    ),  
    "del_filter"=>array(
       "dojoType"=>"dijit.form.DropDownButton",
-      "label"=>"Delete filter",
       "disabled"=>(isset($_SESSION[PAGE]['FILTER'])?"false":"true"),
       "inner"=>$del_filter_inner,
       "iconClass"=>get_icon_class('Cancel'),

@@ -326,8 +326,11 @@ function get_filter($table_as=null){
       if(isset($_SESSION[PAGE]['FILTER_ARRAY_EXP']) && isset($_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key])){
          $value=$_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key]; 
       }else{
-         //$value=$table_as."`".$key."` LIKE '%".$value."%'"; 
-         $value=$table_as."`".$key."` LIKE '".$value."'"; 
+         if(defined('FILTER_AUTO') && FILTER_AUTO=='YES'){
+            $value=$table_as."`".$key."` LIKE '%".$value."%'"; 
+         }else{
+            $value=$table_as."`".$key."` LIKE '".$value."'"; 
+         }
       }   
 
       $filter.=$and.$value;
@@ -351,8 +354,6 @@ function del_temp_filter($table_as=null){
  * Generate temporary filter for the submitted values
  */
 function get_temp_filter($table_as=null){
-   //Enable/Disable enclosing with percentage marks (wild cards)
-   $auto_enclose_pr=false;
    //Reset the global filter array
    $_SESSION[PAGE]['FILTER_ARRAY']=array();
 
@@ -374,7 +375,7 @@ function get_temp_filter($table_as=null){
             }
          }
 
-         if($auto_enclose_pr){
+         if(defined('FILTER_AUTO') && FILTER_AUTO=='YES'){
             $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
          }else{
             $filter.=$and.$table_as."`".$key."` LIKE '".$_REQUEST[$key]."'";

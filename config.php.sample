@@ -29,6 +29,12 @@ define('COMPRESS' , 'NO');
 /*Enable Program selector YES/NO */
 define('P_SELECTOR' , 'NO'); 
 
+/*Filter append % YES/NO */
+define('FILTER_AUTO' , 'NO'); 
+
+/*Javascript based Frontend filter for grids YES/NO */
+define('FILTER_FRONT' , 'NO'); 
+
 /*------------------------------title info------------------------------------*/
 $GLOBALS['TITLE_SHORT'] = 'UIS';
 $GLOBALS['TITLE']       = 'UCSC Information System';

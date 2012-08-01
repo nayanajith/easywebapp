@@ -569,7 +569,12 @@ dojo.ready(function(){
       d_r('dojox.widget.PlaceholderMenuItem');
       d_r('dojox.grid.EnhancedGrid');
       d_r('dojox.grid.enhanced.plugins.Pagination');
-      //d_r('dojox.grid.enhanced.plugins.Filter');
+
+      //Frontend filter disable enable as required from the configuration
+      if(defined('FILTER_FRONT') && FILTER_FRONT=='YES'){
+         d_r('dojox.grid.enhanced.plugins.Filter');
+      }
+
       //d_r("dojox.grid.enhanced.plugins.DnD");
       //d_r("dojox.grid.enhanced.plugins.Menu");
       d_r("dojox.grid.enhanced.plugins.NestedSorting");
@@ -655,6 +660,7 @@ plugins=\'{
         position: "bottom"
     },
    printer:true,
+   '.((defined('FILTER_FRONT') && FILTER_FRONT=='YES')?"filter:true,":"").'
    exporter: true,
    nestedSorting: true,
 }\'';

@@ -179,7 +179,7 @@ case 'app':
    if(defined('P_SELECTOR') && P_SELECTOR=='YES'){
       ob_start();
       echo "Change Program:";
-      program_select(PROGRAM); 
+      program_select($_SESSION['PROGRAM']); 
       add_to_program(ob_get_contents());
       ob_end_clean();
    }

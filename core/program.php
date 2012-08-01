@@ -26,7 +26,7 @@ function program_select($program){
    style='width:100px;'
 	title='Select Program'
 	data-dojo-props=\"placeHolder:'Program'\"
-   onChange='change_program(this.get(\"value\"),this.get(\"displayedValue\"))'>\n";
+   onChange='p_m_p(null,null,this.get(\"value\"))'>\n";
 
    foreach($GLOBALS['PROGRAMS'] as $key => $value){
       if($program == $value){
