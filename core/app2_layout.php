@@ -1,96 +1,3 @@
-<?php 
-//Return section wise content to the frontends xhr requests
-if(isset($_REQUEST['section'])){
-   switch($_REQUEST['section']){
-   case 'TOOLBAR_TOP':
-      ?>
-         <!--div id='toolbar_top' id='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px;background-color:#5B92C8'-->
-         <div id='toolbar_top' id='toolbar_top' dojoType='dijit.Toolbar' style='border-left:0px;padding-left:1px;height:35px'>
-            <table width="100%" cellpadding="0" cellspacing="0">
-               <tr>
-                  <td width="30%">
-                     <?php
-                     echo $GLOBALS['VIEW']['TOOLBAR_TL'];
-                     ?>
-                  </td>
-                  <td width="40%"  align="center">
-                     <button dojoType="dijit.form.Button" style="font-size:14px;font-weight:bold">
-                     <img src="<?php echo $GLOBALS['LOGO']; ?>" height=30px>
-                     <?php echo $GLOBALS['TITLE']; ?>
-                     </button>
-                  </td>
-                  <td width="30%">
-                     <div style="float:right" >
-                        <?php
-                        echo $GLOBALS['VIEW']['TOOLBAR_TR'];
-                        ?>
-                     </div>
-                  </td>
-               </tr>
-            </table>
-         </div>
-      <?php
-   break;
-   case 'MENUBAR':
-      echo "<div id='menubar' dojoType='dijit.MenuBar' style='height:26px;padding-left:1px;border-right:0px;border-left:0px;border-top:1px solid whitesmoke;'>";
-      echo $GLOBALS['VIEW']['MENUBAR'];
-      echo "</div>";
-   break;
-   case 'TOOLBAR':
-      //echo "<div id='toolbar' id='toolbar' dojoType='dijit.Toolbar' '>";
-      echo "<div id='toolbar' dojoType='dijit.Toolbar' style='height:46px'>";
-      echo $GLOBALS['VIEW']['TOOLBAR'];
-      echo "</div>";
-   break;
-   case 'LAYOUT':
-      echo json_encode($GLOBALS['LAYOUT_PROPERTIES']['app2']);
-   break;
-   case 'NOTIFY':
-      print_r($GLOBALS['VIEW']['NOTIFY']);
-   break;
-   case 'ISNOTIFY':
-      echo "{'count':'".sizeof($GLOBALS['VIEW']['NOTIFY'])."'}";
-   break;
-   case 'FILTER':
-      if(isset($_SESSION[PAGE]['FILTER'])){
-         echo "<p>".$_SESSION[PAGE]['FILTER']."</p>
-            <button dojoType='dijit.form.Button' type='submit'>
-               <script type='dojo/method' event='onClick' args='item'> 
-                     if(typeof grid__GRID === 'undefined'){
-                        s_f_c_add('ok',reload_main);
-                     }else{
-                        s_f_c_add('ok',reload_grid,grid__GRID);
-                     }
-                     s_f_c_add('ok',w_d,toolbar__del_filter);
-                     submit_form('del_filter');
-               </script>
-                  Delete Filter
-            </button>
-            ";
-
-      }else{
-         echo "No filter added!"; 
-      }
-   break;
-   case 'MAIN_TOP':
-   case 'MAIN_LEFT':
-   case 'MAIN_RIGHT':
-   case 'MAIN_BOTTOM':
-   case 'DYNAMIC_JS':
-   case 'MAIN_TOP':
-      echo $GLOBALS['VIEW'][$_REQUEST['section']];
-   break;
-   default:
-      //Custom views sections  which added by add_to_cview function
-      if(isset($GLOBALS['VIEW']['CUSTOM']) && isset($GLOBALS['VIEW']['CUSTOM'][$_REQUEST['section']])){
-         echo $GLOBALS['VIEW']['CUSTOM'][$_REQUEST['section']];
-      }
-   break;
-   }
-return;
-}
-?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
 <html>
@@ -100,13 +7,13 @@ return;
 
 <!--_________________________________CSS_____________________________________-->
       <?php 
-         echo $GLOBALS['VIEW']['CSS'];
+         echo get_css();
       ?>
 <!--______________________________FAVICON____________________________________-->
       <link rel="shortcut icon" href="<?php echo $GLOBALS['FAVICON']; ?>" type="image/x-icon" >
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
-         echo $GLOBALS['VIEW']['JS'];
+         echo get_js();
       ?>
    </head>
 <!--_____________________BODY with dojo border container_____________________-->
@@ -130,7 +37,7 @@ bottom:      Tool bar
    <body class="<?php echo $GLOBALS['THEME']; ?>" >
 <!--__________________________start loading ________________________________-->
    <?php
-      echo $GLOBALS['VIEW']['LOADING'];
+      echo get_loading();
       d_r("dijit.layout.BorderContainer");
    ?>
 <!--____________________________end loading ________________________________-->
@@ -189,7 +96,7 @@ JSON file for the menu is generated dinamically from mod/module_man/manage_modul
 
                   <!--BOTTOM box of BorderContainer-2-->
                   <div dojoType="dijit.layout.ContentPane" region="bottom" class="bgBottom" style='padding:0px;' >
-                     <?php echo $GLOBALS['VIEW']['STATUSBAR']; ?>
+                     <?php echo get_statusbar(); ?>
                   </div>
                   <!--end BOTTOM box of BorderContainer-2-->
                </div>

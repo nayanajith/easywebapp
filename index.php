@@ -44,7 +44,7 @@ if(isset($_REQUEST['test_key']) && $_REQUEST['test_key']=='1400c95dd934343957b52
 */
 /*--------------------------Enable disable Errors ----------------------------*/
 error_reporting(E_ALL|E_STRICT);
-ini_set('display_errors',1);
+ini_set('display_errors',0);
 /*-----------------------advanced php configuration---------------------------*/
 ini_set('memory_limit','1024M');
 ini_set('max_execution_time','600');
@@ -90,7 +90,7 @@ if(defined('P_SELECTOR') && P_SELECTOR=='YES'){
 include ("modules.php");
 
 ///////////////////////////////MIGRATION TO REST////////////////////////////////
-if(array_key_exists('PATH_INFO', $_SERVER)) {
+if(array_key_exists('PATH_INFO', $_SERVER)){
    $resource   = $_SERVER['PATH_INFO'];
    $method     = $_SERVER['REQUEST_METHOD'];
 
@@ -233,7 +233,6 @@ include A_CORE."/activity_log.php";
 /*-----------------------Login functions are from here------------------------*/
 include LOGIN;
 
-
 /*--------------------------Check for print request---------------------------*/
 $GLOBALS['PRINT']=false;
 if (isset($_REQUEST['print']) && $_REQUEST['print']=='true'){
@@ -259,7 +258,6 @@ if ($GLOBALS['DATA'] && isset($_REQUEST['action']) && $_REQUEST['action']=='js')
 //CSV generation request sent to particular page and stop further execution in this page
 if($GLOBALS['DATA']||$GLOBALS['PRINT']){
    /*Disable any worning or error messages while providing data*/
-   //ini_set('display_errors',0);
    //Special case to retrieve the json for the tree menu
 
    if(isset($_REQUEST['mod_tree']) && $_REQUEST['mod_tree'] == 'true'){

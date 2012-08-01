@@ -102,6 +102,16 @@ function set_layout_property($layout='app2',$section,$p1,$p2,$p3=null){
    }
 }
 
+/**
+ * return totla layout as a json
+ */
+function get_layout($layout='app2'){
+   return json_encode($GLOBALS['LAYOUT_PROPERTIES'][$layout]);
+}
+
+/**
+ * Return selected property of the layout
+ */
 function get_layout_property($layout='app2',$section='MAIN_TOP',$key=null,$key2=null){
    $out="";
    if(!is_null($key2)){
@@ -512,29 +522,31 @@ function get_pviw_property($path){
 
 
 /*--create and fill view global array which contains all parts of the fintend-*/
-$GLOBALS['VIEW']=array(
-   'CSS'          =>'',
-   'JS'           =>'',
-   'DYNAMIC_JS'   =>'',
-   'LOADING'      =>'',
-   'LOGIN'        =>'',
-   'PROGRAM'      =>'',
-   'BREADCRUMB'   =>'',
-   'NAVIGATOR'    =>'',
-   'MAIN_TOP'     =>'',
-   'MAIN_LEFT'    =>'',
-   'MAIN_RIGHT'   =>'',
-   'MAIN_BOTTOM'  =>'',
-   'NOTIFY'       =>'',
-   'MENUBAR'      =>'',
-   'TOOLBAR_TR'   =>'',
-   'TOOLBAR_TL'   =>'',
-   'TOOLBAR'      =>'',
-   'STATUSBAR'    =>'',
-   'FOOTER'       =>'',
-   //Custom view section array
-   'CUSTOM'       =>array()
-);
+if(!isset($_REQUEST['section'])){
+   $_SESSION['VIEW']=array(
+      'CSS'          =>'',
+      'JS'           =>'',
+      'DYNAMIC_JS'   =>'',
+      'LOADING'      =>'',
+      'LOGIN'        =>'',
+      'PROGRAM'      =>'',
+      'BREADCRUMB'   =>'',
+      'NAVIGATOR'    =>'',
+      'MAIN_TOP'     =>'',
+      'MAIN_LEFT'    =>'',
+      'MAIN_RIGHT'   =>'',
+      'MAIN_BOTTOM'  =>'',
+      'NOTIFY'       =>'',
+      'MENUBAR'      =>'',
+      'TOOLBAR_TR'   =>'',
+      'TOOLBAR_TL'   =>'',
+      'TOOLBAR'      =>'',
+      'STATUSBAR'    =>'',
+      'FOOTER'       =>'',
+      //Custom view section array
+      'CUSTOM'       =>array()
+   );
+}
 
 /*
  * View_id : one of the ids in above array
@@ -544,27 +556,38 @@ $GLOBALS['VIEW']=array(
 
 function add_to_view($view_id,$content,$before=false){
    //IF the contet is a file then include and get the output to array using ob_func
-   if(isset($GLOBALS['VIEW'][$view_id])){
+   if(isset($_SESSION['VIEW'][$view_id])){
       if(is_file($content)){
          ob_start();
          include $content;
          $content=ob_get_contents();
          if($before){
-            $GLOBALS['VIEW'][$view_id] = $content.$GLOBALS['VIEW'][$view_id];
+            $_SESSION['VIEW'][$view_id] = $content.$_SESSION['VIEW'][$view_id];
          }else{
-            $GLOBALS['VIEW'][$view_id] .= $content;
+            $_SESSION['VIEW'][$view_id] .= $content;
          }
          ob_end_clean();
       }elseif(!is_null($content) || $content != ''){
          if($before){
-            $GLOBALS['VIEW'][$view_id] = $content.$GLOBALS['VIEW'][$view_id];
+            $_SESSION['VIEW'][$view_id] = $content.$_SESSION['VIEW'][$view_id];
          }else{
-            $GLOBALS['VIEW'][$view_id] .= $content;
+            $_SESSION['VIEW'][$view_id] .= $content;
          }
       }
    }else{
       return "key[$view_id] error!"; 
    }
+}
+
+/**
+ * Return content from view
+ */
+function get_from_view($view_id,$clear=false){
+   $section=$_SESSION['VIEW'][$view_id];
+   if($clear){
+      clear_view($view_id);
+   }
+   return $section;
 }
 
 /*
@@ -576,36 +599,57 @@ function add_to_view($view_id,$content,$before=false){
 
 function add_to_cview($view_id,$content,$before=false){
    //IF the contet is a file then include and get the output to array using ob_func
-   if(!isset($GLOBALS['VIEW']['CUSTOM'][$view_id])){
-      $GLOBALS['VIEW']['CUSTOM'][$view_id]='';
+   if(!isset($_SESSION['VIEW']['CUSTOM'][$view_id])){
+      $_SESSION['VIEW']['CUSTOM'][$view_id]='';
    }
    if(is_file($content)){
       ob_start();
       include $content;
       $content=ob_get_contents();
       if($before){
-         $GLOBALS['VIEW']['CUSTOM'][$view_id] = $content.$GLOBALS['VIEW']['CUSTOM'][$view_id];
+         $_SESSION['VIEW']['CUSTOM'][$view_id] = $content.$_SESSION['VIEW']['CUSTOM'][$view_id];
       }else{
-         $GLOBALS['VIEW']['CUSTOM'][$view_id] .= $content;
+         $_SESSION['VIEW']['CUSTOM'][$view_id] .= $content;
       }
       ob_end_clean();
    }elseif(!is_null($content) || $content != ''){
       if($before){
-         $GLOBALS['VIEW']['CUSTOM'][$view_id] = $content.$GLOBALS['VIEW']['CUSTOM'][$view_id];
+         $_SESSION['VIEW']['CUSTOM'][$view_id] = $content.$_SESSION['VIEW']['CUSTOM'][$view_id];
       }else{
-         $GLOBALS['VIEW']['CUSTOM'][$view_id] .= $content;
+         $_SESSION['VIEW']['CUSTOM'][$view_id] .= $content;
       }
    }
 }
 
 /**
+ * Return content from custom view
+ */
+function get_from_cview($view_id,$clear=false){
+   $section='';
+   if(isset($_SESSION['VIEW']['CUSTOM'][$view_id])){
+      $section=$_SESSION['VIEW']['CUSTOM'][$view_id];
+      if($clear){
+         clear_view($view_id);
+      }
+   }
+   return $section;
+}
+
+/**
  * Clear the view with blank
  */
-function clear_view($view_id){
-   if(isset($GLOBALS['VIEW'][$view_id])){
-      $GLOBALS['VIEW'][$view_id] = '';
+function clear_view($view_id=null){
+   //If $view_id is null reset all
+   if(is_null($view_id)){
+      foreach($_SESSION['VIEW'] as $vid => $bla){
+         $_SESSION['VIEW'][$vid]='';
+      }
    }else{
-      return "key[$view_id] error!"; 
+      if(isset($_SESSION['VIEW'][$view_id])){
+         $_SESSION['VIEW'][$view_id] = '';
+      }else{
+         return "key[$view_id] error!"; 
+      }
    }
 }
 
@@ -675,6 +719,68 @@ function add_to_statusbar($content,$before=false){
 }
 function add_to_footer($content,$before=false){
    add_to_view('FOOTER',$content,$before);
+}
+
+/**
+ * Wrapper function to make it easy to get contet from the view
+ */
+
+function get_main_top($clear=true){
+   return get_from_view('MAIN_TOP',$clear);
+}
+function get_main_left($clear=true){
+   return get_from_view('MAIN_LEFT',$clear);
+}
+function get_main_bottom($clear=true){
+   return get_from_view('MAIN_BOTTOM',$clear);
+}
+function get_main_right($clear=true){
+   return get_from_view('MAIN_RIGHT',$clear);
+}
+function get_css($clear=true){
+   return get_from_view('CSS',$clear);
+}
+function get_js($clear=true){
+   return get_from_view('JS',$clear);
+}
+function get_dynamic_js($clear=true){
+   return get_from_view('DYNAMIC_JS',$clear);
+}
+function get_loading($clear=true){
+   return get_from_view('LOADING',$clear);
+}
+function get_login($clear=true){
+   return get_from_view('LOGIN',$clear);
+}
+function get_program($clear=true){
+   return get_from_view('PROGRAM',$clear);
+}
+function get_breadcrumb($clear=true){
+   return get_from_view('BREADCRUMB',$clear);
+}
+function get_navigator($clear=true){
+   return get_from_view('NAVIGATOR',$clear);
+}
+function get_notify($clear=true){
+   return get_from_view('NOTIFY',$clear);
+}
+function get_menubar($clear=true){
+   return get_from_view('MENUBAR',$clear);
+}
+function get_toolbar($clear=true){
+   return get_from_view('TOOLBAR',$clear);
+}
+function get_toolbar_tl($clear=true){
+   return get_from_view('TOOLBAR_TL',$clear);
+}
+function get_toolbar_tr($clear=true){
+   return get_from_view('TOOLBAR_TR',$clear);
+}
+function get_statusbar($clear=true){
+   return get_from_view('STATUSBAR',$clear);
+}
+function get_footer($clear=true){
+   return get_from_view('FOOTER',$clear);
 }
 
 
@@ -960,6 +1066,7 @@ function verify_captcha($custom_param=null){
  * return a commen list array with title according to the common list_name
  */
 function get_common_list($list_name,$no_title=false){
+   if($GLOBALS['DATA'])return; //Do not resolv common lists when there is a data request
    $arr=exec_query("SELECT base_key,base_value FROM ".s_t('base_data')." WHERE base_class='LIST' AND base_key='".$list_name."'",Q_RET_ARRAY);
    if(isset($arr[0])){
       if($no_title){
@@ -991,7 +1098,7 @@ function is_assoc_array($arr){
  */
 function gen_select_inner($arr,$label=null,$null_select=false){
    //validation  $arr must be an array
-   if(!is_array($arr)){
+   if(!is_array($arr) || $GLOBALS['DATA']){
       return null;
    }
 

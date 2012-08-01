@@ -11,17 +11,10 @@ $GLOBALS['PAGE']=array(
 );
 */
 
-
+//include global model class
 include_once A_CLASSES."/model_class.php";
 
-//include_once A_MODULES."/".MODULE."/".$GLOBALS['PAGE']['name']."_mdl.php";
-
-//DEBUG: find where a class is declared
-/*
-$reflector = new ReflectionClass('Model');
-echo $reflector->getFileName();
-echo $reflector->getStartLine();
- */
+//Global model with combining table
 $model    = new Model(
    $GLOBALS['PAGE']['table'],
    $GLOBALS['PAGE']['name']
@@ -151,7 +144,10 @@ if(isset($_REQUEST['form'])){
    }
 }else{
    include A_CLASSES."/view_class.php";
-   $view = new View($GLOBALS['PAGE']['table'],$GLOBALS['PAGE']['name']);
+   $view = new View(
+      $GLOBALS['PAGE']['table'],
+      $GLOBALS['PAGE']['name']
+   );
 
    //Generate form
    if(isset($GLOBALS['MODEL']['FORM']) && is_array($GLOBALS['MODEL']['FORM']) &&  sizeof($GLOBALS['MODEL']['FORM']) > 0){

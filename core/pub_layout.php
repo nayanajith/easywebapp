@@ -8,14 +8,14 @@
 
 <!--_________________________________CSS_____________________________________-->
       <?php 
-         echo $GLOBALS['VIEW']['CSS'];
+         echo get_css();
       ?>
 <!--______________________________FAVICON____________________________________-->
       <link rel="shortcut icon" href="<?php echo $GLOBALS['FAVICON']; ?>" type="image/x-icon" >
 
 <!--______________________DOJO JAVASCRIPT load modules_______________________-->
       <?php 
-         echo $GLOBALS['VIEW']['JS'];
+         echo get_js();
       ?>
    </head>
 
@@ -24,7 +24,7 @@
 
 <!--__________________________start loading ________________________________-->
    <?php
-      echo $GLOBALS['VIEW']['LOADING'];
+      echo get_loading();
    ?>
 <!--____________________________end loading ________________________________-->
 
@@ -37,7 +37,7 @@
             <div style='float:right;padding:20px;'>
 <!--__________________________end Login form ________________________________-->
             <?php 
-               echo $GLOBALS['VIEW']['LOGIN'];
+               echo get_login();
                ?>
 <!--______________________________end Login form ____________________________-->
 
@@ -58,7 +58,7 @@
 <!--breadcrumb-->
 <div style='padding:0px;padding-left:5px;color:black;font-weight:bold;background-color:gray;' class='round'>
    <?php
-      echo $GLOBALS['VIEW']['BREADCRUMB'];
+      echo get_breadcrumb();
    ?>
 </div>
 </td>
@@ -83,26 +83,26 @@
                         <tr>
                             <td id='MAIN_TOP' colspan='2' valign='top' >
                               <?php 
-                              echo $GLOBALS['VIEW']['MAIN_TOP'];
+                              echo get_main_top();
                               ?>
                            </td>
                         </tr>
                         <tr>
                            <td id='MAIN_LEFT' valign='top' align='left' width='100%'>
                               <?php 
-                              echo $GLOBALS['VIEW']['MAIN_LEFT'];
+                              echo get_main_left();
                               ?>
                            </td>
                            <td id='MAIN_RIGHT' valign='top'  align='right'  >
                               <?php 
-                              echo $GLOBALS['VIEW']['MAIN_RIGHT'];
+                              echo get_main_right();
                               ?>
                            </td>
                         </tr>
                         <tr>
                            <td id='MAIN_BOTTOM' colspan='2' valign='top' >
                               <?php 
-                              echo $GLOBALS['VIEW']['MAIN_BOTTOM'];
+                              echo get_main_bottom();
                               ?>
                            </td>
                         </tr>
@@ -114,7 +114,7 @@
 <td width='20%' style='vertical-align:top;valign:top;padding:10px;padding-left:5px;' >
    <div style='min-height:350px;padding:10px;border:1px solid #C9D7F1;border-top:3px solid #C9D7F1;'class='bgBottom round' >
    <?php
-      echo $GLOBALS['VIEW']['NAVIGATOR'];
+      echo get_navigator();
    ?>
    </div>
 </td>
@@ -124,7 +124,7 @@
 <div style='padding:10px;height:50px;position:relative'>
 <!--______________________________start footer_______________________________-->
             <?php
-               echo $GLOBALS['VIEW']['FOOTER'];
+               echo get_footer();
             ?>
 <!--_______________________________end footer________________________________-->
 </div>
