@@ -51,9 +51,7 @@ function client_side_handle($form_name,$input_name,$btn_label,$callback,$file_id
    }
 
 /*dojo.io.iframe.send request to uplod file and dojo.xhrGet request to delete*/
-$frm .="
-<script type='text/javascript'>
-
+js("
    /*Change the form in to deleter*/
    var delete_frm_inner_".$form_name."='<input type=\"hidden\" name=\"".$input_name."_file_id\" value=\"$file_id\" >'+
    '<button dojoType=\"dijit.form.Button\" onClick=\"".$form_name."_delete(\'$input_name\')\">Delete'+
@@ -164,8 +162,7 @@ $frm .="
       return false;
       }
    }
-</script>
-";
+");
 
 return $frm;
 }
@@ -185,7 +182,6 @@ return $frm;
    return file upload error code
    */
    function server_side_handle($valid_file_types,$max_file_size,$input_name,$file_overwrite){
-log_msg('kkkkkkkkkkkkkkkkkkkkkkkkk');
       /*file type and size validation*/
       if(in_array($_FILES[$input_name]["type"],$valid_file_types) && ($_FILES[$input_name]["size"] <= $max_file_size)){
          

@@ -546,6 +546,7 @@ if(!isset($_REQUEST['section'])){
       'TOOLBAR'      =>'',
       'STATUSBAR'    =>'',
       'FOOTER'       =>'',
+      'DIALOG'       =>'',
       //Custom view section array
       'CUSTOM'       =>array()
    );
@@ -723,6 +724,9 @@ function add_to_statusbar($content,$before=false){
 function add_to_footer($content,$before=false){
    add_to_view('FOOTER',$content,$before);
 }
+function add_to_dialog($content,$before=false){
+   add_to_view('DIALOG',$content,$before);
+}
 
 /**
  * Wrapper function to make it easy to get contet from the view
@@ -784,6 +788,9 @@ function get_statusbar($clear=true){
 }
 function get_footer($clear=true){
    return get_from_view('FOOTER',$clear);
+}
+function get_dialog($clear=true){
+   return get_from_view('DIALOG',$clear);
 }
 
 

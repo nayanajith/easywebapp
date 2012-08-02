@@ -123,6 +123,8 @@ foreach($TOOLBAR as $key => $arr){
    if(isset($GLOBALS['MODEL']['TOOLBAR'])){
       if(!isset($GLOBALS['MODEL']['TOOLBAR'][$key])){
          $GLOBALS['MODEL']['TOOLBAR'][$key]=$arr;
+      }elseif($GLOBALS['MODEL']['TOOLBAR'][$key]){
+         $GLOBALS['MODEL']['TOOLBAR'][$key]=$arr;
       }
    }else{
       $GLOBALS['MODEL']['TOOLBAR']=array();

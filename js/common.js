@@ -118,8 +118,6 @@ function show_xhr_dialog(url_,title,width,height,no_buttons){
    });
 }
 
-
-
 /*--help viewer--*/
 function show_help_dialog(){
 	dojo.xhrPost({
@@ -144,8 +142,8 @@ function show_help_dialog(){
 }
 
 
+
 /*-- Seemless Downloader --*/
-dojo.require('dojo.io.iframe');
 
 //Seamless download using  iframe
 function download(url){
@@ -435,19 +433,6 @@ function reload_sections(sections){
       }
    });
 
-   //Loading dynamic javascript
-   dojo.xhrPost({
-      url      :gen_url(), 
-      content  :{section:'DYNAMIC_JS'},
-      sync     :true,
-      handleAs :'javascript',
-      load: function(response) {
-      },
-      error: function() {
-         console.error("Error loading layout DYNAMIC_JS");
-      }
-   });
-
    for(var i in sections){
       //section id
       var section=dijit.byId(sections[i]);
@@ -519,9 +504,23 @@ function reload_sections(sections){
          */
       }
    }
+   //Loading dynamic javascript
+   dojo.xhrPost({
+      url      :gen_url(), 
+      content  :{section:'DYNAMIC_JS'},
+      sync     :true,
+      handleAs :'javascript',
+      load: function(response) {
+      },
+      error: function() {
+         console.error("Error loading layout DYNAMIC_JS");
+      }
+   });
 }
 
-
+function reload_dialog(){
+   dijit.byId('DIALOG').show();
+}
 function reload_main(){
    reload_sections(['MAIN_TOP','MAIN_LEFT','MAIN_RIGHT','MAIN_BOTTOM']);
 }
@@ -1240,7 +1239,6 @@ function gen_url(module,page,program){
 /**
  * Set Program module and page
  */
-dojo.require('dojo.cookie');
 dojo.cookie('program', '<?php echo PROGRAM ?>', {expires: 10});
 dojo.cookie('module', '<?php echo MODULE ?>', {expires: 10});
 dojo.cookie('page', '<?php echo PAGE ?>', {expires: 10});
@@ -1416,8 +1414,7 @@ poll();
 /**
  * Check for the available notifications and notify if available
  */
-dojo.require("dojo.fx");
-dojo.require("dijit.popup");
+
 function notify(){
    dojo.xhrPost({
       url      :gen_url(), 
@@ -1508,3 +1505,223 @@ function w_e(widget){
       dijit.byId(widget).set('disabled',false);
    }
 }
+
+/////////////////////////////////////////////////////////////////TMP
+
+/*Change the form in to deleter*/
+   var delete_frm_inner_frm1='<input type="hidden" name="mark_logic_file1_file_id" value="rid" >'+
+   '<button dojoType="dijit.form.Button" onClick="frm1_delete(\'mark_logic_file1\')">Delete'+
+   '</button>';
+
+   /*Change the form into uploader*/
+   var upload_frm_inner_frm1='<label for="mark_logic_file1">Choose file</label>'+
+   '<input type="hidden" name="mark_logic_file1_file_id" value="rid" >'+
+   '<input type="file" name="mark_logic_file1" id="mark_logic_file1" ><br><br>'+
+   '<button dojoType="dijit.form.Button" onClick="frm1_upload(\'mark_logic_file1\')">Upload'+
+   '</button>';
+
+   /*Change between upload/delete*/
+   var frm_frm1_div=document.getElementById('frm1');
+
+
+
+   /**
+   File upload request sent using dojo.io.iframe.send request   
+   */
+   function frm1_upload(frm_name){
+      /*The file id should not be blank to upload/delete a file*/
+      //var the_file_id=dijit.byId('rid').getValue();
+      var the_file_id=document.getElementById('rid').value;
+      if(the_file_id == ''){
+         alert('Please select rid before uploading!');
+         return false;
+      }else{
+         /*Update status bar*/
+         update_status_bar('...');
+         update_progress_bar(10);
+
+         var td = dojo.io.iframe.send({
+            url         : '/sis/index.php?&form=file&action=upload&file_name='+frm_name+'&file_id='+the_file_id,
+            form         : 'frm1',
+            method      : 'post',
+            content      : {fnx:1},
+            timeoutSeconds: 5,
+            preventCache: true,
+            handleAs      : 'json',
+      
+            handle: function(response, ioArgs){
+               if(response.status == 'OK'){
+                  update_status_bar('file uploaded successfully');
+                  update_progress_bar(100);
+                  frm_frm1_div.innerHTML=delete_frm_inner_frm1;
+               }else{
+                  update_status_bar('file uploading failed');
+               }
+
+            },                     
+      
+            load: function(response, ioArgs){
+               update_status_bar('file uploaded successfully');
+               update_progress_bar(50);
+            },
+      
+            error: function (response, ioArgs) {
+               update_status_bar('error on submission');
+               update_progress_bar(0);
+            }
+         });
+         return false;
+      }
+   }
+
+   /**
+   File delete request sent as dojo.xhrGet AJAX request   
+   */
+   function frm1_delete(frm_name){
+      /*The file id should not be blank to upload/delete a file*/
+      //var the_file_id=dijit.byId('rid').getValue();
+      var the_file_id=document.getElementById('rid').value;
+
+      if(the_file_id == ''){
+         alert('Please select rid before Deleting!');
+         return false;
+      }else{
+         /*Update status bar*/
+         update_status_bar('...');
+         update_progress_bar(10);
+
+         dojo.xhrGet({
+         url         : '/sis/index.php?&form=file&action=delete&file_name='+frm_name+'&file_id='+the_file_id, 
+         handleAs      : 'json',
+         form         : 'frm1', 
+
+         handle: function(response){
+            if(response.status == 'OK'){
+               update_status_bar('file deleted successfully');
+               update_progress_bar(100);
+               frm_frm1_div.innerHTML=upload_frm_inner_frm1;
+            }else{
+               update_status_bar('file deletion failed');
+            }
+         },
+
+         load: function(response) {
+            update_progress_bar(50);
+            update_status_bar('form successfully submitted');
+         }, 
+         error: function() {
+            update_progress_bar(0);
+            update_status_bar('error on submission');
+         }
+      });
+      return false;
+      }
+   }
+
+   /*Change the form in to deleter*/
+   var delete_frm_inner_frm2='<input type="hidden" name="answer_file1_file_id" value="rid" >'+
+   '<button dojoType="dijit.form.Button" onClick="frm2_delete(\'answer_file1\')">Delete'+
+   '</button>';
+
+   /*Change the form into uploader*/
+   var upload_frm_inner_frm2='<label for="answer_file1">Choose file</label>'+
+   '<input type="hidden" name="answer_file1_file_id" value="rid" >'+
+   '<input type="file" name="answer_file1" id="answer_file1" ><br><br>'+
+   '<button dojoType="dijit.form.Button" onClick="frm2_upload(\'answer_file1\')">Upload'+
+   '</button>';
+
+   /*Change between upload/delete*/
+   var frm_frm2_div=document.getElementById('frm2');
+
+   /**
+   File upload request sent using dojo.io.iframe.send request   
+   */
+   function frm2_upload(frm_name){
+      /*The file id should not be blank to upload/delete a file*/
+      //var the_file_id=dijit.byId('rid').getValue();
+      var the_file_id=document.getElementById('rid').value;
+      if(the_file_id == ''){
+         alert('Please select rid before uploading!');
+         return false;
+      }else{
+         /*Update status bar*/
+         update_status_bar('...');
+         update_progress_bar(10);
+
+         var td = dojo.io.iframe.send({
+            url         : '/sis/index.php?&form=file&action=upload&file_name='+frm_name+'&file_id='+the_file_id,
+            form         : 'frm2',
+            method      : 'post',
+            content      : {fnx:1},
+            timeoutSeconds: 5,
+            preventCache: true,
+            handleAs      : 'json',
+      
+            handle: function(response, ioArgs){
+               if(response.status == 'OK'){
+                  update_status_bar('file uploaded successfully');
+                  update_progress_bar(100);
+                  frm_frm2_div.innerHTML=delete_frm_inner_frm2;
+               }else{
+                  update_status_bar('file uploading failed');
+               }
+
+            },                     
+      
+            load: function(response, ioArgs){
+               update_status_bar('file uploaded successfully');
+               update_progress_bar(50);
+            },
+      
+            error: function (response, ioArgs) {
+               update_status_bar('error on submission');
+               update_progress_bar(0);
+            }
+         });
+         return false;
+      }
+   }
+
+   /**
+   File delete request sent as dojo.xhrGet AJAX request   
+   */
+   function frm2_delete(frm_name){
+      /*The file id should not be blank to upload/delete a file*/
+      //var the_file_id=dijit.byId('rid').getValue();
+      var the_file_id=document.getElementById('rid').value;
+
+      if(the_file_id == ''){
+         alert('Please select rid before Deleting!');
+         return false;
+      }else{
+         /*Update status bar*/
+         update_status_bar('...');
+         update_progress_bar(10);
+
+         dojo.xhrGet({
+         url         : '/sis/index.php?&form=file&action=delete&file_name='+frm_name+'&file_id='+the_file_id, 
+         handleAs      : 'json',
+         form         : 'frm2', 
+
+         handle: function(response){
+            if(response.status == 'OK'){
+               update_status_bar('file deleted successfully');
+               update_progress_bar(100);
+               frm_frm2_div.innerHTML=upload_frm_inner_frm2;
+            }else{
+               update_status_bar('file deletion failed');
+            }
+         },
+
+         load: function(response) {
+            update_progress_bar(50);
+            update_status_bar('form successfully submitted');
+         }, 
+         error: function() {
+            update_progress_bar(0);
+            update_status_bar('error on submission');
+         }
+      });
+      return false;
+      }
+   }

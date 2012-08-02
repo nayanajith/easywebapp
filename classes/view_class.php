@@ -566,24 +566,6 @@ dojo.ready(function(){
     return: data grid containing the key fields provided in $key_array
     */
    public function gen_data_grid($field_array,$key=null){
-      d_r('dojox.widget.PlaceholderMenuItem');
-      d_r('dojox.grid.EnhancedGrid');
-      d_r('dojox.grid.enhanced.plugins.Pagination');
-
-      //Frontend filter disable enable as required from the configuration
-      if(defined('FILTER_FRONT') && FILTER_FRONT=='YES'){
-         d_r('dojox.grid.enhanced.plugins.Filter');
-      }
-
-      //d_r("dojox.grid.enhanced.plugins.DnD");
-      //d_r("dojox.grid.enhanced.plugins.Menu");
-      d_r("dojox.grid.enhanced.plugins.NestedSorting");
-      //d_r("dojox.grid.enhanced.plugins.IndirectSelection");
-      //d_r("dojox.grid.enhanced.plugins.Search");
-      d_r("dojox.grid.enhanced.plugins.Printer");
-      d_r("dojox.grid.enhanced.plugins.exporter.CSVWriter");
-      d_r("dojox.grid.enhanced.plugins.exporter.TableWriter");
-
       $html=""; 
       foreach($this->grids as $grid_key => $grid){
          //If jsId is not set explicitly set the key with grid__ prefix as jsId
@@ -663,7 +645,8 @@ plugins=\'{
    '.((defined('FILTER_FRONT') && FILTER_FRONT=='YES')?"filter:true,":"").'
    exporter: true,
    nestedSorting: true,
-}\'';
+      }
+      \'';
 
          /*
          //Sample grid table with several options
@@ -839,6 +822,76 @@ plugins=\'{
    </select>
    </div>";
    }
+
+   /**
+   @param valid_file_types : Array of file types (mime types ) which are valid eg: ['image/gif','image/jpg','image/pjpeg'];
+   @param max_file_size      : Maximum size of the file which can be uploaded
+   @param base_path         : The path which files should saved
+   @param file_rename      : new name for the file ( if null the actual name will be used )
+   @param input_name         : Name of the file input field from the client side 
+   @param file_overwrite   : If true files will be overwritten if the similar file is uploaded else return error
+   
+   return  -100 : invalid file ( not satisfying the file type and size conditions )
+   return  -101 : file exists
+   return  Array(size,type) :  if file action is successful return an array of file size and other its information
+   return file upload error code
+   */
+   function upload_file($valid_file_types,$max_file_size,$input_name,$file_overwrite){
+      /*file type and size validation*/
+      if(in_array($_FILES[$input_name]["type"],$valid_file_types) && ($_FILES[$input_name]["size"] <= $max_file_size)){
+         
+         /*Check for errors in file if errors are then return error code*/
+         if ($_FILES[$input_name]["error"] > 0){
+             return $_FILES[$input_name]["error"];
+          }else{
+            /*set the file name, if a custom file name is defined use it as the file name*/
+            $f_name=$_FILES[$input_name]["name"];
+            if(isset($this->file_name) && $this->file_name != null){
+               $f_name=$this->file_name;
+            }
+
+            /*Full path to save the file*/
+            $f_name=$this->base_path."/".$f_name;
+
+            /*If the file exists deside what to do according to the user request if overwrite=true overwrite the file*/
+             if(file_exists($f_name)){
+               if(isset($file_overwrite) && $file_overwrite == true){
+                  unlink($f_name);
+                  move_uploaded_file($_FILES[$input_name]["tmp_name"],$f_name);
+
+                  /*return file size and type for further reference by the caller*/
+                  return array($_FILES[$input_name]["size"],$_FILES[$input_name]["type"]);
+               }else{
+                  /*If the file_overwrite is false and file exists return -101*/
+                  return -101;
+               }
+             }else{
+               /*If the file does not exists just cop the file from the temp*/
+               move_uploaded_file($_FILES[$input_name]["tmp_name"],$f_name);
+               return array($_FILES[$input_name]["size"],$_FILES[$input_name]["type"]);
+            }
+          }
+          }else{
+             return -100;
+          }
+   }
+
+   /**
+   Delete the file
+   */
+   function delete_file(){
+      $f_name=$this->base_path."/".$this->file_name;
+      if(file_exists($f_name)){
+         if(unlink($f_name)){
+            return 1;
+         }else{
+            return -1;
+         }
+      }else{
+         return -1;
+      }
+   }
+}
 }
 
 ?>

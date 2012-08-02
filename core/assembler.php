@@ -87,6 +87,20 @@ if(isset($_REQUEST['section'])){
          echo "No filter added!"; 
       }
    break;
+   case 'DIALOG':
+      if(get_dialog(false) != ''){
+         echo "<p>".get_dialog()."</p>
+            <button dojoType='dijit.form.Button' type='submit'>
+               <script type='dojo/method' event='onClick' args='item'> 
+                  console.log('ok');
+               </script>
+                 OK 
+            </button>
+            ";
+      }else{
+         $content_found=false;
+      }
+   break;
    case 'MAIN_TOP':
    case 'MAIN_LEFT':
    case 'MAIN_RIGHT':
@@ -344,6 +358,18 @@ if(isset($_REQUEST['section'])){
 
       }else{
          echo "No filter added!"; 
+      }
+   break;
+   case 'DIALOG':
+      if(!is_null(get_dialog(false))){
+         echo "<p>".get_dialog()."</p>
+            <button dojoType='dijit.form.Button' type='submit'>
+               <script type='dojo/method' event='onClick' args='item'> 
+                  alert('kk')
+               </script>
+                 OK 
+            </button>
+            ";
       }
    break;
    case 'MAIN_TOP':

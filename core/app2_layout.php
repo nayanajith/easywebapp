@@ -40,6 +40,8 @@ bottom:      Tool bar
       echo get_loading();
       d_r("dijit.layout.BorderContainer");
    ?>
+<!--____________________________common dialog ________________________________-->
+      <div dojoType="dijit.Dialog" refreshOnShow="true" id='DIALOG' href="<?php echo gen_url() ?>section=DIALOG"></div>
 <!--____________________________end loading ________________________________-->
       <div dojoType="dijit.layout.BorderContainer" class='bgTop bContainerApp2'   gutters="false" liveSplitters="true" >
 

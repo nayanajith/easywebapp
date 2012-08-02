@@ -84,6 +84,10 @@ if(!opendb()){
 /*-----------------------------Program selector-------------------------------*/
 if(defined('P_SELECTOR') && P_SELECTOR=='YES'){
    include A_CORE."/program.php";
+   if(!isset($_SESSION['PROGRAM']) || $_SESSION['PROGRAM'] == '' || $_SESSION['PROGRAM'] == null){
+      $p_arr=array_values($GLOBALS['programs']);
+      $_SESSION['PROGRAM']=$p_arr[0];
+   } 
 }
 
 /*---------------------------------Load modules-------------------------------*/
@@ -241,7 +245,7 @@ if (isset($_REQUEST['print']) && $_REQUEST['print']=='true'){
 
 /*-------------------------Check for data/XHR request-------------------------*/
 $GLOBALS['DATA']=false;
-if(isset($_REQUEST['data']) || (isset($_REQUEST['action']) )){
+if(isset($_REQUEST['data']) || (isset($_REQUEST['action']))){
    $GLOBALS['DATA']=true;
 }
 
