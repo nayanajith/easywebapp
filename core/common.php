@@ -72,33 +72,35 @@ function get_for_keys(){
  * data-dojo-props='id:"border1-left", region:"left", style:"background-color: #acb386; border: 10px green solid; width: 100px;",
  *       splitter:true, minSize:150, maxSize:250'
  */
-$GLOBALS['LAYOUT_PROPERTIES']['app2']=array(
-   "MAIN_TOP"     =>array(
-      "style"=>array("padding"=>"0px","height"=>"0%"),
-      "splitter"=>"false",
-   ),
-   "MAIN_BOTTOM"  =>array(
-      "style"=>array("padding"=>"0px","height"=>"0%"),
-      "splitter"=>"false",
-   ),
-   "MAIN_LEFT"    =>array(
-      "style"=>array("padding"=>"0px","width"=>"40%"),
-      "splitter"=>"false",
-   ),
-   "MAIN_RIGHT"   =>array(
-      "style"=>array("padding"=>"0px","width"=>"60%"),
-      "splitter"=>"false",
-      //"minSize"=>"0",
-      //"maxSize"=>"850",
-   ),
 
-);
+if(!isset($_REQUEST['section'])){
+   $_SESSION['LAYOUT_PROPERTIES']['app2']=array(
+      "MAIN_TOP"     =>array(
+         "style"=>array("padding"=>"0px","height"=>"0%"),
+         "splitter"=>"false",
+      ),
+      "MAIN_BOTTOM"  =>array(
+         "style"=>array("padding"=>"0px","height"=>"0%"),
+         "splitter"=>"false",
+      ),
+      "MAIN_LEFT"    =>array(
+         "style"=>array("padding"=>"0px","width"=>"40%"),
+         "splitter"=>"false",
+      ),
+      "MAIN_RIGHT"   =>array(
+         "style"=>array("padding"=>"0px","width"=>"60%"),
+         "splitter"=>"false",
+         //"minSize"=>"0",
+         //"maxSize"=>"850",
+      ),
+   );
+}
 
 function set_layout_property($layout='app2',$section,$p1,$p2,$p3=null){
    if(!is_null($p3)){
-      $GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$p1][$p2]=$p3;
+      $_SESSION['LAYOUT_PROPERTIES'][$layout][$section][$p1][$p2]=$p3;
    }else{
-      $GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$p1]=$p2;
+      $_SESSION['LAYOUT_PROPERTIES'][$layout][$section][$p1]=$p2;
    }
 }
 
@@ -106,7 +108,7 @@ function set_layout_property($layout='app2',$section,$p1,$p2,$p3=null){
  * return totla layout as a json
  */
 function get_layout($layout='app2'){
-   return json_encode($GLOBALS['LAYOUT_PROPERTIES'][$layout]);
+   return json_encode($_SESSION['LAYOUT_PROPERTIES'][$layout]);
 }
 
 /**
@@ -115,27 +117,27 @@ function get_layout($layout='app2'){
 function get_layout_property($layout='app2',$section='MAIN_TOP',$key=null,$key2=null){
    $out="";
    if(!is_null($key2)){
-      return $key2."='".$GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key][$key2]."' ";
+      return $key2."='".$_SESSION['LAYOUT_PROPERTIES'][$layout][$section][$key][$key2]."' ";
    }elseif(!is_null($key)){
-      if(is_array($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]) && in_array(strtolower($key) ,array('style'))){
+      if(is_array($_SESSION['LAYOUT_PROPERTIES'][$layout][$section][$key]) && in_array(strtolower($key) ,array('style'))){
          $out=$key."'";
-         foreach($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key] as $key_ => $value_){
+         foreach($_SESSION['LAYOUT_PROPERTIES'][$layout][$section][$key] as $key_ => $value_){
             $out.=$key_.":".$value_.";";
          }
          $out.="'";
          return $out;
       }else{
-         return $key."='".$GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]."' ";
+         return $key."='".$_SESSION['LAYOUT_PROPERTIES'][$layout][$section][$key]."' ";
       }
    }else{
-      foreach($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section] as $key => $value){
+      foreach($_SESSION['LAYOUT_PROPERTIES'][$layout][$section] as $key => $value){
          $out.=$key."='";
-         if(is_array($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key]) && in_array(strtolower($key) ,array('style'))){
-            foreach($GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key] as $key_ => $value_){
+         if(is_array($_SESSION['LAYOUT_PROPERTIES'][$layout][$section][$key]) && in_array(strtolower($key) ,array('style'))){
+            foreach($_SESSION['LAYOUT_PROPERTIES'][$layout][$section][$key] as $key_ => $value_){
                $out.=$key_.":".$value_.";";
             }
          }else{
-            $out.=$GLOBALS['LAYOUT_PROPERTIES'][$layout][$section][$key];
+            $out.=$_SESSION['LAYOUT_PROPERTIES'][$layout][$section][$key];
          }
          return $out.="' ";
       }

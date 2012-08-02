@@ -57,7 +57,8 @@ if(isset($_REQUEST['section'])){
       }
    break;
    case 'LAYOUT':
-      echo get_layout('app2');
+      //echo get_layout('app2');
+      $content_found=false;
    break;
    case 'NOTIFY':
       print_r(get_notify(false));
