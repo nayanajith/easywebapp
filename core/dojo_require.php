@@ -19,7 +19,7 @@ djConfig = {
 <script src="<?php echo JS; ?>/dijit/ucscis.js" type='text/javascript'></script>
 <script src="<?php echo JS; ?>/dojox/ucscis.js" type='text/javascript'></script>
 <script src="<?php echo gen_url() ?>action=js&form=main" type='text/javascript'></script>
-<script src="<?php echo gen_url() ?>action=js_d&form=main" type='text/javascript' id='DYNAMIC_JS'></script>
+<script src="<?php echo gen_url() ?>section=DYNAMIC_JS" type='text/javascript' id='DYNAMIC_JS'></script>
 
 
 <?php
@@ -56,7 +56,11 @@ d_r('dijit.form.SimpleTextarea');
 d_r('dijit.form.ComboBox');
 d_r('dijit.TitlePane');
 d_r('dijit.Editor');
-d_r("dijit.popup");
+d_r('dijit.popup');
+d_r('dijit._editor.plugins.FontChoice');
+d_r('dijit._editor.plugins.TextColor');
+d_r('dijit._editor.plugins.LinkDialog');
+
 
 d_r('dojox.grid.EnhancedGrid');
 d_r('dojox.grid.enhanced.plugins.Pagination');
@@ -83,6 +87,7 @@ d_r('dojo.cookie');
 d_r('dojo.query');
 d_r('dojo.io.iframe');
 d_r("dojo.fx");
+
 
 /*call this function in page where you want to parse dojo javascript*/
 /*$dojo_required was generated in core/dojo_require.php*/

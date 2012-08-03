@@ -72,7 +72,7 @@ $GLOBALS['MODEL']=array(
 //---------------------GRID CONFIGURATION-----------------------
    'GRIDS'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid'=>array('hidden'=>'true'),'role_id','title','display_from','display_until'),
+          'columns'      =>array('rid'=>array('hidden'=>'true'),'role_id','title','display_from','display_until','content'=>array('hidden'=>'true')),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
           'ref_table'    =>s_t('news'),
@@ -97,7 +97,7 @@ $GLOBALS['MODEL']=array(
          "label"=>"Select News",
          "label_pos"=>"left",
 
-         "onChange"=>'s_p_c_add("ok",fill_form,this.value);set_param(this.id,this.value)',
+         "onChange"=>'f_f_c_add("ok",write_editor);s_p_c_add("ok",fill_form,this.value);set_param(this.id,this.value)',
          "searchAttr"=>"label",
          "pageSize"=>"10",
          "store"=>"rid_store",

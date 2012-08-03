@@ -15,13 +15,12 @@ function db_migration_form(){
    $query="SELECT * FROM base_data WHERE base_class='VARIABLE' AND base_key='SYSTEM__DB_VERSION'";
 
    //If the database is s module database prefix the __DB_VERSION with module name as a convention to understand this is a module databa version
-   if(isset($_SESSION[PAGE]) && !is_null(get_param('schema_module')) && get_param('schema_module') != 'core' && get_param('schema_module') != ''){
+   if(isset($_SESSION['PAGE']) && !is_null(get_param('schema_module')) && get_param('schema_module') != 'core' && get_param('schema_module') != ''){
       $query="SELECT * FROM base_data WHERE base_class='VARIABLE' AND base_key='".strtoupper(get_param('schema_module'))."__DB_VERSION'";
    }
 
    $db_version=-1;
    $arr=exec_query($query,Q_RET_ARRAY);
-   log_msg(isset($arr[0]));
    if(isset($arr[0])){//If array is available that means there is a previouse version in base_data
       $arr=$arr[0];
       //The current database version
@@ -31,12 +30,6 @@ function db_migration_form(){
       exec_query("INSERT INTO `base_data`(`base_value`,`base_class`,`base_key`)VALUES('$db_version','VARIABLE','".strtoupper(get_param('schema_module'))."__DB_VERSION')",Q_RET_NONE);
       $arr=array($db_version,'VARIABLE',strtoupper(get_param('schema_module'))."__DB_VERSION");
    }
-
-
-   //requre dojo modules
-   d_r('dijit.form.Form');
-   d_r('dijit.form.CheckBox');
-   d_r('dijit.TitlePane');
 
    //In the latter part this value will set to true if there are any migrations so according to that layout will be changed
    $migration_avail=false;

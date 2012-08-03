@@ -80,11 +80,11 @@ if(!isset($_REQUEST['section'])){
          "splitter"=>"false",
       ),
       "MAIN_BOTTOM"  =>array(
-         "style"=>array("padding"=>"0px","height"=>"0%"),
+         "style"=>array("padding"=>"0px","height"=>"0%","padding-top"=>"5px"),
          "splitter"=>"false",
       ),
       "MAIN_LEFT"    =>array(
-         "style"=>array("padding"=>"0px","width"=>"40%"),
+         "style"=>array("padding"=>"0px","width"=>"40%","padding-right"=>"5px"),
          "splitter"=>"false",
       ),
       "MAIN_RIGHT"   =>array(

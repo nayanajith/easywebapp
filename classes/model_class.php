@@ -1034,7 +1034,7 @@ EOE;
             }
 
             //If the foreign keys does not have values ignore them
-            if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null)){
+            if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == '' || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null)){
                continue; 
             }
 
@@ -1149,12 +1149,12 @@ EOE;
             foreach( $this->form as $key => $arr){
 
                //primary key,custom and disabled fields will be excluded do not update
-               if( get_pri_keys() == $key || (isset($arr['custom']) && $arr['custom'] == 'true') || (isset($arr['disabled']) && $arr['disabled'] == 'true')){
+               if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == '' || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null)){
                   continue; 
                }
 
                //If the foreign keys does not have values ignore them
-               if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]))){
+               if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key]=='')){
                   continue; 
                }
 

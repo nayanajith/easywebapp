@@ -3,6 +3,7 @@ $modules_have_schema=array('core'=>'Core');
 foreach($GLOBALS['MODULES'] as $key => $value){
    $schema_file=A_MODULES."/".$key."/core/database_schema.php";
    if(file_exists($schema_file)){
+      if(is_array($value))$value=$value['MODULE'];
       $modules_have_schema[$key]=$value;
    }
 }

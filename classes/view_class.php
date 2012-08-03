@@ -823,7 +823,7 @@ plugins=\'{
    </div>";
    }
 
-   /**
+   /**TODO
    @param valid_file_types : Array of file types (mime types ) which are valid eg: ['image/gif','image/jpg','image/pjpeg'];
    @param max_file_size      : Maximum size of the file which can be uploaded
    @param base_path         : The path which files should saved
@@ -891,7 +891,6 @@ plugins=\'{
          return -1;
       }
    }
-}
 }
 
 ?>
