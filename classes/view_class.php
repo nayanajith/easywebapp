@@ -502,7 +502,7 @@ class View{
             /*if tooltip is set add tooltip */
             $tooltip      ="";
             if(isset($field_array['tooltip']) && $field_array['tooltip'] != ""){
-               $tooltip="<div dojoType='dijit.Tooltip' id='tooltip_".$field."' connectId='$field'>\n<div style='max-width:400px;text-align:justify'>\n".$field_array['tooltip']."\n</div>\n</div>\n";
+               $tooltip="<div dojoType='dijit.Tooltip' id='tooltip_".$field."' position='above' connectId='$field'>\n<div style='max-width:400px;text-align:justify'>\n".$field_array['tooltip']."\n</div>\n</div>\n";
             }
 
             $html .=$tooltip;

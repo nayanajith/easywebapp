@@ -119,7 +119,7 @@ $course_arr =null;
 function getCourseArr(){
    global $course_arr;
    if(is_null($course_arr)){
-      $course_arr  = exec_query("SELECT * FROM ".p_t('course'),Q_RET_ARRAY,null,'course_id');
+      $course_arr  = exec_query("SELECT * FROM ".p_t('course'),Q_RET_ARRAY,null,'rid');
    }
    return  $course_arr;
 }
@@ -188,6 +188,15 @@ function getCourseName($course_id){
    return $course_arr[$course_id]['course_name'];
 }
 
+/**
+ * Returen course code
+ */
+function getCourseCode($course_id){
+   $course_arr=getCourseArr();
+   return $course_arr[$course_id]['course_id'];
+}
+
+
 /*
  *Return alternate course IDS as an array 
  * */
@@ -207,7 +216,7 @@ function getAltCourses($course_id){
  * Return array of exam ids for a given batch
  */
  /*
-function get_examids($batch){
+function get_exam_ids($batch){
 
    //grab last tow chars of the batch
    $reg    =substr($batch,-2,2);
@@ -225,16 +234,6 @@ function get_examids($batch){
  * Return array of exam ids for a given batch
  */
 $course_exam_arr=array();
-
-function getExamYear($examid){
-   //grab first tow chars of the batch
-   //exam_hid -> 2011-01-01:4:1
-   //$reg    =substr($examid,0,10);
-   $reg    =substr($examid,0,4);
-   return  $reg;
-}
-
-
 
 /*
  * Verify the course according to the index no
@@ -305,11 +304,11 @@ class Student{
       $this->self['index_no'] = $index_no;
 
       /*Related tables*/
-      $this->self['marks']    = $GLOBALS['P_TABLES']["marks"];
-      $this->self['student']  = $GLOBALS['P_TABLES']["student"];
-      $this->self['gpa']      = $GLOBALS['P_TABLES']["gpa"];
-      //$this->self['grades']   = $GLOBALS['P_TABLES']["grades"];
-      $this->self['course']   = $GLOBALS['P_TABLES']["course"];
+      $this->self['marks']    = p_t('marks');
+      $this->self['student']  = p_t('student');
+      $this->self['gpa']      = p_t('gpa');
+      //$this->self['grades'] = p_t("grades"];
+      $this->self['course']   = p_t('course');
 
       $this->loadRegData();
       $this->loadCourses();
@@ -673,13 +672,13 @@ public function getTranscript(){
     */
    public function getDGrade($course_exam_arr){
       $course_id  =$course_exam_arr['course_id'];
-      $exam_hid   =$course_exam_arr['exam_hid'];
+      $exam_id   =$course_exam_arr['exam_id'];
 
-      if(!isset($this->courses[$course_id]) || !isset($this->courses[$course_id][$exam_hid]) || $this->courses[$course_id][$exam_hid]['state']!='PR'){
+      if(!isset($this->courses[$course_id]) || !isset($this->courses[$course_id][$exam_id]) || $this->courses[$course_id][$exam_id]['state']!='PR'){
          //Return when requesting for unavailable courses
          return null;
       }
-      $marks=$this->courses[$course_id][$exam_hid];
+      $marks=$this->courses[$course_id][$exam_id];
       $total_mark=is_numeric($marks['final_mark'])?$marks['final_mark']+$marks['push']:$marks['final_mark'];
       return getGradeC($total_mark,$course_id);
    }
@@ -691,7 +690,7 @@ public function getTranscript(){
     */
    public function getGrade($course_exam_arr){
       $course_id  =$course_exam_arr['course_id'];
-      $exam_hid   =$course_exam_arr['exam_hid'];
+      $exam_id   =$course_exam_arr['exam_id'];
       //Grades to be degraded
       $dgrades=array('A+','A','A-','B+','B','B-','C+');
       $grade=$this->getDGrade($course_exam_arr);
@@ -713,13 +712,13 @@ public function getTranscript(){
    /*
     * Return Mark of a given subject
     */
-   public function getMark($course_id,$exam_hid){
+   public function getMark($course_id,$exam_id){
       if(isset($this->courses[$course_id])){
          $course=$this->courses[$course_id];
-         if(!isset($course[$exam_hid])){
+         if(!isset($course[$exam_id])){
             return null; 
          }
-         $marks=$course[$exam_hid];
+         $marks=$course[$exam_id];
          return array($marks['final_mark'],$marks['push']);
       }else{
          return null;   
@@ -793,19 +792,19 @@ public function getTranscript(){
          $eid        =null;
          //If the student have repeated the subject find the maximum he earned
          if(sizeof($course) >1){
-            foreach($course as $exam_hid => $marks){
+            foreach($course as $exam_id => $marks){
                if(key_exists(strtoupper($marks['grand_final_mark']), $gradeExp)  && $mark == 0){
-                  $eid=$exam_hid;
+                  $eid=$exam_id;
                }elseif($marks['grand_final_mark']>$mark){
                   $mark=$marks['grand_final_mark'];
-                  $eid=$exam_hid;
+                  $eid=$exam_id;
                }
             }
          }else{
             $eid=key($course);
          }
       }
-      return array('course_id'=>$course_id,'exam_hid'=>$eid);
+      return array('course_id'=>$course_id,'exam_id'=>$eid);
    }
 
    /*
@@ -817,12 +816,12 @@ public function getTranscript(){
          if(courseYear($course_id)==$year){
             foreach($course as $key => $exam){
                $mark=array(
-                  'course_id' =>$course_id,
+                  'course_id' =>getCourseCode($course_id),
                   'coursename'=>getCourseName($course_id),
                   'credit'    =>getCredits($course_id),
                   'grade'     =>getGradeC($exam['grand_final_mark'],$course_id),
                   'mark'      =>$exam['grand_final_mark'],
-                  'exam'      =>getExamYear($key),
+                  'exam'      =>$this->getExamYear($key),
                );
                $marks[]=$mark;
             }
@@ -831,12 +830,32 @@ public function getTranscript(){
       return $marks;
    }
 
+   /**
+    * Return year of examination
+    */
+   protected $exams=null;
+   public function getExamYear($exam_id){
+      //grab first tow chars of the batch
+      //exam_id -> 2011-01-01:4:1
+      //$reg    =substr($exam_id,0,10);
+      if(is_null($this->exams)){
+         $this->exams=exec_query("SELECT * FROM ".p_t('exam'),Q_RET_ARRAY,null,'rid');
+         return substr($this->exams[$exam_id]['exam_date'],0,4);
+      }else{
+         return substr($this->exams[$exam_id]['exam_date'],0,4);
+      }
+   }
+
+
+
+
+
    /*
     * Load ALL marks obtained in all exams for the student in to an array
     */
    public function loadCourses(){
       $course     = null;
-      $query   =" SELECT course_id,exam_hid,state,final_mark,push,grand_final_mark,degree_grade,degree_gpv,class_grade,class_gpv FROM ".$this->self['marks']." WHERE index_no ='".$this->self['index_no']."' AND can_release=true ORDER BY course_id";
+      $query   =" SELECT course_id,exam_id,state,final_mark,push,grand_final_mark,degree_grade,degree_gpv,class_grade,class_gpv FROM ".$this->self['marks']." WHERE index_no ='".$this->self['index_no']."' AND can_release=true ORDER BY course_id";
 
       $result  = exec_query($query,Q_RET_MYSQL_RES);
       while($row = mysql_fetch_assoc($result)){
@@ -853,11 +872,11 @@ public function getTranscript(){
          if(!empty($this->courses[$row['course_id']]))
          {
             $course=$this->courses[$row['course_id']];
-            $course[$row['exam_hid']]  = $marks;
+            $course[$row['exam_id']]  = $marks;
             $this->courses[$row['course_id']]=$course;
          }else{
             $course=array();
-            $course[$row['exam_hid']]  = $marks;
+            $course[$row['exam_id']]  = $marks;
             $this->courses[$row['course_id']]=$course;
          }
       }

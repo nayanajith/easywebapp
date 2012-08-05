@@ -1239,6 +1239,7 @@ function gen_url(module,page,program){
 /**
  * Set Program module and page
  */
+dojo.require('dojo.cookie');
 dojo.cookie('program', '<?php echo PROGRAM ?>', {expires: 10});
 dojo.cookie('module', '<?php echo MODULE ?>', {expires: 10});
 dojo.cookie('page', '<?php echo PAGE ?>', {expires: 10});
