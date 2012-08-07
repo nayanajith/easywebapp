@@ -1,7 +1,10 @@
 <?php
-/**
-Author: nayanajith mahendra laxaman -> nml@ucsc.lk
+/** Controller of the framework
+ * All the requests are handled here all direct requests to any other php file will subpressed by .htaccess configuration
+ * @author: nayanajith mahendra laxaman -> nml@ucsc.lk
+ * @package yape
 */
+
 /*
 if($_SERVER['REMOTE_ADDR'] == '192.248.16.11' || isset($_SESSION['username'])){
    $GLOBALS['MAINTENANCE_MODE']=true;
