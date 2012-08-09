@@ -9,11 +9,11 @@ $logout  =null;
 
 if(isset($_REQUEST['user']) && isset($_REQUEST['password'])){
    $user       = $_REQUEST['user'];
-   $password    = $_REQUEST['password'];
+   $password   = $_REQUEST['password'];
 }
 
 if(isset($_REQUEST['logout'])){
-   $logout       = $_REQUEST['logout'];
+   $logout     = $_REQUEST['logout'];
 }
 
 /**
@@ -150,12 +150,35 @@ function after_login() {
       $_SESSION['SUPER_USER']=true;
    }
 
+   //Admin users have privilege to change the users to check whtat the user can do so they have special varialble to notify the system 
+   //that he is a  user
+  if($_SESSION['role_id']=='ADMIN'){
+      $_SESSION['ADMIN_USER']=true;
+  }
+
+
+
    //User changing select box
    $user_changer="";
    if(isset($_SESSION['SUPER_USER']) && $_SESSION['SUPER_USER']){
-      $arr=exec_query('SELECT username,user_id FROM '.s_t('users'),Q_RET_ARRAY,null,'user_id');
-      $inner=gen_select_inner($arr,'username',true);
-      $user_changer="Switch user<select dojoType='dijit.form.FilteringSelect' value='".$_SESSION['user_id']."' style='width:90px' id='switch_user' onMouseOver='halt_page_reloading=false' onChange='switch_user(this.value);reload_page()'>$inner</select>";
+      $_SESSION['fullname']='a <span style="color:red">Super user</span>';
+      $arr=exec_query('SELECT username,user_id,role_id FROM '.s_t('users'),Q_RET_ARRAY,null,'user_id');
+      $inner="";
+      foreach($arr as $user_id => $row){
+         $inner.="<option value='$user_id'>".$row['username']." (".$row['role_id'].")</option>";
+      }
+      //$inner=gen_select_inner($arr,'username',true);
+      $user_changer="Switch user to: <select dojoType='dijit.form.FilteringSelect' value='".$_SESSION['user_id']."' style='width:180px' id='switch_user' onMouseOver='halt_page_reloading=false' onChange='switch_user(this.value);reload_page()'>$inner</select>";
+   }elseif(isset($_SESSION['ADMIN_USER']) && $_SESSION['ADMIN_USER']){
+      $_SESSION['fullname']='an <span style="color:red">Admin user</span>';
+      $arr=exec_query('SELECT username,user_id,role_id FROM '.s_t('users'),Q_RET_ARRAY,null,'user_id');
+      $inner="";
+      foreach($arr as $user_id => $row){
+         if($row['role_id'] == 'SUPER')continue;
+         $inner.="<option value='$user_id'>".$row['username']." (".$row['role_id'].")</option>";
+      }
+      //$inner=gen_select_inner($arr,'username',true);
+      $user_changer="Switch user to: <select dojoType='dijit.form.FilteringSelect' value='".$_SESSION['user_id']."' style='width:180px' id='switch_user' onMouseOver='halt_page_reloading=false' onChange='switch_user(this.value);reload_page()'>$inner</select>";
    }
 
    return "

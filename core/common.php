@@ -310,12 +310,11 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false){
 /**
  * Regenerate the filter with customizations
  */
-function get_filter($table_as=null){
+function get_filter($table_as=null,$start_and=false){
    if(isset($_SESSION[PAGE]['FILTER_ARRAY']) && is_array($_SESSION[PAGE]['FILTER_ARRAY']) && sizeof($_SESSION[PAGE]['FILTER_ARRAY']) > 0){ 
    }else{
       return null;
    }   
-
    //return if request with the table name prefix
    if(!is_null($table_as)){
       $table_as=$table_as.".";
@@ -338,6 +337,11 @@ function get_filter($table_as=null){
       $filter.=$and.$value;
       $and=' AND ';
    }   
+
+   //Filter will start with AND to join with the front part of the query
+   if($start_and){
+      return " AND ".$filter; 
+   }
    return $filter; 
 }
 

@@ -1147,6 +1147,10 @@ EOE;
             $comma   ="";
             /*generate values string*/
             foreach( $this->form as $key => $arr){
+               /*handle custom fields from form submission*/
+               if(isset($arr['custom']) && $arr['custom'] == 'true'){
+                  continue; 
+               }
 
                //primary key,custom and disabled fields will be excluded do not update
                if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == '' || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null)){
@@ -1205,20 +1209,6 @@ EOE;
                }
                $comma   =",";
             }
-
-               /*handle custom fields from form submission*/
-               if(isset($arr['custom']) && $arr['custom'] == 'true'){
-                  if(isset($_REQUEST[$key]) && $_REQUEST[$key] != ''){
-
-                     /*apply md5 to the password fields*/
-                     if(in_array(strtolower($key),$this->pwd_field_guess)){   
-                        //$_REQUEST[$key]=md5($value);
-                        $_REQUEST[$key]=md5($_REQUEST[$key]);
-                     }
-                     $values   .=$comma.$key."='".$_REQUEST[$key]."'";
-                     $comma   =",";
-                  }
-               }
 
             $update_query  ="UPDATE ".$this->table." SET %s WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
             $update_query  =sprintf($update_query,$values);

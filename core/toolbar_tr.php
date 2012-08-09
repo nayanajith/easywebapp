@@ -2,7 +2,7 @@
   <span ></span>
   <div 
    dojoType="dijit.TooltipDialog" 
-   style="max-width:300px;overflow:wrap" 
+   style="max-width:400px;overflow:wrap" 
    jsId='notify_ttd' 
    loadingMessage="" 
    refreshOnShow=true 
@@ -17,9 +17,9 @@ d_r("dijit.form.Button");
 
 echo get_program();
 ?>
-<div dojoType="dijit.form.DropDownButton" iconClass="<?php echo get_icon_class('Users'); ?>" showLabel="true">
-<span><?php echo $_SESSION['username'];?></span>
-  <div dojoType="dijit.TooltipDialog" style="width:200px;">
+<div dojoType="dijit.form.DropDownButton" iconClass="<?php echo get_icon_class('Users'); ?>" showLabel="true" title='USER (ROLE)'>
+<span><?php echo $_SESSION['username'];?> (<?php echo $_SESSION['role_id']?>)</span>
+  <div dojoType="dijit.TooltipDialog" style="width:300px;">
 <?php 
    if (isset($_SESSION['username'])){
       echo after_login();

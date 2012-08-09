@@ -7,7 +7,7 @@ $password_custom='
        Change Password 
    </span>
    <div dojoType="dijit.TooltipDialog">
-      <div dojoType="dojox.form.PasswordValidator" name="password_val" id="password_val" jsId="password_val">
+      <div dojoType="dojox.form.PasswordValidator" id="password_val" jsId="password_val">
          <table>
             <tr><td>Password</td><td>:<input type="password" pwType="new" ></td></tr>
             <tr><td>Validate</td><td>:<input type="password" pwType="verify" ></td></tr>
@@ -18,8 +18,7 @@ $password_custom='
            <script type="dojo/method" event="onClick" args="evt">
             var pval=dijit.byId("password_val").value;
             var pset=dijit.byId("password");
-            pset.attr("value",pval);
-            //alert(pset.value);
+            pset.set("value",pval);
          </script>
       </button>
    </div>
