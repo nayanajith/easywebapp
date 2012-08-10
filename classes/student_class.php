@@ -115,13 +115,26 @@ function getGradeC($mark,$course_id){
    return $grade;
 }
 
-$course_arr =null;
+$GLOBALS['course_arr']=null;
 function getCourseArr(){
-   global $course_arr;
-   if(is_null($course_arr)){
-      $course_arr  = exec_query("SELECT * FROM ".p_t('course'),Q_RET_ARRAY,null,'rid');
+   //global $GLOBALS['course_arr'];
+   if(is_null($GLOBALS['course_arr'])){
+      $GLOBALS['course_arr']  = exec_query("SELECT * FROM ".p_t('course'),Q_RET_ARRAY,null,'rid');
    }
-   return  $course_arr;
+}
+
+/**
+Return the rid of course_id 
+*/
+$GLOBALS['course_id_rid']=null;
+function rid_of_course_id($course_id){
+	getCourseArr();
+   if(is_null($GLOBALS['course_id_rid'])){
+		foreach($GLOBALS['course_arr'] as $key => $arr){
+			$GLOBALS['course_id_rid'][$arr['course_id']]=$key;
+		}
+	}
+	return $GLOBALS['course_id_rid'][$course_id];
 }
 
 /*Course excpetions*/
@@ -135,8 +148,8 @@ $courseNonCredit   = array('SCS3026','ICT3015','ICT3016');
  * Check for non grade courses
  */
 function isNonGrade($courseid){
-   $course_arr=getCourseArr();
-   if($course_arr[$courseid]['non_grade']==true){
+   getCourseArr();
+   if($GLOBALS['course_arr'][$courseid]['non_grade']==true){
       return true;
    }else{
       return false;
@@ -147,8 +160,8 @@ function isNonGrade($courseid){
  * Check for non credit courses
  */
 function isNonCredit($courseid){
-   $course_arr=getCourseArr();
-   if($course_arr[$courseid]['non_credit']==true){
+   getCourseArr();
+   if($GLOBALS['course_arr'][$courseid]['non_credit']==true){
       return true;
    }else{
       return false;
@@ -158,12 +171,11 @@ function isNonCredit($courseid){
 
 /*
  * Return year of the course
- *
  */
 function courseYear($courseid){
-   $course_arr=getCourseArr();
-   if(isset($course_arr[$courseid]['student_year'])){
-      return $course_arr[$courseid]['student_year'];
+   getCourseArr();
+   if(isset($GLOBALS['course_arr'][$courseid]['student_year'])){
+      return $GLOBALS['course_arr'][$courseid]['student_year'];
    }else{
       return null;
    }
@@ -173,27 +185,27 @@ function courseYear($courseid){
  * Return Credits of the given course unit
  */
 function getCredits($courseid){
-   $course_arr=getCourseArr();
+   getCourseArr();
 
    //if(!isNonGrade($courseid) && !isNonCredit($courseid)){
    if(!isNonCredit($courseid)){
-      return $course_arr[$courseid]['lecture_credits']+$course_arr[$courseid]['practical_credits'];
+      return $GLOBALS['course_arr'][$courseid]['lecture_credits']+$GLOBALS['course_arr'][$courseid]['practical_credits'];
    }else{
       return 0;
    }
 }
 
 function getCourseName($course_id){
-   $course_arr=getCourseArr();
-   return $course_arr[$course_id]['course_name'];
+   getCourseArr();
+   return $GLOBALS['course_arr'][$course_id]['course_name'];
 }
 
 /**
  * Returen course code
  */
 function getCourseCode($course_id){
-   $course_arr=getCourseArr();
-   return $course_arr[$course_id]['course_id'];
+   getCourseArr();
+   return $GLOBALS['course_arr'][$course_id]['course_id'];
 }
 
 
@@ -201,9 +213,9 @@ function getCourseCode($course_id){
  *Return alternate course IDS as an array 
  * */
 function getAltCourses($course_id){
-   $course_arr=getCourseArr();
-   if(!is_null($course_arr[$course_id]['alt_course_id'])){
-      $alt_courses=explode(',',$course_arr[$course_id]['alt_course_id']); 
+   getCourseArr();
+   if(!is_null($GLOBALS['course_arr'][$course_id]['alt_course_id'])){
+      $alt_courses=explode(',',$GLOBALS['course_arr'][$course_id]['alt_course_id']); 
       array_unshift($alt_courses,$course_id);
       return $alt_courses; 
    }else{
@@ -438,10 +450,10 @@ class Student{
     */
 public function getTranscript(){
       //Descriptive degree array
-      $descDegree=getDescDegreeArr();      
+      $descDegree=getDescDegreeArr();
 
       //Descriptive Class array
-      $descClass=getDescClassArr();      
+      $descClass=getDescClassArr();
       
       $transcript=array();
       $myGPA=$this->getCGPA();
@@ -819,7 +831,8 @@ public function getTranscript(){
                   'course_id' =>getCourseCode($course_id),
                   'coursename'=>getCourseName($course_id),
                   'credit'    =>getCredits($course_id),
-                  'grade'     =>getGradeC($exam['grand_final_mark'],$course_id),
+                  //'grade'     =>getGradeC($exam['grand_final_mark'],$course_id),
+                  'grade'     =>$exam['class_grade'],
                   'mark'      =>$exam['grand_final_mark'],
                   'exam'      =>$this->getExamYear($key),
                );
@@ -845,9 +858,6 @@ public function getTranscript(){
          return substr($this->exams[$exam_id]['exam_date'],0,4);
       }
    }
-
-
-
 
 
    /*
