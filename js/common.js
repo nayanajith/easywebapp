@@ -131,7 +131,7 @@ function show_help_dialog(){
             style: "width: 800px;"
          });
 
-         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"window.open(get_url()+'help=true&fullscreen=true','help_window');help_Dialog.hide()\" >Show in Fullscreen</button><button dojoType='dijit.form.Button' onClick=\"help_Dialog.hide()\" >OK</button></center>";
+         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"window.open(get_url()+'help=true&fullscreen=true','help_window');help_Dialog.hide()\" >Show in Fullscreen</button><button dojoType='dijit.form.Button' onClick=\"help_Dialog.hide()\" >OK</button><button dojoType='dijit.form.Button' onClick=\"edit_help()\" >Edit</button></center>";
          help_Dialog.set("content", response+button);
          help_Dialog.show();
   	   },
@@ -513,13 +513,19 @@ function reload_sections(sections){
       load: function(response) {
       },
       error: function() {
-         console.error("Error loading layout DYNAMIC_JS");
+         console.log("Error loading layout DYNAMIC_JS");
       }
    });
 }
 
 function reload_dialog(){
    dijit.byId('DIALOG').show();
+}
+function reload_main_right(){
+   reload_sections(['MAIN_RIGHT']);
+}
+function reload_main_bottom(){
+   reload_sections(['MAIN_BOTTOM']);
 }
 function reload_main(){
    reload_sections(['MAIN_TOP','MAIN_LEFT','MAIN_RIGHT','MAIN_BOTTOM']);

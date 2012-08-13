@@ -2,7 +2,7 @@
 /*
 System Database tables
 */
-$schema_version=5;
+$schema_version=6;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -95,16 +95,18 @@ $system_table_schemas['log']="CREATE TABLE `log` (
 
 $system_table_schemas['filter']="CREATE TABLE `filter` (
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
-  `filter_name`      VARCHAR(50) DEFAULT NULL,
-  `table_name`       VARCHAR(50) DEFAULT NULL,
-  `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id`          INT NOT NULL,
-  `filter_type`      ENUM('SQL','JSON') DEFAULT 'JSON',
+  `program`          VARCHAR(100) DEFAULT NULL,
+  `module`           VARCHAR(100) DEFAULT NULL,
+  `page`             VARCHAR(100) DEFAULT NULL,
+  `filter_name`      VARCHAR(100) DEFAULT NULL,
   `filter`           TEXT,
-  `deleted`          BOOLEAN     DEFAULT false,
   `note`             VARCHAR(300) DEFAULT NULL,
+  `status`           VARCHAR(300) DEFAULT NULL,
+  `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   FOREIGN KEY       (`user_id`) REFERENCES users(`user_id`) ON UPDATE CASCADE ON DELETE RESTRICT,
    PRIMARY KEY (`rid`),
-   UNIQUE KEY (`filter_name`,`table_name`,`user_id`)
+   UNIQUE KEY (`filter_name`,`program`,`module`,`page`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['base_data']="CREATE TABLE `base_data` (
@@ -112,6 +114,7 @@ $system_table_schemas['base_data']="CREATE TABLE `base_data` (
   `base_class`      VARCHAR(50)    DEFAULT NULL,
   `base_key`        VARCHAR(100)   NOT NULL,
   `base_value`      TEXT           NOT NULL,
+  `base_value1`     TEXT           NOT NULL,
   `status`          VARCHAR(100)   DEFAULT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
    UNIQUE KEY (`base_class`,`base_key`),
@@ -126,8 +129,23 @@ $system_table_schemas['news']="CREATE TABLE `news`(
   `display_from`     DATE NOT NULL,
   `display_until`    DATE NOT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   FOREIGN KEY       (`role_id`) REFERENCES role(`role_id`) ON UPDATE CASCADE ON DELETE RESTRICT,
    PRIMARY KEY (`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+$system_table_schemas['user_doc']="CREATE TABLE `user_doc`(
+  `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
+  `role_id`          VARCHAR(100) NULL,
+  `program_id`       VARCHAR(100) NULL,
+  `module_id`        VARCHAR(100) NOT NULL,
+  `page_id`          VARCHAR(100) NOT NULL,
+  `doc`              TEXT,
+  `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   FOREIGN KEY       (`role_id`) REFERENCES role(`group_name`) ON UPDATE CASCADE ON DELETE RESTRICT,
+   PRIMARY KEY (`rid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+
 
 //Base data which should be populated at the first time the system is set up;
 $system_base_data['base_data']="
@@ -179,5 +197,16 @@ $system_table_migrate[4][]="REPLACE INTO `base_data` (`base_class`,`base_key`,`b
 ('LIST','auth_mod','[\"AUTO\",\"LDAP\"]','ENABLED')";
 
 $system_table_migrate[5][]="ALTER TABLE news ADD role_id VARCHAR(100)";
+
+$system_table_migrate[6][]="
+   ALTER TABLE program ENGINE = innodb;
+   ALTER TABLE users ENGINE = innodb;
+   ALTER TABLE role ENGINE = innodb;
+   ALTER TABLE permission ENGINE = innodb;
+   ALTER TABLE log ENGINE = innodb;
+   ALTER TABLE filter ENGINE = innodb;
+   ALTER TABLE base_data ENGINE = innodb;
+   ALTER TABLE news ENGINE = innodb;
+   ";
 
 ?>

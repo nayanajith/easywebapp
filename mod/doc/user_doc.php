@@ -1,7 +1,7 @@
 <?php
 $GLOBALS['PAGE']=array(
-   'name'                =>'news_manage',
-   'table'               =>s_t('news'),
+   'name'                =>'user_doc',
+   'table'               =>s_t('user_doc'),
 );
 
 //Common control swithces included

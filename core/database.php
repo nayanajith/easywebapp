@@ -10,7 +10,8 @@ $system_tables=array(
    'base_data'       =>'base_data',         
    'filter'          =>'filter',         
    'news'            =>'news',         
-   'log'             =>'log'              
+   'log'             =>'log',
+   'user_doc'        =>'user_doc',              
 );
 
 $GLOBALS['S_TABLES']=$system_tables;
@@ -77,7 +78,6 @@ function closedbi() {
    break;
    }
 }
-
 
 
 /*

@@ -1,5 +1,6 @@
 <?php
 $menu_array  = array(
-   "Framework"=>"framework"
+   "user_doc"=>"User Documentation",
+   "framework"=>"Framework"
 );
 ?>

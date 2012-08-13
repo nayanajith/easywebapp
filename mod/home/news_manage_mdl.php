@@ -47,7 +47,7 @@ $GLOBALS['MODEL']=array(
          "type"      =>"hidden",
          "label"	   =>"Content",
          "label_pos"	=>"top",
-         "read_func"=>"htmlspecialchars_decode",
+         "read_func" =>"htmlspecialchars_decode",
          "write_func"=>"",
          "value"=>""
       ),

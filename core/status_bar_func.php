@@ -57,7 +57,7 @@ d_r('dijit.form.Button');
          }
       
          var button="<br><center><button dojoType='dijit.form.Button' onClick=\"stausDialog.hide();status_bar.innerHTML='Done.'\" >OK</button></center>";
-         stausDialog.attr("content", info+button);
+         stausDialog.set("content", info+button);
          stausDialog.show();
          status_bar.innerHTML='...etc';
       }
