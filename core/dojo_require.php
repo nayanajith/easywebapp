@@ -61,7 +61,6 @@ d_r('dijit._editor.plugins.FontChoice');
 d_r('dijit._editor.plugins.TextColor');
 d_r('dijit._editor.plugins.LinkDialog');
 
-
 d_r('dojox.grid.EnhancedGrid');
 d_r('dojox.grid.enhanced.plugins.Pagination');
 d_r('dojox.grid.enhanced.plugins.NestedSorting');
@@ -82,6 +81,7 @@ d_r("dojox.grid.enhanced.plugins.exporter.CSVWriter");
 d_r("dojox.grid.enhanced.plugins.exporter.TableWriter");
 d_r("dojox.form.Uploader");
 d_r("dojox.form.uploader.plugins.IFrame");
+//d_r("dojox.form.MultiComboBox");
 
 d_r('dojo.cookie');
 d_r('dojo.query');

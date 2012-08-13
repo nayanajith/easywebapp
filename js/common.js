@@ -131,7 +131,7 @@ function show_help_dialog(){
             style: "width: 800px;"
          });
 
-         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"window.open(get_url()+'help=true&fullscreen=true','help_window');help_Dialog.hide()\" >Show in Fullscreen</button><button dojoType='dijit.form.Button' onClick=\"help_Dialog.hide()\" >OK</button><button dojoType='dijit.form.Button' onClick=\"edit_help()\" >Edit</button></center>";
+         var button="<br/><center><button dojoType='dijit.form.Button' onClick=\"window.open(get_url()+'help=true&fullscreen=true','help_window');help_Dialog.hide()\" >Show in Fullscreen</button><button dojoType='dijit.form.Button' onClick=\"help_Dialog.hide()\" >OK</button></center>";
          help_Dialog.set("content", response+button);
          help_Dialog.show();
   	   },
@@ -147,21 +147,21 @@ function show_help_dialog(){
 
 //Seamless download using  iframe
 function download(url){
-	update_status_bar('OK','Processing...');
+	update_status_bar('OK','Downloading...');
 
-   //desable after testing
-   window.open(url);return;
+   //Traditional way of downloading
+   //window.open(url);return;
 
    //dojo iframe is creating to set the source of it   
 	var iframe = dojo.io.iframe.create("downloader");
 
    //Downloading the file using iframe
-   //TODO: this is sometime not work for chrome use browser detection and swtich the downloading method
+   //TODO: this is sometime not working for chrome use browser detection and swtich the downloading method
 	dojo.io.iframe.setSrc(iframe, url, true);
 	update_status_bar('OK','Done');
 
    //DEBUG ONLY
-	update_status_bar('OK',url);
+	//update_status_bar('OK',url);
 	update_progress_bar(100);
 }
 

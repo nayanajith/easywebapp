@@ -315,11 +315,13 @@ function get_filter($table_as=null,$start_and=false){
    }else{
       return null;
    }   
+
    //return if request with the table name prefix
    if(!is_null($table_as)){
       $table_as=$table_as.".";
    }   
 
+	/*
    $filter="";
    $and="";
    foreach($_SESSION[PAGE]['FILTER_ARRAY'] as $key => $value){
@@ -337,6 +339,9 @@ function get_filter($table_as=null,$start_and=false){
       $filter.=$and.$value;
       $and=' AND ';
    }   
+	*/
+
+	$filter=get_temp_filter($table_as);
 
    //Filter will start with AND to join with the front part of the query
    if($start_and){
@@ -381,11 +386,19 @@ function get_temp_filter($table_as=null){
             }
          }
 
-         if(defined('FILTER_AUTO') && FILTER_AUTO=='YES'){
-            $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
+			//Handle checkbox
+         if($arr['dojoType']=='dijit.form.CheckBox'){
+				if($_REQUEST[$key]=='on' ||  $_REQUEST[$key]=='true'   ||  $_REQUEST[$key]=='1'){
+         		$_REQUEST[$key]='1';
+               $filter.=$and.$table_as."`".$key."` = '".$_REQUEST[$key]."'";
+				}
          }else{
-            $filter.=$and.$table_as."`".$key."` LIKE '".$_REQUEST[$key]."'";
-         }
+            if(defined('FILTER_AUTO') && FILTER_AUTO=='YES'){
+               $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
+            }else{
+               $filter.=$and.$table_as."`".$key."` LIKE '".$_REQUEST[$key]."'";
+            }
+			}
          $and=' AND ';
          //keep the filter array for future use
          $_SESSION[PAGE]['FILTER_ARRAY'][$key]=$_REQUEST[$key];

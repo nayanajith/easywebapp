@@ -41,13 +41,10 @@ if(is_array($page)){
 }
 
 //Help header
-echo "<h2>Help and Guide for the <font color='green' size='15px' >".$page."</font> page of the <font color='green'>".$GLOBALS['MODULES'][MODULE]."</font> module</h2>";
+echo "<h2>User Guide for the ".$GLOBALS['MODULES'][MODULE]." / ".$page." </h2><hr>";
 $help_arr=exec_query("SELECT * FROM ".s_t('user_doc')." WHERE module_id='".MODULE."' AND page_id='".PAGE."'",Q_RET_ARRAY);
 include_once "markdown.php";
 foreach($help_arr as $key=>$row){
-   if(!is_null($row['program_id'])){
-      echo $row['program_id']."<br><hr>";
-   }
    echo Markdown($row['doc']);
 }
 

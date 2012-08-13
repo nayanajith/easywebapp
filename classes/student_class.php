@@ -1,4 +1,10 @@
 <?php
+//Descriptive program
+function getDescProgram(){
+	$arr=exec_query("SELECT * FROM ".s_t('program')." WHERE short_name='".PROGRAM."'",Q_RET_ARRAY);
+	return strtoupper($arr[0]['full_name']);
+}
+
 //Descriptive degree array
 function getDescDegreeArr(){
    $descDegree=array(
