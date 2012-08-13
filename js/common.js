@@ -881,23 +881,27 @@ function load_combo_value(field,value_to_load){
  */
 function load_selected_value(field,value_to_load){
    //TODO: checking for the field with store has a bug
-   if(!field || !field.store)return;
-   field.store.fetch({
-      query:{ 'id': value_to_load },
-      onItem : function(item, request) {
-         var searchKey;
-         for(var key in item['i']){
-               searchKey=key;
-               break;
+   if(!field || !field.store){
+      field.set('value',value_to_load);
+      return;
+   }else{
+      field.store.fetch({
+         query:{ 'id': value_to_load },
+         onItem : function(item, request) {
+            var searchKey;
+            for(var key in item['i']){
+                  searchKey=key;
+                  break;
+            }
+            //TODO:remove  undefined != request.store and find alternative method
+           if (undefined != request.store && request.store.getValue(item, searchKey) == value_to_load) {
+               field.set('value',request.store.getValue(item, searchKey));
+               //field.set('value',request.store.getValue(item, searchKey));
+               return;
+           }
          }
-         //TODO:remove  undefined != request.store and find alternative method
-        if (undefined != request.store && request.store.getValue(item, searchKey) == value_to_load) {
-            field.set('value',request.store.getValue(item, searchKey));
-            //field.set('value',request.store.getValue(item, searchKey));
-            return;
-        }
-      }
-   });
+      });
+   }
 }
 
 //wrapper for filter form callbacks

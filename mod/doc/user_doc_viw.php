@@ -6,7 +6,7 @@ $main_left.="<table>
    <tr><td>".get_label('program_id')."</td><td>".get_field('program_id')."</td></tr>
    <tr><td>".get_label('module_id')."</td><td>".get_field('module_id')."</td></tr>
    <tr><td>".get_label('page_id')."</td><td>".get_field('page_id')."</td></tr>
-   <tr><td colspan='2'>".get_label('doc')."<br>".get_field('doc')."</td></tr>
+   <tr><td colspan='2'>".get_label('doc')."( Write in <a href='http://daringfireball.net/projects/markdown/syntax' target='_NEW'>MARKDOWN</a>)<br>".get_field('doc')." </td></tr>
    </table></form>";
 
 add_to_main_left($main_left);
@@ -66,7 +66,7 @@ add_to_main_right(
  */
 
 //$doc_arr=exec_query("SELECT * FROM ".s_t('user_doc')." WHERE module_id='"get_param('module_id')."' AND page_id='".get_param('page_id')."' AND role_id='".get_param('role_id')."' AND program_id='".get_param('program_id')."'",Q_RET_ARRAY);
-$doc_arr=exec_query("SELECT * FROM ".s_t('user_doc')." WHERE module_id='".get_param('module_id')."' AND page_id='".get_param('page_id')."'",Q_RET_ARRAY);
+$doc_arr=exec_query("SELECT * FROM ".s_t('user_doc')." WHERE rid='".get_param('rid')."'",Q_RET_ARRAY);
 $doc="";
 include_once "markdown.php";
 foreach($doc_arr as $row){
