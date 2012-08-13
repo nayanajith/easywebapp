@@ -870,7 +870,13 @@ function load_combo_value(field,value_to_load){
    field.store.fetch({
       query:{ 'id': value_to_load },
       onItem : function(item, request) {
-         field.set('value',item['i'][field.store._labelAttr]);
+         if(field.store._labelAttr !== undefined){
+            //for query read store
+            field.set('value',item['i'][field.store._labelAttr]);
+         }else{
+            //for native store (when using <option></option>)
+            field.set('value',value_to_load);
+         }
          return;
       }
    });
@@ -1023,11 +1029,14 @@ function fill_form(rid,form) {
    });
    }else{
       /*reset form*/
+      clear_form(form,null);
+      /*
       dojo.forEach(dijit.byId(form).getChildren(), function(widget) {
          if(!widget.store){
             widget.set('value', null);
          }
       });
+      */
 
       //calling the reset callback function
       callback(f_f_c,'reset');

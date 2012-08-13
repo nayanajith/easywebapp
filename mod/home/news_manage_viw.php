@@ -34,6 +34,6 @@ add_to_main_bottom(
 
 set_layout_property('app2','MAIN_LEFT','style','width','48%');
 set_layout_property('app2','MAIN_RIGHT','style','width','50%');
-set_layout_property('app2','MAIN_BOTTOM','style','height','60%');
+set_layout_property('app2','MAIN_BOTTOM','style','height','40%');
 
 ?>

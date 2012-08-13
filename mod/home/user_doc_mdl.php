@@ -59,8 +59,8 @@ $GLOBALS['MODEL']=array(
       ),
 */
       "module_id"=>array(
-         "length"	   =>"100",
-         "dojoType"     =>"dijit.form.FilteringSelect",
+         "length"	   =>"200",
+         "dojoType"     =>"dijit.form.ComboBox",
          "required"	=>"true",
          "required"	=>"true",
          "onChange"  =>'set_param(this.id,this.value)',
@@ -70,8 +70,8 @@ $GLOBALS['MODEL']=array(
          "value"     =>""
       ),
       "page_id"=>array(
-         "length"	   =>"100",
-         "dojoType"  =>"dijit.form.FilteringSelect",
+         "length"	   =>"250",
+         "dojoType"  =>"dijit.form.Select",
          "required"	=>"true",
          "onChange"  =>'set_param(this.id,this.value)',
          "inner"     =>gen_select_inner($page_array,null,true),
@@ -81,11 +81,11 @@ $GLOBALS['MODEL']=array(
       ),
       "doc"=>array(
          "length"	   =>"500",
-         "style"	   =>"height:340px",
+         "style"	   =>"height:400px",
          "read_func" =>"htmlspecialchars_decode",
          "dojoType"	=>"dijit.form.SimpleTextarea",
          "required"	=>"false",
-         "label"	   =>"Text",
+         "label"	   =>"Documentation",
          "value"     =>""
       ),
    ),
@@ -115,7 +115,7 @@ $GLOBALS['MODEL']=array(
          "length"       =>"100",
          "dojoType"     =>"dijit.form.FilteringSelect",
          "required"     =>"false",
-         "label"        =>"Rid of doc",
+         "label"        =>"Module/Page",
          "onChange"     =>'s_p_c_add("ok",fill_form,this.value);s_p_c_add("ok",reload_main_right,this.value);set_param(this.id,this.value)',
          "searchAttr"   =>"label",
          "pageSize"     =>"10",

@@ -32,26 +32,29 @@ if(isset($_REQUEST['fullscreen']) && $_REQUEST['fullscreen'] == 'true'){
 
 <?php
 }
-echo "<div class='help' id='help'><div>";
+echo "<div class='help round' id='help' style='height:500px;overflow:auto' ><div>";
 
 //Get the page name
 $page=$menu_array[PAGE];
 if(is_array($page)){
-   $page=$page['PAGE'];
+   $page=$page['label'];
 }
 
 //Help header
-echo "<h2>User Guide for the ".$GLOBALS['MODULES'][MODULE]." / ".$page." </h2><hr>";
-$help_arr=exec_query("SELECT * FROM ".s_t('user_doc')." WHERE module_id='".MODULE."' AND page_id='".PAGE."'",Q_RET_ARRAY);
+echo "<div style='padding-top:10px;padding-left:10px;font-size:20px;font-wight:bold;border-bottom:1px solid silver' >User Guide for the [".$GLOBALS['MODULES'][MODULE]." / ".$page."] </div>";
 include_once "markdown.php";
+$help_arr=exec_query("SELECT * FROM ".s_t('user_doc')." WHERE module_id='".MODULE."' AND page_id='".PAGE."'",Q_RET_ARRAY);
 foreach($help_arr as $key=>$row){
    echo Markdown($row['doc']);
 }
 
 //If there is a help file created acordance to the page it will also be loaded
-$help_file=A_MODULES."/".MODULE."/".PAGE."_help.php";
+$help_file=A_MODULES."/".MODULE."/".PAGE."_help.txt";
 if(file_exists($help_file)){
-   include $help_file;
+   $fh=fopen($help_file,'r');
+   $content=fread($fh,filesize($help_file));
+   fclose($fh);
+   echo Markdown($content);
 }
 echo "</div></div>";
 

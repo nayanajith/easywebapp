@@ -72,7 +72,7 @@ $GLOBALS['MODEL']=array(
 //---------------------GRID CONFIGURATION-----------------------
    'GRIDS'=>array(
        'GRID'=>array(
-          'columns'      =>array('rid'=>array('hidden'=>'true'),'role_id','title','display_from','display_until','content'=>array('hidden'=>'true')),
+          'columns'      =>array('rid'=>array('hidden'=>'true'),'role_id'=>array('width'=>'60'),'display_from'=>array('width'=>'60'),'display_until'=>array('width'=>'60'),'title'=>array('width'=>'260'),'content'),
           'filter'       =>isset($_SESSION[PAGE]['FILTER'])?$_SESSION[PAGE]['FILTER']:null,
           'selector_id'  =>'toolbar__rid',
           'ref_table'    =>s_t('news'),
