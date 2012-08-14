@@ -25,7 +25,7 @@ if(isset($_REQUEST['fullscreen']) && $_REQUEST['fullscreen'] == 'true'){
    <tr>
       <td colspan=2 style>
          <img src="<?php echo $GLOBALS['LOGO']; ?>" width=80px style='float:left'>
-         <span style='float:left;font-size:26px;font-weight:bold;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE_LONG']; ?> <font color='green' >Help+Guide</font></span>
+         <span style='float:left;font-size:26px;font-weight:bold;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE_LONG']; ?>-User Guide</span>
       </td>
    </tr>
 </table>
@@ -40,8 +40,14 @@ if(is_array($page)){
    $page=$page['label'];
 }
 
+//Get the module name
+$module=$GLOBALS['MODULES'][MODULE];
+if(is_array($modul3)){
+   $module=$module['MODULE'];
+}
+
 //Help header
-echo "<div style='padding-top:10px;padding-left:10px;font-size:20px;font-wight:bold;border-bottom:1px solid silver' >User Guide for the [".$GLOBALS['MODULES'][MODULE]." / ".$page."] </div>";
+echo "<div style='padding-top:10px;padding-left:10px;font-size:20px;font-wight:bold;border-bottom:1px solid silver' >User Guide for the [".$module." / ".$page."] </div>";
 include_once "markdown.php";
 $help_arr=exec_query("SELECT * FROM ".s_t('user_doc')." WHERE module_id='".MODULE."' AND page_id='".PAGE."'",Q_RET_ARRAY);
 foreach($help_arr as $key=>$row){
@@ -49,10 +55,10 @@ foreach($help_arr as $key=>$row){
 }
 
 //If there is a help file created acordance to the page it will also be loaded
-$help_file=A_MODULES."/".MODULE."/".PAGE."_help.txt";
-if(file_exists($help_file)){
-   $fh=fopen($help_file,'r');
-   $content=fread($fh,filesize($help_file));
+$doc_file=get_doc_file();
+if(file_exists($doc_file)){
+   $fh=fopen($doc_file,'r');
+   $content=fread($fh,filesize($doc_file));
    fclose($fh);
    echo Markdown($content);
 }

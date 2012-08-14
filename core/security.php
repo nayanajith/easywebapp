@@ -7,13 +7,15 @@ if(!isset($_SESSION['username'])){return;}
 /*
  * SQL injection prevention
  */
-class Secure
-{
+class Secure{
 
-   function secureSuperGlobalGET(&$value, $key)
-   {
+   function secureSuperGlobalGET(&$value, $key)   {
+
+      //If the requested to process the request insecurely ignore the security application
+      if(isset($_REQUEST['insec']) && $_REQUEST['insec'] == 'true')return;
+
       //$value = htmlspecialchars(stripslashes($value));
-      if (get_magic_quotes_gpc()) {
+      if (get_magic_quotes_gpc()){
          $value = stripslashes($value);
       }
       $value = str_ireplace("script", "blocked", $value);
@@ -24,10 +26,8 @@ class Secure
       }
    }
 
-   function secureGlobals()
-   {
+   function secureGlobals(){
       array_walk($_REQUEST, array($this,'secureSuperGlobalGET'));
    }
-
 }
 ?>

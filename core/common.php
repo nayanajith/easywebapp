@@ -1,5 +1,18 @@
 <?php
 /**
+ * Return the path to the doc file of effective page 
+ */
+function get_doc_file($module=null,$page=null){
+   $doc_ext="_doc.txt";
+   if(is_null($module) || is_null($page)){
+      return A_MODULES."/".MODULE."/".PAGE.$doc_ext;
+   }else{
+      return A_MODULES."/".$module."/".$page.$doc_ext;
+   }
+}
+
+
+/**
  * Return a session variable values set by set_param() frontend function (javascript) 
  */
 function set_param($key,$value){

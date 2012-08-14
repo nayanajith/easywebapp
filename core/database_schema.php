@@ -133,19 +133,6 @@ $system_table_schemas['news']="CREATE TABLE `news`(
    PRIMARY KEY (`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-$system_table_schemas['user_doc']="CREATE TABLE `user_doc`(
-  `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
-  `role_id`          VARCHAR(100) NULL,
-  `program_id`       VARCHAR(100) NULL,
-  `module_id`        VARCHAR(100) NOT NULL,
-  `page_id`          VARCHAR(100) NOT NULL,
-  `doc`              TEXT,
-  `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   FOREIGN KEY       (`role_id`) REFERENCES role(`group_name`) ON UPDATE CASCADE ON DELETE RESTRICT,
-   PRIMARY KEY (`rid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-
-
 
 //Base data which should be populated at the first time the system is set up;
 $system_base_data['base_data']="

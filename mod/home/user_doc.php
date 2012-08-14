@@ -18,19 +18,21 @@ $GLOBALS['PAGE']=array(
 )
 */
 
+include "user_doc_mdl.inc.php";
+
 if(isset($_REQUEST['form'])){
    if(isset($_REQUEST['action'])){
       switch($_REQUEST['action']){
       case 'add':
-        add_help();
+        add_doc();
         unset($_REQUEST['action']);
       break;
       case 'modify':
-        save_help();
+        save_doc();
         unset($_REQUEST['action']);
       break;
       case 'delete':
-        delete_help();
+        delete_doc();
         unset($_REQUEST['action']);
       break;
       }
