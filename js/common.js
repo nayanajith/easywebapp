@@ -991,10 +991,12 @@ function fill_form(rid,form) {
                         switch(response[key]){
                            case '1':
                            case 'on':
+                           case 'true':
                               dijit.byId(key).set('checked',true); 
                            break;
                            case '0':
                            case 'off':
+                           case 'false':
                            default:
                               dijit.byId(key).set('checked',false); 
                            break;

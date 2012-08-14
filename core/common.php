@@ -334,7 +334,6 @@ function get_filter($table_as=null,$start_and=false){
       $table_as=$table_as.".";
    }   
 
-	/*
    $filter="";
    $and="";
    foreach($_SESSION[PAGE]['FILTER_ARRAY'] as $key => $value){
@@ -352,9 +351,6 @@ function get_filter($table_as=null,$start_and=false){
       $filter.=$and.$value;
       $and=' AND ';
    }   
-	*/
-
-	$filter=get_temp_filter($table_as);
 
    //Filter will start with AND to join with the front part of the query
    if($start_and){

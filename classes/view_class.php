@@ -160,8 +160,16 @@ class View{
 
       /*set fill externelly when loading with data*/
       if($fill != ''){
-         $field_array['value']=$fill;
-      }
+			if($field_array['dojoType'] == 'dijit.form.CheckBox'){
+				if(in_array(strtoupper($fill),array('1','ON','TRUE'))){
+         		$field_array['checked']='true';
+				}else{
+         		$field_array['checked']='false';
+				}
+			}else{
+         	$field_array['value']=$fill;
+			}      
+		}
 
       /*html for the given field will be filled to this var*/
       $html         ="";
@@ -402,7 +410,15 @@ class View{
 
       /*set fill externelly when loading with data*/
       if($fill != ''){
-         $field_array['value']=$fill;
+			if($field_array['dojoType'] == 'dijit.form.CheckBox'){
+				if(in_array(strtoupper($fill),array('1','ON','TRUE'))){
+         		$field_array['checked']='true';
+				}else{
+         		$field_array['checked']='false';
+				}
+			}else{
+         	$field_array['value']=$fill;
+			}
       }
 
 
