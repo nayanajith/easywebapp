@@ -1295,30 +1295,75 @@ function walk_style_text(&$item,$key,$var=null){
 /*
  * Log a message in log file 
  */
-function log_msg($id=null,$msg=null,$color=null){
+
+function log_msg($msg=null,$level=null,$file=null){
    if(LOG_ENABLED == 'NO')return;
+
+   //Global log level
+   if(defined('LOG_LEVEL') && is_null($level)){
+      $level=LOG_LEVEL;
+   }
+
    $date_time=date("d-M-Y h:i:s");
 
-   //Adjust for the single
-   if(is_null($msg)){
-      $msg=$id;
-
-      //find the function which called the log_msg
-      $trace   =debug_backtrace();
-      $caller  =array_shift($trace);
-      $caller  =array_shift($trace);
-      $class   ="";
-      if(isset($caller['class'])){
-         $class   =$caller['class'].'.';
+   //log more information of the callee function 
+   $bt="";
+   if(!is_null($level) && $level > 0 ){
+      $bt_arr  =debug_backtrace();
+      //TODO: get the correct array to extract information
+      $i=1;
+      if(isset($bt_arr[2])){
+         $i=2;
       }
-      $id=$class.$caller['function'];
+      switch($level){
+      case 1:
+         $class   ="";
+         if(isset($bt_arr[$i]['class'])){
+            $class   =$bt_arr[$i]['class'].'.';
+         }
+         $bt="[".$class.";".$bt_arr[$i]['function'].";".$bt_arr[$i-1]['line']."]";
+      break;
+      case 2:
+         $class   ="";
+         if(isset($bt_arr[$i]['class'])){
+            $class   =$bt_arr[$i]['class'].'.';
+         }
+         $bt="[".$bt_arr[$i-1]['file'].";".$class.";".$bt_arr[$i]['function'].";".$bt_arr[$i-1]['line']."]";
+      break;
+      case 3:
+         $class   ="";
+         if(isset($bt_arr[$i]['class'])){
+            $class   =$bt_arr[$i]['class'].'.';
+         }
+         $args="";
+         if(isset($bt_arr[$i]['args'])){
+            $args=implode(',',$bt_arr[$i]['args']);
+         }
+         $bt="[".$bt_arr[$i-1]['file'].";".$class.";".$bt_arr[$i]['function'].";".$bt_arr[$i]['line'].";".$args."]";
+      break;
+      case 4:
+         @ob_start();
+         debug_print_backtrace();
+         $bt = @ob_get_contents();
+         @ob_end_clean();
+      break;
+      default:
+      break;
+      }
+   }
+
+   //Log file
+   $log_file=LOG;
+   //custom log file
+   if(!is_null($file)){
+      $log_file=A_ROOT."/".$file;
    }
 
    $file_handler =null;
-   if(file_exists(LOG)){
-      $file_handler = fopen(LOG, 'a');
+   if(file_exists($log_file)){
+      $file_handler = fopen($log_file, 'a');
    }else{
-      $file_handler = fopen(LOG, 'w');
+      $file_handler = fopen($log_file, 'w');
    }
 
    //log array content if msg is an array
@@ -1329,7 +1374,7 @@ function log_msg($id=null,$msg=null,$color=null){
       @ob_end_clean();
    }
 
-   fwrite($file_handler, "[$date_time] $id :$msg\n");
+   fwrite($file_handler, "[$date_time]$bt :$msg\n");
    fclose($file_handler);
 }
 

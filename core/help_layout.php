@@ -42,7 +42,7 @@ if(is_array($page)){
 
 //Get the module name
 $module=$GLOBALS['MODULES'][MODULE];
-if(is_array($modul3)){
+if(is_array($module)){
    $module=$module['MODULE'];
 }
 

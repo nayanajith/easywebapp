@@ -27,10 +27,44 @@ echo get_program();
 ?>
   </div>
 </div>
+<?php
+//Generate the page array
+$page_array=array();
+foreach ($GLOBALS['MODULES'] as $mod_key => $mod) {
+   $module_menu_file   =A_MODULES."/".$mod_key."/menu.php";
+   if(file_exists($module_menu_file)){
+      include($module_menu_file);
+      foreach($menu_array as $page_key => $page){
+         //Get the page name
+         if(is_array($page)){
+            $page=$page['label'];
+         }
+         
+         //Get the module name
+         $module=$GLOBALS['MODULES'][$mod_key];
+         if(is_array($module)){
+            $module=$module['MODULE'];
+         }
+         $page_array[$mod_key."/".$page_key]=$module."/".$page;
+      }
+   }
+}
+?>
 
 <div dojoType="dijit.form.DropDownButton" iconClass="GFIcon" showLabel="false">
-  <span>Register</span>
-  <div dojoType="dijit.TooltipDialog" style="width:200px;">
-     <input dojoType="dijit.form.TextBox" id="hobby" name="hobby"><button dojoType="dijit.form.Button" type="submit">Find</button>
+  <span>Quick Access</span>
+  <div dojoType="dijit.TooltipDialog" style="width:250px;">
+      <select 
+      data-dojo-props="placeHolder:'Quick Access'"
+      dojoType='dijit.form.FilteringSelect'
+      required='false'
+      hasDownArrow="false"
+      autoComplete="false"
+      onChange='alert("TODO:load selected page("+this.value+")")'
+      pageSize='10'
+      title='Quick Access'
+      style='width:220px;'>
+         <?php echo gen_select_inner($page_array,null,true) ?>
+      </select>
   </div>
 </div>

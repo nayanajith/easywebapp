@@ -188,6 +188,20 @@ function courseYear($courseid){
 }
 
 /*
+ * Return semester of the course
+ */
+function courseSemester($courseid){
+   getCourseArr();
+   if(isset($GLOBALS['course_arr'][$courseid]['semester'])){
+      return $GLOBALS['course_arr'][$courseid]['semester'];
+   }else{
+      return null;
+   }
+}
+
+
+
+/*
  * Return Credits of the given course unit
  */
 function getCredits($courseid){
@@ -355,7 +369,9 @@ class Student{
    public function getRank(){
       $rank_query="SELECT rank FROM(SELECT index_no,degree_gpa,@rownum:=@rownum+1 rank FROM ".$this->self['gpa'].",(SELECT @rownum:=0) r WHERE year='3' AND index_no LIKE CONCAT(LEFT('".$this->self['index_no']."',2),'%') ORDER BY degree_gpa DESC) AS r WHERE index_no='".$this->self['index_no']."'";
       $rank_array=exec_query($rank_query,Q_RET_ARRAY);
-      return $rank_array[0]['rank'];
+      if(isset($rank_array[0])){
+         return $rank_array[0]['rank'];
+      }
    }
 
    /*
@@ -432,7 +448,7 @@ class Student{
          log_msg($this->self['index_no'],'load reg data failed');   
       }
 
-      if($this->regInfo['index_no']==''){
+      if(isset($this->regInfo['index_no']) && $this->regInfo['index_no']==''){
          return false;
       }else{
          $this->validIndex=true;
@@ -466,7 +482,7 @@ public function getTranscript(){
       $myClass=$this->getClass($myGPA);
 
       $transcript['DOA']=$this->getRegDate(); //Date of Admission
-      $transcript['YOA']=$this->getDegYear(); //Year of Award
+      $transcript['YOA']=substr($this->getDegYear(),0,4); //Year of Award
       $transcript['GPA']=round($myGPA,2);       //Grade Point Avarage
       //Selecting Descriptive degree and Descriptive class
       switch($this->getDegree().":".$myClass){
@@ -615,7 +631,9 @@ public function getTranscript(){
     * Return Overall Grade Point Average
     */
    public function getDGPA($year=null){
-      return round($this->gpaInfo[$this->select_year($year)]['degree_gpa'],2);
+      if(isset($this->gpaInfo[$this->select_year($year)]['degree_gpa'])){
+         return round($this->gpaInfo[$this->select_year($year)]['degree_gpa'],2);
+      }
    }
 
    /*
@@ -629,7 +647,9 @@ public function getTranscript(){
     * Return Overall Grade Point Average
     */
    public function getCGPA($year=null){
-      return round($this->gpaInfo[$this->select_year($year)]['class_gpa'],2);
+      if(isset($this->gpaInfo[$this->select_year($year)]['class_gpa'])){
+         return round($this->gpaInfo[$this->select_year($year)]['class_gpa'],2);
+      }
    }
 
 

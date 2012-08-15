@@ -1,5 +1,5 @@
 <?php
-//If any of the sections value returned null re run the script
+//If any of the sections value returned null re run the total process and fill the view array
 $content_found=true;
 
 //First run to verify and return the section

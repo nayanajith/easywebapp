@@ -16,6 +16,9 @@ $system_tables=array(
 
 $GLOBALS['S_TABLES']=$system_tables;
 
+//Custom log file for sql only log entries
+define('SQL_LOG','sql.log');
+
 /*
  * Database connection and disconnection
  */
@@ -157,7 +160,7 @@ function exec_multy_query($query,$type=null,$db=null,$array_key=null,$deleted=nu
    }
 
    //Enable this to log all the queries
-   if(!strstr($query,'INSERT INTO log'))log_msg($db.":".$query);
+   if(!strstr($query,'INSERT INTO log'))log_msg($db.":".$query,null,SQL_LOG);
 
    /*Execute query*/
    if(mysqli_multi_query($GLOBALS['CONN_I'],$query)){
@@ -280,7 +283,7 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
     */
 
    //Enable this to log all the queries
-   if(!strstr($query,'INSERT INTO log'))log_msg('exec_query',$db.":".$query);
+   if(!strstr($query,'INSERT INTO log'))log_msg('exec_query'.":".$db.":".$query,null,SQL_LOG);
 
    /*Execute query*/
    $result    = mysql_query($query, $GLOBALS['CONNECTION']);
@@ -496,9 +499,9 @@ function create_tables($schemas=null){
 
    foreach($schemas as $key=>$schema){
       if(exec_query($schema,Q_RET_MYSQL_RES)){
-         log_msg('create_tables',"[OK] ".$key);
+         log_msg("create_tables [OK] ".$key,null,SQL_LOG);
       }else{
-         log_msg('create_tables',"[ERROR] ".get_sql_error());
+         log_msg("create_tables[ERROR] ".get_sql_error(),null,SQL_LOG);
          $state=false;
       }
    }
@@ -523,9 +526,9 @@ function drop_tables($tables){
    foreach($tables as $key=>$name){
       if(is_view($name)){
          if(exec_query("DROP VIEW ".$name,Q_RET_MYSQL_RES)){
-            log_msg('drop_view',$name);
+            log_msg('drop_view'.$name,null,SQL_LOG);
          }else{
-            log_msg('drop_view',get_sql_error());
+            log_msg('drop_view'.get_sql_error(),null,SQL_LOG);
             $state=false;
          }
       }else{
@@ -534,16 +537,16 @@ function drop_tables($tables){
          /*IF the table have data backup the table instead of deleting*/
          if(get_num_rows()>0){
             if(exec_query("RENAME TABLE ".$name." TO ".$name."_BAK_".Date('d_m_Y'),Q_RET_MYSQL_RES)){
-               log_msg('rename_tables',$name);
+               log_msg('rename_tables'.$name,null,SQL_LOG);
             }else{
-               log_msg('rename_tables',get_sql_error());
+               log_msg('rename_tables'.get_sql_error(),null,SQL_LOG);
                $state=false;
             }
          }else{
             if(exec_query("DROP TABLE ".$name,Q_RET_MYSQL_RES)){
-               log_msg('drop_tables',$name);
+               log_msg('drop_tables'.$name,null,SQL_LOG);
             }else{
-               log_msg('drop_tables',get_sql_error());
+               log_msg('drop_tables'.get_sql_error(),null,SQL_LOG);
                $state=false;
             }
          }
@@ -560,9 +563,9 @@ function create_functions($schemas=null){
 
    foreach($schemas as $key=>$schema){
       if(exec_query($schema,Q_RET_MYSQL_RES)){
-         log_msg('create_functions',"Creating function:$key");
+         log_msg('create_functions'."Creating function:$key",null,SQL_LOG);
       }else{
-         log_msg('create_functions',get_sql_error());
+         log_msg('create_functions'.get_sql_error(),null,SQL_LOG);
          $state=false;
       }
    }
@@ -576,9 +579,9 @@ function drop_functions($schemas){
    $state=true;
    foreach($schemas as $name=>$sql){
      if(exec_query("DROP TRIGGER ".$name,Q_RET_MYSQL_RES)){
-        log_msg('drop_system_tables',"Drop table:$name");
+        log_msg('drop_system_tables'."Drop table:$name",null,SQL_LOG);
      }else{
-        log_msg('drop_system_tables',get_sql_error());
+        log_msg('drop_system_tables'.get_sql_error(),null,SQL_LOG);
         $state=false;
      }   
    }
@@ -605,9 +608,9 @@ function create_program_tables($schemas=null){
    echo "\n";
    foreach($program_table_schemas as $key=>$schema){
       if(exec_query($schema,Q_RET_MYSQL_RES)){
-         log_msg('create_program_tables',"Creating table:$key");
+         log_msg('create_program_tables'."Creating table:$key",null,SQL_LOG);
       }else{
-         log_msg('create_program_tables',get_sql_error());
+         log_msg('create_program_tables'.get_sql_error(),null,SQL_LOG);
          $state=false;
       }
    }
@@ -635,9 +638,9 @@ function create_system_tables($schemas = null){
 
    foreach($system_table_schemas as $key=>$schema){
       if(exec_query($schema,Q_RET_MYSQL_RES)){
-         log_msg('create_system_tables',"Creating table:$key");
+         log_msg('create_system_tables'."Creating table:$key",null,SQL_LOG);
       }else{
-         log_msg('create_system_tables',get_sql_error());
+         log_msg('create_system_tables'.get_sql_error(),null,SQL_LOG);
          $state=false;
       }
    }
