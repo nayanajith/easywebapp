@@ -81,6 +81,7 @@ d_r("dojox.grid.enhanced.plugins.exporter.CSVWriter");
 d_r("dojox.grid.enhanced.plugins.exporter.TableWriter");
 d_r("dojox.form.Uploader");
 d_r("dojox.form.uploader.plugins.IFrame");
+d_r("dojox.form.uploader.FileList");
 //d_r("dojox.form.MultiComboBox");
 
 d_r('dojo.cookie');

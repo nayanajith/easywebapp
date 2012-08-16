@@ -1257,5 +1257,91 @@ EOE;
             return false;
          }
       }
+
+      /*
+       Upload file 
+      Array
+(
+    [uploadedfiles] => Array
+        (
+            [name] => Array
+                (
+                    [0] => MCS_31-60.csv
+                )
+
+            [type] => Array
+                (
+                    [0] => text/csv
+                )
+
+            [tmp_name] => Array
+                (
+                    [0] => /tmp/phpuED4Mn
+                )
+
+            [error] => Array
+                (
+                    [0] => 0
+                )
+
+            [size] => Array
+                (
+                    [0] => 34387
+                )
+
+        )
+ 
+      */
+      public function upload_file(){
+         log_msg();
+         if(isset($_REQUEST['file_id']) && isset($_REQUEST[$_REQUEST['file_id']."_rid"]) && isset($_FILES[$_REQUEST['file_id']."s"])){
+            $fid=$_REQUEST['file_id'];
+            $rid=$_REQUEST[$_REQUEST['file_id']."_rid"];
+
+            $mod_arr=$this->form[$fid];
+            $up_arr=$_FILES[$fid."s"];
+
+            if(in_array(strtolower($up_arr["type"][0]),$mod_arr['valid_types']) && $up_arr["size"][0] <= $mod_arr['max_size'] && $up_arr["error"][0] <= 0){
+               $type=pathinfo($up_arr["name"][0],PATHINFO_EXTENSION);
+               $f_name=$fid."_".$rid.".".$type;
+               $w_path=$mod_arr['w_path']."/".$f_name;
+               $save_path=$mod_arr['path']."/".$f_name;
+
+               $msg="file=".$w_path.",name=".$f_name.",width=320,height=240,type=".$type;
+            
+               if(file_exists($save_path)){
+                  if(isset($mod_arr['overwrite']) && $mod_arr['overwrite'] == true){
+                     unlink($save_path);
+                     move_uploaded_file($up_arr["tmp_name"][0],$save_path);
+                     exec_query("UPDATE ".$this->table." SET $fid='$f_name' WHERE rid='$rid'",Q_RET_NONE);
+                     log_msg('File exists, overwritten!');
+                     echo $msg;
+                     return;
+                  }else{
+                     log_msg('File exists, not deleted!');
+                     echo $msg.",error=File exists, not deleted";
+                     return;
+                  }
+               }else{
+                  move_uploaded_file($up_arr["tmp_name"][0],$save_path);
+                  exec_query("UPDATE ".$this->table." SET $fid='$f_name' WHERE rid='$rid'",Q_RET_NONE);
+                  log_msg('File uploaded!');
+                  echo $msg;
+                  return;
+               }
+            }else{
+               log_msg('File Type or size error!');
+               echo $msg.",error=Type or size error";
+               return;
+            }
+         }else{
+            echo "error='Prerequisit error'";
+         }
+      }
+
+      public function delete_file(){
+         log_msg($_FILES);
+         return_status_json('OK','File deleted!');
+      }
    }
 ?>

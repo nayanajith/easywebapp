@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION="1.7.2";
+VERSION="1.8.0";
 DOJO_SRC="http://download.dojotoolkit.org/release-$VERSION/dojo-release-$VERSION-src.tar.gz";
 BASE_DIR="dojo-release-$VERSION-src";
 SAVE_AS="$BASE_DIR.tar.gz";

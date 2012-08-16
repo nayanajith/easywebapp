@@ -728,8 +728,8 @@ function submit_form(action,param1,param2){
 }
 
 //wrapper for xhr callbacks
-function xhr_c_add(callback_name,callback_function){
-   add_callback(xhr_generic_callback,callback_name,callback_function);
+function xhr_c_add(callback_name,callback_function,param){
+   add_callback(xhr_generic_callback,callback_name,callback_function,param);
 }
 
 /**
@@ -973,6 +973,13 @@ function fill_form(rid,form) {
                   case 'dijit.form.SimpleTextarea':
                      widget.set('value', '');
                   break;
+                  case 'dojox.form.Uploader':
+                     dijit.byId(key).reset();
+                     //Set rid for the uploading file
+                     document.getElementById(key+'_rid').value=response['rid'];
+                     //remove file exists url
+                     document.getElementById(key+'_info').innerHTML="";
+                  break;
                   default:
                      widget.set('value', null);
                   break;
@@ -1011,6 +1018,11 @@ function fill_form(rid,form) {
                      case 'dijit.form.FilteringSelect':
                         //dijit.byId(key).set('value',response[key]); 
                         load_selected_value(dijit.byId(key),response[key]);
+                     break;
+                     case 'dojox.form.Uploader':
+                        //Add a url to download the file if the file is already uploaded
+                        var path=document.getElementById(key+'_path').value;
+                        document.getElementById(key+'_info').innerHTML="File exists: <a href='"+path+"/"+response[key]+"'>"+response[key]+"</a>"; 
                      break;
                      default:
                         dijit.byId(key).set('value',response[key]); 
@@ -1186,7 +1198,8 @@ function fill_filter_form(form) {
 /**
  * Pupub generated with some content written to it
  */
-function popup(content){
+function popup(content1,content1){
+   var content=content1+content1;
    var myWin=window.open('','RINT','width=1024,height=600,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1,location=0');
    myWin.document.writeln(content);
    myWin.document.close();

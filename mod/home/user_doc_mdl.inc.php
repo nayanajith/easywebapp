@@ -1,7 +1,7 @@
 <?php
 function get_doc_file_(){
    $mod_page=get_param('page_id');
-   $mod_page=split('/',$mod_page);
+   $mod_page=explode('/',$mod_page);
    return get_doc_file($mod_page[0],$mod_page[1]);
 }
 

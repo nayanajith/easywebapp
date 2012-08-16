@@ -133,7 +133,23 @@ class View{
        "dijit.InlineEditBox"          =>"<span %s></span>",
        "dijit.form.Button"            =>"<button %s>%s</button>",
        "dijit.form.DropDownButton"    =>"<div %s>%s</div>",
-   );
+       "dojox.form.Uploader"          =>"function:gen_uploader_control",   
+    );
+
+   public function gen_uploader_control($id,$value,$w_path,$label){
+      return "<form method='post' action='?form=main&action=up_file&file_id=$id' enctype='multipart/form-data'>
+            <div id='".$id."_info' ></div>
+            <input name='".$id."_rid' id='".$id."_rid' type='hidden' value='$value'/>
+            <input id='".$id."_path' type='hidden' value='$w_path'/>
+            <input 
+            name='$id' type='file' dojoType='dojox.form.Uploader' 
+            label='Select $label' id='$id' class='browseButton' multiple='false'
+            data-dojo-props='onComplete:function(arr){console.log(arr)},onUpload:function(arr){console.log(arr)}'
+            />
+            <input type='submit' label='Upload' dojoType='dijit.form.Button' />
+            <div dojoType='dojox.form.uploader.FileList' uploaderId='$id'></div>
+         </form>";
+   }
 
 
 
@@ -225,6 +241,10 @@ class View{
             $options .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
             $custom_arr['field']=sprintf($form_control,$options,$inner);
             $custom_arr['label']='';
+         }elseif($field_array['dojoType'] == 'dojox.form.Uploader'){//Uploader
+            //</form>",//sprintf(--,$id,$id,$id,$value,$id,$w_path,$uploadname,$label,$id,$id)
+            $custom_arr['field']=$this->gen_uploader_control($field,$fill,$field_array['w_path'],$field_array['label']).$tooltip;
+            $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
          }else{
 
             //Set style and length of the field
@@ -253,6 +273,9 @@ class View{
       return $custom_arr;
    }
 
+   /**
+    * If there is a viw file for the page then include viw file 
+    */
    public  function finish_view(){
       if(file_exists($this->view)){
          include $this->view;
@@ -795,118 +818,5 @@ plugins=\'{
          }
       }
    }
-
-
-   /*
-    key   : column of the table given for the class
-    filter: choose filter table or the other table
-    return: realtime updated selection box
-    Note   : This will generate [key]_query_read_store.php to realtime provide the data to the selection box
-    */
-   public function gen_xhr_filtering_select($js_function,$key=null,$filter=null){
-      $key     =$key==null?$this->self['key']:$key;
-      $label   =$key==null?$GLOBALS['MODEL']['MAIN_LEFT'][$this->self['key']]['label']:$key;
-      $form    =$filter==null?'&form=main':'&form=filter';
-      $value   =isset($_REQUEST[$key])?$_REQUEST[$key]:'';
-
-      /*If filter is attached to the url procede with the filter*/
-      $filter_name=isset($_REQUEST['filter_name'])?"&filter_name=".$_REQUEST['filter_name']:'';
-      d_r('dijit.form.Form');
-      d_r('dojox.data.QueryReadStore');
-      d_r('dijit.form.FilteringSelect');
-
-      return "
-   <div dojoType='dijit.form.Form' jsId='".$js_function."_frm' id='".$js_function."_frm' >
-   <div dojoType='dojox.data.QueryReadStore' 
-      url='".gen_url().'?'.$filter_name."&data=json$form'
-      jsId='".$js_function."_select_store'
-      >
-   </div>
-   Select ".$label."<br>
-   <select dojoType='dijit.form.FilteringSelect' 
-      store='".$js_function."_select_store' 
-      searchAttr='".$key."' 
-      pageSize='40' 
-      required='false' 
-      query='{ ".$key.":\"*\" }'  
-      onChange='$js_function(this.get(\"displayedValue\"));'
-      value='".$value."'   
-      name='$key',
-      id='fs_$key',
-      jsId='fs_$key'
-      >
-   </select>
-   </div>";
-   }
-
-   /**TODO
-   @param valid_file_types : Array of file types (mime types ) which are valid eg: ['image/gif','image/jpg','image/pjpeg'];
-   @param max_file_size      : Maximum size of the file which can be uploaded
-   @param base_path         : The path which files should saved
-   @param file_rename      : new name for the file ( if null the actual name will be used )
-   @param input_name         : Name of the file input field from the client side 
-   @param file_overwrite   : If true files will be overwritten if the similar file is uploaded else return error
-   
-   return  -100 : invalid file ( not satisfying the file type and size conditions )
-   return  -101 : file exists
-   return  Array(size,type) :  if file action is successful return an array of file size and other its information
-   return file upload error code
-   */
-   function upload_file($valid_file_types,$max_file_size,$input_name,$file_overwrite){
-      /*file type and size validation*/
-      if(in_array($_FILES[$input_name]["type"],$valid_file_types) && ($_FILES[$input_name]["size"] <= $max_file_size)){
-         
-         /*Check for errors in file if errors are then return error code*/
-         if ($_FILES[$input_name]["error"] > 0){
-             return $_FILES[$input_name]["error"];
-          }else{
-            /*set the file name, if a custom file name is defined use it as the file name*/
-            $f_name=$_FILES[$input_name]["name"];
-            if(isset($this->file_name) && $this->file_name != null){
-               $f_name=$this->file_name;
-            }
-
-            /*Full path to save the file*/
-            $f_name=$this->base_path."/".$f_name;
-
-            /*If the file exists deside what to do according to the user request if overwrite=true overwrite the file*/
-             if(file_exists($f_name)){
-               if(isset($file_overwrite) && $file_overwrite == true){
-                  unlink($f_name);
-                  move_uploaded_file($_FILES[$input_name]["tmp_name"],$f_name);
-
-                  /*return file size and type for further reference by the caller*/
-                  return array($_FILES[$input_name]["size"],$_FILES[$input_name]["type"]);
-               }else{
-                  /*If the file_overwrite is false and file exists return -101*/
-                  return -101;
-               }
-             }else{
-               /*If the file does not exists just cop the file from the temp*/
-               move_uploaded_file($_FILES[$input_name]["tmp_name"],$f_name);
-               return array($_FILES[$input_name]["size"],$_FILES[$input_name]["type"]);
-            }
-          }
-          }else{
-             return -100;
-          }
-   }
-
-   /**
-   Delete the file
-   */
-   function delete_file(){
-      $f_name=$this->base_path."/".$this->file_name;
-      if(file_exists($f_name)){
-         if(unlink($f_name)){
-            return 1;
-         }else{
-            return -1;
-         }
-      }else{
-         return -1;
-      }
-   }
 }
-
 ?>

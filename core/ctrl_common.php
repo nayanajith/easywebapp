@@ -37,6 +37,12 @@ if(isset($_REQUEST['form'])){
          case 'delete':
            return $model->delete_record(true);
          break;
+         case 'up_file':
+           return $model->upload_file();
+         break;
+         case 'de_file':
+           return $model->delete_file();
+         break;
          case 'combo':
             //Section of the model to reffered by the filering select data
             $section='FORM';
