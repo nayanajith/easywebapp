@@ -510,6 +510,8 @@ function reload_sections(sections){
       content  :{section:'DYNAMIC_JS'},
       sync     :true,
       handleAs :'javascript',
+		headers	:{ "Content-Type": "text/javascript"},
+
       load: function(response) {
       },
       error: function() {
@@ -608,7 +610,16 @@ function submit_form(action,param1,param2){
    var url=gen_url();
    switch(action){
       case 'print':
-         window.open(url+'form='+form+'&action='+action,'width=800px,height=600px');
+			dojo.xhrPost({
+            url         : url,
+            content     : {form:form,action:action},
+            handleAs    : 'text',
+            timeout     : timeout_,
+            load: function(response,ioArgs) {
+               popup(response);
+            } 
+         });
+         //window.open(url+'form='+form+'&action='+action,'width=800px,height=600px');
          return;
       break;   
       case 'csv':
@@ -1198,8 +1209,8 @@ function fill_filter_form(form) {
 /**
  * Pupub generated with some content written to it
  */
-function popup(content1,content1){
-   var content=content1+content1;
+function popup(content1,content2){
+   var content=content1+content2;
    var myWin=window.open('','RINT','width=1024,height=600,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1,location=0');
    myWin.document.writeln(content);
    myWin.document.close();

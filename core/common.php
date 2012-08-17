@@ -265,10 +265,10 @@ function gen_print_html($content,$title){
          <head>
             <title>$title</title>
             <style type='text/css'>
-               @import '/uis/css/common_css.php';
+               @import '".W_ROOT."/css/common_css.php';
             </style>
-           <link rel='shortcut icon' href='/uis/img/favicon.ico'type='image/x-icon' >
-           <script src='/uis/js/common_js.php' type='text/javascript'></script>
+           <link rel='shortcut icon' href='".W_ROOT."/img/favicon.ico'type='image/x-icon' >
+           <script src='".W_ROOT."/js/common_js.php' type='text/javascript'></script>
          </head>
          <body>
             <center><h2>$title</h2></center>
@@ -376,17 +376,29 @@ function del_filter($table_as=null){
  * Add sessionwide filter
  */
 function add_filter(){
-   //Reset the global filter array
+
+  //Reset the global filter array
    $_SESSION[MODULE][PAGE]['FILTER_ARRAY']=array();
 
    foreach($GLOBALS['MODEL']['FORM'] as $key => $arr){
       if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
+
+         //Handle dates 
+         if($arr['dojoType']=='dijit.form.DateTextBox'){
+         	$_REQUEST[$key]=$_REQUEST[$key]."%";
+			}
+
+         //Handle combobx visualkey rid problem
+         if($arr['dojoType']=='dijit.form.ComboBox' && isset($arr['key_sql'])){
+            $res=exec_query(sprintf($arr['key_sql'],$_REQUEST[$key]),Q_RET_ARRAY);
+            if(isset($res[0])){
+               $_REQUEST[$key]=$res[0][$arr['ref_key']];
+            }
+         }
+
          $_SESSION[MODULE][PAGE]['FILTER_ARRAY'][$key]=$_REQUEST[$key];
       }
    }
-
-   //set filter string (criteria)
-   $_SESSION[MODULE][PAGE]['FILTER']=get_filter();
 }
 
 //Array to keep the view entries before puting in VIEW array 
@@ -895,6 +907,9 @@ function set_file_header($file_name){
    break;
    case 'png':
       $content_type='image/png';
+   break;
+   case 'js':
+      $content_type='text/javascript';
    break;
    default:
       $content_type='text/json';

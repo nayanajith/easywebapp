@@ -4,9 +4,9 @@ $base_class_inner=gen_select_inner(get_common_list('base_class',true),null,true)
 $GLOBALS['MODEL']=array(
 //-----------------KEY FIELDS OF THE MODEL----------------------
    'KEYS'=>array(
-      'PRIMARY_KEY'	=>'rid',
-      'UNIQUE_KEY'	=>array('list_name'),
-      'MULTY_KEY'	=>array(''),
+      'PRI'	=>array('rid'),
+      'UNI'	=>array('list_name'),
+      'FOR'	=>array(),
    ),
 //--------------FIELDS TO BE INCLUDED IN FORM-------------------
 //---------------THIS ALSO REFLECT THE TABLE--------------------
