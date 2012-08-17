@@ -253,6 +253,35 @@ function module_name($module_id){
    }
    return $module_name;
 }
+/*
+ * Print html top
+ */
+function print_top($title=null){
+   echo "
+      <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+      <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >
+      <html>
+         <head>
+            <title>$title</title>
+            <style type='text/css'>
+               @import '".W_ROOT."/css/common_css.php';
+            </style>
+           <link rel='shortcut icon' href='".W_ROOT."/img/favicon.ico'type='image/x-icon' >
+           <script src='".W_ROOT."/js/common_js.php' type='text/javascript'></script>
+         </head>
+         <body>
+      ";
+}
+
+/**
+Bottom of the print html
+*/
+function print_bottom(){
+   echo "
+         </body>
+         </html>
+      ";
+}
 
 /*
  * Adopt print output into standard html

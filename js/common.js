@@ -419,8 +419,7 @@ function reload_sections(sections){
    var layout;
    //Loading the layout of the env
    dojo.xhrPost({
-      url      :gen_url(), 
-      content  :{section:'LAYOUT'},
+      url      :gen_url()+'section=LAYOUT', 
       sync     :true,
       handleAs :'json',
       load: function(response) {
@@ -506,16 +505,14 @@ function reload_sections(sections){
    }
    //Loading dynamic javascript
    dojo.xhrPost({
-      url      :gen_url(), 
-      content  :{section:'DYNAMIC_JS'},
+      url      :gen_url()+'section=DYNAMIC_JS', 
       sync     :true,
       handleAs :'javascript',
-		headers	:{ "Content-Type": "text/javascript"},
-
+		headers	:{ "Content-Type":"text/javascript"},
       load: function(response) {
       },
-      error: function() {
-         console.log("Error loading layout DYNAMIC_JS");
+      error: function(response) {
+         console.log("Error loading layout DYNAMIC_JS"+response);
       }
    });
 }

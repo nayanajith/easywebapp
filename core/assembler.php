@@ -101,18 +101,18 @@ if(isset($_REQUEST['section'])){
          $content_found=false;
       }
    break;
-   case 'MAIN_TOP':
-   case 'MAIN_LEFT':
-   case 'MAIN_RIGHT':
-   case 'MAIN_BOTTOM':
    case 'DYNAMIC_JS':
-		set_file_header('dynamic.js');
       if(get_from_view($_REQUEST['section'],false) != ''){
+			set_file_header('dynamic.js');
          echo get_from_view($_REQUEST['section']);
       }else{
          $content_found=false;
       }
 	break;
+   case 'MAIN_TOP':
+   case 'MAIN_LEFT':
+   case 'MAIN_RIGHT':
+   case 'MAIN_BOTTOM':
    case 'MAIN_TOP':
       if(get_from_view($_REQUEST['section'],false) != ''){
          echo get_from_view($_REQUEST['section']);
@@ -379,18 +379,14 @@ if(isset($_REQUEST['section'])){
             ";
       }
    break;
+   case 'DYNAMIC_JS':
+		set_file_header('dynamic.js');
+      echo get_from_view($_REQUEST['section']);
+	break;
    case 'MAIN_TOP':
    case 'MAIN_LEFT':
    case 'MAIN_RIGHT':
    case 'MAIN_BOTTOM':
-   case 'DYNAMIC_JS':
-		set_file_header('dynamic.js');
-      if(get_from_view($_REQUEST['section'],false) != ''){
-         echo get_from_view($_REQUEST['section']);
-      }else{
-         $content_found=false;
-      }
-	break;
    case 'MAIN_TOP':
       echo get_from_view($_REQUEST['section']);
    break;
