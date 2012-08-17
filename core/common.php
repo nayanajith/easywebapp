@@ -324,7 +324,7 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false){
  * Regenerate the filter with customizations
  */
 function get_filter($table_as=null,$start_and=false){
-   if(isset($_SESSION[PAGE]['FILTER_ARRAY']) && is_array($_SESSION[PAGE]['FILTER_ARRAY']) && sizeof($_SESSION[PAGE]['FILTER_ARRAY']) > 0){ 
+   if(isset($_SESSION[MODULE][PAGE]['FILTER_ARRAY']) && is_array($_SESSION[MODULE][PAGE]['FILTER_ARRAY']) && sizeof($_SESSION[MODULE][PAGE]['FILTER_ARRAY']) > 0){ 
    }else{
       return null;
    }   
@@ -336,10 +336,12 @@ function get_filter($table_as=null,$start_and=false){
 
    $filter="";
    $and="";
-   foreach($_SESSION[PAGE]['FILTER_ARRAY'] as $key => $value){
+   foreach($_SESSION[MODULE][PAGE]['FILTER_ARRAY'] as $key => $value){
       //override the default values with the exceptions
-      if(isset($_SESSION[PAGE]['FILTER_ARRAY_EXP']) && isset($_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key])){
-         $value=$_SESSION[PAGE]['FILTER_ARRAY_EXP'][$key]; 
+      if(isset($_SESSION[MODULE][PAGE]['FILTER_ARRAY_EXP']) && isset($_SESSION[MODULE][PAGE]['FILTER_ARRAY_EXP'][$key])){
+         $value=$_SESSION[MODULE][PAGE]['FILTER_ARRAY_EXP'][$key]; 
+      }elseif(in_array($value,array('~'))){//'~' is considered as null value request
+         $value=$and.$table_as." ISNULL(`".$key."`)";
       }else{
          if(defined('FILTER_AUTO') && FILTER_AUTO=='YES'){
             $value=$table_as."`".$key."` LIKE '%".$value."%'"; 
@@ -363,57 +365,28 @@ function get_filter($table_as=null,$start_and=false){
  * Delete temporary filter for the submitted values
  */
 
-function del_temp_filter($table_as=null){
-   if(isset($_SESSION[PAGE]['FILTER_ARRAY'])){
-      unset($_SESSION[PAGE]['FILTER']);
-      unset($_SESSION[PAGE]['FILTER_ARRAY']);
+function del_filter($table_as=null){
+   if(isset($_SESSION[MODULE][PAGE]['FILTER_ARRAY'])){
+      unset($_SESSION[MODULE][PAGE]['FILTER']);
+      unset($_SESSION[MODULE][PAGE]['FILTER_ARRAY']);
    }
 }
 
 /**
- * Generate temporary filter for the submitted values
+ * Add sessionwide filter
  */
-function get_temp_filter($table_as=null){
+function add_filter(){
    //Reset the global filter array
-   $_SESSION[PAGE]['FILTER_ARRAY']=array();
+   $_SESSION[MODULE][PAGE]['FILTER_ARRAY']=array();
 
-   //return if request with the table name prefix
-   if(!is_null($table_as)){
-      $table_as=$table_as.".";
-   }
-
-   $filter="";
-   $and="";
    foreach($GLOBALS['MODEL']['FORM'] as $key => $arr){
       if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
-
-         //Handle combobx visualkey rid problem
-         if($arr['dojoType']=='dijit.form.ComboBox' && isset($arr['key_sql'])){
-            $res=exec_query(sprintf($arr['key_sql'],$_REQUEST[$key]),Q_RET_ARRAY);
-            if(isset($res[0])){
-               $_REQUEST[$key]=$res[0][$arr['ref_key']];
-            }
-         }
-
-			//Handle checkbox
-         if($arr['dojoType']=='dijit.form.CheckBox'){
-				if($_REQUEST[$key]=='on' ||  $_REQUEST[$key]=='true'   ||  $_REQUEST[$key]=='1'){
-         		$_REQUEST[$key]='1';
-               $filter.=$and.$table_as."`".$key."` = '".$_REQUEST[$key]."'";
-				}
-         }else{
-            if(defined('FILTER_AUTO') && FILTER_AUTO=='YES'){
-               $filter.=$and.$table_as."`".$key."` LIKE '%".$_REQUEST[$key]."%'";
-            }else{
-               $filter.=$and.$table_as."`".$key."` LIKE '".$_REQUEST[$key]."'";
-            }
-			}
-         $and=' AND ';
-         //keep the filter array for future use
-         $_SESSION[PAGE]['FILTER_ARRAY'][$key]=$_REQUEST[$key];
+         $_SESSION[MODULE][PAGE]['FILTER_ARRAY'][$key]=$_REQUEST[$key];
       }
    }
-   return $filter; 
+
+   //set filter string (criteria)
+   $_SESSION[MODULE][PAGE]['FILTER']=get_filter();
 }
 
 //Array to keep the view entries before puting in VIEW array 
