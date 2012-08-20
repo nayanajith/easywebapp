@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * Delete array element by value
+ */
+function del_by_value(&$arr,$value){
+   if(($key = array_search($value, $arr)) !== false) {
+       unset($arr[$key]);
+   }
+}
+
 /**
  * Return the path to the doc file of effective page 
  */
@@ -1301,6 +1311,35 @@ function msie_hover($ht, $hb, $nt, $nb, $eid) {
 function style_text($ROW_TEXT) {
    return str_replace("_", " ", ucfirst(strtolower($ROW_TEXT)));
 }
+
+//-----------------------------------------------------------
+/**
+ * generic array waker function walk any function on the array
+ */
+
+//walker function holder array
+$GLOBALS['walker']="";
+
+/**
+ * walker walks a function over an array
+ * $array : array to walk
+ * $function : name of the function
+ * $var: first variables to input the function
+ */
+function array_walk_(&$array,$function,$var=array()){
+   $GLOBALS['walker']=$function;
+   array_walk($array,'walk_helper',$var);
+}
+
+/**
+ * Helper function for the walker
+ */
+function walk_helper(&$item,$key,$var=null){
+   $var[]=$item;
+   $item=call_user_func_array($GLOBALS['walker'],$var);
+}
+
+//-------------------------------------------------------------
 
 /**
  * wrapper function for style_text function to insert in array walk 

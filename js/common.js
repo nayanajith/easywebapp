@@ -1321,8 +1321,27 @@ function p_m_p(module,page,program){
    var mid='menu__'+module;
    var pid=module+'__'+page;
 
+   //max breadcrumb length
+   var max_length=35;
+   var bc=dijit.byId(mid).get('label')+" / "+dijit.byId(pid).get('label');
+
+   //trim breadcrumb if longer than max
+   if(bc.length > max_length){
+      //last two letters
+      var ll=bc.substr(bc.length-2,bc.length);
+      bc=bc.substr(0,max_length)+"~"+ll;
+   }
+
    //Set breadcrumb 
-   dijit.byId('breadcrumb').set('label',dijit.byId(mid).get('label')+" / "+dijit.byId(pid).get('label'));
+   dijit.byId('breadcrumb').set('label',bc);
+
+   //Bind event to reload the selected module/page
+   /*
+   require(["dojo/on"], function(on){
+   var handle = on(dijit.byId('breadcrumb'), "click", p_m_p(module,page,program));
+   });
+   */
+   //handle.remove();
 
    //Set(bold font) current selection
    dojo.style(mid,{"fontWeight":"bold"});

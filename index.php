@@ -60,7 +60,6 @@ if(isset($GLOBALS['MAINTENANCE_MODE']) && $GLOBALS['MAINTENANCE_MODE']){
 }
 include A_CORE."/common.php";
 
-log_msg($_REQUEST);
 /*--------------------------Set global error log -----------------------------*/
 ini_set('error_log',ERROR_LOG);
 

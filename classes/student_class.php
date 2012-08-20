@@ -225,7 +225,9 @@ function getCourseName($course_id){
  */
 function getCourseCode($course_id){
    getCourseArr();
-   return $GLOBALS['course_arr'][$course_id]['course_id'];
+   if(isset($GLOBALS['course_arr'][$course_id]['course_id'])){
+      return $GLOBALS['course_arr'][$course_id]['course_id'];
+   }
 }
 
 
