@@ -484,7 +484,7 @@ function set_property(&$arr,$path,$value){
 }
 
 /**
- * Get property from the model array
+ * Get property from the (model,view) array
  */
 function get_property($arr,$path){
    if(!is_array($path)){
@@ -493,6 +493,7 @@ function get_property($arr,$path){
 
    foreach($path as $key){
       if(!isset($arr[$key])){
+         //If no property found in the given path return null
          return null;
       }else{
          $arr=$arr[$key];
@@ -531,6 +532,8 @@ function get_property($arr,$path){
  */
 function callback($caller,$status,$func_array=null){
    if(is_null($func_array)){
+      //if no callback arrays set return 
+      if(is_null(get_mdl_property(array('CALLBACKS'))))return;
       $func_array=get_mdl_property(array('CALLBACKS',$caller,$status));
    }
 
@@ -553,7 +556,7 @@ $GLOBALS['PREVIEW']=array(
    'FORM'   =>array(),
    'GRIDS'  =>array(),
    'TOOLBAR'=>array(),
-   'NOTIFY'=>array(),
+   'NOTIFY' =>array(),
 );
 
 /**

@@ -3,6 +3,7 @@
 function load_anon_permission(){
 $GLOBALS['permission']['USER'][]=array( 'module' => 'home', 'page' => '*', 'access_right' => 'WRITE' );
 $GLOBALS['permission']['USER'][]=array( 'module' => 'home', 'page' => 'news_manage', 'access_right' => 'DENIED' );
+$GLOBALS['permission']['USER'][]=array( 'module' => 'home', 'page' => 'user_doc', 'access_right' => 'DENIED' );
 //$permission['USER'][]=array( 'module' => 'system', 'page' => 'reset_password', 'access_right' => 'WRITE' );
 
 }

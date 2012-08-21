@@ -283,7 +283,7 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
     */
 
    //Enable this to log all the queries
-   if(!strstr($query,'INSERT INTO log'))log_msg('exec_query'.":".$db.":".$query,null,SQL_LOG);
+   if(!strstr($query,'INSERT INTO log'))log_msg('exec_query'.":".$db.":".$query,1,SQL_LOG);
 
    /*Execute query*/
    $result    = mysql_query($query, $GLOBALS['CONNECTION']);

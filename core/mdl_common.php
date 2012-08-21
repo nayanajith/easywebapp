@@ -106,15 +106,40 @@ $CALLBACKS=array(
          "status" =>false,
          "return" =>null
       ),  
-      "ERROR"  =>array(),
+      "ERROR"  =>array(
+         "func"   =>null,
+         "vars"   =>array(),
+         "status" =>false,
+         "return" =>null
+      ),
    ),  
    "update_record"=>array(
-      "OK"     =>array(),
-      "ERROR"  =>array(),
+      "OK"     =>array( 
+         "func"   =>null,
+         "vars"   =>array(),
+         "status" =>false,
+         "return" =>null
+      ),
+      "ERROR"  =>array(
+         "func"   =>null,
+         "vars"   =>array(),
+         "status" =>false,
+         "return" =>null
+      ),
    ),  
    "delete_record"=>array(
-      "OK"     =>array(),  
-      "ERROR"  =>array(),
+      "OK"     =>array(
+         "func"   =>null,
+         "vars"   =>array(),
+         "status" =>false,
+         "return" =>null
+      ),  
+      "ERROR"  =>array(
+         "func"   =>null,
+         "vars"   =>array(),
+         "status" =>false,
+         "return" =>null
+      ),
    ),  
 );
 

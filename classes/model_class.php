@@ -288,16 +288,41 @@ EOE;
             "status" =>false,
             "return" =>null
          ),  
-         "ERROR"  =>array(),
+         "ERROR"  =>array(
+            "func"   =>null,
+            "vars"   =>array(),
+            "status" =>false,
+            "return" =>null
+         ),
       ),  
       "update_record"=>array(
-         "OK"     =>array(),
-         "ERROR"  =>array(),
+         "OK"     =>array( 
+            "func"   =>null,
+            "vars"   =>array(),
+            "status" =>false,
+            "return" =>null
+         ),
+         "ERROR"  =>array(
+            "func"   =>null,
+            "vars"   =>array(),
+            "status" =>false,
+            "return" =>null
+         ),
       ),  
       "delete_record"=>array(
-         "OK"     =>array(),  
-         "ERROR"  =>array(),
-      ),  
+         "OK"     =>array(
+            "func"   =>null,
+            "vars"   =>array(),
+            "status" =>false,
+            "return" =>null
+         ),  
+         "ERROR"  =>array(
+            "func"   =>null,
+            "vars"   =>array(),
+            "status" =>false,
+            "return" =>null
+         ),
+      ),   
    ),  
 EOE;
     
@@ -1019,6 +1044,7 @@ EOE;
          /*vefiry captcha if it is set*/
          if(!verify_captcha()){
             return_status_json('ERROR','error verifying security code');
+            callback(__FUNCTION__,'ERROR');
             return false;
          }
 
@@ -1121,9 +1147,11 @@ EOE;
          /*report error/success*/
          if(get_affected_rows() > 0){
             return_status_json('OK','record inserted successfully');
+            callback(__FUNCTION__,'OK');
             return true;
          }else{
             return_status_json('ERROR',implode(';',$errors));
+            callback(__FUNCTION__,'ERROR');
             //return_status_json('ERROR',get_sql_error());
             return false;
          }
@@ -1219,14 +1247,16 @@ EOE;
             /*report error/success */
             if(implode('',$errors)==''){
                return_status_json('OK','record updated successfully');
+               callback(__FUNCTION__,'OK');
                return true;
             }else{
                return_status_json('ERROR',implode(';',$errors));
+               callback(__FUNCTION__,'ERROR');
                return false;
             }
          }else{
             return_status_json('ERROR',implode(';',$errors));
-            //return_status_json('ERROR','error updating record key does not exists');
+            callback(__FUNCTION__,'ERROR');
             return false;
          }
       }
@@ -1248,11 +1278,11 @@ EOE;
          $res=exec_query($delete,Q_RET_MYSQL_RES);
          /*report error/success */
          if(get_affected_rows() > 0){
-            return_status_json('OK','record deleted successfully');
+            return_status_json('OK','Record deleted successfully!');
             callback(__FUNCTION__,'OK');
             return true;
          }else{
-            return_status_json('OK','error deleting record');
+            return_status_json('ERROR','Error deleting record!');
             callback(__FUNCTION__,'ERROR');
             return false;
          }
