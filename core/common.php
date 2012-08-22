@@ -1132,7 +1132,7 @@ function verify_captcha($custom_param=null){
  * return a commen list array with title according to the common list_name
  */
 function get_common_list($list_name,$no_title=false){
-   if($GLOBALS['DATA'])return; //Do not resolv common lists when there is a data request
+   if($GLOBALS['DATA'])return array(); //Do not resolv common lists when there is a data request
    $arr=exec_query("SELECT base_key,base_value FROM ".s_t('base_data')." WHERE base_class='LIST' AND base_key='".$list_name."'",Q_RET_ARRAY);
    if(isset($arr[0])){
       if($no_title){

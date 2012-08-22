@@ -150,7 +150,7 @@ function download(url){
 	update_status_bar('OK','Downloading...');
 
    //Traditional way of downloading
-   //window.open(url);return;
+   window.open(url);return;
 
    //dojo iframe is creating to set the source of it   
 	var iframe = dojo.io.iframe.create("downloader");
@@ -508,7 +508,7 @@ function reload_sections(sections){
       url      :gen_url()+'section=DYNAMIC_JS', 
       sync     :true,
       handleAs :'javascript',
-		headers	:{ "Content-Type":"text/javascript"},
+		headers	:{ "Content-Type":"application/javascript"},
       load: function(response) {
       },
       error: function(response) {
@@ -1030,7 +1030,9 @@ function fill_form(rid,form) {
                      case 'dojox.form.Uploader':
                         //Add a url to download the file if the file is already uploaded
                         var path=document.getElementById(key+'_path').value;
-                        document.getElementById(key+'_info').innerHTML="File exists: <a href='"+path+"/"+response[key]+"'>"+response[key]+"</a>"; 
+                        //document.getElementById(key+'_info').innerHTML="File exists: <a href='"+path+"/"+response[key]+"'>"+response[key]+"</a>";  
+                        var src=path+"/"+response[key];
+                        document.getElementById(key+'_info').innerHTML="File exists: <a href='"+src+"'>"+response[key]+"</a><br><img src='"+src+"' width='128px'>"; 
                      break;
                      default:
                         dijit.byId(key).set('value',response[key]); 
@@ -1206,8 +1208,8 @@ function fill_filter_form(form) {
 /**
  * Pupub generated with some content written to it
  */
-function popup(content1,content2){
-   var content=content1+content2;
+function popup(content1){
+   var content=content1;
    var myWin=window.open('','RINT','width=1024,height=600,menubar=0,toolbar=0,status=0,scrollbars=1,resizable=1,location=0');
    myWin.document.writeln(content);
    myWin.document.close();

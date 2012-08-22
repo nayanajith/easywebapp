@@ -121,6 +121,9 @@ function getGradeC($mark,$course_id){
    return $grade;
 }
 
+/**
+ * Get course list and  store in a global array
+ */
 $GLOBALS['course_arr']=null;
 function getCourseArr(){
    //global $GLOBALS['course_arr'];
@@ -128,6 +131,18 @@ function getCourseArr(){
       $GLOBALS['course_arr']  = exec_query("SELECT * FROM ".p_t('course'),Q_RET_ARRAY,null,'rid');
    }
 }
+
+/**
+ * get exam list and store in a global array
+ */
+$GLOBALS['exam_arr']=null;
+function getExamArr(){
+   //global $GLOBALS['course_arr'];
+   if(is_null($GLOBALS['exam_arr'])){
+      $GLOBALS['exam_arr']  = exec_query("SELECT * FROM ".p_t('exam'),Q_RET_ARRAY,null,'rid');
+   }
+}
+
 
 /**
 Return the rid of course_id 
@@ -229,6 +244,18 @@ function getCourseCode($course_id){
       return $GLOBALS['course_arr'][$course_id]['course_id'];
    }
 }
+
+/**
+ * Returen course code
+ */
+function getExamHid($exam_id){
+   getExamArr();
+   if(isset($GLOBALS['exam_arr'][$exam_id]['exam_hid'])){
+      return $GLOBALS['exam_arr'][$exam_id]['exam_hid'];
+   }
+}
+
+
 
 
 /*
@@ -933,7 +960,6 @@ public function getTranscript(){
       $this->gpaInfo=exec_query("SELECT year,credits,class_gpv,class_gpa,degree_gpa,degree_gpv FROM ".$this->self['gpa']." WHERE index_no ='".$this->self['index_no']."'",Q_RET_ARRAY,null,'year');
    
    }
-
 }
 
 ?>

@@ -8,3 +8,5 @@ messages.log
 modules.php
 permission.php
 .DS_Store
+js/dojo-custom-build/dojo-release-*
+sql.log
