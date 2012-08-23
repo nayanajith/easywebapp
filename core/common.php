@@ -1,4 +1,43 @@
 <?php
+/**
+ * Get help content
+ */
+function get_help($module=null,$page=null){
+   if(is_null($module))$module=MODULE;
+   if(is_null($page))$page=PAGE;
+
+   //Get the page name
+   global $menu_array;
+   $page_label=$menu_array[PAGE];
+   if(is_array($page_label)){
+      $page_label=$page['label'];
+   }
+   
+   //Get the module name
+   $module_label=$GLOBALS['MODULES'][MODULE];
+   if(is_array($module_label)){
+      $module_label=$module['MODULE'];
+   }
+   
+   $help="<div class='help round' id='help' style='height:500px;overflow:auto;padding:10px' ><div>";
+   $help.="<div style='padding-top:10px;font-size:20px;font-wight:bold;border-bottom:1px solid silver' >User Guide for the [".$module_label." / ".$page_label."]</div>";
+   include_once "markdown.php";
+   $help_arr=exec_query("SELECT * FROM ".s_t('user_doc')." WHERE module_id='".$module."' AND page_id='".$page."'",Q_RET_ARRAY);
+   foreach($help_arr as $key=>$row){
+      $help.=Markdown($row['doc']);
+   }
+
+   //If there is a help file created acordance to the page it will also be loaded
+   $doc_file=get_doc_file($module,$page);
+   if(file_exists($doc_file)){
+      $fh=fopen($doc_file,'r');
+      $content=fread($fh,filesize($doc_file));
+      fclose($fh);
+      $help.=Markdown($content);
+   }
+   $help.="</div>";
+   return $help;
+}
 
 /**
  * Delete array element by value
