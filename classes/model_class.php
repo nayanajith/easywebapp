@@ -1107,6 +1107,15 @@ EOE;
                   array('"','""',''),
                   $value
                );
+
+        			if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dijit.form.CheckBox'){
+                  if(in_array(strtolower($value),array('on','true'))){   
+                     $value=1;
+                  }else{
+                     $value=0;
+                  }
+                }
+
                
                /*apply md5 to the password fields*/
                if(in_array(strtolower($key),$this->pwd_field_guess)){   
