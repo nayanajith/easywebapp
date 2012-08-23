@@ -72,20 +72,20 @@ class MYPDF extends TCPDF {
       $this->SetCreator(PDF_CREATOR);
       $this->SetAuthor('University of Colombo School of Computing');
       $this->SetTitle('Selection tesst admission');
-    $this->SetSubject('Year 2011');
+      $this->SetSubject('Year 2011');
       $this->SetKeywords('UCSC');
 
       /*set default header data*/ 
-      $PDF_HEADER_LOGO         =$this->header_info['logo'];
-      $PDF_HEADER_LOGO_WIDTH=20;
-    $PDF_HEADER_TITLE         ='Markbook\naa';
+      $PDF_HEADER_LOGO        =$this->header_info['logo'];
+      $PDF_HEADER_LOGO_WIDTH  =20;
+      $PDF_HEADER_TITLE       ='Markbook\naa';
       $this->SetHeaderData($PDF_HEADER_LOGO, $PDF_HEADER_LOGO_WIDTH, $PDF_HEADER_TITLE);
 
       /*set header and footer fonts*/ 
-      $PDF_FONT_NAME_MAIN      ='helvetica';
-      $PDF_FONT_SIZE_MAIN      =10;
-    $PDF_FONT_NAME_DATA      ='helvetica';
-      $PDF_FONT_SIZE_DATA      =8;
+      $PDF_FONT_NAME_MAIN     ='helvetica';
+      $PDF_FONT_SIZE_MAIN     =10;
+      $PDF_FONT_NAME_DATA     ='helvetica';
+      $PDF_FONT_SIZE_DATA     =8;
       $this->setHeaderFont(Array($PDF_FONT_NAME_MAIN, '', $PDF_FONT_SIZE_MAIN));
       $this->setFooterFont(Array($PDF_FONT_NAME_DATA, '', $PDF_FONT_SIZE_DATA));
 
@@ -94,9 +94,9 @@ class MYPDF extends TCPDF {
       $this->SetDefaultMonospacedFont($PDF_FONT_MONOSPACED);
 
       /*set margins*/
-      $PDF_MARGIN_LEFT         =15;
-      $PDF_MARGIN_TOP           =25; 
-      $PDF_MARGIN_RIGHT         =10;
+      $PDF_MARGIN_LEFT        =15;
+      $PDF_MARGIN_TOP         =25; 
+      $PDF_MARGIN_RIGHT       =10;
       $this->SetMargins($PDF_MARGIN_LEFT, $PDF_MARGIN_TOP, $PDF_MARGIN_RIGHT);
       
       $PDF_MARGIN_HEADER      =5;
@@ -141,19 +141,19 @@ class Letterhead{
 
       /*Pdf generator page setup*/
       $PDF_PAGE_ORIENTATION   ='P';//(L,P)
-      $PDF_PAGE_FORMAT   ='A4';
+      $PDF_PAGE_FORMAT        ='A4';
     
     if($page_format != null){
-        $PDF_PAGE_FORMAT   =$page_format;
+        $PDF_PAGE_FORMAT      =$page_format;
     }
     if( $page_orientation != null){
         $PDF_PAGE_ORIENTATION   = $page_orientation;
     }
 
       $PDF_UNIT               ='mm';//mm,in,pt,cm
-      $UNICODE               =true; 
+      $UNICODE                =true; 
       $ENCODING               ='UTF-8'; 
-      $DISKCACHE            =true;//if TRUE reduce the RAM memory
+      $DISKCACHE              =true;//if TRUE reduce the RAM memory
 
 
 
@@ -169,7 +169,7 @@ class Letterhead{
    }
 
 
-   public function include_content($content){
+   public function include_content($content,$alignment='L'){
       /*Add a page to the sheet*/
       $this->pdf->SetFont('helvetica', '', 9);
 
@@ -177,7 +177,8 @@ class Letterhead{
       $content=str_replace("'","\"",$content);
 
       /*write table to the sheet*/
-      $this->pdf->writeHTML($content, true, false, false, false, 'L');
+	   //public function writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='') {
+      $this->pdf->writeHTML($content, true, false, false, false, $alignment);
    }
 }
 ?>

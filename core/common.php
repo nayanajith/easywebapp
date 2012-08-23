@@ -380,7 +380,7 @@ function get_filter($table_as=null,$start_and=false){
       if(isset($_SESSION[MODULE][PAGE]['FILTER_ARRAY_EXP']) && isset($_SESSION[MODULE][PAGE]['FILTER_ARRAY_EXP'][$key])){
          $value=$_SESSION[MODULE][PAGE]['FILTER_ARRAY_EXP'][$key]; 
       }elseif(in_array($value,array('~'))){//'~' is considered as null value request
-         $value=$and.$table_as." ISNULL(`".$key."`)";
+         $value=$table_as." ISNULL(`".$key."`)";
       }else{
          if(defined('FILTER_AUTO') && FILTER_AUTO=='YES'){
             $value=$table_as."`".$key."` LIKE '%".$value."%'"; 

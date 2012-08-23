@@ -8,7 +8,7 @@ check in (index.php or loading.php)
 */
 
 djConfig = {
-   isDebug:true, 
+   isDebug:false, 
    parseOnLoad:true
 }; 
 -->

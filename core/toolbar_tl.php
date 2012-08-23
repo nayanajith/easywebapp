@@ -2,7 +2,7 @@
 d_r("dijit.form.DropDownButton");
 
 //call p_m_p and reload the enviorenment when clicking on the breadcrumb
-$pmp="onClick=\"p_m_p('".MODULE."','".PAGE."','".PROGRAM."')\"";
+$pmp="onClick=\"p_m_p(dojo.cookie('module'),dojo.cookie('page'),dojo.cookie('program'))\"";
 
 ?>
 <div dojoType="dijit.form.DropDownButton" iconClass="homeIcon" showLabel="false" >
@@ -13,7 +13,7 @@ $pmp="onClick=\"p_m_p('".MODULE."','".PAGE."','".PROGRAM."')\"";
         <div dojoType="dijit.MenuItem" onClick="show_xhr_dialog('?module=home&page=about_framework&data=dojo','About',400,320,true)" iconClass="<?php echo get_icon_class('Documents'); ?>">About Framework</div>
     </div>
 </div>
-<button dojoType="dijit.form.Button" style="font-weight:bold;color:gray" id="breadcrumb" <?php echo $pmp ?>  iconClass="<?php echo get_icon_class('Package') ?>">
+<button dojoType="dijit.form.Button" style="font-weight:bold;color:gray" id="breadcrumb" <?php echo $pmp ?>  iconClass="<?php echo get_icon_class('Package') ?>" onMouseOver="this.set('iconClass','<?php echo get_icon_class('Undo') ?>')" onMouseOut="this.set('iconClass','<?php echo get_icon_class('Package') ?>')">
 <?php  
 //Limit the max length of the label
 $max_length=35;
