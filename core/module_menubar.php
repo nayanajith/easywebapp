@@ -35,9 +35,9 @@ foreach($modules_array as $module => $pages){
       /*active tab is selected*/
       if(PAGE == $page && MODULE == $module){
          //echo "      <li dojoType='dijit.MenuItem' id='".$module."__$page' style='font-weight:bold;'>".$name."</li>$tooltip\n";
-         echo "      <li dojoType='dijit.MenuItem' id='".$module."__$page' style='font-weight:bold;' onClick=\"p_m_p('".$module."','".$page."','".PROGRAM."')\">".$name."</li>$tooltip\n";
+         echo "      <li dojoType='dijit.MenuItem' id='".$module."__$page' style='font-weight:bold;' onClick=\"p_m_p('".$module."','".$page."')\">".$name."</li>$tooltip\n";
       }else{
-         echo "      <li dojoType='dijit.MenuItem' id='".$module."__$page' onClick=\"p_m_p('".$module."','".$page."','".PROGRAM."')\">".$name."</li>$tooltip\n";
+         echo "      <li dojoType='dijit.MenuItem' id='".$module."__$page' onClick=\"p_m_p('".$module."','".$page."')\">".$name."</li>$tooltip\n";
       }
    }
    echo "   </ol>\n";

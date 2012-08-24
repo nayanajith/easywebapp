@@ -469,175 +469,6 @@ EOE;
          }
       }
 
-      
-      /*retrieve filter from the database*/
-      public function ret_filter($filter_name,$table=null){
-
-         $select="SELECT filter FROM ".$this->filter_table." WHERE filter_name='".$filter_name."'";
-
-         if($table != null){
-            $select="SELECT filter FROM ".$table." WHERE filter_name='".$filter_name."'";
-         }
-
-         $res=exec_query($select,Q_RET_ARRAY);
-         /*if no value returned stop execution*/
-         if(!$res)return;
-
-         /*read the json string to  an array*/
-         $filter_array=json_decode($res[0]['filter'],true);
-
-         /*remove filter name form the array*/
-         unset($filter_array['filter_name']);
-
-         $filter="";
-         $and="";
-         foreach($filter_array as $key => $value){
-            if(!preg_match("/_and$|_exact$|filter_filter_name$/",$key))
-            {
-               if($value != ''){
-                  if($filter_array[$key."_exact"]=="null"){
-                     $filter.="$and".str_replace('filter_','',$key)."='$value'";   
-                  }else{
-                     //$filter.="$and".str_replace('filter_','',$key)." LIKE '%$value%'";   
-                     $filter.="$and".str_replace('filter_','',$key)." LIKE '$value%'";   
-                  }
-
-                  if($filter_array[$key."_and"]=="null"){
-                     $and=" OR ";
-                  }else{
-                     $and=" AND ";
-                  }
-               }
-            }
-         }
-         return $filter;
-      }
-      
-      /*
-       store filte in filter table
-       */
-
-      public function add_filter($table=null){
-         $fields=array(
-            "table_name",
-            "user_id",
-            "filter",
-            "filter_name"
-         );
-
-         $_REQUEST['table_name']   =$this->table;
-         $_REQUEST['user_id']      =$_SESSION['user_id'];
-
-         /*
-         format the json string before storing in db
-         [] and ["on"] are from check boxes replace them with null or any value will do the job
-         */
-         $_REQUEST['filter']      =str_replace(
-            array('&quot;','NaN','false','[]','["on"]'),
-            array('"','""','null','null','"on"'),
-            $_REQUEST['filter']
-         );
-
-         /*extract filter_name from json string and store it seperately in column to make ease */
-         $filter=json_decode($_REQUEST['filter']);
-         $_REQUEST['filter_name']      =$filter->{'filter_filter_name'};
-
-         $insert="INSERT INTO ".$this->filter_table."(%s) VALUES(%s)";
-
-         if($table != null){
-            $insert="INSERT INTO ".$table."(%s) VALUES(%s)";
-         }
-
-         $cols="";
-         $values="";
-         $comma="";
-
-         /*generate column and value string for the query */
-         foreach( $fields as $key){
-            $cols.=$comma.$key;
-            $values.=$comma."'".$_REQUEST[$key]."'";
-            $comma=",";
-         }
-
-         $insert=sprintf($insert,$cols,$values);
-         exec_query($insert,Q_RET_NONE);
-
-         /*report error/success*/
-         if(get_affected_rows() != 0){
-            return_status_json('OK','record inserted successfully');
-            return true;
-         }else{
-            return_status_json('ERROR','error inserting record');
-            return false;
-         }
-      }
-
-      /*Delete filter from the filter table following the filter_id*/
-      public function delete_filter($table=null,$purge=false){
-          /*extract filter id from json*/
-         $filter=json_decode(str_replace(array("&quot;","NaN"),array('"','""'),$_REQUEST['filter']));
-         $filter_name=$filter->{'filter_name'};
-
-         $delete="UPDATE ".$this->filter_table." SET deleted=TRUE WHERE filter_name='".$filter_name."'";
-
-         if($purge){
-            $delete="DELETE FROM ".$this->filter_table." WHERE filter_name='".$filter_name."'";
-         }
-
-         if($table != null){
-            $delete="UPDATE ".$this->filter_table." SET deleted=TRUE WHERE filter_name='".$filter_name."'";
-            if($purge){
-               $delete="DELETE FROM ".$this->filter_table." WHERE filter_name='".$filter_name."'";
-            }
-         }
-
-
-         $res=exec_query($delete,Q_RET_NONE);
-
-         /*report error/success*/
-         if(get_affected_rows()!= 0){
-            return_status_json('OK','record deleted successfully');
-            return true;
-         }else{
-            return_status_json('ERROR','error deleting record');
-            return false;
-         }
-       }
-
-      //TODO:
-      public function update_filter($table=null){
-         $_REQUEST['filter']=str_replace(
-            array('&quot;','NaN','false','[]','["on"]'),
-            array('"','""','null','null','"on"'),
-            $_REQUEST['filter']
-         );
-
-         $filter         =json_decode($_REQUEST['filter'],true);
-         $filter_name   =$filter['filter_name'];
-
-         /*remove filter_name from filter json string*/
-         unset($filter['filter_name']);
-
-         /*decode back the arry to json*/
-         $filter         =json_encode($filter);
-
-         /*update query*/
-         $update="UPDATE ".$this->filter_table." SET  filter='$filter' WHERE filter_name='$filter_name''";
-
-         if($table != null){
-            $update="UPDATE ".$table." SET  filter='$filter' WHERE filter_name='$filter_name''";
-         }
-
-         exec_query($update,Q_RET_NONE);
-         
-         /*report error/success*/
-         if(get_affected_rows() != 0){
-            return_status_json('OK','record updated successfully');
-         }else{
-            return_status_json('OK','error updating record');
-         }
-      }
-
        /*
        $key_array: the list of fields to be included in json file
        filter: filter to be applied in WHERE of the query
@@ -976,7 +807,7 @@ EOE;
          $ret_array=array();
          foreach( $this->form as $key => $arr){
             //if(isset($arr['custom']) || isset($arr['store'])){
-            if(isset($arr['custom'])){
+            if(isset($arr['custom']) || in_array(strtolower($key),$this->pwd_field_guess)){
                continue;   
             }else{
                if($arr['dojoType']=="dijit.form.DateTextBox"){
@@ -1188,6 +1019,12 @@ EOE;
                if(isset($arr['custom']) && $arr['custom'] == 'true'){
                   continue; 
                }
+
+               //bypass password fields if value is blank or null
+               if(in_array(strtolower($key),$this->pwd_field_guess) && ($_REQUEST[$key] == '' || $_REQUEST[$key] == 'NULL' | is_null( $_REQUEST[$key]))){
+                  continue; 
+               }
+
 
                //primary key,custom and disabled fields will be excluded do not update
                if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == '' || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null)){
