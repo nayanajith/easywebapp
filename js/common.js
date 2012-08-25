@@ -1577,7 +1577,7 @@ function w_e(widget){
 /**
  * Inverse the checkbox selection of checkboxes in given table id
  */
-function inverse_checkboxes(table_id){
+function invert_selection(table_id){
  	nodes = dojo.query('table#'+table_id+' input[type=checkbox]'); 
    dojo.forEach(nodes,function(node){
       dijit.getEnclosingWidget(node).set("checked",!dijit.getEnclosingWidget(node).get("checked"));
@@ -1587,7 +1587,7 @@ function inverse_checkboxes(table_id){
 /**
  * Clear checkbox selection of checkboxes in given table id
  */
-function clear_checkboxes(table_id){
+function clear_selection(table_id){
  	nodes = dojo.query('table#'+table_id+' input[type=checkbox]'); 
    dojo.forEach(nodes,function(node){
       dijit.getEnclosingWidget(node).set("checked",false);

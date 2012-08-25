@@ -87,14 +87,14 @@ $TOOLBAR=array(
       "label"=>"Grid print",
       "iconClass"=>get_icon_class('Print'),
       "showLabbel"=>'true',
-      "onClick"=>'grid_print(grid__GRID,get_request_value("page"))',
+      "onClick"=>'grid_print(grid__GRID,dojo.cookie("module")+"/"+dojo.cookie("page"))',
    ),
    "table_grid"=>array(
       "dojoType"=>"dijit.form.Button",
       "label"=>"Grid html",
       "iconClass"=>get_icon_class('Table'),
       "showLabbel"=>'true',
-      "onClick"=>'grid_to_table(grid__GRID,get_request_value("page"))',
+      "onClick"=>'grid_to_table(grid__GRID,dojo.cookie("module")+"/"+dojo.cookie("page"))',
    ),
 );
 }

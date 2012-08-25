@@ -23,6 +23,17 @@ $backgrounds=array(
    'soria'   =>array(IMG.'/bodyBg.gif',IMG.'/bodyBgBot.gif'),
    'tundra'  =>array('','')
 );
+
+//Set effective theme
+$theme=$GLOBALS['THEME'];
+if(isset($_SESSION['THEME'])){
+   $theme=$_SESSION['THEME'];
+}
+
+//Bottom and top images of the background
+$BodyBg     =$backgrounds[$theme][0];
+$BodyBgBot  =$backgrounds[$theme][1];
+
 include "common.css";
 
 ?>

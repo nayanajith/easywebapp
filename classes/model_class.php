@@ -939,6 +939,12 @@ EOE;
                   $value
                );
 
+               //Fix the time value -> remove 'T' in front
+        			if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dijit.form.TimeTextBox'){
+                  $value=substr($value,1,strlen($value));       
+               }
+
+               //Fix the check box value on,true -> 1
         			if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dijit.form.CheckBox'){
                   if(in_array(strtolower($value),array('on','true'))){   
                      $value=1;
@@ -1056,6 +1062,11 @@ EOE;
                   array('"','""',''),
                   $value
                );
+
+               //Fix the time value -> remove 'T' in front
+        			if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dijit.form.TimeTextBox'){
+                  $value=substr($value,1,strlen($value));       
+               }
 
                //For CheckBoxes all SET values will be caset to true(1)
                if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dijit.form.CheckBox'){

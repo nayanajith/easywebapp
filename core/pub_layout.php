@@ -33,7 +33,7 @@
 <!--header-->
 <tr><td colspan=2 style>
             <img src="<?php echo $GLOBALS['LOGO']; ?>" width=80px style='float:left'>
-            <span style='float:left;font-size:26px;font-weight:bold;padding:0px;span:0px;'><?php echo $GLOBALS['TITLE_LONG']; ?></span>
+            <span style='float:left;font-size:26px;font-weight:bold;padding:0px;span:0px; text-shadow: 0 1px 2px #005791;'><?php echo $GLOBALS['TITLE_LONG']; ?></span>
             <div style='float:right;padding:20px;'>
 <!--__________________________end Login form ________________________________-->
             <?php 

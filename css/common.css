@@ -1,6 +1,7 @@
 *{
    font-size:11px;
    font-family:Arial,Verdana,'Bitstream Vera Sans',Helvetica,sans-serif;
+   /*text-shadow: 0 1px 1px #005791;*/
 }
 
 body{ 
@@ -18,6 +19,7 @@ body, th, td {
 th{
    font-weight:bold;
    color:<?php echo $light_color; ?>
+   /*text-shadow: 0 1px 1px #005791;*/
 }
 
 h1, h2, h3, h4 {
@@ -25,13 +27,14 @@ h1, h2, h3, h4 {
    font-weight: bold;
    letter-spacing: -0.018em;
    page-break-after: avoid;
+   /*text-shadow: 0 1px 1px #005791;*/
 }
 
 .coolh{
    background-color:#C9D7F1;
    padding:2px;
    text-align:center;
-   background-image:url(<?php echo $backgrounds[$GLOBALS['THEME']][1]; ?>);
+   background-image:url(<?php echo $BodyBgBot; ?>);
    background-repeat:repeat-x;
    background-position:center center;
 }
@@ -523,7 +526,7 @@ img {
    padding:2px;
    padding-left:10px;
    text-align:left;
-   background-image:url(<?php echo $backgrounds[$GLOBALS['THEME']][1]; ?>);
+   background-image:url(<?php echo $BodyBgBot; ?>);
    background-repeat:repeat-x;
    background-position:center center;
 }
@@ -790,25 +793,25 @@ html, body {
    }
 
 .bgTop{
-   background-image:url(<?php echo $backgrounds[$GLOBALS['THEME']][0]; ?>);
+   background-image:url(<?php echo $BodyBg; ?>);
    background-repeat:repeat-x;
    background-position:center top;
 }
 
 .bgBottom{
-   background-image:url(<?php echo $backgrounds[$GLOBALS['THEME']][1]; ?>);
+   background-image:url(<?php echo $BodyBgBot; ?>);
    background-repeat:repeat-x;
    background-position:center bottom;
 }
 
 .bgCenter{
-   background-image:url(<?php echo $backgrounds[$GLOBALS['THEME']][1]; ?>);
+   background-image:url(<?php echo $BodyBgBot; ?>);
    background-repeat:repeat-x;
    background-position:center center;
 }
 
 .buttonBar{
-   background-image:url(<?php echo $backgrounds[$GLOBALS['THEME']][1]; ?>);
+   background-image:url(<?php echo $BodyBgBot; ?>);
    background-repeat:repeat-x;
    background-position:center center;
    padding:10px;

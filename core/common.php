@@ -1,5 +1,20 @@
 <?php
 /**
+ * Return effective theme
+ */
+function get_theme(){
+   return isset($_SESSION['THEME'])?$_SESSION['THEME']:$GLOBALS['THEME'];
+}
+
+/**
+ * Return layout
+ */
+
+function get_layout_name(){
+   return isset($_SESSION['LAYOUT'])?$_SESSION['LAYOUT']:$GLOBALS['LAYOUT'];
+}
+
+/**
  * Get help content
  */
 function get_help($module=null,$page=null){

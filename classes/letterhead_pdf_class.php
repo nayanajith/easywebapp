@@ -10,10 +10,11 @@ class MYPDF extends TCPDF {
    protected $header_info=array();
 
    /*Set header infor*/
-   public function set_header_info(){
+   public function set_header_info($sub_title=null){
       /*Header information of the mark book*/
-      $this->header_info['logo']            = $GLOBALS['A_LOGO'];
-      $this->header_info['year']            ="2010/2011";
+      $this->header_info['logo']       = $GLOBALS['A_LOGO'];
+      $this->header_info['year']       =date("Y");
+      $this->header_info['sub_title']  =$sub_title;
    }
 
    /*Page header*/
@@ -41,17 +42,23 @@ class MYPDF extends TCPDF {
       );
 
       /*Set font*/ 
-      $this->SetFont('helvetica', 'B', 8);
+      $this->SetFont('Impact', 'B', 8);
       
       /*Custom long header  with html formatted*/ 
-      $header ="
-<h1>".$GLOBALS['INSTITUTE']."</h1>";
-
+      $header ='
+<h1 style="font-size:20pt">'.$GLOBALS['INSTITUTE'].'</h1>';
+   
    /*Header position from the top*/
    $this->SetY(10);
 
    /*Write header to the file*/
    $this->writeHTML($header, true, false, false, false, 'C');
+
+   $this->SetFont('helvetica', 'B', 8);
+   if(!is_null($this->header_info['sub_title'])){
+      $this->writeHTML($this->header_info['sub_title'], true, false, false, false, 'C');
+   }
+
 }
    /*Page footer*/
    public function Footer(){
@@ -135,7 +142,7 @@ class Letterhead{
     * @param page_format      : A4,A5,B4
     * @param page_orientation   : P,L 
     */
-   public function __construct($page_format=null,$page_orientation=null){
+   public function __construct($page_format=null,$page_orientation=null,$header=null){
 
       $this->date         =date('d-m-Y');
 
@@ -159,7 +166,7 @@ class Letterhead{
 
       /*return pdf generation object*/
       $this->pdf = new MYPDF($PDF_PAGE_ORIENTATION, $PDF_UNIT, $PDF_PAGE_FORMAT, $UNICODE, $ENCODING, $DISKCACHE);
-      $this->pdf->set_header_info();
+      $this->pdf->set_header_info($header);
       $this->pdf->letterhead_config();
 
    }

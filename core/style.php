@@ -1,11 +1,19 @@
-<style type='text/css'>
-	@import '<?php echo JS; ?>/dijit/themes/<?php echo $GLOBALS['THEME']; ?>/<?php echo $GLOBALS['THEME']; ?>.css';
+<?php
+//Select effective theme
+$theme=$GLOBALS['THEME'];
+if(isset($_SESSION['THEME'])){
+   $theme=$_SESSION['THEME'];
+}
 
-	@import '<?php echo JS; ?>/dojox/grid/resources/<?php echo $GLOBALS['THEME']; ?>Grid.css';
-	@import '<?php echo JS; ?>/dojox/grid/resources/Grid.css';
+echo "<style type='text/css'>
+	@import '".JS."/dijit/themes/".$theme."/".$theme.".css';
 
-   @import '<?php echo JS; ?>/dojox/grid/enhanced/resources/<?php echo $GLOBALS['THEME']; ?>/EnhancedGrid.css';
-   @import '<?php echo JS; ?>/dojox/grid/enhanced/resources/EnhancedGrid_rtl.css';
+	@import '".JS."/dojox/grid/resources/".$theme."Grid.css';
+	@import '".JS."/dojox/grid/resources/Grid.css';
 
-	@import '<?php echo CSS; ?>/common_css.php';
-</style>
+   @import '".JS."/dojox/grid/enhanced/resources/".$theme."/EnhancedGrid.css';
+   @import '".JS."/dojox/grid/enhanced/resources/EnhancedGrid_rtl.css';
+
+	@import '".CSS."/common_css.php';
+</style>"
+?>
