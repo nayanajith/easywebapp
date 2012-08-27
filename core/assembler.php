@@ -179,9 +179,6 @@ add_to_loading(A_CORE."/loading.php");
 //Javascript of requiring dojo and other custom scripts
 add_to_js(A_CORE."/dojo_require.php");
 
-//Javascript for status bar functions
-add_to_js(A_CORE."/status_bar_func.php");
-
 //Stylesheets for the page
 add_to_css(A_CORE."/style.php");
 

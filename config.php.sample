@@ -1,64 +1,130 @@
 <?php
-/*--------------------------------paths---------------------------------------*/
+/*------------------------Constants defining paths--------------------------------*/
+//System (file system) path to the framework root directory
 define('A_ROOT'      , dirname(__FILE__));
+
+//Path to the framework directory from the web root
 define('W_ROOT'      , '/sis');
+
+//Path to the images directory  from the web root
 define('IMG'         , W_ROOT.'/img');
+
+//System path to the images directory
 define('A_IMG'       , A_ROOT.'/img');
+
+//Web path to the css directory
 define('CSS'         , W_ROOT.'/css');
+
+//Web path to the javascript directory
 define('JS'          , W_ROOT.'/js');
+
+//System path to the javscript directory
 define('A_JS'        , A_ROOT.'/js');
+
+//System path to the modules directory
 define('A_MODULES'   , A_ROOT.'/mod');
+
+//Web path to the modules directory
 define('W_MODULES'   , W_ROOT.'/mod');
+
+//System path to the core directory
 define('A_CORE'      , A_ROOT.'/core');
+
+//System path to the  classes directory
 define('A_CLASSES'   , A_ROOT.'/classes');
+
+//System path to the lib directory
 define('A_LIB'       , A_ROOT.'/lib');
-define('W_LIB'       , W_ROOT.'/lib');
-define('A_FILES'     , A_ROOT.'/files');
-define('W_FILES'     , W_ROOT.'/files');
+
+//Path to the temp directory of the system
 define('TMP'         , '/tmp/');
+
+//System path to the database configuration file
 define('DB_CONF'     , A_ROOT.'/db_config.php');
+
+//System path to the installation script file 
 define('INSTALLER'   , A_ROOT.'/install/install.php');
+
+//System path to the login handling page
 define('LOGIN'       , A_CORE.'/login.php');
+
+//System path to the default message log file
 define('LOG'         , A_ROOT.'/messages.log');
-define('LOG_ENABLED' , 'YES'); //YES/NO : this will enable write messages to LOG
+
+//YES/NO : this will enable or disable message logging
+define('LOG_ENABLED' , 'YES');
+
+//Set default log level. One from [0,1,2,3,4]
+define('LOG_LEVEL'   , '1');
+
+//System Path to the error log file
 define('ERROR_LOG'   , A_ROOT.'/errors.log');
 
-/*Enable disable HTTP compression YES/NO */
-define('COMPRESS' , 'NO'); 
+//YES/NO Enable disable HTTP compression
+define('COMPRESS'    , 'NO'); 
 
-/*Enable Program selector YES/NO */
-define('P_SELECTOR' , 'NO'); 
+//YES/NO Enable Program selector
+define('P_SELECTOR'  , 'NO'); 
 
-/*Filter append % YES/NO */
+//YES/NO Filter append
 define('FILTER_AUTO' , 'NO'); 
 
-/*Javascript based Frontend filter for grids YES/NO */
-define('FILTER_FRONT' , 'NO'); 
+//YES/NO Javascript based Front-end filter for grids 
+define('FILTER_FRONT', 'NO'); 
 
 /*------------------------------title info------------------------------------*/
-$GLOBALS['TITLE_SHORT'] = 'UIS';
+//Short Title of the  organization ( module  module wise title is also possible)
 $GLOBALS['TITLE']       = 'UCSC Information System';
+
+//Long title of the organization with html formatting
 $GLOBALS['TITLE_LONG']  = '&nbsp;University of Colombo School of Computing<br>&nbsp;Information System';
+
+//Institute name without any html formatting
 $GLOBALS['INSTITUTE']   = 'University of Colombo School of Computing';
-$GLOBALS['FOOTER']      = 'University of Colombo School of Computing |  No:35 |  Reid Avenue |  Colombo 7,Sri Lanka.';
+
+//Footer of the front-end (mostly the address and copy right notice)
+$GLOBALS['FOOTER']      = 'University of Colombo School of Computing |  No:35 |  Reid Avenue |  Colombo 7,Sri Lanka. |&copy;2012';
+
+//Hotline to be displayed in footer
 $GLOBALS['HOTLINE']     = 'Contact: +94112581245/7';
+
+//Email address of the admin user
 $GLOBALS['ADMIN_MAIL']  = 'uis@ucsc.cmb.ac.lk';
+
+//Email of the information user account where the users can contact through
 $GLOBALS['INFO_MAIL']   = 'info@ucsc.cmb.ac.lk';
+
+//No reply email address which is used to send information to the users (eg: invoices )
 $GLOBALS['NOREPLY_MAIL']= 'noreply@ucsc.cmb.ac.lk';
+
+//Logo of the organization. Displayed in front page in-front of the title and included in letterhead.
 $GLOBALS['LOGO']        = IMG.'/ucsc-logo.png';
+
+//System path to the logo
 $GLOBALS['A_LOGO']      = A_IMG.'/ucsc-logo.png';
+
+//Logo2 is included in footer of the front-end (a mono-space image is appropriate)
 $GLOBALS['LOGO2']       = IMG.'/ucsc-logo-mono.png';
+
+//Favicon icon of the organization
 $GLOBALS['FAVICON']     = IMG.'/favicon.ico';
-$GLOBALS['LAYOUT']      = 'pub'; //web,app,pub
-$GLOBALS['THEME']       = 'claro'; //claro,nihilo,soria,tundra
+
+//Default layout. One from [web,app,pub]
+$GLOBALS['LAYOUT']      = 'pub'; 
+
+//Default theme. One from [claro,nihilo,soria,tundra]
+$GLOBALS['THEME']       = 'claro'; 
 
 /*-----------------------------Request parser----------------------------------*/
+//The default request is parsed and the flow is controlled according to the configuration of the framework and the user request
 $GLOBALS['PAGE_GEN']    = 'index.php';
 
 /*-----------------common status for all the table records---------------------*/
+//Commonly used flags to enable and disable the records of the  tables
 $GLOBALS['STATUS']      = array('ENABLED','DISABLED');
 
 /*---------------------------configure Database--------------------------------*/
+//Default database configuration which will be overridden from the configuration of db_confg.php
 $GLOBALS['DB']          = 'ucscsis';
 $GLOBALS['DB_HOST']     = 'localhost';
 $GLOBALS['DB_USER']     = 'root';
@@ -67,6 +133,7 @@ $GLOBALS['DB_TYPE']     = 'mysql';
 $GLOBALS['CONNECTION']  = null;
 
 /*-----------------------configure login system--------------------------------*/
+//The login information which should keep in session
 $GLOBALS['TBL_LOGIN']   = array(
    'table'     =>'users', 
    'username'  =>'username',
@@ -76,9 +143,14 @@ $GLOBALS['TBL_LOGIN']   = array(
    'role_id'   =>'role_id',
    'permission'=>'permission'       
 );
-$GLOBALS['AUTH_PROTOCOLE'] ='http'; //authentication communication protocol http,https
-$GLOBALS['AUTH_MOD']       ='MYSQL'; //authentication modes: LDAP,MYSQL,PASSWD
 
+//Authentication request protocol to send the data from front-end to back-end. Password and username should send through https
+$GLOBALS['AUTH_PROTOCOLE'] ='http'; //authentication communication protocol http,https
+
+//Default authentication mode. One from [LDAP,MYSQL,PASSWD]
+$GLOBALS['AUTH_MOD']       ='MYSQL';
+
+//LDAP server configuraiton if the AUTH_MOD is LDAP
 //UCSC ldap [zimbra] configuration
 $GLOBALS['LDAP_SERVER']    = "192.248.16.86";//mail.ucsc.lk
 $GLOBALS['LDAP_PORT']      = 389;
@@ -86,6 +158,7 @@ $GLOBALS['LDAP_BIND_RDN']  = "uid=%s,ou=people,dc=ucsc,dc=cmb,dc=ac,dc=lk";
  
 
 /*-------------------------------onfigure mail--------------------------------*/
+//Mail server configuration for outgoing emails
 $GLOBALS['MAIL_CONF']=array (
    //'host'       => 'ssl://192.248.16.86',
    //'port'       => '465',
@@ -95,10 +168,9 @@ $GLOBALS['MAIL_CONF']=array (
    'username'    => 'expr',
    'password'    => base64_decode('RXhwZXJpbWVuVDU2Nwo=') 
 ); 
-/*------------------------------DEBUG ON OFF ---------------------------------*/
-define('DEBUG',   true); //true=ON and false=OFF
 
 /*-----------------------IF th system isbehind proxy--------------------------*/
+//If the actual server is behind a proxy set the proxy servers hostname and IP to properly work HTTPS  while sending login information etc.
 $GLOBALS['PROXY_HOSTS']    = array("192.248.16.84"=>"ucsc.lk");
 
 ?>

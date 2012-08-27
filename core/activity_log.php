@@ -1,24 +1,4 @@
 <?php
-/*
-$system_table_schemas['log']="CREATE TABLE `log` (
-  `id`                bigint(10) unsigned NOT NULL AUTO_INCREMENT,
-  `time`             bigint(10) unsigned NOT NULL DEFAULT '0',
-  `timestamp`          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `user_id`          INT NOT NULL,
-  `ip`                varchar(15) NOT NULL DEFAULT '',
-  `page`             bigint(10) unsigned NOT NULL DEFAULT '0',
-  `module`             varchar(20) NOT NULL DEFAULT '',
-  `cmid`             bigint(10) unsigned NOT NULL DEFAULT '0',
-  `action`             varchar(40) NOT NULL DEFAULT '',
-  `url`                varchar(100) NOT NULL DEFAULT '',
-  `info`             text,
-  `deleted`          boolean     DEFAULT false,
-  `note`             varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-*/
-
 function act_log($table=null,$info=null){
    $proto="http";
    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on'){

@@ -1415,7 +1415,7 @@ function walk_style_text(&$item,$key,$var=null){
 function log_msg($msg=null,$level=null,$file=null){
    if(LOG_ENABLED == 'NO')return;
 
-   //Global log level
+   //Set from Global log level if $level is not set
    if(defined('LOG_LEVEL') && is_null($level)){
       $level=LOG_LEVEL;
    }
