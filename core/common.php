@@ -342,6 +342,9 @@ Bottom of the print html
 */
 function print_bottom(){
    echo "
+            <script type='text/javascript'> 
+               setTimeout('print()',2000);
+            </script>
          </body>
          </html>
       ";
