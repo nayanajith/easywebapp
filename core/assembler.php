@@ -65,11 +65,14 @@ if(isset($_REQUEST['section'])){
       $content_found=false;
    break;
    case 'NOTIFY':
-      print_r(get_notify(false));
-      echo "<sub><hr style='padding:0px'>".date("d-m-y")."</sub>";
+      echo "<sub><hr style='padding:0px'>".get_notify()."</sub>";
    break;
    case 'ISNOTIFY':
-      echo "{'count':'".sizeof(get_notify(false))."'}";
+      $count=0;
+      if(!is_null(get_notify(false)) && get_notify(false) != ''){
+         $count=1;
+      }
+      echo "{'count':'".$count."'}";
    break;
    case 'FILTER':
       if(!is_null(get_filter())){
