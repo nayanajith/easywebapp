@@ -126,7 +126,11 @@ if(isset($_REQUEST['section'])){
    break;
    default:
       //Custom views sections  which added by add_to_cview function
-      echo get_from_cview($_REQUEST['section']);
+      if(get_from_cview($_REQUEST['section'],false) != ''){
+         echo get_from_cview($_REQUEST['section']);
+      }else{
+         $content_found=false;
+      }
    break;
    }
 }

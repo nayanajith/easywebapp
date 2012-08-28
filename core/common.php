@@ -696,7 +696,7 @@ function add_to_view($view_id,$content,$before=false){
 /**
  * Return content from view
  */
-function get_from_view($view_id,$clear=false){
+function get_from_view($view_id,$clear=true){
    $section=$_SESSION['VIEW'][$view_id];
    if($clear){
       clear_view($view_id);
@@ -738,16 +738,35 @@ function add_to_cview($view_id,$content,$before=false){
 /**
  * Return content from custom view
  */
-function get_from_cview($view_id,$clear=false){
+function get_from_cview($view_id,$clear=true){
    $section='';
    if(isset($_SESSION['VIEW']['CUSTOM'][$view_id])){
       $section=$_SESSION['VIEW']['CUSTOM'][$view_id];
       if($clear){
-         clear_view($view_id);
+         clear_cview($view_id);
       }
    }
    return $section;
 }
+
+/**
+ * Clear the view with blank
+ */
+function clear_cview($view_id=null){
+   //If $view_id is null reset all
+   if(is_null($view_id)){
+      foreach($_SESSION['VIEW']['CUSTOM'] as $vid => $bla){
+         $_SESSION['VIEW']['CUSTOM'][$vid]='';
+      }
+   }else{
+      if(isset($_SESSION['VIEW']['CUSTOM'][$view_id])){
+         $_SESSION['VIEW']['CUSTOM'][$view_id] = '';
+      }else{
+         return "key[$view_id] error!"; 
+      }
+   }
+}
+
 
 /**
  * Clear the view with blank
