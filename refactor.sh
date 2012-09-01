@@ -40,7 +40,7 @@ do
 #cat $TMP | sed 's/this.name/this.id/g' > $FILE;
 #cat $TMP | sed 's/set_param(this.name,this.value);fill_form(this.value,"main")/s_p_c_add("ok",fill_form,this.value);set_param(this.id,this.value)/g' > $FILE;
 #cat $TMP | sed "s/isset(\$_SESSION\[PAGE\]\['FILTER'\])?\$_SESSION\[PAGE\]\['FILTER'\]:null/get_filter()/g" > $FILE;
-#cat $TMP | sed "s/isset(\$_SESSION\[PAGE\]\['FILTER'\])?\" AND \".\$_SESSION\[PAGE\]\['FILTER'\]:null/get_filter(null,true)/g" > $FILE;
-cat $TMP | sed "s/get_filter(null,true)l/get_filter(null,true)/g" > $FILE;
+cat $TMP | sed "s/isset(\$_SESSION\[PAGE\]\['FILTER'\])?\" AND \".\$_SESSION\[PAGE\]\['FILTER'\]:null/get_filter(null,true)/g" > $FILE;
+#cat $TMP | sed "s/get_filter(null,true)l/get_filter(null,true)/g" > $FILE;
 done
 

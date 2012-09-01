@@ -557,7 +557,12 @@ function callback(callback_array,function_name,response){
    if(callback_array && function_name && callback_array[function_name] && callback_array[function_name] != null){
       for(var i in callback_array[function_name]){
          var cb=callback_array[function_name][i];
-         cb['func'](cb['param'],response);
+         //If there are no parameters set for callback function ignore the parameter
+         if(undefined !== cb['param']){
+            cb['func'](cb['param'],response);
+         }else{
+            cb['func'](response);
+         }
       }
       callback_array[function_name]=[];
    }

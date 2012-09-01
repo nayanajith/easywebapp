@@ -168,6 +168,19 @@ $courseNonCredit   = array('SCS3026','ICT3015','ICT3016');
 /*
  * Check for non grade courses
  */
+function isCompulsory($courseid){
+   getCourseArr();
+   if($GLOBALS['course_arr'][$courseid]['compulsory']==true){
+      return true;
+   }else{
+      return false;
+   }
+}
+
+
+/*
+ * Check for non grade courses
+ */
 function isNonGrade($courseid){
    getCourseArr();
    if($GLOBALS['course_arr'][$courseid]['non_grade']==true){
@@ -363,6 +376,8 @@ class Student{
 
       $this->self['program']  = PROGRAM;
       $this->self['index_no'] = $index_no;
+      $arr=exec_query("SELECT batch_id FROM ".p_t('student')." WHERE index_no='".$index_no."'",Q_RET_ARRAY);
+      $this->self['batch']    = $arr[0]['batch_id'];
 
       /*Related tables*/
       $this->self['marks']    = p_t('marks');
@@ -395,11 +410,18 @@ class Student{
       return $this->self['batch'];
    }
 
+   /**
+    * Return array(rank,student_count)
+    */
    public function getRank(){
-      $rank_query="SELECT rank FROM(SELECT index_no,degree_gpa,@rownum:=@rownum+1 rank FROM ".$this->self['gpa'].",(SELECT @rownum:=0) r WHERE year='3' AND index_no LIKE CONCAT(LEFT('".$this->self['index_no']."',2),'%') ORDER BY degree_gpa DESC) AS r WHERE index_no='".$this->self['index_no']."'";
+      $rank_query="SELECT rank FROM(SELECT index_no,degree_gpa,@rownum:=@rownum+1 rank FROM ".$this->self['gpa'].",(SELECT @rownum:=0) r WHERE year='".$this->getDegree()."' AND index_no IN(SELECT index_no FROM ".p_t('student')." WHERE batch_id='".$this->getBatch()."')  ORDER BY degree_gpa DESC) AS r WHERE index_no='".$this->self['index_no']."'";
+      $count_query="SELECT COUNT(*) count FROM ".$this->self['gpa']." WHERE year='".$this->getDegree()."' AND index_no IN(SELECT index_no FROM ".p_t('student')." WHERE batch_id='".$this->getBatch()."')";
+
       $rank_array=exec_query($rank_query,Q_RET_ARRAY);
+      $count_array=exec_query($count_query,Q_RET_ARRAY);
+
       if(isset($rank_array[0])){
-         return $rank_array[0]['rank'];
+         return array($rank_array[0]['rank'],$count_array[0]['count']);
       }
    }
 
@@ -509,7 +531,7 @@ public function getTranscript(){
       $transcript=array();
       $myGPA=$this->getCGPA();
       $myClass=$this->getClass($myGPA);
-
+      $transcript['CREDITS']=$this->getTotalCredits();
       $transcript['DOA']=$this->getRegDate(); //Date of Admission
       $transcript['YOA']=substr($this->getDegYear(),0,4); //Year of Award
       $transcript['GPA']=round($myGPA,2);       //Grade Point Avarage

@@ -352,7 +352,7 @@ function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no
 //Duplicate entry 'nmla@ucsc.lk' for key 'email'
 function get_sql_error(){
    global $sql_error;
-   if(!is_null($sql_error)){
+   if(!is_null($sql_error) || trim($sql_errori) != '' ){
       //return mysql_escape_string($sql_error);
       return str_replace("'","`",$sql_error);
    }else{
@@ -459,12 +459,17 @@ function csv_to_db($csv_file,$table,$field_array,$delimiter=',',$enclosure="'",$
             $comma   =",";
          }
       }
-      exec_query($query,Q_RET_NONE,$db);
-   }else{
-      return false; 
+      $res=exec_query($query,Q_RET_MYSQL_RES,$db);
+      fclose($handle);
+      //Return error state
+      if(get_sql_error() == false){
+         return true;
+      }else{
+         log_msg(get_sql_error());
+         return false;
+      }
    }
-   fclose($handle);
-   return true; 
+   return false; 
 }
 
 function csv_to_db2($csv_file,$table,$field_array,$delimiter,$encloser,$terminator,$first_line_header,$db=null){

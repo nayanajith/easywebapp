@@ -136,8 +136,15 @@ class View{
        "dojox.form.Uploader"          =>"function:gen_uploader_control",   
     );
 
-   public function gen_uploader_control($id,$value,$w_path,$label){
-      return "<form method='post' action='?form=main&action=up_file&file_id=$id' enctype='multipart/form-data'>
+   public function gen_uploader_control($id,$value,$w_path,$label,$width=null){
+      //Set custom width if set
+      if(is_null($width)){
+         $width='';
+      }else{
+         $width="width:".$width."px;";
+      }
+
+      return "<form method='post' action='?form=main&action=up_file&file_id=$id' enctype='multipart/form-data' style='border:1px dotted silver;$width'>
             <div id='".$id."_info' ></div>
             <input name='".$id."_rid' id='".$id."_rid' type='hidden' value='$value'/>
             <input id='".$id."_path' type='hidden' value='$w_path'/>
@@ -243,7 +250,11 @@ class View{
             $custom_arr['label']='';
          }elseif($field_array['dojoType'] == 'dojox.form.Uploader'){//Uploader
             //</form>",//sprintf(--,$id,$id,$id,$value,$id,$w_path,$uploadname,$label,$id,$id)
-            $custom_arr['field']=$this->gen_uploader_control($field,$fill,$field_array['w_path'],$field_array['label']).$tooltip;
+            $up_width=null;
+            if(isset($field_array['width'])){
+               $up_width=$field_array['width'];
+            }
+            $custom_arr['field']=$this->gen_uploader_control($field,$fill,$field_array['w_path'],$field_array['label'],$up_width).$tooltip;
             $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
          }else{
 

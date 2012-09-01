@@ -116,6 +116,15 @@ if(array_key_exists('PATH_INFO', $_SERVER)){
    $_REQUEST['module']  =$res[1];
    $_REQUEST['page']    =$res[2];
    if(isset($res[3])){
+      //Reset parameter array for the new program if the program is switched
+      if(isset($_SESSION['PROGRAM']) && $_SESSION['PROGRAM']!=$res[3]){
+         foreach($GLOBALS['MODULES']  as $key => $value){
+            if(isset($_SESSION[$key])){
+               unset($_SESSION[$key]);
+            }
+         }
+      }
+
       $_REQUEST['program'] =$res[3];
    }
 

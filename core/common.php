@@ -479,6 +479,15 @@ function add_filter(){
    foreach($GLOBALS['MODEL']['FORM'] as $key => $arr){
       if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
 
+         //Handle checkboxes (on -> 1)
+         if($arr['dojoType']=='dijit.form.CheckBox'){
+            if(in_array($_REQUEST[$key],array('on','true','1'))){
+         	   $_REQUEST[$key]="1";
+            }else{
+         	   $_REQUEST[$key]="0";
+            }
+			}
+
          //Handle dates 
          if($arr['dojoType']=='dijit.form.DateTextBox'){
          	$_REQUEST[$key]=$_REQUEST[$key]."%";
@@ -592,6 +601,7 @@ function callback($caller,$status,$func_array=null){
       //if no callback arrays set return 
       if(is_null(get_mdl_property(array('CALLBACKS'))))return;
       $func_array=get_mdl_property(array('CALLBACKS',$caller,$status));
+      if(is_null($func_array))return;
    }
 
    //Callback the function and set returning value back in the array as return

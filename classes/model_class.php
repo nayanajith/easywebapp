@@ -886,7 +886,13 @@ EOE;
          $comma   ="";
          /*set columns and values for each column*/
          foreach( $this->form as $key => $arr){
+            //Primary key value is an auto generated number os it will be removed for new inserts 
             if( get_pri_keys() == $key){
+               continue; 
+            }
+
+            //File names are not modified here but while uploading
+        		if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dojox.form.Uploader'){
                continue; 
             }
 
@@ -1023,6 +1029,11 @@ EOE;
             foreach( $this->form as $key => $arr){
                /*handle custom fields from form submission*/
                if(isset($arr['custom']) && $arr['custom'] == 'true'){
+                  continue; 
+               }
+
+               //File names are not modified here but while uploading
+        			if(isset($arr['dojoType'] ) && $arr['dojoType'] == 'dojox.form.Uploader'){
                   continue; 
                }
 
