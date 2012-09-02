@@ -222,7 +222,7 @@ function fill_form_(key) {
 }
 
 
-function submit_form(action){
+function submit_form_(action){
    update_status_bar('OK','...');
    update_progress_bar(10);
    /*User should confirm deletion*/

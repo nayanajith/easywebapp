@@ -17,7 +17,7 @@ $menu_array  = array(
 
 $toolbar   =array(
    "manage_permission"      =>array(
-      'Save'   =>array('icon'=>'Save','action'=>'submit_form("modify")'),
+      'Save'   =>array('icon'=>'Save','action'=>'submit_form_("modify")'),
    ),
    "system_log"      =>array(
       'Print'   =>array('icon'=>'Print','action'=>'print_data()'),
