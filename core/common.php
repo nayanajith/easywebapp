@@ -1748,11 +1748,12 @@ function query_to_htable($query){
    $headers=array_keys($arr[0]);
    array_walk($headers,'walk_style_text');
 
-   $report="<table class='clean' border='1' style='border-collapse:collapse;'><tr><th>";
+   $report="<table class='clean' border='1' style='border-collapse:collapse;'><tr><th>#</th><th>";
    $report.=implode('</th><th>',$headers);
    $report.="</th></tr>";
+   $i=1;
    foreach($arr as $row){
-      $report.="<tr><td>";
+      $report.="<tr><td>".$i++."</td><td>";
       $values=array_values($row);
       array_walk($values,'on_each_td');
       $report.=implode('</td><td>',$values);
