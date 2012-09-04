@@ -649,7 +649,7 @@ EOE;
        * Generate csv for the given query
        */
       public function gen_csv($field_list){
-         $filter_str=isset($_SESSION[PAGE]['FILTER'])?" WHERE ".$_SESSION[PAGE]['FILTER']:"";
+         $filter_str=" WHERE ".get_filter();
          $columns=array();
          $headers=array();
          if(is_null($field_list)){
