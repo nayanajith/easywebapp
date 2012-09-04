@@ -34,7 +34,7 @@ foreach ($lines as $line) {
 }
 $report.="</pre></div>";
 
-$report.="<script type='text/javascript'>
+js("
 function get_lines(){
    MAIN.refresh();
 }
@@ -43,8 +43,8 @@ function print_data(){
    var mywin=window.open('','blank');
    mywin.innerHTML=document.getElementById('dd').innerHTML;
    mywin.print();
-}
-</script>";
+}");
+
 add_to_main_top($report);
 
 set_layout_property('app2','MAIN_TOP','style','height','100%');

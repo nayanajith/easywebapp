@@ -1547,7 +1547,7 @@ function notify(){
 
 //Add notification function to the poll
 if('<?php echo $_SESSION['LAYOUT'] ?>'=='app2'){
-   p_f_add(notify);
+   //p_f_add(notify);
 }
 
 /**

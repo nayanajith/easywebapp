@@ -71,8 +71,8 @@ function list_backups(){
  */
 function backup_now(){
    $backup_file=MOD_BACKUP."/".$GLOBALS['DB']."_".date("j-n-Y_H:m:s").".sql.gz";
-   log_msg("mysqldump -u".$GLOBALS['DB_USER']." -p".$GLOBALS['DB_PASS']."  ".$GLOBALS['DB']." | gzip > $backup_file");
-   exec("mysqldump -u".$GLOBALS['DB_USER']." -p".$GLOBALS['DB_PASS']."  ".$GLOBALS['DB']." | gzip > $backup_file");
+   log_msg("mysqldump -f -u".$GLOBALS['DB_USER']." -p".$GLOBALS['DB_PASS']."  ".$GLOBALS['DB']." | gzip > $backup_file");
+   exec("mysqldump -f -u".$GLOBALS['DB_USER']." -p".$GLOBALS['DB_PASS']."  ".$GLOBALS['DB']." | gzip > $backup_file");
    if(file_exists($backup_file)){
       return_status_json('OK','Backup successful!');
    }else{

@@ -170,7 +170,7 @@ echo  "<div dojoType='dijit.form.Form' id='permission_frm' jsId='permission_frm'
          action='".$GLOBALS['PAGE_GEN']."';
          method='GET' >
          ";
-echo "Select User/Role: <select name='username' id='username' dojoType='dijit.form.FilteringSelect' pageSize='20' jsId='username' onChange='fill_form(this.value);'>";
+echo "Select User/Role: <select name='username' id='username' dojoType='dijit.form.FilteringSelect' pageSize='20' jsId='username' onChange='fill_form_(this.value);'>";
 
 //List of groups
 echo "<option value='none'>-roles-</option>";
@@ -195,38 +195,36 @@ set_layout_property('app2','MAIN_RIGHT','style','width','0%');
 ?>
 </div>
 </div>
-
-<script type='text/javascript'>
-function fill_form(key) {
+<?php
+js("
+function fill_form_(key) {
    if(!(key == '' || key == 'new')){
    dojo.xhrGet({
-      url       : '<?php echo gen_url(); ?>&data=json&id='+key+'&form=main',
-      handleAs :'json',
-      load       : function(response, ioArgs) {        
+      url       : '".gen_url()."&data=json&id='+key+'&form=main',
+      handleAs  :'json',
+      load      : function(response, ioArgs) {        
 
          /*Reset form*/
-         dojo.forEach(dijit.byId('permission_frm').getDescendants(), function(widget) {
-            if(widget.attr('value') != key)
-            {
-               widget.setValue("DENIED");
+         dojo.forEach(dijit.byId('permission_frm').getDescendants(),function(widget){
+            if(widget.get('value') != key){
+               widget.set('value','DENIED');
             }
          });
 
          /*Fill form with values returned*/   
-           permission_frm.setValues(response); 
+         permission_frm.setValues(response); 
       },
-      error : function(response, ioArgs) {
-           alert(response);
+      error    :function(response, ioArgs) {
+         alert(response);
       }
    });
    }
 }
 
 
-function submit_form(action){
+function submit_form_(action){
    update_status_bar('OK','...');
    update_progress_bar(10);
-   //alert(dojo.toJson(dijit.byId('".$table."_frm').getValues(), true));
    /*User should confirm deletion*/
    if(action=='delete' && !confirm('Confirm Deletion!')){
       update_status_bar('ERROR','deletion canceled');
@@ -276,4 +274,5 @@ function submit_form(action){
 }
 return true;
 }
-</script>
+");
+?>

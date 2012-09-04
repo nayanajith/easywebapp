@@ -378,8 +378,12 @@ function gen_print_html($content,$title){
 }
 /**
  * $filter_array=array('id1','id2') -> and id1='val_id1' and id2='val_id2'
+ * $filter_ids: array of filter ides
+ * $array: array which the values of the filter ids are stored (default is $_SESSION[MODULE][PAGE])
+ * $start_and: starts the filter with AND
+ * $must: Filter must set to acquire values for the given widget 
  */
-function gen_and_filter($filter_ids,$array=null,$start_and=false){
+function gen_and_filter($filter_ids,$array=null,$start_and=false,$must=false){
    if(is_null($array) && isset($_SESSION[MODULE][PAGE])){
       $array=$_SESSION[MODULE][PAGE];
    }elseif(is_null($array)){
@@ -390,11 +394,18 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false){
    $filter="";
    if(!is_array($filter_ids)){
       $id=$filter_ids;
-      $filter.=(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='NULL'? "$and $id='".$array[$id]."'":null);
+      if(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='NULL'){
+         $filter="$id='".$array[$id]."'";
+      }elseif($must){
+         $filter="$id=''";
+      }
    }else{
       foreach($filter_ids as $id){
          if(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='NULL'){
             $filter.= " $and $id='".$array[$id]."'";
+            $and="AND";
+         }elseif($must){
+            $filter.= " $and $id=''";
             $and="AND";
          }
       }
@@ -1737,11 +1748,12 @@ function query_to_htable($query){
    $headers=array_keys($arr[0]);
    array_walk($headers,'walk_style_text');
 
-   $report="<table class='clean' border='1' style='border-collapse:collapse;'><tr><th>";
+   $report="<table class='clean' border='1' style='border-collapse:collapse;'><tr><th>#</th><th>";
    $report.=implode('</th><th>',$headers);
    $report.="</th></tr>";
+   $i=1;
    foreach($arr as $row){
-      $report.="<tr><td>";
+      $report.="<tr><td>".$i++."</td><td>";
       $values=array_values($row);
       array_walk($values,'on_each_td');
       $report.=implode('</td><td>',$values);
