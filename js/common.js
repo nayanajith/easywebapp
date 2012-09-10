@@ -33,7 +33,7 @@ var halt_page_reloading=true;
 //halt parameter setting temporaly 
 var halt_set_param=true;
 
-
+var still_proc_msg='Still processing status will be notified..';
 
 //timeout for XHR request is 60 secons
 var timeout_ = 100*1000;
@@ -113,7 +113,13 @@ function show_xhr_dialog(url_,title,width,height,no_buttons){
          xhr_Dialog.show();
   	   },
   	   error : function(response, ioArgs) {
-  	  			update_status_bar('ERROR',response);
+         if(response=='Error: timeout exceeded'){
+            update_status_bar('OK',still_proc_msg);
+            update_progress_bar(0);
+         }else{
+            update_status_bar('ERROR','Error on submission!');
+            update_progress_bar(0);
+         }
   	   }
    });
 }
@@ -136,7 +142,13 @@ function show_help_dialog(){
          help_Dialog.show();
   	   },
   	   error : function(response, ioArgs) {
-  	  			update_status_bar('ERROR',response);
+         if(response=='Error: timeout exceeded'){
+            update_status_bar('OK',still_proc_msg);
+            update_progress_bar(0);
+         }else{
+            update_status_bar('ERROR','Error on submission!');
+            update_progress_bar(0);
+         }
   	   }
    });
 }
@@ -322,7 +334,13 @@ function request_html(target,source_array,action_) {
          dojo.parser.parse(content_obj);
       },
       error : function(response, ioArgs) {
-         update_status_bar('ERROR',response);
+         if(response=='Error: timeout exceeded'){
+            update_status_bar('OK',still_proc_msg);
+            update_progress_bar(0);
+         }else{
+            update_status_bar('ERROR','Error on submission!');
+            update_progress_bar(0);
+         }
       }
    });
 }
@@ -373,8 +391,13 @@ function submit_display_values(action){
       }, 
       error: function(response,ioArgs) {
          if(!target_module && !target_page){
-            update_status_bar('ERROR','Error on submission!');
-            update_progress_bar(0);
+            if(response=='Error: timeout exceeded'){
+               update_status_bar('OK',still_proc_msg);
+               update_progress_bar(0);
+            }else{
+               update_status_bar('ERROR','Error on submission!');
+               update_progress_bar(0);
+            }
          }
       }
    });
@@ -430,7 +453,13 @@ function reload_sections(sections){
          }
       },
       error: function(response) {
-         console.error("Error loading layout SECTION");
+         if(response=='Error: timeout exceeded'){
+            update_status_bar('OK',still_proc_msg);
+            update_progress_bar(0);
+         }else{
+            update_status_bar('ERROR','Error on submission!');
+            update_progress_bar(0);
+         }
       }
    });
 
@@ -514,7 +543,13 @@ function reload_sections(sections){
       load: function(response) {
       },
       error: function(response) {
-         console.log("Error loading layout DYNAMIC_JS"+response);
+         if(response=='Error: timeout exceeded'){
+            update_status_bar('OK',still_proc_msg);
+            update_progress_bar(0);
+         }else{
+            update_status_bar('ERROR','Error on submission!');
+            update_progress_bar(0);
+         }
       }
    });
 }
@@ -673,8 +708,13 @@ function submit_form(action,param1,param2){
 
          }, 
          error: function(response,ioArgs) {
-            update_status_bar('ERROR','Error on submission!');
-            update_progress_bar(0);
+            if(response=='Error: timeout exceeded'){
+               update_status_bar('OK',still_proc_msg);
+               update_progress_bar(0);
+            }else{
+               update_status_bar('ERROR','Error on submission!');
+               update_progress_bar(0);
+            }
 
             //call the error callback function
             callback(s_f_c,'error',response);
@@ -722,8 +762,13 @@ function submit_form(action,param1,param2){
          }, 
          error: function(response,ioArgs) {
             if(!target_module && !target_page){
-               update_status_bar('ERROR','Error on submission!');
-               update_progress_bar(0);
+               if(response=='Error: timeout exceeded'){
+                  update_status_bar('OK',still_proc_msg);
+                  update_progress_bar(0);
+               }else{
+                  update_status_bar('ERROR','Error on submission!');
+                  update_progress_bar(0);
+               }
 
                //call the before callback function
                callback(s_f_c,'error',response);
@@ -766,6 +811,10 @@ function xhr_generic(submit_form,action,handle_as){
    if(handle_as){
       handleAs_=handle_as;
    }
+
+   update_status_bar('OK','Processing...');
+   update_progress_bar(50);
+   
    dojo.xhrPost({
       url         : url,
       content     : {form:submit_form,action:action,data:'true'},
@@ -795,9 +844,13 @@ function xhr_generic(submit_form,action,handle_as){
          }
       }, 
       error: function(response,ioArgs) {
-         update_status_bar('ERROR','Error on submission!');
-         update_progress_bar(0);
-
+         if(response=='Error: timeout exceeded'){
+            update_status_bar('OK',still_proc_msg);
+            update_progress_bar(0);
+         }else{
+            update_status_bar('ERROR','Error on submission!');
+            update_progress_bar(0);
+         }
          //call the error callback function
          callback(x_g_c,'error',response);
       }
@@ -991,7 +1044,7 @@ function fill_form(rid,form) {
                   case 'dojox.form.Uploader':
                      dijit.byId(key).reset();
                      //Set rid for the uploading file
-                     document.getElementById(key+'_rid').value=response['rid'];
+                     document.getElementById(key+'_rid').value="";
                      //remove file exists url
                      document.getElementById(key+'_info').innerHTML="";
                   break;
@@ -1035,6 +1088,8 @@ function fill_form(rid,form) {
                         load_selected_value(dijit.byId(key),response[key]);
                      break;
                      case 'dojox.form.Uploader':
+                        //Set rid for the uploading file
+                        document.getElementById(key+'_rid').value=rid;
                         //Add a url to download the file if the file is already uploaded
                         var path=document.getElementById(key+'_path').value;
                         //document.getElementById(key+'_info').innerHTML="File exists: <a href='"+path+"/"+response[key]+"'>"+response[key]+"</a>";  
@@ -1122,7 +1177,13 @@ function dialog_submit(arg_form,action){
             update_status_bar('OK','form successfully submitted');
          }, 
          error: function(response,ioArgs) {
-            update_status_bar('ERROR','Error on submission!');
+            if(response=='Error: timeout exceeded'){
+               update_status_bar('OK',still_proc_msg);
+               update_progress_bar(0);
+            }else{
+               update_status_bar('ERROR','Error on submission!');
+               update_progress_bar(0);
+            }
          }
       });
 /*
@@ -1377,7 +1438,13 @@ function p_m_p(module,page,program){
             reload_sections(['TOOLBAR','MAIN_TOP','MAIN_LEFT','MAIN_RIGHT','MAIN_BOTTOM']);
          }, 
          error: function(response,ioArgs) {
-            update_status_bar('ERROR','Error on submission!');
+            if(response=='Error: timeout exceeded'){
+               update_status_bar('OK',still_proc_msg);
+               update_progress_bar(0);
+            }else{
+               update_status_bar('ERROR','Error on submission!');
+               update_progress_bar(0);
+            }
          }
       });
    }else{
@@ -1412,7 +1479,13 @@ function load_page(module,page,program){
             reload_page();
          }, 
          error: function(response,ioArgs) {
-            update_status_bar('ERROR','Error on submission!');
+            if(response=='Error: timeout exceeded'){
+               update_status_bar('OK',still_proc_msg);
+               update_progress_bar(0);
+            }else{
+               update_status_bar('ERROR','Error on submission!');
+               update_progress_bar(0);
+            }
          }
       });
    }else{
@@ -1493,6 +1566,7 @@ function notify(){
       url      :gen_url(), 
       content  :{section:'ISNOTIFY'},
       handleAs :'json',
+      timeout  : 100,
       handle: function(response){
       },
       load: function(response) {
@@ -1540,6 +1614,13 @@ function notify(){
          }
       }, 
       error: function(response,ioArgs) {
+         if(response=='Error: timeout exceeded'){
+            update_status_bar('OK',still_proc_msg);
+            update_progress_bar(0);
+         }else{
+            update_status_bar('ERROR','Error on submission!');
+            update_progress_bar(0);
+         }
       }
    });
    
@@ -1547,7 +1628,7 @@ function notify(){
 
 //Add notification function to the poll
 if('<?php echo $_SESSION['LAYOUT'] ?>'=='app2'){
-   //p_f_add(notify);
+   p_f_add(notify);
 }
 
 /**
@@ -1698,4 +1779,12 @@ function set_busy(is_busy){
          busy.innerHTML="<img src='<?php echo IMG."/busy-stopped.gif"; ?>' title='Not busy' >";
       }
    }
+}
+
+/**
+ * Return the number of milliseconds from midnight January 1 1970:
+ */
+function getTimeMillis(){
+   var d= new Date();
+   return Date.UTC(d.getYear(),d.getMonth(),d.getDate());
 }
