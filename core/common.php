@@ -394,15 +394,23 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false,$must=false){
    $filter="";
    if(!is_array($filter_ids)){
       $id=$filter_ids;
-      if(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='NULL'){
-         $filter="$id='".$array[$id]."'";
+      if(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='_ALL_'){
+         if($array[$id]=='NULL'){
+            $filter="(ISNULL($id) OR $id='')";
+         }else{
+            $filter="$id='".$array[$id]."'";
+         }
       }elseif($must){
          $filter="$id=''";
       }
    }else{
       foreach($filter_ids as $id){
-         if(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='NULL'){
-            $filter.= " $and $id='".$array[$id]."'";
+         if(isset($array[$id])&&!is_null($array[$id])&&$array[$id]!='_ALL_'){
+            if($array[$id]=='NULL'){
+               $filter.= " $and (ISNULL($id) OR $id='')";
+            }else{
+               $filter.= " $and $id='".$array[$id]."'";
+            }
             $and="AND";
          }elseif($must){
             $filter.= " $and $id=''";
@@ -488,7 +496,7 @@ function add_filter(){
    $_SESSION[MODULE][PAGE]['FILTER_ARRAY']=array();
 
    foreach($GLOBALS['MODEL']['FORM'] as $key => $arr){
-      if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' ){
+      if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' && $_REQUEST[$key] != '_ALL_' ){
 
          //Handle checkboxes (on -> 1)
          if($arr['dojoType']=='dijit.form.CheckBox'){

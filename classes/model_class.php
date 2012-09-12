@@ -753,9 +753,20 @@ EOE;
             }
          }
 
+         //Default value to be listed at the end of the values
+         $all_selector  ="-all-";
+         if(isset($field_array['all_selector'])){
+            if($field_array['all_selector'] === false){
+               $all_selector  =null;
+            }else{
+               $all_selector  =$field_array['all_selector'];
+            }
+         }
+
+
          //header('Content-Type', 'application/json');
          include 'qread_store_class.php';
-         $query_read_store = new Query_read_store($table,$key_,$filter,$order_by,$key,$default);
+         $query_read_store = new Query_read_store($table,$key_,$filter,$order_by,$key,$default,$all_selector);
          echo $query_read_store->gen_json_data();
       }
       /*

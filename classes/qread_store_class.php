@@ -29,10 +29,11 @@ class Query_read_store{
    )
 
    */
-   public function __construct($table,$key,$filter='',$order_by=null,$id=null,$default="-none-") {
+   public function __construct($table,$key,$filter='',$order_by=null,$id=null,$default="-none-",$all_selector=null) {
       $this->key        =$key;   
       $this->table      =$table;
       $this->default    =$default;
+      $this->all_selector    =$all_selector;
       $this->pre_filter =$filter;
       $this->order_by   =$order_by;
       $this->id         =$id;   
@@ -116,6 +117,21 @@ class Query_read_store{
    public function gen_json_data(){
       $res=array();
       $res=array_merge($res,exec_query($this->_gen_query()));
+
+      //All selector which can be used ot get the user input as selected all
+      //will be appended to the end of the list according to the user request
+      if(!is_null($this->all_selector)){
+         if(isset($this->key_a) && is_array($this->key_a)){
+            if(is_array($this->key_a[key($this->key_a)])){
+               $res[]=array(key($this->key_a)=>'_ALL_','label'=>$this->all_selector);
+            }else{
+               $res[]=array(key($this->key_a)=>'_ALL_','label'=>$this->all_selector);
+            }
+         }else{
+            $res[]=array($this->key=>'_ALL_','label'=>$this->all_selector);
+         }
+      }
+
       //Default value will be appended to the end of the list according to the user request
       if(!is_null($this->default)){
          if(isset($this->key_a) && is_array($this->key_a)){

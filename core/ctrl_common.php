@@ -63,8 +63,7 @@ if(isset($_REQUEST['form'])){
             if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
                $param=$br[1];
             }
-            if(isset($_REQUEST['param']) && isset($_REQUEST[$_REQUEST['param']]) && $_REQUEST[$_REQUEST['param']] == 'NULL'){
-               //rest the session variable corresponding to the given value if  it is NULL
+            if(isset($_REQUEST['param']) && isset($_REQUEST[$_REQUEST['param']]) && $_REQUEST[$_REQUEST['param']] == '_ALL_'){
                del_param($param);
                return_status_json('OK',"Reset ".$_REQUEST['param']);
             }elseif(isset($_REQUEST[$_REQUEST['param']])){
