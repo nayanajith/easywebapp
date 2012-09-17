@@ -31,7 +31,7 @@ function get_help($module=null,$page=null){
    //Get the module name
    $module_label=$GLOBALS['MODULES'][MODULE];
    if(is_array($module_label)){
-      $module_label=$module['MODULE'];
+      $module_label=$module_label['MODULE'];
    }
    
    $help="<div class='help round' id='help' style='height:500px;overflow:auto;padding:10px' ><div>";
