@@ -158,6 +158,29 @@ class View{
          </form>";
    }
 
+   /*Fields to bypass when creating forms*/
+   protected $bypass=array(
+      'default',
+	 	'isolate',
+	 	'inner',
+	 	'iconClass',
+	 	'label',
+	 	'section',
+	 	'style',
+	 	'label_pos',
+	 	'type',
+	 	'vid',
+	 	'filter',
+	 	'ref_table',
+	 	'ref_key',
+	 	'order_by',
+	 	'tooltip',
+       'valid_types',
+       'max_size',
+       'overwrite',
+       'path',
+       'w_path',
+   );
 
 
    /*
@@ -193,6 +216,9 @@ class View{
          	$field_array['value']=$fill;
 			}      
 		}
+      /*Fields to bypass when creating forms*/
+      $bypass=$this->bypass;
+
 
       /*html for the given field will be filled to this var*/
       $html         ="";
@@ -228,8 +254,6 @@ class View{
          $form_control   =$this->form_controls[$field_array['dojoType']];
          $options        =" jsId='$field' id='$field' name='$field' ";
 
-         /*Fields to bypass when creating forms*/
-         $bypass=array('default','isolate','inner','iconClass','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','tooltip');
 
          //If tooltip is set then bypass title
          if(isset($field_array['tooltip'])){
@@ -507,9 +531,11 @@ class View{
 				}
          
             $options ="\njsId='$field'\nid='$field'\n$data_dojo_props\n";
-         
+
             /*Fields to bypass when creating forms*/
-            $bypass=array('default','isolate','inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder','checked_fields','tooltip');
+            $bypass=$this->bypass;
+        
+            //$bypass=array('default','isolate','inner','icon','label','section','style','label_pos','type','vid','filter','ref_table','ref_key','order_by','placeHolder','checked_fields','tooltip');
          
             //If tooltip is set bypass title
             if(isset($field_array['tooltip'])){

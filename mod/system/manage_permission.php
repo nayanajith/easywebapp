@@ -131,11 +131,11 @@ function gen_permission_tree(){
       <tr>
       <td style='background-color:silver;font:inherit' >".$mod." (module)</td>
       <td style='background-color:silver;font:inherit' align='right'>
-      <select dojoType='dijit.form.Select' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px;font:inherit' >
-         <option value='DENIED'><font color='red'>DENIED</font></option>
-         <option value='READ'>READ</option>
-         <option value='WRITE'>WRITE</option>
-      </select>
+      <div dojoType='dijit.form.Select' name='M#$mod_key' id='DM#$mod_key' value='DENIED' style='width:70px;font:inherit' >
+         <option value='DENIED'><span style='color:red'>DENIED</span></option>
+         <option value='READ'><span style='color:green'>READ</span></option>
+         <option value='WRITE'><span style='color:blue'>WRITE</span></option>
+      </div>
       </td>
       </tr>\n";
       if(file_exists($module_menu_file)){
@@ -150,11 +150,11 @@ function gen_permission_tree(){
             echo "<tr>
             <td style='background-color:whitesmoke;font:inherit'>&nbsp;-".$page."</td>
             <td style='background-color:whitesmoke;font:inherit' align='right'>
-            <select dojoType='dijit.form.ComboBox' name='P#".$mod_key."#".$page_key."' id='DP#".$mod_key."#".$page_key."' value='DENIED' style='width:70px;font:inherit' >
-               <option value='DENIED'>DENIED</option>
-               <option value='READ'>READ</option>
-               <option value='WRITE'>WRITE</option>
-            </select>   
+            <div dojoType='dijit.form.Select' name='P#".$mod_key."#".$page_key."' id='DP#".$mod_key."#".$page_key."' value='DENIED' style='width:70px;font:inherit' >
+               <option value='DENIED'><span style='color:red'>DENIED</span></option>
+               <option value='READ'><span style='color:green'>READ</span></option>
+               <option value='WRITE'><span style='color:blue'>WRITE</span></option>
+            </div>   
             </td>
             </tr>\n";
          }
@@ -233,7 +233,7 @@ function submit_form_(action){
    }
    if (dijit.byId('permission_frm').validate()) {
       dojo.xhrGet({
-      url         : '<?php echo gen_url(); ?>&form=main&action='+action, 
+      url         : '".gen_url()."&form=main&action='+action, 
       handleAs      : 'json',
       form         : 'permission_frm', 
 
