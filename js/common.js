@@ -1042,11 +1042,6 @@ function fill_form(rid,form) {
                      widget.set('value', '');
                   break;
                   case 'dojox.form.Uploader':
-                     dijit.byId(key).reset();
-                     //Set rid for the uploading file
-                     document.getElementById(key+'_rid').value="";
-                     //remove file exists url
-                     document.getElementById(key+'_info').innerHTML="";
                   break;
                   default:
                      widget.set('value', null);
@@ -1054,6 +1049,15 @@ function fill_form(rid,form) {
                   }
                }
             }
+
+            if(dijit.byId(key).declaredClass=='dojox.form.Uploader'){
+               dijit.byId(key).reset();
+               //Set rid for the uploading file
+               document.getElementById(key+'_rid').value=rid;
+               //remove file exists url
+               document.getElementById(key+'_info').innerHTML="";
+            }
+
 
             if(response[key] && dijit.byId(key)){
                if(response[key]['_type']=='Date'){
@@ -1088,8 +1092,6 @@ function fill_form(rid,form) {
                         load_selected_value(dijit.byId(key),response[key]);
                      break;
                      case 'dojox.form.Uploader':
-                        //Set rid for the uploading file
-                        document.getElementById(key+'_rid').value=rid;
                         //Add a url to download the file if the file is already uploaded
                         var path=document.getElementById(key+'_path').value;
                         //document.getElementById(key+'_info').innerHTML="File exists: <a href='"+path+"/"+response[key]+"'>"+response[key]+"</a>";  
@@ -1628,7 +1630,7 @@ function notify(){
 
 //Add notification function to the poll
 if('<?php echo $_SESSION['LAYOUT'] ?>'=='app2'){
-   p_f_add(notify);
+   //p_f_add(notify);
 }
 
 /**
