@@ -1053,9 +1053,13 @@ EOE;
                   continue; 
                }
 
+               //Primary key not included in set list
+               if(get_pri_keys()==$key){
+                  continue; 
+               }
 
-               //primary key,custom and disabled fields will be excluded do not update
-               if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == '' || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null)){
+               //Custom and disabled fields will be excluded do not update
+               if(!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == '' || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null){
                   continue; 
                }
 
