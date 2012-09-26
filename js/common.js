@@ -1050,7 +1050,7 @@ function fill_form(rid,form) {
                }
             }
 
-            if(dijit.byId(key).declaredClass=='dojox.form.Uploader'){
+            if(dijit.byId(key) && dijit.byId(key).declaredClass=='dojox.form.Uploader'){
                dijit.byId(key).reset();
                //Set rid for the uploading file
                document.getElementById(key+'_rid').value=rid;
