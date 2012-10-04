@@ -455,8 +455,8 @@ function get_filter($table_as=null,$start_and=false){
       //override the default values with the exceptions
       if(isset($_SESSION[MODULE][PAGE]['FILTER_ARRAY_EXP']) && isset($_SESSION[MODULE][PAGE]['FILTER_ARRAY_EXP'][$key])){
          $value=$_SESSION[MODULE][PAGE]['FILTER_ARRAY_EXP'][$key]; 
-      }elseif(in_array($value,array('~'))){//'~' is considered as null value request
-         $value=$table_as." ISNULL(`".$key."`)";
+      }elseif(in_array($value,array('~','NULL'))){//'~' is considered as null value request
+         $value=$table_as." (ISNULL(`".$key."`) OR `".$key."`='') ";
       }else{
          if(defined('FILTER_AUTO') && FILTER_AUTO=='YES'){
             $value=$table_as."`".$key."` LIKE '%".$value."%'"; 
@@ -496,7 +496,8 @@ function add_filter(){
    $_SESSION[MODULE][PAGE]['FILTER_ARRAY']=array();
 
    foreach($GLOBALS['MODEL']['FORM'] as $key => $arr){
-      if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' && $_REQUEST[$key] != '_ALL_' ){
+      //if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != 'NULL' && $_REQUEST[$key] != '_ALL_' ){
+      if($key != get_pri_keys() && isset($_REQUEST[$key]) && $_REQUEST[$key] != '' && $_REQUEST[$key] != '_ALL_' ){
 
          //Handle checkboxes (on -> 1)
          if($arr['dojoType']=='dijit.form.CheckBox'){

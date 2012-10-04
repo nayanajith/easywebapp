@@ -703,7 +703,6 @@ dojo.ready(function(){
          //EnhancedGrid table with plugins
          $html .='<table
 autoHeight="false"
-rowsPerPage="25"
 errorMessage="No records to display!"
 selectable="true"
 plugins=\'{

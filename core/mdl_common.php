@@ -57,7 +57,7 @@ $TOOLBAR=array(
    ),  
    "del_filter"=>array(
       "dojoType"=>"dijit.form.DropDownButton",
-      "disabled"=>(isset($_SESSION[PAGE]['FILTER'])?"false":"true"),
+      //"disabled"=>(isset($_SESSION[PAGE]['FILTER'])?"false":"true"),
       "inner"=>$del_filter_inner,
       "iconClass"=>get_icon_class('Cancel'),
       "showLabbel"=>'true',
