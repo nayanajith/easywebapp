@@ -1274,11 +1274,11 @@ function gen_select_inner($arr,$label=null,$null_select=false){
       return null;
    }
 
-   $select="<option value='NULL'>-none-</option>\n";
+   $select="<option value='_ALL_'>-all-</option>\n<option value='NULL'>-none-</option>\n";
    if($null_select===true){
       $select='';
    }elseif($null_select !== true && $null_select != ""){
-      $select="<option value='NULL'>$null_select</option>\n";
+      $select="<option value='_ALL_'>-all-</option>\n<option value='NULL'>$null_select</option>\n";
    }
 
    if(is_assoc_array($arr)){
