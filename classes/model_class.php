@@ -649,7 +649,10 @@ EOE;
        * Generate csv for the given query
        */
       public function gen_csv($field_list){
-         $filter_str=" WHERE ".get_filter();
+         $filter_str="";
+			if(trim($filter_str) != ''){
+				$filter_str=" WHERE ".get_filter();
+			}
          $columns=array();
          $headers=array();
          if(is_null($field_list)){
@@ -685,11 +688,18 @@ EOE;
                }
 				}
          }
+
+			//If the table is not provided use default table
+		   $table=$this->table;
+		 	if(isset($GLOBALS['PAGE']['csv_table'])){
+				$table=$GLOBALS['PAGE']['csv_table'];
+		 	}
          
          $fields=implode(",",$columns);
-         $query="SELECT $fields FROM ".$this->table.$filter_str;
+         $query="SELECT $fields FROM ".$table.$filter_str;
+			log_msg($query);
          
-         $csv_file= $this->table.".csv";
+         $csv_file= $table.".csv";
          db_to_csv_nr($query,$csv_file);
          return;
       }

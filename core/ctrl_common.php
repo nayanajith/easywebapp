@@ -93,6 +93,7 @@ if(isset($_REQUEST['form'])){
             }
          break;
          case 'csv':
+				 
             //Custom field lists are accepted
             $field_list=null;
             if(isset($_REQUEST['list']) && $_REQUEST['list'] != ""){

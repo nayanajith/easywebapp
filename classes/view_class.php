@@ -399,15 +399,25 @@ class View{
       d_r('dijit.form.DropDownButton');
       d_r('dojo.query');
 		//NOTE: related javascript function available in js/common.js
+		$field_arr=$this->form;
+
+		if(isset($GLOBALS['PAGE']['csv_table'])){
+		  $field_arr=array();
+        $arr=exec_query("SHOW COLUMNS FROM ".$GLOBALS['PAGE']['csv_table'],Q_RET_ARRAY);
+        foreach($arr as $row) {
+				$field_arr[$row['Field']]=array('label'=>style_text($row['Field']));
+		  }
+		}
+
 
       $csv_inner="
 <span>CSV</span>
 <div dojoType='dijit.TooltipDialog' align='center'>
 <b>Select the fields you want to include in the CSV</b>
 <table  id='csv__table'>";
-      $cols=3;
+      $cols=4;
       $td=0;
-      foreach($this->form as $id => $arr){
+      foreach($field_arr as $id => $arr){
          if($td == 0){
             $csv_inner.="<tr>";
          }
@@ -433,12 +443,12 @@ class View{
             <label for='csv__".$id."'>".$label."</label>
             </td>";
          $td++;
-         if($td==$cols || !next($this->form) || is_null(next($this->form))){
+         if($td==$cols){
             $csv_inner.="</tr>";
             $td=0;
          }
       }
-      $csv_inner.='</table>
+      $csv_inner.='</tr></table>
    <button dojoType="dijit.form.Button" type="submit" onClick="get_csv()">Get CSV</button></div>';
       return $csv_inner;
    }
