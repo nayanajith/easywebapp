@@ -1064,7 +1064,7 @@ function set_file_header($file_name){
    break;
    }
 
-  header('Content-Type',$content_type );
+  header('Content-Type:'.$content_type.' charset=utf-8' );
   header('Content-Disposition: attachment; filename='.$file_name);
   //header("Content-type: application/octet-stream");
   //header("Content-Disposition: attachment; filename=your_desired_name.xls");
@@ -1640,9 +1640,9 @@ function file_download($path,$fid){
 
 function table_to_csv($table,$filename){
    $table=trim($table);
-   $table=str_replace(array('</td><td>','</th><th>'),"','",$table);
-   $table=str_replace(array('<tr><td>','<tr><th>'),"'",$table);
-   $table=str_replace(array('</td></tr>','</th></tr>'),"'\n",$table);
+   $table=str_replace(array('</td><td>','</th><th>'),'","',$table);
+   $table=str_replace(array('<tr><td>','<tr><th>'),'"',$table);
+   $table=str_replace(array('</td></tr>','</th></tr>'),"\"\n",$table);
 
    set_file_header($filename.".csv");
    echo  $table;
