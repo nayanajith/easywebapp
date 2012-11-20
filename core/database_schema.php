@@ -2,7 +2,7 @@
 /*
 System Database tables
 */
-$schema_version=6;
+$schema_version=7;
          
 $system_table_schemas['program']="CREATE TABLE `program` (
   `rid`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -77,7 +77,7 @@ $system_table_schemas['log']="CREATE TABLE `log` (
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
   `proto`            VARCHAR(5) DEFAULT NULL,
   `timestamp`        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `user_id`          INT NOT NULL,
+  `user_id`          INT UNSIGNED NOT NULL,
   `ip`               VARCHAR(15) NOT NULL DEFAULT '',
   `module_id`        VARCHAR(50) NOT NULL DEFAULT '',
   `page_id`          VARCHAR(50) NOT NULL DEFAULT '',
@@ -90,12 +90,13 @@ $system_table_schemas['log']="CREATE TABLE `log` (
   `agent`            TEXT DEFAULT NULL,
   `deleted`          BOOLEAN     DEFAULT false,
   `note`             VARCHAR(300) DEFAULT NULL,
+  FOREIGN KEY       (`user_id`) REFERENCES users(`user_id`) ON UPDATE CASCADE ON DELETE RESTRICT,
   PRIMARY KEY (`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
 $system_table_schemas['filter']="CREATE TABLE `filter` (
   `rid`              INT unsigned NOT NULL AUTO_INCREMENT,
-  `user_id`          INT NOT NULL,
+  `user_id`          INT UNSIGNED NOT NULL,
   `program`          VARCHAR(100) DEFAULT NULL,
   `module`           VARCHAR(100) DEFAULT NULL,
   `page`             VARCHAR(100) DEFAULT NULL,
@@ -195,5 +196,9 @@ $system_table_migrate[6][]="
    ALTER TABLE base_data ENGINE = innodb;
    ALTER TABLE news ENGINE = innodb;
    ";
+$system_table_migrate[7][]="
+	ALTER TABLE log change user_id user_id INT UNSIGNED NOT NULL;
+	ALTER TABLE log ADD FOREIGN KEY(`user_id`) REFERENCES users(`user_id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+	";
 
 ?>
