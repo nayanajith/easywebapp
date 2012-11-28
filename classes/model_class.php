@@ -802,7 +802,7 @@ EOE;
          //Dates request formatted from MySQL
          foreach( $this->form as $key => $arr){
             //if(isset($arr['custom']) || isset($arr['store'])){
-            if(isset($arr['custom']) || in_array(strtolower($key),$this->pwd_field_guess)){
+            if(isset($arr['custom']) || isset($arr['isolate']) || in_array(strtolower($key),$this->pwd_field_guess)){
                continue;
             }else{
                if($arr['dojoType']=="dijit.form.DateTextBox"){
