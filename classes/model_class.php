@@ -946,7 +946,9 @@ EOE;
                   unset($_REQUEST[$key]);
                   continue; 
                }
-            }
+				}elseif(isset($arr['isolate'])){
+					continue; 
+				}
 
             /*Trying to ignore auto incrementing fields and custom fields(custom fields were handled below)*/
             if( !(isset($arr['custom']) && $arr['custom'] == 'true') && !(isset($arr['disabled']) && $arr['disabled'] == 'true')){
