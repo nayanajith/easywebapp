@@ -1086,8 +1086,8 @@ EOE;
                      exec_query(sprintf($arr['update'],$_REQUEST[$key]),Q_RET_NONE);
                      $errors[]=get_sql_error();
                   }else{
-                     exec_query("UPDATE ".$this->table." SET $key='".$_REQUEST[$key]."' WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'",Q_RET_NONE);
-                     $errors[]=get_sql_error();
+                     //exec_query("UPDATE ".$this->table." SET $key='".$_REQUEST[$key]."' WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'",Q_RET_NONE);
+                     //$errors[]=get_sql_error();
                   }
                   unset($_REQUEST[$key]);
                   continue; 
