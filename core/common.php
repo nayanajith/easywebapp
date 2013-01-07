@@ -1640,7 +1640,7 @@ function file_download($path,$fid){
 
 function table_to_csv($table,$filename){
    $table=trim($table);
-   $table=str_replace(array('</td><td>','</th><th>'),'","',$table);
+   $table=str_replace(array('</td><td>','</th><th>','</th><td>','</td><th>'),'","',$table);
    $table=str_replace(array('<tr><td>','<tr><th>'),'"',$table);
    $table=str_replace(array('</td></tr>','</th></tr>'),"\"\n",$table);
 
