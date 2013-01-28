@@ -1,5 +1,5 @@
 #Ignore indexing while allowing symlink following
-Options -Indexes MultiViews FollowSymLinks
+Options -Indexes +MultiViews +FollowSymLinks
 
 #Disable access from un authorized ips
 #Order deny,allow
