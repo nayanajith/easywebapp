@@ -1113,7 +1113,14 @@ EOE;
                }
 
                //Custom and disabled fields will be excluded do not update
-               if(!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key] == '' || $_REQUEST[$key] == 'NULL' || $_REQUEST[$key] == null){
+					if(
+						(!isset($_REQUEST[$key]) || 
+						is_null($_REQUEST[$key]) || 
+						$_REQUEST[$key] == '' || 
+						$_REQUEST[$key] == 'NULL' || 
+						$_REQUEST[$key] == null) &&
+						$arr['dojoType'] != 'dijit.form.CheckBox'
+						){
                   continue; 
                }
 
