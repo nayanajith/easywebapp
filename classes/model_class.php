@@ -899,23 +899,22 @@ EOE;
       public function is_duplicate(){
 
 			$uni_keys=$this->keys['UNI'];
-
-			$and="";
 			foreach($uni_keys as $key => $key_arr){
+				$and="";
 				$dupq="SELECT * FROM ".$this->insert_table." WHERE ";
 				foreach($key_arr as $field){
 					if(isset($_REQUEST[$field])){
 						if($_REQUEST[$field] == 'NULL' || $_REQUEST[$field] == ''){
-							$mf.=$and." (ISNULL(`".$field."`)||`".$field."`=='')";
+							$dupq.=$and." (ISNULL(`".$field."`) OR `".$field."`='')";
 						}else{
-							$mf.=$and."`".$field."`='".$_REQUEST[$field]."'";
+							$dupq.=$and."`".$field."`='".$_REQUEST[$field]."'";
 						}
 						$and=" AND ";
 					}
 				}
+				log_msg($dupq);
 				exec_query($dupq);
 				if(get_num_rows() > 0){
-					return_status_json('ERROR','Record already exists!');
 					return true;
 				}
 			}
