@@ -61,7 +61,17 @@ class Model{
       Constructure
       */
       function __construct($table,$name) {
-         $this->table               =$table;
+			//New approach with multiple tables for multiple actions
+			if(is_array($table)){
+				$this->insert_table		=$table['insert'];
+				$this->update_table		=$table['update'];
+				$this->view_table			=$table['view'];
+			}else{
+				$this->insert_table     =$table;
+				$this->update_table	   =$table;
+				$this->view_table		   =$table;
+			}
+
          $this->filter_table        =s_t('filter');
          $this->filter_primary_key  ='rid';
 
@@ -171,11 +181,11 @@ class Model{
                $this->primary_key   =get_pri_keys();
             }
          }else{
-            $res=exec_query("SHOW COLUMNS FROM ".$this->table,Q_RET_ARRAY);
+            $res=exec_query("SHOW COLUMNS FROM ".$this->insert_table,Q_RET_ARRAY);
 
             /*If no result returned*/
             if(sizeof($res) <= 0){
-               echo "Error showing table '".$this->table."' !";   
+               echo "Error showing table '".$this->insert_table."' !";   
                return;
             }
 
@@ -199,7 +209,7 @@ class Model{
                   );
                }
             }
-            $arr=exec_query("SELECT COLUMN_NAME,REFERENCED_COLUMN_NAME,CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME='".$this->table."' and CONSTRAINT_SCHEMA='".$GLOBALS['DB']."'",Q_RET_ARRAY);
+            $arr=exec_query("SELECT COLUMN_NAME,REFERENCED_COLUMN_NAME,CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE TABLE_NAME='".$this->insert_table."' and CONSTRAINT_SCHEMA='".$GLOBALS['DB']."'",Q_RET_ARRAY);
             /**
              * +---------------+------------------------+--------------------+
              * | COLUMN_NAME   | REFERENCED_COLUMN_NAME | CONSTRAINT_NAME    |
@@ -251,6 +261,7 @@ class Model{
          'ref_table'    =>m_p_t(''),
          'event_key'    =>'rid',
          'order_by'     =>'ORDER BY timestamp DESC',
+         'group_by'     =>'GROUP BY timestamp',
          'dojoType'     =>'dojox.grid.EnhancedGrid',
          'query'        =>'{ "rid": "*" }',
          'clientSort'   =>'true',
@@ -457,7 +468,7 @@ EOE;
             $where="WHERE ".$this->primary_key." = '".$this->data_load_key."'";
          }
 
-         $res=exec_query("SELECT * FROM ".$this->table." $where",Q_RET_ARRAY);
+         $res=exec_query("SELECT * FROM ".$this->insert_table." $where",Q_RET_ARRAY);
          if(isset($res[0])){
             $row=$res[0];
             foreach($this->form as $field => $value ){
@@ -485,7 +496,7 @@ EOE;
          }
 
          /*Custom table*/
-         $table=$table==null?$this->table:$table;   
+         $table=$table==null?$this->insert_table:$table;   
 
          $res=exec_query("SELECT ".implode(",",$key_array)." FROM ".$table." $where",Q_RET_ARRAY);
 
@@ -521,8 +532,8 @@ EOE;
             return;
          }
 
-         $json_fileW=W_MODULES."/".MODULE."/".$this->table.$this->data_json;
-         $json_fileA=A_MODULES."/".MODULE."/".$this->table.$this->data_json;
+         $json_fileW=W_MODULES."/".MODULE."/".$this->insert_table.$this->data_json;
+         $json_fileA=A_MODULES."/".MODULE."/".$this->insert_table.$this->data_json;
 
          //Save JSON to file
          $file_handler = fopen($json_fileA, 'w');
@@ -536,7 +547,7 @@ EOE;
        * Generate csv for the given query
        */
       public function gen_grid_csv(){
-         $table      =$this->table;
+         $table      =$this->insert_table;
          $filter_str ='';
          $query      ='';
          $grid       =$this->grids['GRID'];
@@ -548,6 +559,11 @@ EOE;
          $order_by="";
          if(isset($grid['order_by'])){
             $order_by=" ".$grid['order_by'];
+         }
+
+			$group_by="";
+         if(isset($grid['group_by'])){
+            $group_by=" ".$grid['group_by'];
          }
 
          if(!isset($grid['sql'])){
@@ -569,9 +585,9 @@ EOE;
             }
          
             $fields  =implode(",",$columns);
-            $query="SELECT $fields FROM ".$table.$filter_str.$order_by;
+            $query="SELECT $fields FROM ".$table.$filter_str.$group_by.$order_by;
          }else{
-            $query   =$grid['sql'].$filter_str.$order_by;;
+            $query   =$grid['sql'].$filter_str.$group_by.$order_by;
          }
          
          $csv_file= $table.".csv";
@@ -594,7 +610,7 @@ EOE;
          }
 
 
-         $table      =$this->table;
+         $table      =$this->insert_table;
          $filter_str ='';
          $query      ='';
          $grid       =$this->grids['GRID'];
@@ -607,6 +623,12 @@ EOE;
          if(isset($grid['order_by'])){
             $order_by=" ".$grid['order_by'];
          }
+
+			$group_by="";
+         if(isset($grid['group_by'])){
+            $group_by=" ".$grid['group_by'];
+         }
+
 
          if(!isset($grid['sql'])){
             if(isset($grid['columns'])){
@@ -629,9 +651,9 @@ EOE;
                   
             $fields  =implode(",",$columns);
          
-            $query="SELECT $fields FROM ".$table.$filter_str.$order_by.$limit;
+            $query="SELECT $fields FROM ".$table.$filter_str.$group_by.$order_by.$limit;
          }else{
-            $query   =$grid['sql'].$filter_str.$order_by;;
+            $query   =$grid['sql'].$filter_str.$group_by.$order_by;
          }
 
          //Find the total count returned for the given query
@@ -690,7 +712,7 @@ EOE;
          }
 
 			//If the table is not provided use default table
-		   $table=$this->table;
+		   $table=$this->insert_table;
 		 	if(isset($GLOBALS['PAGE']['csv_table'])){
 				$table=$GLOBALS['PAGE']['csv_table'];
 		 	}
@@ -736,7 +758,7 @@ EOE;
          }
 
          //Custom table if available 
-         $table   =$this->table;
+         $table   =$this->insert_table;
          if(isset($field_array['ref_table'])){
             $table   =$field_array['ref_table'];
          }
@@ -752,6 +774,13 @@ EOE;
          if(isset($field_array['order_by'])){
             $order_by=$field_array['order_by'];
          }
+
+         //Result will be group by this statement
+         $group_by  =null;
+         if(isset($field_array['group_by'])){
+            $group_by=$field_array['group_by'];
+         }
+
 
          //Default value to be listed at the end of the values
          $default  ="-none-";
@@ -775,6 +804,7 @@ EOE;
 
 
          //header('Content-Type', 'application/json');
+			//TODO: add $group_by to the function
          include 'qread_store_class.php';
          $query_read_store = new Query_read_store($table,$key_,$filter,$order_by,$key,$default,$all_selector);
          echo $query_read_store->gen_json_data();
@@ -785,7 +815,7 @@ EOE;
        */
 
       public function xhr_form_filler_data($qustion,$cus_table=null,$cus_key=null){
-         $table   =$this->table;
+         $table   =$this->view_table;
          $f_key   =$this->primary_key;
 
          if($cus_table != null){
@@ -802,7 +832,8 @@ EOE;
          //Dates request formatted from MySQL
          foreach( $this->form as $key => $arr){
             //if(isset($arr['custom']) || isset($arr['store'])){
-            if(isset($arr['custom']) || isset($arr['isolate']) || in_array(strtolower($key),$this->pwd_field_guess)){
+            //if(isset($arr['custom']) || isset($arr['isolate']) || in_array(strtolower($key),$this->pwd_field_guess)){
+            if(isset($arr['custom']) || in_array(strtolower($key),$this->pwd_field_guess)){
                continue;
             }else{
                if($arr['dojoType']=="dijit.form.DateTextBox"){
@@ -863,32 +894,43 @@ EOE;
       }
 
       /*
-      check for duplicates
+      check for duplicates for unique keys
       */
       public function is_duplicate(){
-         $filter='';
-         //for multiple keys
-         if(isset($this->self['keys'])){
-            foreach($this->self['keys'] as $key){
-               $filter.=$key."='".$_REQUEST[$key]."'";
-            }
-         }elseif(isset($_REQUEST[$this->primary_key])){
-            $filter=$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
-         }
 
-         $sql="SELECT * FROM ".$this->table." WHERE ".$filter;
-         $arr=exec_query($sql,Q_RET_ARRAY);
-         if(sizeof($arr) > 0){
-            return true;
-         }else{
-            return false;
-         }
-      }
+			$uni_keys=$this->keys['UNI'];
+
+			$and="";
+			foreach($uni_keys as $key => $key_arr){
+				$dupq="SELECT * FROM ".$this->insert_table." WHERE ";
+				foreach($key_arr as $field){
+					if(isset($_REQUEST[$field])){
+						if($_REQUEST[$field] == 'NULL' || $_REQUEST[$field] == ''){
+							$mf.=$and." (ISNULL(`".$field."`)||`".$field."`=='')";
+						}else{
+							$mf.=$and."`".$field."`='".$_REQUEST[$field]."'";
+						}
+						$and=" AND ";
+					}
+				}
+				exec_query($dupq);
+				if(get_num_rows() > 0){
+					return_status_json('ERROR','Record already exists!');
+					return true;
+				}
+			}
+			return false;
+		}
 
 
       protected $pwd_field_guess=array('password','passwd','pwd');
       /*Validate and add record to the table*/
       public function add_record(){
+
+			if($this->is_duplicate()){
+            return_status_json('ERROR','Duplicate record!');
+				return false;
+			}
 
          //Log users activity
          act_log();
@@ -1014,7 +1056,7 @@ EOE;
             }
          }
 
-         $insert_query  ="INSERT INTO ".$this->table."(%s) VALUES(%s)";
+         $insert_query  ="INSERT INTO ".$this->insert_table."(%s) VALUES(%s)";
          $insert_query  =sprintf($insert_query,$cols,$values);
          $res           =exec_query($insert_query,Q_RET_MYSQL_RES);
          $errors[]      =get_sql_error();
@@ -1035,7 +1077,7 @@ EOE;
 
       /*Validate and update record in the table */
       public function update_record(){
-         $sql="SELECT * FROM ".$this->table." WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
+         $sql="SELECT * FROM ".$this->update_table." WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
 
          //Log users activity
          act_log(null,$sql);
@@ -1082,11 +1124,11 @@ EOE;
 
                //Handle the isolated fields updates
                if(isset($arr['isolate'])){
-                  if(is_array($arr['isolate']) && isset($arr['update'])){
+                  if(is_array($arr['isolate']) && isset($arr['isolate']['update'])){
                      exec_query(sprintf($arr['update'],$_REQUEST[$key]),Q_RET_NONE);
                      $errors[]=get_sql_error();
                   }else{
-                     //exec_query("UPDATE ".$this->table." SET $key='".$_REQUEST[$key]."' WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'",Q_RET_NONE);
+                     //exec_query("UPDATE ".$this->update_table." SET $key='".$_REQUEST[$key]."' WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'",Q_RET_NONE);
                      //$errors[]=get_sql_error();
                   }
                   unset($_REQUEST[$key]);
@@ -1133,7 +1175,7 @@ EOE;
                $comma   =",";
             }
 
-            $update_query  ="UPDATE ".$this->table." SET %s WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
+            $update_query  ="UPDATE ".$this->update_table." SET %s WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
             $update_query  =sprintf($update_query,$values);
             $res           =exec_query($update_query,Q_RET_MYSQL_RES);
 
@@ -1161,10 +1203,10 @@ EOE;
       @ $purge: delete everithing instead of placing delete flag (caution: can not recover)
        */
       public function delete_record($purge=false){
-         $delete="UPDATE ".$this->table." SET deleted=true WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
+         $delete="UPDATE ".$this->update_table." SET deleted=true WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
       
          if($purge){
-            $delete="DELETE FROM ".$this->table." WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
+            $delete="DELETE FROM ".$this->insert_table." WHERE ".$this->primary_key."='".$_REQUEST[$this->primary_key]."'";
          }
 
          //Log users activity
@@ -1238,7 +1280,7 @@ EOE;
                   if(isset($mod_arr['overwrite']) && $mod_arr['overwrite'] == true){
                      unlink($save_path);
                      move_uploaded_file($up_arr["tmp_name"][0],$save_path);
-                     exec_query("UPDATE ".$this->table." SET $fid='$f_name' WHERE rid='$rid'",Q_RET_NONE);
+                     exec_query("UPDATE ".$this->update_table." SET $fid='$f_name' WHERE rid='$rid'",Q_RET_NONE);
                      log_msg('File exists, overwritten!');
                      echo $msg;
                      return;
@@ -1249,7 +1291,7 @@ EOE;
                   }
                }else{
                   move_uploaded_file($up_arr["tmp_name"][0],$save_path);
-                  exec_query("UPDATE ".$this->table." SET $fid='$f_name' WHERE rid='$rid'",Q_RET_NONE);
+                  exec_query("UPDATE ".$this->update_table." SET $fid='$f_name' WHERE rid='$rid'",Q_RET_NONE);
                   log_msg('File uploaded!');
                   echo $msg;
                   return;

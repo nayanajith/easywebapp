@@ -21,8 +21,11 @@ class Secure{
       $value = str_ireplace("script", "blocked", $value);
 
       if($GLOBALS['DB_TYPE']=='mysql'){
-         $value = mysql_escape_string($value);
-         //$value = mysql_real_escape_string($value);
+			if(function_exists('mysql_real_escape_string')){
+				$value = mysql_real_escape_string($value);
+			}else{
+				$value = mysql_escape_string($value);
+			}
       }
    }
 
