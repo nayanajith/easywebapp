@@ -1113,6 +1113,7 @@ EOE;
                }
 
                //Custom and disabled fields will be excluded do not update
+					/*
 					if(
 						(!isset($_REQUEST[$key]) || 
 						is_null($_REQUEST[$key]) || 
@@ -1123,9 +1124,10 @@ EOE;
 						){
                   continue; 
                }
+					*/
 
                //If the foreign keys does not have values ignore them
-               if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || is_null($_REQUEST[$key]) || $_REQUEST[$key]=='')){
+               if(in_array($key,get_for_keys()) && (!isset($_REQUEST[$key]) || $_REQUEST[$key] == null || is_null($_REQUEST[$key]) || $_REQUEST[$key]=='' || $_REQUEST[$key] == 'NULL')){
                   continue; 
                }
 
