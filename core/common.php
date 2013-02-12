@@ -1042,7 +1042,8 @@ function set_file_header($file_name){
    switch($ext){
    case 'csv':
       //$content_type="application/octet-stream";
-      $content_type='application/vnd.ms-excel';
+      //$content_type='application/vnd.ms-excel';
+      $content_type='txt/csv';
    break;
    case 'json':
       $content_type='application/json';
@@ -1069,7 +1070,7 @@ function set_file_header($file_name){
   //header("Content-type: application/octet-stream");
   //header("Content-Disposition: attachment; filename=your_desired_name.xls");
   //header("Content-Length: ".@filesize($file));
-  //header("Content-Transfer-Encoding: binary");
+  header("Content-Transfer-Encoding: binary");
   header("Pragma: no-cache");
   header("Expires: 0");
 }
