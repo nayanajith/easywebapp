@@ -547,6 +547,15 @@ EOE;
        * Generate csv for the given query
        */
       public function gen_grid_csv(){
+			$limit   = "";
+         if(isset($_REQUEST['count'])){
+            $limit   .= " LIMIT " . $_REQUEST['count'];
+         }
+
+         if(isset($_REQUEST['start'])){
+            $limit   .= " OFFSET " . $_REQUEST['start'];
+         }
+
          $table      =$this->insert_table;
          $filter_str ='';
          $query      ='';
@@ -585,9 +594,9 @@ EOE;
             }
          
             $fields  =implode(",",$columns);
-            $query="SELECT $fields FROM ".$table.$filter_str.$group_by.$order_by;
+            $query="SELECT $fields FROM ".$table.$filter_str.$group_by.$order_by.$limit;
          }else{
-            $query   =$grid['sql'].$filter_str.$group_by.$order_by;
+            $query   =$grid['sql'].$filter_str.$group_by.$order_by.$limit;
          }
          
          $csv_file= $table.".csv";
@@ -653,7 +662,7 @@ EOE;
          
             $query="SELECT $fields FROM ".$table.$filter_str.$group_by.$order_by.$limit;
          }else{
-            $query   =$grid['sql'].$filter_str.$group_by.$order_by;
+            $query   =$grid['sql'].$filter_str.$group_by.$order_by.$limit;
          }
 
          //Find the total count returned for the given query
