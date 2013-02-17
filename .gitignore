@@ -10,3 +10,11 @@ permission.php
 .DS_Store
 js/dojo-custom-build/dojo-release-*
 sql.log
+._.DS_Store
+classes/.fuse_hidden000000820000000a
+full.csv
+img/._.DS_Store
+js/._.DS_Store
+js/dojo-release
+mod
+query.sql
