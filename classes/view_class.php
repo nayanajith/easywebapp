@@ -802,7 +802,7 @@ plugins=\'{
 
                //Set all options for each column header which are not in bypass array
                foreach($array as $key => $value){
-                  if(!in_array($key,$bypass)){
+                  if(!in_array($key,$bypass) && !($key=='hidden' && $value=='false') ){
                      $options.=$key."='".$value."' ";
                   }
                }

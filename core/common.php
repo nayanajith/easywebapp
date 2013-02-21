@@ -401,7 +401,7 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false,$must=false){
             $filter="$id='".$array[$id]."'";
          }
       }elseif($must){
-         $filter="$id=''";
+         $filter="($id='' OR ISNULL($rid))";
       }
    }else{
       foreach($filter_ids as $id){
@@ -413,7 +413,7 @@ function gen_and_filter($filter_ids,$array=null,$start_and=false,$must=false){
             }
             $and="AND";
          }elseif($must){
-            $filter.= " $and $id=''";
+            $filter.= " $and ($id='' OR ISNULL($id))";
             $and="AND";
          }
       }
