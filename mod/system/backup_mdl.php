@@ -56,12 +56,18 @@ $GLOBALS['MODEL']=array(
 function list_backups(){
 	$files = scandir(MOD_BACKUP);
    if($files){
-		$list='<ol>';
+		$files_=array();
       foreach($files as $file){
+			$files_[$file]=filemtime(MOD_BACKUP . '/' . $file);
+		}
+
+	   arsort($files_);
+		$list='<center><table class="clean" border="1"><tr><th>Date/Time</th><th>File</th><th>Select</th></tr>';
+      foreach($files_ as $file => $date){
          if($file == '.' || $file == '..')continue;
-         $list.="<li><a href='".MOD_W_BACKUP."/".$file."'>".$file."</a><input dojoType='dijit.form.CheckBox' type='checkbox' name='BACK#$file'>";
+         $list.="<tr><td>".date("M d Y H:i:s",$date)."</td><td><a href='".MOD_W_BACKUP."/".$file."'>".$file."</a></td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='BACK#$file'></td></tr>";
       }
-      $list.='</ol>';
+      $list.='</table></center>';
    }
    return $list;
 }
