@@ -62,10 +62,11 @@ function list_backups(){
 		}
 
 	   arsort($files_);
-		$list='<center><table class="clean" border="1"><tr><th>Date/Time</th><th>File</th><th>Select</th></tr>';
+		$list='<center><table class="clean" border="1"><tr><th>File</th><th>Date/Time</th><th>Size</th><th>Select to delete</th></tr>';
       foreach($files_ as $file => $date){
          if($file == '.' || $file == '..')continue;
-         $list.="<tr><td>".date("M d Y H:i:s",$date)."</td><td><a href='".MOD_W_BACKUP."/".$file."'>".$file."</a></td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='BACK#$file'></td></tr>";
+			$size=hr_filesize(filesize(MOD_BACKUP . '/' . $file));
+         $list.="<tr><td><a href='".MOD_W_BACKUP."/".$file."'>".$file."</a></td><td>".date("M d Y H:i:s",$date)."</td><td>".$size."</td><td><input dojoType='dijit.form.CheckBox' type='checkbox' name='BACK#$file'></td></tr>";
       }
       $list.='</table></center>';
    }

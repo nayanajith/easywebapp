@@ -1772,5 +1772,16 @@ function query_to_htable($query){
    $report.="</table>";
    return  $report;
 }
+/**
+* Adopted from: http://www.jonasjohn.de/snippets/php/readable-filesize.htm
+*/
+function hr_filesize($size){
+    $mod = 1024;
+    $units = explode(' ','B KB MB GB TB PB');
+    for ($i = 0; $size > $mod; $i++) {
+        $size /= $mod;
+    }
+    return round($size, 2) . ' ' . $units[$i];
+}
 
 ?>
