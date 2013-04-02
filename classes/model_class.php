@@ -1277,7 +1277,6 @@ EOE;
  
       */
       public function upload_file(){
-         log_msg();
          if(isset($_REQUEST['file_id']) && isset($_REQUEST[$_REQUEST['file_id']."_rid"]) && isset($_FILES[$_REQUEST['file_id']."s"])){
             $fid=$_REQUEST['file_id'];
             $rid=$_REQUEST[$_REQUEST['file_id']."_rid"];

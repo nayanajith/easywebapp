@@ -24,7 +24,7 @@ class Secure{
 			//if(function_exists('mysql_real_escape_string')){
 			//	$value = mysql_real_escape_string($value);
 			//}else{
-				$value = mysql_escape_string($value);
+				$value = @ mysql_escape_string($value);
 			//}
       }
    }
