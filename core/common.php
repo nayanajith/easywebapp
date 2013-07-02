@@ -886,6 +886,9 @@ function add_to_footer($content,$before=false){
 function add_to_dialog($content,$before=false){
    add_to_view('DIALOG',$content,$before);
 }
+function add_to_widgets($content,$before=false){
+   add_to_view('WIDGET',$content,$before);
+}
 
 /**
  * Wrapper function to make it easy to get contet from the view
