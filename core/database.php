@@ -231,6 +231,7 @@ Execute query
 @param array_key: If this parameter set, this key will be used as the key when returning array
 @param deleted: if deleted is true, it will only return the deleted redcords. if deleted=all, it will return all records, if deleted is null it will return only non deleted
 */
+
 function exec_query($query,$type=null,$db=null,$array_key=null,$deleted=null,$no_connect=null){
    global $num_rows;
    global $aff_rows;
@@ -530,7 +531,7 @@ function drop_tables($tables){
    $state=true;
    foreach($tables as $key=>$name){
       if(is_view($name)){
-         if(exec_query("DROP VIEW ".$name,Q_RET_MYSQL_RES)){
+         if(exec_multy_query("SET FOREIGN_KEY_CHECKS=0; DROP VIEW ".$name,Q_RET_MYSQL_RES)){
             log_msg('drop_view'.$name,null,SQL_LOG);
          }else{
             log_msg('drop_view'.get_sql_error(),null,SQL_LOG);
@@ -541,14 +542,14 @@ function drop_tables($tables){
 
          /*IF the table have data backup the table instead of deleting*/
          if(get_num_rows()>0){
-            if(exec_query("RENAME TABLE ".$name." TO ".$name."_BAK_".Date('d_m_Y'),Q_RET_MYSQL_RES)){
+            if(exec_multy_query("SET FOREIGN_KEY_CHECKS=0; RENAME TABLE ".$name." TO ".$name."_BAK_".Date('d_m_Y'),Q_RET_MYSQL_RES)){
                log_msg('rename_tables'.$name,null,SQL_LOG);
             }else{
                log_msg('rename_tables'.get_sql_error(),null,SQL_LOG);
                $state=false;
             }
          }else{
-            if(exec_query("DROP TABLE ".$name,Q_RET_MYSQL_RES)){
+            if(exec_multy_query("SET FOREIGN_KEY_CHECKS=0; DROP TABLE ".$name,Q_RET_MYSQL_RES)){
                log_msg('drop_tables'.$name,null,SQL_LOG);
             }else{
                log_msg('drop_tables'.get_sql_error(),null,SQL_LOG);

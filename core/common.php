@@ -627,7 +627,7 @@ function callback($caller,$status,$func_array=null){
    //Callback the function and set returning value back in the array as return
    set_mdl_property(
       array('CALLBACKS',$caller,$status,'return'),
-      call_user_func_array($func_array['func'],$func_array['vars'])
+      @call_user_func_array($func_array['func'],$func_array['vars'])
    );
 
    //Set callback function status as true to denote it is executed
