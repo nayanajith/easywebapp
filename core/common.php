@@ -25,7 +25,7 @@ function get_help($module=null,$page=null){
    global $menu_array;
    $page_label=$menu_array[PAGE];
    if(is_array($page_label)){
-      $page_label=$page['label'];
+      $page_label=$page_label['label'];
    }
    
    //Get the module name
