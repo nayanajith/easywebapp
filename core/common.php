@@ -532,7 +532,8 @@ $GLOBALS['MODEL']=array(
    'FORM'   =>array(),
    'GRIDS'  =>array(),
    'TOOLBAR'=>array(),
-   'NOTIFY'=>array(),
+   'NOTIFY' =>array(),
+   'WIDGETS'=>array(),
    'CALLBACKS'=>array(),
 );
 
@@ -643,6 +644,7 @@ $GLOBALS['PREVIEW']=array(
    'FORM'   =>array(),
    'GRIDS'  =>array(),
    'TOOLBAR'=>array(),
+   'WIDGETS'=>array(),
    'NOTIFY' =>array(),
 );
 
@@ -887,7 +889,7 @@ function add_to_dialog($content,$before=false){
    add_to_view('DIALOG',$content,$before);
 }
 function add_to_widgets($content,$before=false){
-   add_to_view('WIDGET',$content,$before);
+   add_to_view('WIDGETS',$content,$before);
 }
 
 /**
@@ -1033,6 +1035,21 @@ function get_field($field_id){
 function get_label($field_id){
    return get_pviw_property(array('FORM',$field_id,'label'));
 }
+
+/**
+ * Add return the field for the given field_id from $GLOBALS['PREVIEW']['FORM']
+ */
+function get_widget_field($field_id){
+   return get_pviw_property(array('WIDGETS',$field_id,'field'));
+}
+
+/**
+ * Add return the label for the given field_id from $GLOBALS['PREVIEW']['FORM']
+ */
+function get_widget_label($field_id){
+   return get_pviw_property(array('WIDGETS',$field_id,'label'));
+}
+
 
 /**
  * Different headers are required by files generation

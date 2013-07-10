@@ -309,6 +309,138 @@ class View{
       return $custom_arr;
    }
 
+   /*
+    Generate entry for the given table field
+    select-> data for select box/combo box
+    data-> data for text area
+   */
+   public function gen_widget_entry($field,$field_array){
+      /*fill data from data array*/
+      $fill ="";
+
+      //if customizable true then retuen label and field seperately as an array
+      $custom_arr=array(
+           'label'=>'', 
+           'field'=>'', 
+      );
+
+      if($this->data_load_key != null){
+         if($field != 'password' && isset($this->data[$field])){
+            $fill=$this->data[$field];
+         }
+      }
+
+      //original field id
+      $field_=$field;
+
+      //toolbar field id
+      $field="widgets__".$field;
+
+      /*set fill externelly when loading with data*/
+      if($fill != ''){
+			if($field_array['dojoType'] == 'dijit.form.CheckBox'){
+				if(in_array(strtoupper($fill),array('1','ON','TRUE'))){
+         		$field_array['checked']='true';
+				}else{
+         		$field_array['checked']='false';
+				}
+			}else{
+         	$field_array['value']=$fill;
+			}      
+		}
+      /*Fields to bypass when creating forms*/
+      $bypass=$this->bypass;
+
+
+      /*html for the given field will be filled to this var*/
+      $html         ="";
+      $form_control ="";
+      $options      ="";
+
+      /*inner value of the field (innerhtml)*/
+      $inner   =isset($field_array['inner'])?$field_array['inner']:"";
+
+		/*if tooltip is set add tooltip */
+      $tooltip      ="";
+      if(isset($field_array['tooltip']) && $field_array['tooltip'] != ""){
+         $tooltip="<div dojoType='dijit.Tooltip' id='tooltip_".$field."' connectId='$field'><div style='max-width:400px;text-align:justify'>".$field_array['tooltip']."</div></div>";
+      }
+
+      /*if required=true put  * by the label */
+      $required      ="";
+      if(isset($field_array['required']) && $field_array['required'] == "true"){
+         $required      ="<font color='red'>*</font>";
+      }
+
+      //If the field require a store add a store to the page
+      if(isset($field_array['store'])){
+         $this->add_store($field,$field_array['store']);
+      }
+
+      /*Handl custom form input method or generic one*/
+      if(isset($field_array['custom']) && $field_array['custom'] == 'true' ){
+         $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
+         $custom_arr['field']=$html.$inner;
+      }else{
+         d_r($field_array['dojoType']);
+         $form_control   =$this->form_controls[$field_array['dojoType']];
+         $options        =" jsId='$field' id='$field' name='$field' ";
+
+
+         //If tooltip is set then bypass title
+         if(isset($field_array['tooltip'])){
+            $bypass[]='title';
+         }
+
+         /*all paremeters will be inserted to the options string*/
+         foreach($field_array as $key => $value){
+            if(!in_array($key,$bypass)){
+               $options.=$key."='$value'\n";
+            }
+         }
+
+         //hidden fields make not visible
+         if(isset($field_array['type']) && $field_array['type'] == "hidden"){
+            $options .="style='width:0px;border:0px;height:0px;overflow:hidden;display:non;'\n";
+            $custom_arr['field']=sprintf($form_control,$options,$inner);
+            $custom_arr['label']='';
+         }elseif($field_array['dojoType'] == 'dojox.form.Uploader'){//Uploader
+            //</form>",//sprintf(--,$id,$id,$id,$value,$id,$w_path,$uploadname,$label,$id,$id)
+            $up_width=null;
+            if(isset($field_array['width'])){
+               $up_width=$field_array['width'];
+            }
+            $custom_arr['field']=$this->gen_uploader_control($field,$fill,$field_array['w_path'],$field_array['label'],$up_width).$tooltip;
+            $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
+         }else{
+
+            //Set style and length of the field
+            $style ="";
+            if(isset($field_array['length']) && $field_array['dojoType'] != 'dijit.form.CheckBox' ){
+               $style .="width:".$field_array['length']."px;";
+            }
+
+            //custum style is applied 
+            if(isset($field_array['style'])){
+               $style .=$field_array['style'];
+            }
+
+            //additional style is applied
+            if($style != ''){
+               $options .="style='".$style."'";
+            }
+
+            //combining the dojo type mapping in above array with the generated content
+            $html            .=sprintf($form_control,$options,$inner);
+
+            $custom_arr['label']="<label for='$field' >".$field_array['label']."$required</label>";
+            $custom_arr['field']=$html.$tooltip;
+         }
+      }
+      return $custom_arr;
+   }
+
+
    /**
     * If there is a viw file for the page then include viw file 
     */
@@ -364,7 +496,7 @@ class View{
 
 
    /*
-   Generating form for using ghe fields array which was generated in model-class 
+   Generating form for using the fields array which was generated in model-class 
    $layout: table,flow
    */
    public function gen_form($captchar=null,$filter_selector=null,$layout='table'){
@@ -393,6 +525,18 @@ class View{
          }
       }
    }
+
+   /*
+   Generating form for using the fields array which was generated in model-class 
+   $layout: table,flow
+   */
+   public function gen_widgets(){
+      //Fill the preview array with the field/labels of the widgets
+      foreach($this->widgets as $field => $field_array){
+          set_pviw_property(array('WIDGETS',$field),$this->gen_widget_entry($field,$field_array,true));
+      }
+   }
+
 
    public function csv_field_selector($checked_fields=null){
       d_r('dijit.TooltipDialog');

@@ -164,6 +164,12 @@ if(isset($_REQUEST['form'])){
       $view->gen_form(null,null,$layout=$form_layout);
    }
 
+   //Generate widgets
+   if(isset($GLOBALS['MODEL']['WIDGETS']) && is_array($GLOBALS['MODEL']['WIDGETS']) &&  sizeof($GLOBALS['MODEL']['WIDGETS']) > 0){
+      $view->gen_widgets();
+   }
+
+
    //Generate toolbar
    $view->gen_toolbar();
 
