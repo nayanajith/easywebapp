@@ -58,10 +58,12 @@ if(isset($_REQUEST['form'])){
          break;
          case 'param':
             //Check if the id is from toolbar and if so remote 'toolbar.' prefix from id
+            $section='FORM';
             $param=$_REQUEST['param'];
             $br=explode('__',$_REQUEST['param']);
-            if(isset($br[0]) &&  strtoupper($br[0])=='TOOLBAR'){
+            if(isset($br[0]) && in_array(strtoupper($br[0]),array('WIDGETS','TOOLBAR'))){
                $param=$br[1];
+               $section=$br[0];
             }
             if(isset($_REQUEST['param']) && isset($_REQUEST[$_REQUEST['param']]) && $_REQUEST[$_REQUEST['param']] == '_ALL_'){
                del_param($param);
@@ -71,6 +73,13 @@ if(isset($_REQUEST['form'])){
                set_param($param,$_REQUEST[$_REQUEST['param']]);
                return_status_json('OK',"Set ".$param." as ".$_REQUEST[$_REQUEST['param']]);
             }
+
+            //Callback the php function if set in the MODEL
+            $field_array=$GLOBALS['MODEL'][strtoupper($section)][$param];
+            if(isset($field_array['callback'])){
+               call_user_func($field_array['callback']);
+            }
+
          break;
          case 'add_filter':
             add_filter();

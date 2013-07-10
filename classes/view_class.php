@@ -181,6 +181,7 @@ class View{
       'path',
       'w_path',
       'data_function',
+      'callback',
    );
 
 
