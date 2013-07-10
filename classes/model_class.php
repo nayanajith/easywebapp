@@ -754,6 +754,13 @@ EOE;
             $field_array=$this->form[$key];
          }
 
+         //If the select is set to get the data from a function call the function and return 
+         if(isset($field_array['data_function'])){
+            //set_file_header($key.".json");
+            echo call_user_func($field_array['data_function']);
+            return;
+         }
+
          //Reference key of the table
          if(isset($field_array['ref_key'])){
             $key=$field_array['ref_key'];

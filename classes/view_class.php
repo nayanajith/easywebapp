@@ -175,11 +175,12 @@ class View{
 	 	'ref_key',
 	 	'order_by',
 	 	'tooltip',
-       'valid_types',
-       'max_size',
-       'overwrite',
-       'path',
-       'w_path',
+      'valid_types',
+      'max_size',
+      'overwrite',
+      'path',
+      'w_path',
+      'data_function',
    );
 
 
