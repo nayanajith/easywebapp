@@ -317,19 +317,13 @@ class View{
    */
    public function gen_widget_entry($field,$field_array){
       /*fill data from data array*/
-      $fill ="";
+      $fill =get_param($field);
 
       //if customizable true then retuen label and field seperately as an array
       $custom_arr=array(
            'label'=>'', 
            'field'=>'', 
       );
-
-      if($this->data_load_key != null){
-         if($field != 'password' && isset($this->data[$field])){
-            $fill=$this->data[$field];
-         }
-      }
 
       //original field id
       $field_=$field;

@@ -755,9 +755,13 @@ EOE;
          }
 
          //If the select is set to get the data from a function call the function and return 
+         $data_function=$key."_data";
          if(isset($field_array['data_function'])){
+            $data_function=$field_array['data_function'];
+         }
+         if(function_exists($data_function)){
             //set_file_header($key.".json");
-            echo call_user_func($field_array['data_function']);
+            echo call_user_func($data_function);
             return;
          }
 

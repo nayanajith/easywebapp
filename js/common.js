@@ -437,6 +437,23 @@ function toolbar_load_selected(){
       }  
    });
 }
+
+/**
+ * Fill filtering selects in  an area
+ */
+function area_load_selected(area){
+   dojo.forEach(dijit.byId(area).getChildren(),function(widget){
+      switch(widget.declaredClass){
+      case 'dijit.form.FilteringSelect':
+         load_selected_value(widget,widget._lastValueReported);
+      break;
+      default:
+      break;
+      }  
+   });
+}
+
+
 /**
  * Reload set of sections as requested in the array
  */

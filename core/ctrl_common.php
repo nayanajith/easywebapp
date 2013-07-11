@@ -76,8 +76,12 @@ if(isset($_REQUEST['form'])){
 
             //Callback the php function if set in the MODEL
             $field_array=$GLOBALS['MODEL'][strtoupper($section)][$param];
-            if(isset($field_array['callback'])){
-               call_user_func($field_array['callback']);
+            $action=$param."_action";
+            if(isset($field_array['action'])){
+               $action=$field_array['action'];
+            }
+            if(function_exists($action)){
+               call_user_func($action);
             }
 
          break;
