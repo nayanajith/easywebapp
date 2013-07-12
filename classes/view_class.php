@@ -432,6 +432,7 @@ class View{
             $custom_arr['field']=$html.$tooltip;
          }
       }
+
       return $custom_arr;
    }
 
