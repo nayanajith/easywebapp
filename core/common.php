@@ -1118,16 +1118,21 @@ function return_status_json($status,$info){
 /*Load dojo module which required to be loaded to parse gui*/
 /*it will create an array of modules which will used to generate the javascript code required at the end */
 $dojo_required=array();
-function dojo_require($module){
+function dojo_require($module,$dynamic=false){
    global  $dojo_required;
    if(!in_array($module,$dojo_required)){
       $dojo_required[]=$module;
    }
+
+   //Load modules dynamically  through DYNAMIC_JS
+   if($dynamic){
+      JS("dojo.require('$module');\n",true);
+   }
 }
 
 //simplyfied version of dojo_require
-function d_r($module){
-   dojo_require($module);
+function d_r($module,$dynamic=false){
+   dojo_require($module,$dynamic);
 }
 
 //dojo have set of icons which can used with buttons and so on

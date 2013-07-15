@@ -94,6 +94,7 @@ d_r("dojo.fx");
 function parse_dojo(){
    global $dojo_required;
    $dojo_required[]='dojo.parser';
+   //$req="dojo.require('dojo.parser');";
    $req="";
    foreach($dojo_required as $module){
       $req.="dojo.require('$module');\n";

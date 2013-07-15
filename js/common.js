@@ -239,6 +239,7 @@ function switch_user(value) {
 //wrapper for filter form callbacks
 function s_p_c_add(callback_name,callback_function,param){
    add_callback(set_param_callback,callback_name,callback_function,param);
+   return true;
 }
 
 
@@ -1573,7 +1574,7 @@ function poll(){
 }
 
 //--------------Starting poll function------------------
-poll();
+//poll();
 //--------------Starting poll function------------------
 
 /**
