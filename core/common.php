@@ -1060,6 +1060,9 @@ function set_file_header($file_name){
    $ext=$ext[1];
    $content_type=null;
    switch($ext){
+   case 'xlsx':
+      $content_type='application/vnd.ms-excel';
+   break;
    case 'csv':
       //$content_type="application/octet-stream";
       //$content_type='application/vnd.ms-excel';
@@ -1112,6 +1115,10 @@ function return_status_json($status,$info){
    }else{
       echo "{'status_code':'NOT_DEFINED','info':'$info','nstatus':'$status'}";
    }
+}
+//wrapper to  return_status_json
+function status($status,$info){
+   return_status_json($status,$info);
 }
 
 
