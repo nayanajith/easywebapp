@@ -3,7 +3,7 @@ db_config.php
 errors.log
 js/dojo-ucscis/
 js/dojo-release/
-lib/tcpdf/
+lib/
 messages.log
 modules.php
 permission.php
