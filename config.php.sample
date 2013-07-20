@@ -74,7 +74,7 @@ define('FILTER_FRONT', 'NO');
 
 /*------------------------------title info------------------------------------*/
 //Short Title of the  organization ( module  module wise title is also possible)
-$GLOBALS['TITLE']       = 'UCSC Information System';
+$GLOBALS['TITLE']       = 'Easy Information System';
 
 //Long title of the organization with html formatting
 $GLOBALS['TITLE_LONG']  = '&nbsp;University of Colombo School of Computing<br>&nbsp;Information System';
@@ -89,22 +89,22 @@ $GLOBALS['FOOTER']      = 'University of Colombo School of Computing |  No:35 | 
 $GLOBALS['HOTLINE']     = 'Contact: +94112581245/7';
 
 //Email address of the admin user
-$GLOBALS['ADMIN_MAIL']  = 'uis@ucsc.cmb.ac.lk';
+$GLOBALS['ADMIN_MAIL']  = '';
 
 //Email of the information user account where the users can contact through
-$GLOBALS['INFO_MAIL']   = 'info@ucsc.cmb.ac.lk';
+$GLOBALS['INFO_MAIL']   = '';
 
 //No reply email address which is used to send information to the users (eg: invoices )
-$GLOBALS['NOREPLY_MAIL']= 'noreply@ucsc.cmb.ac.lk';
+$GLOBALS['NOREPLY_MAIL']= '';
 
 //Logo of the organization. Displayed in front page in-front of the title and included in letterhead.
-$GLOBALS['LOGO']        = IMG.'/ucsc-logo.png';
+$GLOBALS['LOGO']        = IMG.'/logo.png';
 
 //System path to the logo
-$GLOBALS['A_LOGO']      = A_IMG.'/ucsc-logo.png';
+$GLOBALS['A_LOGO']      = A_IMG.'/ulogo.png';
 
 //Logo2 is included in footer of the front-end (a mono-space image is appropriate)
-$GLOBALS['LOGO2']       = IMG.'/ucsc-logo-mono.png';
+$GLOBALS['LOGO2']       = IMG.'/logo-mono.png';
 
 //Favicon icon of the organization
 $GLOBALS['FAVICON']     = IMG.'/favicon.ico';
@@ -125,7 +125,7 @@ $GLOBALS['STATUS']      = array('ENABLED','DISABLED');
 
 /*---------------------------configure Database--------------------------------*/
 //Default database configuration which will be overridden from the configuration of db_confg.php
-$GLOBALS['DB']          = 'ucscsis';
+$GLOBALS['DB']          = 'is';
 $GLOBALS['DB_HOST']     = 'localhost';
 $GLOBALS['DB_USER']     = 'root';
 $GLOBALS['DB_PASS']     = 'letmein';
@@ -151,10 +151,9 @@ $GLOBALS['AUTH_PROTOCOLE'] ='http'; //authentication communication protocol http
 $GLOBALS['AUTH_MOD']       ='MYSQL';
 
 //LDAP server configuraiton if the AUTH_MOD is LDAP
-//UCSC ldap [zimbra] configuration
-$GLOBALS['LDAP_SERVER']    = "192.248.16.86";//mail.ucsc.lk
+$GLOBALS['LDAP_SERVER']    = "<ip>";//
 $GLOBALS['LDAP_PORT']      = 389;
-$GLOBALS['LDAP_BIND_RDN']  = "uid=%s,ou=people,dc=ucsc,dc=cmb,dc=ac,dc=lk";
+$GLOBALS['LDAP_BIND_RDN']  = "uid=%s,ou=people,dc=easywebapp,dc=lk";
  
 
 /*-------------------------------onfigure mail--------------------------------*/
@@ -171,6 +170,6 @@ $GLOBALS['MAIL_CONF']=array (
 
 /*-----------------------IF th system isbehind proxy--------------------------*/
 //If the actual server is behind a proxy set the proxy servers hostname and IP to properly work HTTPS  while sending login information etc.
-$GLOBALS['PROXY_HOSTS']    = array("192.248.16.84"=>"ucsc.lk");
+$GLOBALS['PROXY_HOSTS']    = array("192.248.16.84"=>"easywebapp.lk");
 
 ?>
